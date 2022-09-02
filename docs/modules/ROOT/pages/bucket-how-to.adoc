@@ -1,0 +1,86 @@
+= How-To Create a Bucket
+
+* Be sure you're connected to APPUiO Cloud
+* Create this thingy:
+
+.Example to create an Object Storage bucket
+[source,yaml]
+----
+apiVersion: appcat.vshn.io/v1
+kind: ObjectBucket
+metadata:
+  name: my-cool-object-storage-bucket
+  namespace: my-namespace <1>
+spec:
+  parameters:
+    bucketName: my-bucket-change-name <2>
+    region: rma <3>
+  writeConnectionSecretToRef:
+    name: objectbucket-creds <4>
+----
+<1> The namespace you want the object storage bucket to live in
+<2> The name of the bucket - *Don't just copy/paste, choose your own name here!*
+<3> The bucket's region, either "RMA" or "LPG"
+<4> Secret where the connection details are provisioned.
+    It shouldn't exist beforehand.
+
+* Check how your bucket is doing:
+[source,bash]
+----
+oc get objectbucket
+NAME               READY   CONNECTION-SECRET    AGE
+my-review-bucket   True    objectbucket-creds   5s
+----
+It's ready 🎉
+
+* Use it via the secret `+oc get secrets objectbucket-creds -oyaml+`
+[source,yaml]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+  name: objectbucket-creds
+data:
+  AWS_ACCESS_KEY_ID: OFk4Qzc0TzFHME9PNjkyWkFGRjU= <1>
+  AWS_REGION: cm1h <2>
+  AWS_SECRET_ACCESS_KEY: dFg5S0F4dzBQdXc0c0EwbWZUQXpiamxLNFRvZUpZNXozMVJxS1lhcg== <3>
+  BUCKET_NAME: bXktcmV2aWV3LWJ1Y2tldA== <4>
+  ENDPOINT: b2JqZWN0cy5ybWEuY2xvdWRzY2FsZS5jaA== <5>
+----
+<1> Access key id
+<2> Region of the bucket
+<3> Secret access key
+<4> Bucket name
+<5> Endpoint, often also contains the region
+
+* Check the bucket status
+[source,yaml]
+----
+oc describe objectbucket my-review-bucket
+Name:         my-review-bucket
+Namespace:    simon-beck-test
+*SNIP*
+Status:
+  Conditions:
+    Last Transition Time:  2022-09-02T07:38:40Z
+    Reason:                Available
+    Status:                True
+    Type:                  Ready
+  Connection Details:
+    Last Published Time:  2022-09-02T07:38:40Z
+Events:
+  Type     Reason                      Age                From                                                             Message
+  ----     ------                      ----               ----                                                             -------
+  Warning  ConfigureCompositeResource  12m (x2 over 12m)  offered/compositeresourcedefinition.apiextensions.crossplane.io  cannot apply composite resource: cannot patch object: Operation cannot be fulfilled on xobjectbuckets.appcat.vshn.io "my-review-bucket-2ds78": the object has been modified; please apply your changes to the latest version and try again
+  Normal   ConfigureCompositeResource  12m (x8 over 12m)  offered/compositeresourcedefinition.apiextensions.crossplane.io  Successfully applied composite resource
+  Normal   BindCompositeResource       12m (x6 over 12m)  offered/compositeresourcedefinition.apiextensions.crossplane.io  Composite resource is not yet ready
+  Normal   BindCompositeResource       12m (x2 over 12m)  offered/compositeresourcedefinition.apiextensions.crossplane.io  Successfully bound composite resource
+  Normal   PropagateConnectionSecret   12m                offered/compositeresourcedefinition.apiextensions.crossplane.io  Successfully propagated connection details from composite resource
+----
+
+[IMPORTANT]
+====
+A bucket name has to be unique for the whole system.
+If your object bucket doesn't get the state ready after a while, try to delete the bucket and re-create it with a different name.
+Currently, there's no error exposed if the name is already taken.
+====

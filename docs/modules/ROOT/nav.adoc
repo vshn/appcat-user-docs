@@ -5,6 +5,7 @@
 * xref:diagram.adoc[Diagram Sample]
 * xref:math.adoc[Math Equations]
 * xref:source.adoc[Source Code]
+* xref:bucket-how-to.adoc[Bucket How-To]
 
 .About this documentation
 * xref:colophon.adoc[Colophon]
