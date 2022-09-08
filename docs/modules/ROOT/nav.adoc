@@ -1,4 +1,4 @@
 * xref:index.adoc[]
 
-.S3 Buckets
-* xref:s3/how-to.adoc[]
+.Object Storage Buckets
+* xref:object-storage/how-to.adoc[]

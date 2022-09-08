@@ -9,5 +9,5 @@ image::appuio-cloud.svg[width=400]
 
 == Available Services
 
-* xref:s3/how-to.adoc[]
+* xref:object-storage/how-to.adoc[]
 * More coming soon!
