@@ -1,13 +1,13 @@
-= AppCat Documentation
+= {product} End-User Documentation
 :navtitle: Home
 
-Welcome to the AppCat Documentation! AppCat allows DevOps engineers to quickly and safely provision cloud services.
+Welcome to the {product} Documentation! The {product} allows DevOps engineers to quickly and safely provision cloud services.
 
-IMPORTANT: At this time AppCat only serves selected https://portal.appuio.cloud/zones[APPUiO Cloud zones]. Please check the availability of your desired feature in the corresponding documentation page.
+IMPORTANT: At this time {product} only serves selected https://portal.appuio.cloud/zones[APPUiO Cloud zones]. Please check the availability of your desired feature in the corresponding documentation page.
 
 image::appuio-cloud.svg[width=400]
 
 == Available Services
 
-* xref:object-storage/how-to.adoc[]
+* xref:object-storage/how-to.adoc[Object Storage Buckets]
 * More coming soon!

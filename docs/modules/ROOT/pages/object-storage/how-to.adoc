@@ -1,8 +1,8 @@
 = Create an Object Storage Bucket
 
-AppCat allows DevOps engineers to quickly provision Object Storage (S3-compatible) buckets in various environments.
+{product} allows DevOps engineers to quickly provision S3-compatible Object Storage Buckets in various environments.
 
-IMPORTANT: In its first release, AppCat Object Storage buckets are only available on the https://portal.appuio.cloud/zones/cloudscale-lpg-2[cloudscale.ch LPG 2 region] of APPUiO Cloud.
+IMPORTANT: In its first release, {product} Object Storage buckets are only available on the https://portal.appuio.cloud/zones/cloudscale-lpg-2[cloudscale.ch LPG 2 region] of APPUiO Cloud.
 
 == Create the Bucket
 
@@ -16,7 +16,7 @@ include::user:partial$login-in-terminal.adoc[]
 apiVersion: appcat.vshn.io/v1
 kind: ObjectBucket
 metadata:
-  name: my-cool-object-storage-bucket
+  name: my-cool-bucket
   namespace: my-namespace <1>
 spec:
   parameters:
@@ -27,10 +27,10 @@ spec:
 ----
 <1> The namespace where the object will be created.
 <2> Bucket name: *don't just copy/paste this code, remember to choose your own name here!*
-<3> The bucket's region, either "RMA" or "LPG"
+<3> The bucket's region, either "rma" or "lpg"
 <4> Secret where the connection details are provisioned. This secret shouldn't exist at this time.
 +
-IMPORTANT: S3 bucket names must be unique across providers. Make sure to choose a name with prefixes and other guards, to prevent any issue during the creation of the bucket. No error message is returned if the bucket cannot be created.
+IMPORTANT: Object Storage Bucket names must be unique across providers. Make sure to choose a name with prefixes and other guards, to prevent any issue during the creation of the bucket. No error message is returned if the bucket cannot be created.
 
 . Get information about your new bucket object.
 +
@@ -38,7 +38,7 @@ IMPORTANT: S3 bucket names must be unique across providers. Make sure to choose 
 ----
 $ oc get objectbucket
 NAME               READY   CONNECTION-SECRET    AGE
-my-review-bucket   True    objectbucket-creds   5s
+my-cool-bucket     True    objectbucket-creds   5s
 ----
 +
 If you see the "True" value in the READY column, it means that your bucket is provisioned and ready to use.
@@ -71,9 +71,9 @@ data:
 +
 [source,bash]
 ----
-$ oc describe objectbucket my-review-bucket
-Name:         my-review-bucket
-Namespace:    simon-beck-test
+$ oc describe objectbucket my-cool-bucket
+Name:         my-cool-bucket
+Namespace:    a-demo-project
 # …
 Status:
   Conditions:
@@ -86,7 +86,7 @@ Status:
 Events:
   Type     Reason                      Age                From                                                             Message
   ----     ------                      ----               ----                                                             -------
-  Warning  ConfigureCompositeResource  12m (x2 over 12m)  offered/compositeresourcedefinition.apiextensions.crossplane.io  cannot apply composite resource: cannot patch object: Operation cannot be fulfilled on xobjectbuckets.appcat.vshn.io "my-review-bucket-2ds78": the object has been modified; please apply your changes to the latest version and try again
+  Warning  ConfigureCompositeResource  12m (x2 over 12m)  offered/compositeresourcedefinition.apiextensions.crossplane.io  cannot apply composite resource: cannot patch object: Operation cannot be fulfilled on xobjectbuckets.appcat.vshn.io "my-cool-bucket-2ds78": the object has been modified; please apply your changes to the latest version and try again
   Normal   ConfigureCompositeResource  12m (x8 over 12m)  offered/compositeresourcedefinition.apiextensions.crossplane.io  Successfully applied composite resource
   Normal   BindCompositeResource       12m (x6 over 12m)  offered/compositeresourcedefinition.apiextensions.crossplane.io  Composite resource is not yet ready
   Normal   BindCompositeResource       12m (x2 over 12m)  offered/compositeresourcedefinition.apiextensions.crossplane.io  Successfully bound composite resource
