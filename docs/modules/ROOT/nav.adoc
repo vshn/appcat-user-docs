@@ -1,6 +1,8 @@
-* xref:index.adoc[]
-* xref:user:ROOT:index.adoc[APPUiO Cloud User Docs 🔗^]
-* xref:portal:ROOT:index.adoc[APPUiO Cloud Portal 🔗^]
+* xref:user:ROOT:contact.adoc[Contact]
+* https://status.appuio.cloud[Status 🔗^]
+* https://portal.appuio.cloud[Portal 🔗^]
+* xref:user:ROOT:index.adoc[User Docs 🔗^]
+* xref:portal:ROOT:index.adoc[Portal Docs 🔗^]
 
 .Object Storage Buckets
 * xref:object-storage/how-to.adoc[]
