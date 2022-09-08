@@ -1,17 +1,4 @@
-* xref:index.adoc[Home]
+* xref:index.adoc[]
 
-.Pages
-* xref:second.adoc[Second Page]
-* xref:diagram.adoc[Diagram Sample]
-* xref:math.adoc[Math Equations]
-* xref:source.adoc[Source Code]
-* xref:bucket-how-to.adoc[Bucket How-To]
-
-.About this documentation
-* xref:colophon.adoc[Colophon]
-
-.Downloads
-* link:/appcat-docs.pdf[PDF]
-* link:/appcat-docs.epub[EPUB]
-* link:/appcat-docs.mobi[Kindle]
-* link:/appcat-docs.1[man page]
+.S3 Buckets
+* xref:s3/how-to.adoc[]

@@ -1,8 +1,15 @@
-= How-To Create a Bucket
+= Create an S3 Bucket
 
-* Be sure you're connected to APPUiO Cloud
-* Create this thingy:
+AppCat allows DevOps engineers to quickly provision S3 buckets in various environments.
 
+IMPORTANT: In its first release, AppCat S3 buckets are only available on the https://portal.appuio.cloud/zones/cloudscale-lpg-2[cloudscale.ch LPG 2 region] of APPUiO Cloud.
+
+== Create the Bucket
+
+include::user:partial$login-in-terminal.adoc[]
+
+. Apply the following object on your namespace, as specified by its YAML description.
++
 .Example to create an Object Storage bucket
 [source,yaml]
 ----
@@ -18,24 +25,31 @@ spec:
   writeConnectionSecretToRef:
     name: objectbucket-creds <4>
 ----
-<1> The namespace you want the object storage bucket to live in
-<2> The name of the bucket - *Don't just copy/paste, choose your own name here!*
+<1> The namespace where the object will be created.
+<2> Bucket name: *don't just copy/paste this code, remember to choose your own name here!*
 <3> The bucket's region, either "RMA" or "LPG"
-<4> Secret where the connection details are provisioned.
-    It shouldn't exist beforehand.
+<4> Secret where the connection details are provisioned. This secret shouldn't exist at this time.
++
+IMPORTANT: S3 bucket names must be unique across providers. Make sure to choose a name with prefixes and other guards, to prevent any issue during the creation of the bucket. No error message is returned if the bucket cannot be created.
 
-* Check how your bucket is doing:
+. Get information about your new bucket object.
++
 [source,bash]
 ----
-oc get objectbucket
+$ oc get objectbucket
 NAME               READY   CONNECTION-SECRET    AGE
 my-review-bucket   True    objectbucket-creds   5s
 ----
-It's ready 🎉
++
+If you see the "True" value in the READY column, it means that your bucket is provisioned and ready to use.
++
+IMPORTANT: If your object bucket doesn't get the state ready after a while, try to delete the bucket and re-create it with a different name.
 
-* Use it via the secret `+oc get secrets objectbucket-creds -oyaml+`
+. Get the required secrets to use your bucket from other applications.
++
 [source,yaml]
 ----
+$ oc get secrets objectbucket-creds -oyaml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -47,19 +61,20 @@ data:
   BUCKET_NAME: bXktcmV2aWV3LWJ1Y2tldA== <4>
   ENDPOINT: b2JqZWN0cy5ybWEuY2xvdWRzY2FsZS5jaA== <5>
 ----
-<1> Access key id
-<2> Region of the bucket
-<3> Secret access key
-<4> Bucket name
-<5> Endpoint, often also contains the region
+<1> Access key id of the bucket.
+<2> Region where the bucket has been provisioned.
+<3> Secret access key for the bucket.
+<4> Bucket name.
+<5> Endpoint, often also including the region.
 
-* Check the bucket status
-[source,yaml]
+. Check the bucket status
++
+[source,bash]
 ----
-oc describe objectbucket my-review-bucket
+$ oc describe objectbucket my-review-bucket
 Name:         my-review-bucket
 Namespace:    simon-beck-test
-*SNIP*
+# …
 Status:
   Conditions:
     Last Transition Time:  2022-09-02T07:38:40Z
@@ -77,10 +92,3 @@ Events:
   Normal   BindCompositeResource       12m (x2 over 12m)  offered/compositeresourcedefinition.apiextensions.crossplane.io  Successfully bound composite resource
   Normal   PropagateConnectionSecret   12m                offered/compositeresourcedefinition.apiextensions.crossplane.io  Successfully propagated connection details from composite resource
 ----
-
-[IMPORTANT]
-====
-A bucket name has to be unique for the whole system.
-If your object bucket doesn't get the state ready after a while, try to delete the bucket and re-create it with a different name.
-Currently, there's no error exposed if the name is already taken.
-====
