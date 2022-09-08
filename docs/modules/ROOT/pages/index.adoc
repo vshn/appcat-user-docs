@@ -1,4 +1,4 @@
-= {product} End-User Documentation
+= {product} Documentation
 :navtitle: Home
 
 Welcome to the {product} Documentation! The {product} allows DevOps engineers to quickly and safely provision cloud services.
