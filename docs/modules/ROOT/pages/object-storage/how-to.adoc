@@ -6,7 +6,7 @@ IMPORTANT: In its first release, {product} Object Storage buckets are only avail
 
 == Create the Bucket
 
-include::user:partial$login-in-terminal.adoc[]
+include::user:ROOT:partial$login-in-terminal.adoc[]
 
 . Apply the following object on your namespace, as specified by its YAML description.
 +
