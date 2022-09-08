@@ -1,8 +1,8 @@
 = Create an Object Storage Bucket
 
-{product} allows DevOps engineers to quickly provision S3-compatible Object Storage Buckets in various environments.
+AppCat allows DevOps engineers to quickly provision S3-compatible Object Storage Buckets in various environments.
 
-IMPORTANT: In its first release, {product} Object Storage buckets are only available on the https://portal.appuio.cloud/zones/cloudscale-lpg-2[cloudscale.ch LPG 2 region] of APPUiO Cloud.
+IMPORTANT: In its first release, AppCat Object Storage buckets are only available on the https://portal.appuio.cloud/zones/cloudscale-lpg-2[cloudscale.ch LPG 2 region] of APPUiO Cloud.
 
 == Create the Bucket
 
