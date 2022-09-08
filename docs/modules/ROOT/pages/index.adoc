@@ -1,5 +1,4 @@
 = VSHN Application Catalog Documentation
-:navtitle: Home
 
 image::appuio-cloud.svg[APPUiO Cloud,400,link=https://www.appuio.ch/en/offering/cloud/]
 
