@@ -1,4 +1,4 @@
-* xref:index.adoc[]
+include::user:ROOT:partial$shared-nav.adoc[]
 
 .Object Storage Buckets
 * xref:object-storage/how-to.adoc[]
