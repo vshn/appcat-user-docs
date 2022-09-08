@@ -1,5 +1,5 @@
 * xref:index.adoc[]
-* xref:user:ROOT:index.adoc[APPUiO Cloud User Documentation 🔗^]
+* xref:user:ROOT:index.adoc[APPUiO Cloud User Docs 🔗^]
 * xref:portal:ROOT:index.adoc[APPUiO Cloud Portal 🔗^]
 
 .Object Storage Buckets
