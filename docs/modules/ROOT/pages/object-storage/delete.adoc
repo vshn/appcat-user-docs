@@ -1,0 +1,8 @@
+= Delete an Object Storage Bucket
+
+[source,bash]
+----
+$ oc delete objectbucket my-bucket
+----
+
+IMPORTANT: If you delete the objectBucket object from the cluster, it will delete the actual bucket as well!

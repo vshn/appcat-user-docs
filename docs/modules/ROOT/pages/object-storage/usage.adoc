@@ -1,0 +1,49 @@
+= How to Use an AppCat Object Bucket
+
+Object Buckets are S3 compatible.
+
+Maybe with some example?
+
+[source,yaml]
+----
+apiVersion: appcat.vshn.io/v1
+kind: ObjectBucket
+metadata:
+  name: my-cool-bucket
+  namespace: my-namespace
+spec:
+  parameters:
+    bucketName: my-bucket-change-name
+    region: rma
+  writeConnectionSecretToRef:
+    name: objectbucket-creds
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: s3-consumer
+  labels:
+    app: s3-consumer
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: s3-consumer
+  template:
+    metadata:
+      labels:
+        app: s3-consumer
+    spec:
+      containers:
+      - name: s3-consumer
+        image: s3-consumer:latest
+        envFrom: <1>
+          - secretRef:
+              name: objectbucket-creds
+        ports:
+        - containerPort: 80
+----
+<1> This example assumes that the fields in the secret correspond to the environment variables that the app expects.
+    Depending on your application, you may need to map fields from the secret to an environment variable.
+
+(maybe we should add an example where we map the fields explicitly?)

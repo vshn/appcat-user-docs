@@ -1,0 +1,19 @@
+= Zone Availability of Services
+
+.Table Availability
+|===
+|Zone | Service | Cloudscale | Exoscale
+
+|LPG-2
+|Object Bucket
+|✅
+|❌
+
+|CH-GVA-2 0
+|Object Bucket
+|❌
+|✅
+
+|===
+
+NOTE: Cross zone provisioning will be implemented soon.

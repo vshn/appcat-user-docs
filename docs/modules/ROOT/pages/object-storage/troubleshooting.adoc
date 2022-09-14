@@ -1,0 +1,5 @@
+= Common Troubleshooting
+
+How to find errors? -> `+oc get objectbucket my-bucket -oyaml+` and look at the status.
+
+how to fix: TBD -> we're currently reworking the error message a bit
