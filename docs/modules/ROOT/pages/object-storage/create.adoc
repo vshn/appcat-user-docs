@@ -46,6 +46,7 @@ If you see the "True" value in the READY column, it means that your bucket is pr
 IMPORTANT: If your object bucket doesn't get the state ready after a while, try to delete the bucket and re-create it with a different name.
 
 PROBABLY JUST LINK TO THE SECRETS PAGE HERE?
+
 . Get the required secrets to use your bucket from other applications.
 +
 [source,yaml]
