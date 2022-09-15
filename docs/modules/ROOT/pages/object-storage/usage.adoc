@@ -18,32 +18,27 @@ spec:
   writeConnectionSecretToRef:
     name: objectbucket-creds
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: k8up.io/v1
+kind: Backup
 metadata:
-  name: s3-consumer
-  labels:
-    app: s3-consumer
+  name: backup-test
 spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: s3-consumer
-  template:
-    metadata:
-      labels:
-        app: s3-consumer
-    spec:
-      containers:
-      - name: s3-consumer
-        image: s3-consumer:latest
-        envFrom: <1>
-          - secretRef:
-              name: objectbucket-creds
-        ports:
-        - containerPort: 80
+  failedJobsHistoryLimit: 2
+  successfulJobsHistoryLimit: 2
+  promURL: http://minio:9000
+  backend:
+    repoPasswordSecretRef:
+      name: backup-repo
+      key: password
+    s3:
+      endpoint: https://objects.rma.cloudscale.ch <1>
+      bucket: backups <1>
+      accessKeyIDSecretRef: <2>
+        name: objectbucket-creds
+        key: AWS_ACCESS_KEY_ID
+      secretAccessKeySecretRef: <2>
+        name: objectbucket-creds
+        key: AWS_SECRET_ACCESS_KEY
 ----
-<1> This example assumes that the fields in the secret correspond to the environment variables that the app expects.
-    Depending on your application, you may need to map fields from the secret to an environment variable.
-
-(maybe we should add an example where we map the fields explicitly?)
+<1> Copied over from the `ENDPOINT` and `BUCKET` field of the secret.
+<2> We're referencing the fields from the secret, so that K8up can use it for authentication.
