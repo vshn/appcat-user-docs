@@ -5,4 +5,5 @@
 $ oc delete objectbucket my-bucket
 ----
 
-IMPORTANT: If you delete the objectBucket object from the cluster, it will delete the actual bucket as well!
+IMPORTANT: If you delete the `ObjectBucket` object from the cluster, it will delete the actual bucket as well!
+There will be a `DeletionPolicy` soon, that will provide accidental deletion protection.
