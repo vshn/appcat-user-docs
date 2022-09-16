@@ -1,19 +1,18 @@
 = How to Use an AppCat Object Bucket
 
-Object Buckets are S3 compatible.
+Object Buckets are https://en.wikipedia.org/wiki/Amazon_S3[Amazon S3] compatible, and they have a wide range of applications. In the example below we use it as a storage container for backups triggered using https://k8up.io/[K8up], the open source Kubernetes backup operator.
 
-Maybe with some example?
+The YAML code below creates two objects: an `ObjectBucket` and a K8up `Backup`, the latter referencing the `objectbucket-creds` secret that will contain the access keys required to write to the bucket.
 
 [source,yaml]
 ----
 apiVersion: appcat.vshn.io/v1
 kind: ObjectBucket
 metadata:
-  name: my-cool-bucket
-  namespace: my-namespace
+  name: my-bucket
 spec:
   parameters:
-    bucketName: my-bucket-change-name
+    bucketName: k8up-backup-sample-name
     region: rma
   writeConnectionSecretToRef:
     name: objectbucket-creds
@@ -25,20 +24,19 @@ metadata:
 spec:
   failedJobsHistoryLimit: 2
   successfulJobsHistoryLimit: 2
-  promURL: http://minio:9000
   backend:
     repoPasswordSecretRef:
       name: backup-repo
       key: password
     s3:
       endpoint: https://objects.rma.cloudscale.ch <1>
-      bucket: backups <1>
-      accessKeyIDSecretRef: <2>
+      bucket: k8up-backup-sample-name <1>
+      accessKeyIDSecretRef:
         name: objectbucket-creds
-        key: AWS_ACCESS_KEY_ID
-      secretAccessKeySecretRef: <2>
+        key: AWS_ACCESS_KEY_ID <2>
+      secretAccessKeySecretRef:
         name: objectbucket-creds
-        key: AWS_SECRET_ACCESS_KEY
+        key: AWS_SECRET_ACCESS_KEY <2>
 ----
-<1> Copied over from the `ENDPOINT` and `BUCKET` field of the secret.
-<2> We're referencing the fields from the secret, so that K8up can use it for authentication.
+<1> Values copied from the secret's `ENDPOINT` and `BUCKET` fields.
+<2> Directly referencing the fields in the generated secret `objectbucket-creds`.

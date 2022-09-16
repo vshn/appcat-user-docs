@@ -1,5 +1,7 @@
 = Zone Availability of Services
 
+The table below provides a quick overview of the various AppCat services and their availability across APPUiO Cloud zones and cloud providers.
+
 .Table Availability
 |===
 |Zone | Service | Cloudscale | Exoscale
@@ -16,4 +18,4 @@
 
 |===
 
-NOTE: Cross zone provisioning will be implemented soon.
+NOTE: Cross-zone provisioning will be available soon.

@@ -1,5 +1,7 @@
 = Delete an Object Storage Bucket
 
+If you do not need an Object Storage bucket, you can delete it in the same way as you would with any other object in your cluster:
+
 [source,bash]
 ----
 $ oc delete objectbucket my-bucket
