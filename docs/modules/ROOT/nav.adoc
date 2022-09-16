@@ -1,8 +1,5 @@
 include::user:ROOT:partial$shared-nav.adoc[]
 
-.AppCat
-* xref:appcat/availability.adoc[]
-
 .Object Storage Buckets
 * xref:object-storage/create.adoc[]
 * xref:object-storage/delete.adoc[]

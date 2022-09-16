@@ -1,11 +1,11 @@
 = Delete an Object Storage Bucket
 
-If you do not need an Object Storage bucket, you can delete it in the same way as you would with any other object in your cluster:
+If you do not need an Object Storage bucket anymore, you can delete it in the same way as you would with any other object in your cluster:
 
 [source,bash]
 ----
 $ oc delete objectbucket my-bucket
 ----
 
-IMPORTANT: If you delete the `ObjectBucket` object from the cluster, it will delete the actual bucket as well!
+IMPORTANT: If you delete the `ObjectBucket` object from the cluster, it will delete the actual bucket including all stored objects in it as well (recursive delete)!
 There will be a `DeletionPolicy` soon, that will provide accidental deletion protection.
