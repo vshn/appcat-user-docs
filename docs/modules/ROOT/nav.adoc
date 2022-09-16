@@ -1,4 +1,7 @@
 include::user:ROOT:partial$shared-nav.adoc[]
 
 .Object Storage Buckets
-* xref:object-storage/how-to.adoc[]
+* xref:object-storage/create.adoc[]
+* xref:object-storage/delete.adoc[]
+* xref:object-storage/secrets.adoc[]
+* xref:object-storage/usage.adoc[]
