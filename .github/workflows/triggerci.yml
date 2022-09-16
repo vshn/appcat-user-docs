@@ -13,5 +13,5 @@ jobs:
     - name: Trigger Job
       uses: wei/curl@master
       with:
-        args: ${{ secrets.GITLABCI_TRIGGER_CURL }}
+        args: --request POST ${{ secrets.GITLABCI_TRIGGER_CURL }}
 
