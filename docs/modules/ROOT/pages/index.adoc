@@ -24,7 +24,7 @@ The table below provides a quick overview of the various AppCat services and the
 
 |CH-GVA-2 0
 |❌
-|❌
+|✅
 
 |===
 

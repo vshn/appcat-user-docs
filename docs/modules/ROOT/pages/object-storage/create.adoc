@@ -25,7 +25,7 @@ spec:
 ----
 <1> The namespace where the object will be created.
 <2> Bucket name: *don't just copy/paste this code, remember to choose your own name here!*
-<3> The bucket's region, either "rma" or "lpg"
+<3> The bucket's region depends on the selected Provider, see TODO: for more details
 <4> Secret where the connection details are provisioned. This secret shouldn't exist at this time.
 +
 IMPORTANT: Object Storage Bucket names must be unique across providers. Make sure to choose a name with prefixes and other guards, to prevent any issue during the creation of the bucket. No error message is returned if the bucket cannot be created.
