@@ -30,5 +30,5 @@ The table below provides a quick overview of the various AppCat services and the
 
 Get started with xref:object-storage/create.adoc[Create an Object Storage Bucket].
 
-NOTE: Cross-zone provisioning and "CH-GVA-2 0" will be available soon.
+NOTE: Cross-zone provisioning will be available soon.
 
