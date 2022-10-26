@@ -46,6 +46,7 @@ spec:
 == List of Clients and Libraries
 
 If you want to inspect the object buckets or access it outside of APPUiO you can use one of these client tools:
+
 * https://cyberduck.io/
 * https://rclone.org/
 * https://s3tools.org/s3cmd
