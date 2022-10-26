@@ -1,5 +1,7 @@
 = How to Use an AppCat Object Bucket
 
+== Usage Example within APPUiO
+
 Object Buckets are https://en.wikipedia.org/wiki/Amazon_S3[Amazon S3] compatible, and they have a wide range of applications. In the example below we use it as a storage container for backups triggered using https://k8up.io/[K8up], the Open Source Kubernetes backup operator.
 
 The YAML code below creates two objects: an `ObjectBucket` and a K8up `Backup`, the latter referencing the `objectbucket-creds` secret that will contain the access keys required to write to the bucket.
@@ -40,3 +42,16 @@ spec:
 ----
 <1> Values copied from the secret's `ENDPOINT` and `BUCKET` fields.
 <2> Directly referencing the fields in the generated secret `objectbucket-creds`.
+
+== List of Clients and Libraries
+
+If you want to inspect the object buckets or access it outside of APPUiO you can use one of these client tools:
+* https://cyberduck.io/
+* https://rclone.org/
+* https://s3tools.org/s3cmd
+* https://filezillapro.com/docs/v3/cloud/configure-filezilla-pro-to-connect-to-s3/
+
+For client libraries to be used in your project:
+go: https://minio-go.min.io/
+javascript: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/index.html
+python: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html
