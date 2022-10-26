@@ -52,7 +52,8 @@ If you want to inspect the object buckets or access it outside of APPUiO you can
 * https://s3tools.org/s3cmd
 * https://filezillapro.com/docs/v3/cloud/configure-filezilla-pro-to-connect-to-s3/
 
-For client libraries to be used in your project:
-go: https://minio-go.min.io/
-javascript: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/index.html
-python: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html
+The following client libraries are a suggestion:
+
+* Go: https://minio-go.min.io/[MinIO Go Client SDK]
+* JavaScript: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/index.html[AWS SDK for JavaScript v3]
+* Python: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html[Boto3]
