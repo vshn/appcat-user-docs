@@ -57,3 +57,24 @@ The following client libraries are a suggestion:
 * Go: https://minio-go.min.io/[MinIO Go Client SDK]
 * JavaScript: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/index.html[AWS SDK for JavaScript v3]
 * Python: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html[Boto3]
+
+== How to set Well-Known Environment Variables
+
+You'll need:
+
+* jq
+* kubectl and be connected to APPUiO
+
+Many libraries and tools use some well-known environment variables to configure the connection:
+
+. Set the environment variables from the generated secret.
++
+[source,bash]
+----
+export AWS_ACCESS_KEY_ID=$(kubectl get secrets objectbucket-creds -ojson | jq -r '.data.AWS_ACCESS_KEY_ID' | base64 -d)
+export AWS_REGION=$(kubectl get secrets objectbucket-creds -ojson | jq -r '.data.AWS_REGION' | base64 -d)
+export AWS_SECRET_ACCESS_KEY=$(kubectl get secrets objectbucket-creds -ojson | jq -r '.data.AWS_SECRET_ACCESS_KEY' | base64 -d)
+
+# Get the bucket name. Will need other means to pass to the client, as there's no well-known environment variable for it.
+kubectl get secrets objectbucket-creds -ojson | jq -r '.data.BUCKET_NAME' | base64 -d
+----
