@@ -1,0 +1,11 @@
+= Available Provider References
+
+This page lists the available references for each supported Cloud Providers for Object Storage.
+
+== Cloudscale.ch
+
+* cloudscale.objectbuckets.appcat.vshn.io
+
+== Exoscale
+
+* exoscale.objectbuckets.appcat.vshn.io
