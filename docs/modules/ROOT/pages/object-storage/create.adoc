@@ -25,10 +25,33 @@ spec:
 ----
 <1> The namespace where the object will be created.
 <2> Bucket name: *don't just copy/paste this code, remember to choose your own name here!*
-<3> The bucket's region depends on the selected Provider, see xref:object-storage/zones.adoc[here] for more details
+<3> The bucket's region depends on the selected Provider, see xref:object-storage/reference.adoc#_regions[here] for more details
 <4> Secret where the connection details are provisioned. This secret shouldn't exist at this time.
 +
 IMPORTANT: Object Storage Bucket names must be unique across providers. Make sure to choose a name with prefixes and other guards, to prevent any issue during the creation of the bucket. No error message is returned if the bucket cannot be created.
+
+== Create a Bucket in another cloud provider
+
+By default the bucket is created on the same cloud provider where the cluster is running on.
+For instance, if you are on an Exoscale cluster, to create an ObjectBucket on cloudscale.ch add the following YAML snippet to the `spec` of an ObjectBucket:
+
+[source,yaml]
+----
+spec:
+  compositionRef:
+    name: cloudscale.objectbuckets.appcat.vshn.io <1>
+  parameters:
+    region: rma <2>
+----
+<1> The reference name of the backing cloud provider, see xref:object-storage/reference.adoc#_provider_references[here] for available references.
+<2> Change the region identifier in accordance for the resp. cloud provider, see xref:object-storage/reference.adoc#_regions[here] for more details.
+
+[TIP]
+====
+This mechanism allows advanced deployment or failover scenarios.
+For example, if your application is running on Exoscale, you can create a primary bucket on Exoscale and a secondary bucket on cloudscale.ch or vice versa.
+Using a mirroring tool like https://rclone.org/[rclone] you can achieve bucket replication between different cloud providers.
+====
 
 . Get information about your new bucket object.
 +
