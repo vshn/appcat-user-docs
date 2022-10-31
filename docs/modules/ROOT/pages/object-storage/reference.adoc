@@ -1,0 +1,30 @@
+= Object Storage Reference
+
+== Regions
+
+Each supported Cloud Provider has different Zones available.
+This list shows the available zones per Cloud Provider.
+
+These are being referenced in the `ObjectBucket` object under `spec.parameters.region`
+
+cloudscale.ch::
+* rma - Rümlang
+* lpg - Lupfig
+
+Exoscale::
+* de-fra-1 - Frankfurt
+* de-muc-1 - München
+* ch-dk-2 - Zürich
+* ch-gva-2 - Geneva
+* at-vie-1 - Vienna
+* bg-sof-1 - Sofia
+
+== Provider References
+
+The following Cloud Provider references are available, to be used in the `ObjectBucket` object under `spec.compositionRef` 
+
+cloudscale.ch::
+cloudscale.objectbuckets.appcat.vshn.io
+
+Exoscale::
+exoscale.objectbuckets.appcat.vshn.io
