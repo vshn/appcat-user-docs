@@ -44,5 +44,7 @@ Get started with xref:object-storage/create.adoc[Create an Object Storage Bucket
 
 |===
 
+PostgreSQL::
+Get started with xref:exoscale-dbaas/postgresql/create.adoc[Creating a PostgreSQL instance].
 Redis::
 Get started with xref:exoscale-dbaas/redis/create.adoc[Creating a Redis instance].

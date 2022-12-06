@@ -7,6 +7,10 @@ include::user:ROOT:partial$shared-nav.adoc[]
 * xref:object-storage/usage.adoc[]
 
 .Exoscale DBaaS
+* PostgreSQL
+** xref:exoscale-dbaas/postgresql/create.adoc[]
+** xref:exoscale-dbaas/postgresql/delete.adoc[]
+** xref:exoscale-dbaas/postgresql/usage.adoc[]
 * Redis
 ** xref:exoscale-dbaas/redis/create.adoc[]
 ** xref:exoscale-dbaas/redis/delete.adoc[]
