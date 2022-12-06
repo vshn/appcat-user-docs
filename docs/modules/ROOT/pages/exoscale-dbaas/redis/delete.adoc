@@ -1,0 +1,10 @@
+= Delete a Redis instance
+
+If you do not need a Redis instance anymore, you can delete it in the same way as you would with any other object in your cluster:
+
+[source,bash]
+----
+$ oc delete exoscaleredis my-redis-example
+----
+
+IMPORTANT: If you delete the `ExoscaleRedis` object from the cluster, it will delete the actual Redis including all data in it!
