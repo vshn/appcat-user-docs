@@ -1,0 +1,41 @@
+= How to use an AppCat PostgreSQL instance
+
+The YAML code below creates two objects: a `ExoscalePostgreSQL` instance and a pod accessing it to show information about the instance.
+The latter references the `postgres-creds` secret that will contain the access keys required to connect to the instance.
+
+[source,yaml]
+----
+apiVersion: appcat.vshn.io/v1
+kind: ExoscalePostgreSQL
+metadata:
+  name: my-postgres-example
+  namespace: my-namespace
+spec:
+  parameters:
+    backup:
+      timeOfDay: "12:00:00"
+    service:
+      zone: ch-dk-2
+      majorVersion: "14"
+    size:
+      plan: hobbyist-2
+  writeConnectionSecretToRef:
+    name: postgres-creds
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres-client
+spec:
+  containers:
+  - name: postgres
+    image: postgres:14
+    command:
+      - /bin/sh
+      - -c
+    args:
+      - psql $POSTGRESQL_URL -l
+    envFrom:
+      - secretRef:
+          name: postgres-creds
+----

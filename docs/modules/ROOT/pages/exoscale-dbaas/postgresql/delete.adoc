@@ -1,0 +1,10 @@
+= Delete a PostgreSQL instance
+
+If you do not need a PostgreSQL instance anymore, you can delete it in the same way as you would with any other object in your cluster:
+
+[source,bash]
+----
+$ oc delete exoscalepostgresql my-postgres-example
+----
+
+IMPORTANT: If you delete the `ExoscalePostgreSQL` object from the cluster, it will delete the actual instance including all data in it!
