@@ -1,0 +1,20 @@
+= Cloud References
+
+This page contains detailed information about the various supported clouds.
+
+== Regions
+
+Each supported Cloud Provider has different Zones available.
+This list shows the available zones per Cloud Provider.
+
+cloudscale.ch::
+* rma - Rümlang
+* lpg - Lupfig
+
+Exoscale::
+* de-fra-1 - Frankfurt
+* de-muc-1 - München
+* ch-dk-2 - Zürich
+* ch-gva-2 - Geneva
+* at-vie-1 - Vienna
+* bg-sof-1 - Sofia

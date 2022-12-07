@@ -1,0 +1,11 @@
+= Object Storage References
+
+== Provider References
+
+The following Cloud Provider references are available, to be used in the `ObjectBucket` object under `spec.compositionRef`
+
+cloudscale.ch::
+cloudscale.objectbuckets.appcat.vshn.io
+
+Exoscale::
+exoscale.objectbuckets.appcat.vshn.io
