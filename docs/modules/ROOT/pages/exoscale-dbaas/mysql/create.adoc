@@ -31,7 +31,7 @@ spec:
     name: mysql-creds <8>
 ----
 <1> Instance name
-<2> The namespace where the object will be created.
+<2> The namespace where the object will be created
 <3> Specify backup time of day
 <4> The Exoscale zone to use, see xref:references/clouds.adoc#_regions[list of regions]
 <5> MySQL version
