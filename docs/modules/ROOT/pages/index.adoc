@@ -42,6 +42,14 @@ Get started with xref:object-storage/create.adoc[Create an Object Storage Bucket
 |❌
 |✅
 
+|Redis
+|❌
+|✅
+
+|Redis
+|❌
+|✅
+
 |===
 
 MySQL::
