@@ -11,7 +11,7 @@ include::user:ROOT:partial$login-in-terminal.adoc[]
 .Example to create a PostgreSQL instance
 [source,yaml]
 ----
-apiVersion: appcat.vshn.io/v1
+apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscalePostgreSQL
 metadata:
   name: my-postgres-example <1>

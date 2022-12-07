@@ -8,7 +8,7 @@ The YAML code below creates two objects: an `ObjectBucket` and a K8up `Backup`, 
 
 [source,yaml]
 ----
-apiVersion: appcat.vshn.io/v1
+apiVersion: exoscale.appcat.vshn.io/v1
 kind: ObjectBucket
 metadata:
   name: my-bucket

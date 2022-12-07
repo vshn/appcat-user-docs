@@ -5,7 +5,7 @@ The latter references the `postgres-creds` secret that will contain the access k
 
 [source,yaml]
 ----
-apiVersion: appcat.vshn.io/v1
+apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscalePostgreSQL
 metadata:
   name: my-postgres-example
