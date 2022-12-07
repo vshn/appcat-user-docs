@@ -5,10 +5,12 @@ include::user:ROOT:partial$shared-nav.adoc[]
 * xref:object-storage/delete.adoc[]
 * xref:object-storage/secrets.adoc[]
 * xref:object-storage/usage.adoc[]
-* xref:object-storage/reference.adoc[]
 
 .Exoscale DBaaS
 * Redis
 ** xref:exoscale-dbaas/redis/create.adoc[]
 ** xref:exoscale-dbaas/redis/delete.adoc[]
 ** xref:exoscale-dbaas/redis/usage.adoc[]
+
+.Cloud References
+* xref:references/clouds.adoc[]

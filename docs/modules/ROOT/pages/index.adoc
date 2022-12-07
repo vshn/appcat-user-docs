@@ -32,5 +32,17 @@ Get started with xref:object-storage/create.adoc[Create an Object Storage Bucket
 
 === Exoscale DBaaS
 
+[cols="1,1,1",options="header"]
+|===
+|Database
+|cloudscale.ch
+|Exoscale
+
+|Redis
+|❌
+|✅
+
+|===
+
 Redis::
 Get started with xref:exoscale-dbaas/redis/create.adoc[Creating a Redis instance].
