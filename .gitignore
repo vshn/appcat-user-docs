@@ -1,6 +1,7 @@
 .asciidoctor
 .cache
 ?
+.work
 
 # IDEs - Temporary
 .vscode

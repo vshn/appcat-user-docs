@@ -14,3 +14,4 @@ include::user:ROOT:partial$shared-nav.adoc[]
 
 .Cloud References
 * xref:references/clouds.adoc[]
+* xref:references/crds.adoc[]
