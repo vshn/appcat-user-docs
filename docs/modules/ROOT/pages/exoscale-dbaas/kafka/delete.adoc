@@ -1,0 +1,10 @@
+= Delete a Kafka instance
+
+If you do not need a Kafka instance anymore, you can delete it in the same way as you would with any other object in your cluster:
+
+[source,bash]
+----
+$ oc delete exoscalekafka my-kafka-example
+----
+
+IMPORTANT: If you delete the `ExoscaleKafka` object from the cluster, it will delete the actual Kafka including all data in it!

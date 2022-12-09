@@ -1,0 +1,86 @@
+= Create a Kafka service
+
+AppCat allows DevOps engineers to quickly provision a Kafka instance.
+
+== Create a Kafka service
+
+include::user:ROOT:partial$login-in-terminal.adoc[]
+
+. Apply the following object on your namespace, as specified by its YAML description.
++
+.Example to create a Kafka instance
+[source,yaml]
+----
+apiVersion: appcat.vshn.io/v1
+kind: ExoscaleKafka
+metadata:
+  name: my-kafka-example <1>
+  namespace: my-namespace <2>
+spec:
+  parameters:
+    service:
+      kafkaSettings:
+        connections_max_idle_ms: 60000 <3>
+      zone: ch-dk-2 <4>
+    size:
+      plan: startup-2 <5>
+  writeConnectionSecretToRef:
+    name: kafka-creds <6>
+----
+<1> Instance name
+<2> The namespace where the object will be created.
+<3> Specify custom Kafka settings [optional]
+<4> The Exoscale zone to use, see xref:references/clouds.adoc#_regions[list of regions]
+<5> See https://products.docs.vshn.ch/products/appcat/exoscale_dbaas.html#_kafka[reference] for a list of plans
+<6> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
+
+NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-v1-exoscalekafka[API Reference]
+
+== Get information about your new Kafka instance
+
+[source,bash]
+----
+$ oc get exoscalekafka
+NAME               PLAN         ZONE      VERSION   READY   CONNECTION-SECRET   AGE
+my-kafka-example   startup-2    ch-dk-2   3.2       True    kafka-creds         15m
+----
+
+When you see `True` in the READY column, it means the instance is provisioned and ready to use.
+
+NOTE: The provisioning time of Kafka can be quite long, and it might take up to 15 minutes for the instance to be ready.
+
+
+
+== Get the credentials to access the instance
+
+[source,bash]
+----
+$ oc get secrets kafka-creds -o yaml
+----
+
+The output of the command above is a secret specification with the following structure:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kafka-creds
+data:
+  KAFKA_HOST: bXkta2Fma2EtZXhhbXBsZS04NGc3bi1leG9zY2FsZS04ZjExOTc2OC0xMDI3LTRiOWMtYmNhNy00YzE0ZjlmLmFpdmVuY2xvdWQuY29t <1>
+  KAFKA_NODES: MTk0LjE4Mi4xODkuMTI0OjIxNzAxIDE5NC4xODIuMTg4LjEwOToyMTcwMSAxOTQuMTgyLjE5MC4xNzc6MjE3MDE= <2>
+  KAFKA_PORT: MjE3MDE= <3>
+  KAFKA_URI: bXkta2Fma2EtZXhhbXBsZS04NGc3bi1leG9zY2FsZS04ZjExOTc2OC0xMDI3LTRiOWMtYmNhNy00YzE0ZjlmLmFpdmVuY2xvdWQuY29tOjIxNzAx <4>
+  ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVRVENDQXFtZ0F... <5>
+  service.cert: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVTRENDQ... <6>
+  service.key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUcvQUlCQU... <7>
+----
+<1> Hostname for the Kafka instance
+<2> List of Kafka Node IPs
+<3> Port the Kafka instance listens on
+<4> Full URI including port number
+<5> Certificate Authority to verify the Kafka instance certificate
+<6> Client certificate to authenticate to the instance
+<6> Client key to authenticate to the instance
+
+IMPORTANT: All data fields are Base64-encoded, like any other https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/[Kubernetes secret].
