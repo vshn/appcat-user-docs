@@ -75,4 +75,7 @@ data:
 <4> URL containing all necessary information to connect to the instance
 <5> Username
 
+NOTE: Exoscale Redis supports connection via TLS.
+The certificates are signed by Let's Encrypt, so no ca.crt file required.
+
 IMPORTANT: All data fields are Base64-encoded, like any other https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/[Kubernetes secret].
