@@ -5,7 +5,7 @@ The latter references the `opensearch-creds` secret that will contain the access
 
 [source,yaml]
 ----
-apiVersion: appcat.vshn.io/v1
+apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscaleOpensearch
 metadata:
   name: my-opensearch-example

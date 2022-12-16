@@ -331,7 +331,7 @@ ExoscaleOpensearch is the API for creating Opensearch on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`apiVersion`* __string__ | `appcat.vshn.io/v1`
+| *`apiVersion`* __string__ | `exoscale.appcat.vshn.io/v1`
 | *`kind`* __string__ | `ExoscaleOpensearch`
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
 
@@ -374,7 +374,7 @@ ExoscaleOpensearch is the API for creating Opensearch on Exoscale.
 |===
 | Field | Description
 | *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ |
-| *`version`* __string__ | version contains the major version for Opensearch. Currently only "1" and "2" is supported. Leave it empty to always get the latest supported version.
+| *`majorVersion`* __string__ | majorVersion contains the major version for Opensearch. Currently only "1" and "2" is supported. Leave it empty to always get the latest supported version.
 | *`opensearchSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | OpensearchSettings contains additional Opensearch settings.
 |===
 
