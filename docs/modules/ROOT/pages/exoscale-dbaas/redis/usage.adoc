@@ -5,7 +5,7 @@ The latter references the `redis-creds` secret that will contain the access keys
 
 [source,yaml]
 ----
-apiVersion: appcat.vshn.io/v1
+apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscaleRedis
 metadata:
   name: my-redis-example
