@@ -11,7 +11,7 @@ include::user:ROOT:partial$login-in-terminal.adoc[]
 .Example to create a Redis instance
 [source,yaml]
 ----
-apiVersion: appcat.vshn.io/v1
+apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscaleRedis
 metadata:
   name: my-redis-example <1>
