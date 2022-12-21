@@ -1,0 +1,62 @@
+= How to use an AppCat Opensearch instance
+
+The YAML code below creates two objects: a `ExoscaleOpensearch` instance and a pod accessing it to show information about the instance.
+The latter references the `opensearch-creds` secret that will contain the access keys required to connect to the instance.
+
+[source,yaml]
+----
+apiVersion: exoscale.appcat.vshn.io/v1
+kind: ExoscaleOpensearch
+metadata:
+  name: my-opensearch-example
+  namespace: my-namespace
+spec:
+  parameters:
+    backup:
+      timeOfDay: "12:00:00"
+    service:
+      zone: ch-dk-2
+      majorVersion: "14"
+    size:
+      plan: hobbyist-2
+  writeConnectionSecretToRef:
+    name: opensearch-creds
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: opensearch-client
+spec:
+  containers:
+  - name: connector
+    image: curlimages/curl:7.86.0
+    command:
+      - /bin/sh
+      - -c
+    args:
+      - curl "$OPENSEARCH_URI"
+    envFrom:
+      - secretRef:
+          name: opensearch-creds
+----
+
+Example output:
+```
+{
+  "name" : "test1-dn9r5-1",
+  "cluster_name" : "1798f368-60b2-4192-9da4-faa63b8a30e8",
+  "cluster_uuid" : "DhHZFHJBSeWhYgHFMpYQfg",
+  "version" : {
+    "distribution" : "opensearch",
+    "number" : "2.3.0",
+    "build_type" : "unknown",
+    "build_hash" : "unknown",
+    "build_date" : "2022-10-31T20:14:34.303979Z",
+    "build_snapshot" : false,
+    "lucene_version" : "9.3.0",
+    "minimum_wire_compatibility_version" : "7.10.0",
+    "minimum_index_compatibility_version" : "7.0.0"
+  },
+  "tagline" : "The OpenSearch Project: https://opensearch.org/"
+}
+```

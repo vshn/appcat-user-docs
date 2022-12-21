@@ -23,6 +23,10 @@ include::user:ROOT:partial$shared-nav.adoc[]
 ** xref:exoscale-dbaas/kafka/create.adoc[]
 ** xref:exoscale-dbaas/kafka/delete.adoc[]
 ** xref:exoscale-dbaas/kafka/usage.adoc[]
+* Opensearch
+** xref:exoscale-dbaas/opensearch/create.adoc[]
+** xref:exoscale-dbaas/opensearch/delete.adoc[]
+** xref:exoscale-dbaas/opensearch/usage.adoc[]
 
 .Cloud References
 * xref:references/clouds.adoc[]
