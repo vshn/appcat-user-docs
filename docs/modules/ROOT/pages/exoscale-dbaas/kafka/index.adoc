@@ -1,0 +1,20 @@
+= Exoscale DBaaS - Apache Kafka
+
+Welcome to the https://www.exoscale.com/dbaas/kafka/[Exoscale DBaaS Managed Apache Kafka^] service in the VSHN Application Catalog.
+
+Please find more about the service description including pricing in our https://products.docs.vshn.ch/products/appcat/exoscale_dbaas.html[product documentation site].
+
+TIP: Get started with xref:exoscale-dbaas/kafka/create.adoc[Creating an Apache Kafka instance].
+
+== Notes
+
+Some important notes about this service:
+
+* Connections are only possible using authenticated TLS encrypted connections.
+
+== Links
+
+* https://kafka.apache.org/[Apache Kafka^]
+* xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-v1-exoscalekafka[VSHN Application Catalog API reference]
+* https://community.exoscale.com/documentation/dbaas/managed-apache-kafka/[Exoscale documentation^]
+* https://docs.aiven.io/docs/products/kafka[Aiven documentation^]
