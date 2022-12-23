@@ -1,0 +1,21 @@
+= Exoscale DBaaS - OpenSearch
+
+Welcome to the https://www.exoscale.com/dbaas/kafka/[Exoscale DBaaS Managed OpenSearch^] service in the VSHN Application Catalog.
+
+Please find more about the service description including pricing in our https://products.docs.vshn.ch/products/appcat/exoscale_dbaas.html[product documentation site].
+
+TIP: Get started with xref:exoscale-dbaas/opensearch/create.adoc[Creating an OpenSearch instance].
+
+== Notes
+
+Some important notes about this service:
+
+* Connections are only possible using authenticated TLS encrypted connections.
+* The service uses a certificate from Let's Encrypt.
+
+== Links
+
+* https://opensearch.org/[OpenSearch^]
+* xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-v1-exoscaleopensearch[VSHN Application Catalog API reference]
+* https://community.exoscale.com/documentation/dbaas/managed-opensearch/[Exoscale documentation^]
+* https://docs.aiven.io/docs/products/opensearch[Aiven documentation^]

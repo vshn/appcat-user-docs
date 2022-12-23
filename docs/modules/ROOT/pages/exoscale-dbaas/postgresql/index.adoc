@@ -1,0 +1,22 @@
+= Exoscale DBaaS - PostgreSQL
+
+Welcome to the https://www.exoscale.com/dbaas/postgresql/[Exoscale DBaaS Managed PostgreSQL^] service in the VSHN Application Catalog.
+
+Please find more about the service description including pricing in our https://products.docs.vshn.ch/products/appcat/exoscale_dbaas.html[product documentation site].
+
+TIP: Get started with xref:exoscale-dbaas/postgresql/create.adoc[Creating a PostgreSQL instance].
+
+== Notes
+
+Some important notes about this service:
+
+* There is no default database named `postgres` available like it might be on other PostgreSQL instances. (See also https://stackoverflow.com/questions/2370525/default-database-named-postgres-on-postgresql-server["Default database named postgres on Postgresql server" on Stackoverflow for an explanation].)
+* Connections are only possible using authenticated TLS encrypted connections.
+* The service uses a self-signed certificate which can be verified using the CA certificate provided in the connection secret (Key `ca.crt`).
+
+== Links
+
+* https://www.postgresql.org/[PostgreSQL^]
+* xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-v1-exoscalepostgresql[VSHN Application Catalog API reference]
+* https://community.exoscale.com/documentation/dbaas/managed-postgresql/[Exoscale documentation^]
+* https://docs.aiven.io/docs/products/postgresql[Aiven documentation^]

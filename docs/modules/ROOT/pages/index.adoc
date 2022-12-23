@@ -41,23 +41,24 @@ Get started with xref:object-storage/create.adoc[Create an Object Storage Bucket
 |cloudscale.ch
 |Exoscale
 
-|Redis
-|❌
-|✅
-
 |MySQL
 |❌
-|✅
+|✅ xref:exoscale-dbaas/mysql/index.adoc[More infos]
 
 |PostgreSQL
 |❌
-|✅
+|✅ xref:exoscale-dbaas/postgresql/index.adoc[More infos]
+
+|Redis
+|❌
+|✅ xref:exoscale-dbaas/redis/index.adoc[More infos]
+
+|Kafka
+|❌
+|✅ xref:exoscale-dbaas/kafka/index.adoc[More infos]
+
+|OpenSearch
+|❌
+|✅ xref:exoscale-dbaas/opensearch/index.adoc[More infos]
 
 |===
-
-MySQL::
-Get started with xref:exoscale-dbaas/mysql/create.adoc[Creating a MySQL instance].
-PostgreSQL::
-Get started with xref:exoscale-dbaas/postgresql/create.adoc[Creating a PostgreSQL instance].
-Redis::
-Get started with xref:exoscale-dbaas/redis/create.adoc[Creating a Redis instance].
