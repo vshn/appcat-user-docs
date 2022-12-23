@@ -8,23 +8,26 @@ IMPORTANT: At this time AppCat only serves selected https://portal.appuio.cloud/
 
 == Available Services
 
-The table below provides a quick overview of the various AppCat services and their availability across APPUiO Cloud zones and cloud providers.
+The table below provides a quick overview of the various AppCat services and their availability across APPUiO Cloud zones and service providers.
 
-=== Object Storage Buckets
-
-[cols="1,1,1",options="header"]
+[cols="1,1,1,1"]
 |===
-|Zone
-|cloudscale.ch
+.2+.^h|Service
+.2+.^h|Service Provider
+2+^h| Zones
+
+h|`cloudscale-lpg-2`
+h|`exoscale-ch-gva-2-0`
+
+
+.2+|Object Storage
+| cloudscale.ch
+^|✅
+^|✅
+
 |Exoscale
-
-|LPG-2
-|✅
-|✅
-
-|CH-GVA-2 0
-|✅
-|✅
+^|✅
+^|✅
 
 |===
 
