@@ -11,6 +11,7 @@ TIP: Get started with xref:exoscale-dbaas/kafka/create.adoc[Creating an Apache K
 Some important notes about this service:
 
 * Connections are only possible using authenticated TLS encrypted connections.
+* The service uses a self-signed certificate which can be verified using the CA certificate provided in the connection secret (Key `ca.crt`).
 
 == Links
 

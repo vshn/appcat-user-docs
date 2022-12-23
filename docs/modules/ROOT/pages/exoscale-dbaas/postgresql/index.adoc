@@ -12,6 +12,7 @@ Some important notes about this service:
 
 * There is no default database named `postgres` available like it might be on other PostgreSQL instances. (See also https://stackoverflow.com/questions/2370525/default-database-named-postgres-on-postgresql-server["Default database named postgres on Postgresql server" on Stackoverflow for an explanation].)
 * Connections are only possible using authenticated TLS encrypted connections.
+* The service uses a self-signed certificate which can be verified using the CA certificate provided in the connection secret (Key `ca.crt`).
 
 == Links
 

@@ -11,6 +11,7 @@ TIP: Get started with xref:exoscale-dbaas/opensearch/create.adoc[Creating an Ope
 Some important notes about this service:
 
 * Connections are only possible using authenticated TLS encrypted connections.
+* The service uses a certificate from Let's Encrypt.
 
 == Links
 
