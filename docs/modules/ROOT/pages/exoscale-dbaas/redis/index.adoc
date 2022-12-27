@@ -1,0 +1,21 @@
+= Exoscale DBaaS - Redis
+
+Welcome to the https://www.exoscale.com/dbaas/redis/[Exoscale DBaaS Managed Redis^] service in the VSHN Application Catalog.
+
+Please find more about the service description including pricing in our https://products.docs.vshn.ch/products/appcat/exoscale_dbaas.html[product documentation site].
+
+TIP: Get started with xref:exoscale-dbaas/redis/create.adoc[Creating a Redis instance].
+
+== Notes
+
+Some important notes about this service:
+
+* Connections are only possible using authenticated TLS encrypted connections.
+* The service uses a certificate from Let's Encrypt.
+
+== Links
+
+* https://redis.io/[Redis^]
+* xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-v1-exoscaleredis[VSHN Application Catalog API reference]
+* https://community.exoscale.com/documentation/dbaas/managed-redis/[Exoscale documentation^]
+* https://docs.aiven.io/docs/products/redis[Aiven documentation^]
