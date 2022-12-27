@@ -20,7 +20,7 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscalepostgresql[$$ExoscalePostgreSQL$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleredis[$$ExoscaleRedis$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-objectbucket[$$ObjectBucket$$]
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearch[$$ExoscaleOpensearch$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearch[$$ExoscaleOpenSearch$$]
 
 
 
@@ -36,7 +36,7 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscalepostgresqlstatus[$$ExoscalePostgreSQLStatus$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleredisstatus[$$ExoscaleRedisStatus$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-objectbucketstatus[$$ObjectBucketStatus$$]
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearch[$$ExoscaleOpensearch$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearch[$$ExoscaleOpenSearch$$]
 ****
 
 [cols="25a,75a", options="header"]
@@ -59,7 +59,7 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 ****
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscalemysqlparameters[$$ExoscaleMySQLParameters$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscalepostgresqlparameters[$$ExoscalePostgreSQLParameters$$]
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchparameters[$$ExoscaleOpensearchParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchparameters[$$ExoscaleOpenSearchParameters$$]
 ****
 
 [cols="25a,75a", options="header"]
@@ -80,7 +80,7 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscalemysqlparameters[$$ExoscaleMySQLParameters$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscalepostgresqlparameters[$$ExoscalePostgreSQLParameters$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleredisparameters[$$ExoscaleRedisParameters$$]
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchparameters[$$ExoscaleOpensearchParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchparameters[$$ExoscaleOpenSearchParameters$$]
 ****
 
 [cols="25a,75a", options="header"]
@@ -102,7 +102,7 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscalemysqlparameters[$$ExoscaleMySQLParameters$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscalepostgresqlparameters[$$ExoscalePostgreSQLParameters$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleredisparameters[$$ExoscaleRedisParameters$$]
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchparameters[$$ExoscaleOpensearchParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchparameters[$$ExoscaleOpenSearchParameters$$]
 ****
 
 [cols="25a,75a", options="header"]
@@ -123,7 +123,7 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscalemysqlservicespec[$$ExoscaleMySQLServiceSpec$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscalepostgresqlservicespec[$$ExoscalePostgreSQLServiceSpec$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleredisservicespec[$$ExoscaleRedisServiceSpec$$]
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchparameters[$$ExoscaleOpensearchParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchparameters[$$ExoscaleOpenSearchParameters$$]
 ****
 
 [cols="25a,75a", options="header"]
@@ -143,7 +143,7 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscalemysqlparameters[$$ExoscaleMySQLParameters$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscalepostgresqlparameters[$$ExoscalePostgreSQLParameters$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleredisparameters[$$ExoscaleRedisParameters$$]
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchparameters[$$ExoscaleOpensearchParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchparameters[$$ExoscaleOpenSearchParameters$$]
 ****
 
 [cols="25a,75a", options="header"]
@@ -322,9 +322,9 @@ ExoscaleMySQL is the API for creating MySQL on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearch"]
-=== ExoscaleOpensearch
+=== ExoscaleOpenSearch
 
-ExoscaleOpensearch is the API for creating Opensearch on Exoscale.
+ExoscaleOpenSearch is the API for creating OpenSearch on Exoscale.
 
 
 
@@ -332,27 +332,27 @@ ExoscaleOpensearch is the API for creating Opensearch on Exoscale.
 |===
 | Field | Description
 | *`apiVersion`* __string__ | `exoscale.appcat.vshn.io/v1`
-| *`kind`* __string__ | `ExoscaleOpensearch`
+| *`kind`* __string__ | `ExoscaleOpenSearch`
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
 
-| *`spec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchspec[$$ExoscaleOpensearchSpec$$]__ | Spec defines the desired state of a ExoscaleOpensearch.
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchspec[$$ExoscaleOpenSearchSpec$$]__ | Spec defines the desired state of a ExoscaleOpenSearch.
 |===
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchparameters"]
-=== ExoscaleOpensearchParameters
+=== ExoscaleOpenSearchParameters
 
 
 
 .Appears In:
 ****
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchspec[$$ExoscaleOpensearchSpec$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchspec[$$ExoscaleOpenSearchSpec$$]
 ****
 
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`service`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchservicespec[$$ExoscaleOpensearchServiceSpec$$]__ | Service contains Exoscale Opensearch DBaaS specific properties
+| *`service`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchservicespec[$$ExoscaleOpenSearchServiceSpec$$]__ | Service contains Exoscale OpenSearch DBaaS specific properties
 | *`maintenance`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaledbaasmaintenanceschedulespec[$$ExoscaleDBaaSMaintenanceScheduleSpec$$]__ | Maintenance contains settings to control the maintenance of an instance.
 | *`size`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaledbaassizespec[$$ExoscaleDBaaSSizeSpec$$]__ | Size contains settings to control the sizing of a service.
 | *`network`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaledbaasnetworkspec[$$ExoscaleDBaaSNetworkSpec$$]__ | Network contains any network related settings.
@@ -361,38 +361,38 @@ ExoscaleOpensearch is the API for creating Opensearch on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchservicespec"]
-=== ExoscaleOpensearchServiceSpec
+=== ExoscaleOpenSearchServiceSpec
 
 
 
 .Appears In:
 ****
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchparameters[$$ExoscaleOpensearchParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchparameters[$$ExoscaleOpenSearchParameters$$]
 ****
 
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
 | *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ |
-| *`majorVersion`* __string__ | majorVersion contains the major version for Opensearch. Currently only "1" and "2" is supported. Leave it empty to always get the latest supported version.
-| *`opensearchSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | OpensearchSettings contains additional Opensearch settings.
+| *`majorVersion`* __string__ | majorVersion contains the major version for OpenSearch. Currently only "1" and "2" is supported. Leave it empty to always get the latest supported version.
+| *`opensearchSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | OpenSearchSettings contains additional OpenSearch settings.
 |===
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchspec"]
-=== ExoscaleOpensearchSpec
+=== ExoscaleOpenSearchSpec
 
 
 
 .Appears In:
 ****
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearch[$$ExoscaleOpensearch$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearch[$$ExoscaleOpenSearch$$]
 ****
 
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`parameters`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchparameters[$$ExoscaleOpensearchParameters$$]__ | Parameters are the configurable fields of an ExoscaleOpensearch.
+| *`parameters`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearchparameters[$$ExoscaleOpenSearchParameters$$]__ | Parameters are the configurable fields of an ExoscaleOpenSearch.
 |===
 
 

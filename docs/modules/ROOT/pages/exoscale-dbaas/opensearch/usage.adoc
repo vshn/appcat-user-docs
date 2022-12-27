@@ -1,12 +1,12 @@
-= How to use an AppCat Opensearch instance
+= How to use an AppCat OpenSearch instance
 
-The YAML code below creates two objects: a `ExoscaleOpensearch` instance and a pod accessing it to show information about the instance.
+The YAML code below creates two objects: a `ExoscaleOpenSearch` instance and a pod accessing it to show information about the instance.
 The latter references the `opensearch-creds` secret that will contain the access keys required to connect to the instance.
 
 [source,yaml]
 ----
 apiVersion: exoscale.appcat.vshn.io/v1
-kind: ExoscaleOpensearch
+kind: ExoscaleOpenSearch
 metadata:
   name: my-opensearch-example
   namespace: my-namespace
