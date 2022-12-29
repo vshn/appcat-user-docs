@@ -1,4 +1,4 @@
-= Create a OpenSearch service
+= Create an OpenSearch service
 
 AppCat allows DevOps engineers to quickly provision an OpenSearch instance.
 
@@ -48,7 +48,6 @@ NOTE: To get more information about all available configuration options, please 
 $ kubectl get exoscaleopensearches.exoscale.appcat.vshn.io
 NAME    SYNCED   READY   CONNECTION-SECRET                        AGE
 test1   True     True    opensearch-creds   8m21s
-
 ----
 
 When you see `True` in the READY column, it means the instance is provisioned and ready to use.
@@ -70,17 +69,20 @@ metadata:
   name: opensearch-creds
 data:
   OPENSEARCH_DASHBOARD_URI: aHR(...)0Mw== <1>
-  OPENSEARCH_PASSWORD: QVZ(...)0pS <2>
-  OPENSEARCH_URI: aHR(..)ak5 <3>
-  OPENSEARCH_USER: YXZ(...)aW4= <4>
-
+  OPENSEARCH_HOST: ZXh(...)Y29t <2>
+  OPENSEARCH_PORT: Mj(...)k= <3>
+  OPENSEARCH_PASSWORD: QVZ(...)0pS <4>
+  OPENSEARCH_URI: aHR(..)ak5 <5>
+  OPENSEARCH_USER: YXZ(...)aW4= <6>
 ----
-<1> Dashboards URL
-<2> Password
-<3> API URL
-<4> User
+<1> Dashboard URL
+<2> Hostname
+<3> Port
+<4> Password
+<5> API URL
+<6> User
 
-NOTE: Exoscale Redis supports connection via TLS.
+NOTE: Exoscale OpenSearch supports only connection via TLS.
 The certificates are signed by Let's Encrypt, so no ca.crt file required.
 
 IMPORTANT: All data fields are Base64-encoded, like any other https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/[Kubernetes secret].

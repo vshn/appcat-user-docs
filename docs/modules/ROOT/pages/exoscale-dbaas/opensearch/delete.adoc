@@ -1,6 +1,6 @@
-= Delete a OpenSearch instance
+= Delete an OpenSearch instance
 
-If you do not need a OpenSearch instance anymore, you can delete it in the same way as you would with any other object in your cluster:
+If you do not need an OpenSearch instance anymore, you can delete it in the same way as you would with any other object in your cluster:
 
 [source,bash]
 ----
