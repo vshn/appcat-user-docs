@@ -34,4 +34,10 @@ clone-crds:
 .PHONY: docs-generate-api
 docs-generate-api: $(crd_ref_docs_bin) ## Generates API reference documentation
 docs-generate-api: clone-crds
-	$(crd_ref_docs_bin) --source-path=.work/crds/apis --config=generator/api-gen-config.yaml --renderer=asciidoctor --templates-dir=generator/api-templates --output-path=docs/modules/ROOT/pages/references/crds.adoc
+	$(crd_ref_docs_bin) --source-path=.work/crds/apis/v1 --config=generator/api-gen-config.yaml --renderer=asciidoctor --templates-dir=generator/api-templates --output-path=docs/modules/ROOT/pages/references/crds.adoc
+	$(crd_ref_docs_bin) --source-path=.work/crds/apis/exoscale/v1 --config=generator/api-gen-config.yaml --renderer=asciidoctor --templates-dir=generator/api-templates --output-path=docs/modules/ROOT/pages/references/crds_exo.adoc
+	$(crd_ref_docs_bin) --source-path=.work/crds/apis/vshn/v1 --config=generator/api-gen-config.yaml --renderer=asciidoctor --templates-dir=generator/api-templates --output-path=docs/modules/ROOT/pages/references/crds_vshn.adoc
+	# a bit hacky, but the tool doesn't support multiple api groups with one call...
+	cat docs/modules/ROOT/pages/references/crds_exo.adoc | sed "s/= API Reference/== Exoscale Reference/g" >> docs/modules/ROOT/pages/references/crds.adoc
+	cat docs/modules/ROOT/pages/references/crds_vshn.adoc | sed "s/= API Reference/== VSHN Reference/g" >> docs/modules/ROOT/pages/references/crds.adoc
+	rm docs/modules/ROOT/pages/references/crds_*.adoc

@@ -22,7 +22,7 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-v1-condition"]
-=== Condition 
+=== Condition
 
 
 
@@ -35,6 +35,7 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleredisstatus[$$ExoscaleRedisStatus$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-v1-objectbucketstatus[$$ObjectBucketStatus$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlstatus[$$VSHNPostgreSQLStatus$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-v1-objectbucketstatus[$$ObjectBucketStatus$$]
 ****
 
 [cols="25a,75a", options="header"]
@@ -49,7 +50,7 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-v1-objectbucket"]
-=== ObjectBucket 
+=== ObjectBucket
 
 ObjectBucket is the API for creating S3 buckets.
 
@@ -62,12 +63,12 @@ ObjectBucket is the API for creating S3 buckets.
 | *`kind`* __string__ | `ObjectBucket`
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
 
-| *`spec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-v1-objectbucketspec[$$ObjectBucketSpec$$]__ | 
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-v1-objectbucketspec[$$ObjectBucketSpec$$]__ |
 |===
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-v1-objectbucketparameters"]
-=== ObjectBucketParameters 
+=== ObjectBucketParameters
 
 ObjectBucketParameters are the configurable fields of a ObjectBucket.
 
@@ -85,7 +86,7 @@ ObjectBucketParameters are the configurable fields of a ObjectBucket.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-v1-objectbucketspec"]
-=== ObjectBucketSpec 
+=== ObjectBucketSpec
 
 ObjectBucketSpec defines the desired state of a ObjectBucket.
 
@@ -97,11 +98,22 @@ ObjectBucketSpec defines the desired state of a ObjectBucket.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`parameters`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-v1-objectbucketparameters[$$ObjectBucketParameters$$]__ | 
+| *`parameters`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-v1-objectbucketparameters[$$ObjectBucketParameters$$]__ |
 |===
 
 
 
+
+// Generated documentation. Please do not edit.
+:anchor_prefix: k8s-api
+
+[id="api-reference"]
+== Exoscale Reference
+
+This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
+
+.Packages
+- xref:{anchor_prefix}-exoscale-appcat-vshn-io-v1[$$exoscale.appcat.vshn.io/v1$$]
 
 
 [id="{anchor_prefix}-exoscale-appcat-vshn-io-v1"]
@@ -118,7 +130,7 @@ ObjectBucketSpec defines the desired state of a ObjectBucket.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasbackupspec"]
-=== ExoscaleDBaaSBackupSpec 
+=== ExoscaleDBaaSBackupSpec
 
 
 
@@ -137,7 +149,7 @@ ObjectBucketSpec defines the desired state of a ObjectBucket.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasmaintenanceschedulespec"]
-=== ExoscaleDBaaSMaintenanceScheduleSpec 
+=== ExoscaleDBaaSMaintenanceScheduleSpec
 
 
 
@@ -159,7 +171,7 @@ ObjectBucketSpec defines the desired state of a ObjectBucket.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasnetworkspec"]
-=== ExoscaleDBaaSNetworkSpec 
+=== ExoscaleDBaaSNetworkSpec
 
 
 
@@ -180,7 +192,7 @@ ObjectBucketSpec defines the desired state of a ObjectBucket.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec"]
-=== ExoscaleDBaaSServiceSpec 
+=== ExoscaleDBaaSServiceSpec
 
 
 
@@ -201,7 +213,7 @@ ObjectBucketSpec defines the desired state of a ObjectBucket.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaassizespec"]
-=== ExoscaleDBaaSSizeSpec 
+=== ExoscaleDBaaSSizeSpec
 
 
 
@@ -221,7 +233,7 @@ ObjectBucketSpec defines the desired state of a ObjectBucket.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalekafka"]
-=== ExoscaleKafka 
+=== ExoscaleKafka
 
 ExoscaleKafka is the API for creating Kafka instances on Exoscale.
 
@@ -239,7 +251,7 @@ ExoscaleKafka is the API for creating Kafka instances on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalekafkadbaassizespec"]
-=== ExoscaleKafkaDBaaSSizeSpec 
+=== ExoscaleKafkaDBaaSSizeSpec
 
 
 
@@ -256,7 +268,7 @@ ExoscaleKafka is the API for creating Kafka instances on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalekafkaparameters"]
-=== ExoscaleKafkaParameters 
+=== ExoscaleKafkaParameters
 
 
 
@@ -276,7 +288,7 @@ ExoscaleKafka is the API for creating Kafka instances on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalekafkaservicespec"]
-=== ExoscaleKafkaServiceSpec 
+=== ExoscaleKafkaServiceSpec
 
 
 
@@ -288,14 +300,14 @@ ExoscaleKafka is the API for creating Kafka instances on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
+| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ |
 | *`kafkaSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | KafkaSettings contains additional Kafka settings.
 | *`version`* __string__ | Version contains the minor version for Kafka. Currently only "3.2" is supported. Leave it empty to always get the latest supported version.
 |===
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalekafkaspec"]
-=== ExoscaleKafkaSpec 
+=== ExoscaleKafkaSpec
 
 
 
@@ -314,7 +326,7 @@ ExoscaleKafka is the API for creating Kafka instances on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalemysql"]
-=== ExoscaleMySQL 
+=== ExoscaleMySQL
 
 ExoscaleMySQL is the API for creating MySQL on Exoscale.
 
@@ -332,7 +344,7 @@ ExoscaleMySQL is the API for creating MySQL on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalemysqlparameters"]
-=== ExoscaleMySQLParameters 
+=== ExoscaleMySQLParameters
 
 
 
@@ -353,7 +365,7 @@ ExoscaleMySQL is the API for creating MySQL on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalemysqlservicespec"]
-=== ExoscaleMySQLServiceSpec 
+=== ExoscaleMySQLServiceSpec
 
 
 
@@ -365,14 +377,14 @@ ExoscaleMySQL is the API for creating MySQL on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
+| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ |
 | *`majorVersion`* __string__ | MajorVersion contains the major version for MySQL. Currently only "8" is supported. Leave it empty to always get the latest supported version.
 | *`mysqlSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | MySQLSettings contains additional MySQL settings.
 |===
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalemysqlspec"]
-=== ExoscaleMySQLSpec 
+=== ExoscaleMySQLSpec
 
 
 
@@ -393,7 +405,7 @@ ExoscaleMySQL is the API for creating MySQL on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleopensearchparameters"]
-=== ExoscaleOpenSearchParameters 
+=== ExoscaleOpenSearchParameters
 
 
 
@@ -414,7 +426,7 @@ ExoscaleMySQL is the API for creating MySQL on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleopensearchservicespec"]
-=== ExoscaleOpenSearchServiceSpec 
+=== ExoscaleOpenSearchServiceSpec
 
 
 
@@ -428,14 +440,14 @@ ExoscaleMySQL is the API for creating MySQL on Exoscale.
 | Field | Description
 | *`apiVersion`* __string__ | `exoscale.appcat.vshn.io/v1`
 | *`kind`* __string__ | `ExoscaleOpenSearchServiceSpec`
-| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
+| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ |
 | *`majorVersion`* __string__ | MajorVersion contains the version for OpenSearch. Currently only "2" and "1" is supported. Leave it empty to always get the latest supported version.
 | *`opensearchSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | OpenSearchSettings contains additional OpenSearch settings.
 |===
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleopensearchspec"]
-=== ExoscaleOpenSearchSpec 
+=== ExoscaleOpenSearchSpec
 
 
 
@@ -454,7 +466,7 @@ ExoscaleMySQL is the API for creating MySQL on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalepostgresql"]
-=== ExoscalePostgreSQL 
+=== ExoscalePostgreSQL
 
 ExoscalePostgreSQL is the API for creating PostgreSQL on Exoscale.
 
@@ -472,7 +484,7 @@ ExoscalePostgreSQL is the API for creating PostgreSQL on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalepostgresqlparameters"]
-=== ExoscalePostgreSQLParameters 
+=== ExoscalePostgreSQLParameters
 
 
 
@@ -493,7 +505,7 @@ ExoscalePostgreSQL is the API for creating PostgreSQL on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalepostgresqlservicespec"]
-=== ExoscalePostgreSQLServiceSpec 
+=== ExoscalePostgreSQLServiceSpec
 
 
 
@@ -505,14 +517,14 @@ ExoscalePostgreSQL is the API for creating PostgreSQL on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
+| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ |
 | *`majorVersion`* __string__ | MajorVersion contains the major version for PostgreSQL. Currently only "14" is supported. Leave it empty to always get the latest supported version.
 | *`pgSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | PGSettings contains additional PostgreSQL settings.
 |===
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalepostgresqlspec"]
-=== ExoscalePostgreSQLSpec 
+=== ExoscalePostgreSQLSpec
 
 
 
@@ -531,7 +543,7 @@ ExoscalePostgreSQL is the API for creating PostgreSQL on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleredis"]
-=== ExoscaleRedis 
+=== ExoscaleRedis
 
 ExoscaleRedis is the API for creating Redis instances on Exoscale.
 
@@ -549,7 +561,7 @@ ExoscaleRedis is the API for creating Redis instances on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleredisparameters"]
-=== ExoscaleRedisParameters 
+=== ExoscaleRedisParameters
 
 
 
@@ -569,7 +581,7 @@ ExoscaleRedis is the API for creating Redis instances on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleredisservicespec"]
-=== ExoscaleRedisServiceSpec 
+=== ExoscaleRedisServiceSpec
 
 
 
@@ -581,13 +593,13 @@ ExoscaleRedis is the API for creating Redis instances on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
+| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ |
 | *`redisSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | RedisSettings contains additional Redis settings.
 |===
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleredisspec"]
-=== ExoscaleRedisSpec 
+=== ExoscaleRedisSpec
 
 
 
@@ -605,6 +617,17 @@ ExoscaleRedis is the API for creating Redis instances on Exoscale.
 
 
 
+// Generated documentation. Please do not edit.
+:anchor_prefix: k8s-api
+
+[id="api-reference"]
+== VSHN Reference
+
+This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
+
+.Packages
+- xref:{anchor_prefix}-vshn-appcat-vshn-io-v1[$$vshn.appcat.vshn.io/v1$$]
+
 
 [id="{anchor_prefix}-vshn-appcat-vshn-io-v1"]
 == vshn.appcat.vshn.io/v1
@@ -616,7 +639,7 @@ ExoscaleRedis is the API for creating Redis instances on Exoscale.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaasbackupspec"]
-=== VSHNDBaaSBackupSpec 
+=== VSHNDBaaSBackupSpec
 
 VSHNDBaaSBackupSpec contains settings to control the backups of an instance.
 
@@ -633,7 +656,7 @@ VSHNDBaaSBackupSpec contains settings to control the backups of an instance.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaasmaintenanceschedulespec"]
-=== VSHNDBaaSMaintenanceScheduleSpec 
+=== VSHNDBaaSMaintenanceScheduleSpec
 
 VSHNDBaaSMaintenanceScheduleSpec contains settings to control the maintenance of an instance.
 
@@ -651,7 +674,7 @@ VSHNDBaaSMaintenanceScheduleSpec contains settings to control the maintenance of
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaasnetworkspec"]
-=== VSHNDBaaSNetworkSpec 
+=== VSHNDBaaSNetworkSpec
 
 VSHNDBaaSNetworkSpec contains any network related settings.
 
@@ -668,7 +691,7 @@ VSHNDBaaSNetworkSpec contains any network related settings.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaassizespec"]
-=== VSHNDBaaSSizeSpec 
+=== VSHNDBaaSSizeSpec
 
 VSHNDBaaSSizeSpec contains settings to control the sizing of a service.
 
@@ -687,7 +710,7 @@ VSHNDBaaSSizeSpec contains settings to control the sizing of a service.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql"]
-=== VSHNPostgreSQL 
+=== VSHNPostgreSQL
 
 VSHNPostgreSQL is the API for creating Postgresql clusters.
 
@@ -705,7 +728,7 @@ VSHNPostgreSQL is the API for creating Postgresql clusters.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlparameters"]
-=== VSHNPostgreSQLParameters 
+=== VSHNPostgreSQLParameters
 
 VSHNPostgreSQLParameters are the configurable fields of a VSHNPostgreSQL.
 
@@ -726,7 +749,7 @@ VSHNPostgreSQLParameters are the configurable fields of a VSHNPostgreSQL.
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlservicespec"]
-=== VSHNPostgreSQLServiceSpec 
+=== VSHNPostgreSQLServiceSpec
 
 VSHNPostgreSQLServiceSpec contains PostgreSQL DBaaS specific properties
 
@@ -744,7 +767,7 @@ VSHNPostgreSQLServiceSpec contains PostgreSQL DBaaS specific properties
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlspec"]
-=== VSHNPostgreSQLSpec 
+=== VSHNPostgreSQLSpec
 
 VSHNPostgreSQLSpec defines the desired state of a VSHNPostgreSQL.
 
