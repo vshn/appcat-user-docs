@@ -61,27 +61,4 @@ $ oc get secrets mysql-creds -o yaml
 
 The output of the command above is a secret specification with the following structure:
 
-[source,yaml]
-----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: mysql-creds
-data:
-  MYSQL_DB: ZGVmYXVsdGRi <1>
-  MYSQL_HOST: bXktbXlzcWwtZXhhbXBsZS1leG9zY2FsZS0xMjM0LmFpdmVuY2xvdWQuY29tCg== <2>
-  MYSQL_PASSWORD: QVZOU19zb21lc3VwZXJzZWNyZXRwdwo= <3>
-  MYSQL_PORT: MjE2OTk= <4>
-  MYSQL_URL: bXlzcWw6Ly9hdm5hZG1pbjpBVk5TX3NvbWVzdXBlcnNlY3JldHB3QG15LW15c3FsLWV4YW1wbGUtZXhvc2NhbGUtMTIzNC5haXZlbmNsb3VkLmNvbToyMTY5OS9kZWZhdWx0ZGI/c3NsLW1vZGU9UkVRVUlSRUQK <5>
-  MYSQL_USER: YXZuYWRtaW4= <6>
-  ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCkhleFZhbHVlcwotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg== <7>
-----
-<1> Database name
-<2> Host to connect to
-<3> Password
-<4> Port
-<5> URL containing all necessary information to connect to the instance
-<6> Username
-<7> ca.crt to use when using `ssl-mode=VERIFY-CA`
-
-IMPORTANT: All data fields are Base64-encoded, like any other https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/[Kubernetes secret].
+include::appcat:ROOT:page$references/secrets.adoc[tag=mariadb]

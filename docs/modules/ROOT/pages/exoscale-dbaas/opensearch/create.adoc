@@ -61,28 +61,7 @@ $ oc get secrets opensearch-creds -o yaml
 
 The output of the command above is a secret specification with the following structure:
 
-[source,yaml]
-----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: opensearch-creds
-data:
-  OPENSEARCH_DASHBOARD_URI: aHR(...)0Mw== <1>
-  OPENSEARCH_HOST: ZXh(...)Y29t <2>
-  OPENSEARCH_PORT: Mj(...)k= <3>
-  OPENSEARCH_PASSWORD: QVZ(...)0pS <4>
-  OPENSEARCH_URI: aHR(..)ak5 <5>
-  OPENSEARCH_USER: YXZ(...)aW4= <6>
-----
-<1> Dashboard URL
-<2> Hostname
-<3> Port
-<4> Password
-<5> API URL
-<6> User
+include::appcat:ROOT:page$references/secrets.adoc[tag=opensearch]
 
 NOTE: Exoscale OpenSearch supports only connection via TLS.
 The certificates are signed by Let's Encrypt, so no ca.crt file required.
-
-IMPORTANT: All data fields are Base64-encoded, like any other https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/[Kubernetes secret].

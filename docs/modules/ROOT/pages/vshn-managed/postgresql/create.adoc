@@ -58,25 +58,4 @@ $ oc get secrets postgres-creds -o yaml
 
 The output of the command above is a secret specification with the following structure:
 
-[source,yaml]
-----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: postgres-creds
-data:
-  POSTGRESQL_DB: ZGVmYXVsdGRi <1>
-  POSTGRESQL_HOST: bXktcG9zdGdyZXMtZXhhbXBsZS1leG9zY2FsZS0xMjM0LmFpdmVuY2xvdWQuY29tCg== <2>
-  POSTGRESQL_PASSWORD: QVZOU19zb21lc3VwZXJzZWNyZXRwdwo= <3>
-  POSTGRESQL_PORT: MjE2OTk= <4>
-  POSTGRESQL_URL: cG9zdGdyZXM6Ly9hdm5hZG1pbjpBVk5TX3NvbWVzdXBlcnNlY3JldHB3QG15LXBvc3RncmVzLWV4YW1wbGUtZXhvc2NhbGUtMTIzNC5haXZlbmNsb3VkLmNvbToyMTY5OS9kZWZhdWx0ZGI/c3NsbW9kZT1yZXF1aXJlCg== <5>
-  POSTGRESQL_USER: YXZuYWRtaW4= <6>
-----
-<1> Database name
-<2> Host to connect to
-<3> Password
-<4> Port
-<5> URL containing all necessary information to connect to the instance
-<6> Username
-
-IMPORTANT: All data fields are Base64-encoded, like any other https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/[Kubernetes secret].
+include::appcat:ROOT:page$references/secrets.adoc[tag=postgres]
