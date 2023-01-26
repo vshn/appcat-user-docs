@@ -1,0 +1,82 @@
+= Create a PostgreSQL service
+
+AppCat allows DevOps engineers to quickly provision a PostgreSQL instance.
+
+== Create a PostgreSQL service
+
+include::user:ROOT:partial$login-in-terminal.adoc[]
+
+. Apply the following object on your namespace, as specified by its YAML description.
++
+.Example to create a PostgreSQL instance
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod <1>
+  namespace: prod-app <2>
+spec:
+  parameters:
+    service:
+      majorVersion: 15 <3>
+      pgSettings:
+        timezone: Europe/Zurich <4>
+    size: <5>
+      cpu: "1500m"
+      memory: "500Mi"
+      disk: "80Gi"
+  writeConnectionSecretToRef:
+    name: postgres-creds <6>
+----
+<1> Instance name
+<2> The namespace where the object will be created
+<5> PostgreSQL version
+<6> Specify custom PostgreSQL settings [optional]
+<7> Cpu, memmory and disk configurations
+<8> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
+
+NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[API Reference]
+
+== Get information about your new PostgreSQL instance
+
+[source,bash]
+----
+$  kubectl get vshnpostgresqls.vshn.appcat.vshn.io
+NAME              SYNCED   READY   CONNECTION-SECRET   AGE
+pgsql-app1-prod   True     True    postgres-creds      6m14s
+----
+
+When you see `True` in the READY column, it means the instance is provisioned and ready to use.
+
+== Get the credentials to access the instance
+
+[source,bash]
+----
+$ oc get secrets postgres-creds -o yaml
+----
+
+The output of the command above is a secret specification with the following structure:
+
+[source,yaml]
+----
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-creds
+data:
+  POSTGRESQL_DB: ZGVmYXVsdGRi <1>
+  POSTGRESQL_HOST: bXktcG9zdGdyZXMtZXhhbXBsZS1leG9zY2FsZS0xMjM0LmFpdmVuY2xvdWQuY29tCg== <2>
+  POSTGRESQL_PASSWORD: QVZOU19zb21lc3VwZXJzZWNyZXRwdwo= <3>
+  POSTGRESQL_PORT: MjE2OTk= <4>
+  POSTGRESQL_URL: cG9zdGdyZXM6Ly9hdm5hZG1pbjpBVk5TX3NvbWVzdXBlcnNlY3JldHB3QG15LXBvc3RncmVzLWV4YW1wbGUtZXhvc2NhbGUtMTIzNC5haXZlbmNsb3VkLmNvbToyMTY5OS9kZWZhdWx0ZGI/c3NsbW9kZT1yZXF1aXJlCg== <5>
+  POSTGRESQL_USER: YXZuYWRtaW4= <6>
+----
+<1> Database name
+<2> Host to connect to
+<3> Password
+<4> Port
+<5> URL containing all necessary information to connect to the instance
+<6> Username
+
+IMPORTANT: All data fields are Base64-encoded, like any other https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/[Kubernetes secret].

@@ -7,11 +7,12 @@
 This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 
 .Packages
-- xref:{anchor_prefix}-appcat-vshn-io-v1[$$appcat.vshn.io/v1$$]
+- xref:{anchor_prefix}-appcat-vshn-io-v1[$$exoscale.appcat.vshn.io/v1$$]
+- xref:{anchor_prefix}-appcat-vshn-io-v1[$$vshn.appcat.vshn.io/v1$$]
 
 
 [id="{anchor_prefix}-appcat-vshn-io-v1"]
-== appcat.vshn.io/v1
+== exoscale.appcat.vshn.io/v1
 
 
 .Resource Types
@@ -21,6 +22,13 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleredis[$$ExoscaleRedis$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-objectbucket[$$ObjectBucket$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearch[$$ExoscaleOpenSearch$$]
+
+[id="{anchor_prefix}-appcat-vshn-io-v1"]
+== vshn.appcat.vshn.io/v1
+
+
+.Resource Types
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-postgresql[$$VSHNPostgreSQL$$]
 
 
 
@@ -37,6 +45,7 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleredisstatus[$$ExoscaleRedisStatus$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-objectbucketstatus[$$ObjectBucketStatus$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaleopensearch[$$ExoscaleOpenSearch$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-postgresql[$$VSHNPostgreSQL$$]
 ****
 
 [cols="25a,75a", options="header"]
@@ -163,7 +172,7 @@ ExoscaleKafka is the API for creating Kafka instances on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`apiVersion`* __string__ | `appcat.vshn.io/v1`
+| *`apiVersion`* __string__ | `exoscale.appcat.vshn.io/v1`
 | *`kind`* __string__ | `ExoscaleKafka`
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
 
@@ -256,7 +265,7 @@ ExoscaleMySQL is the API for creating MySQL on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`apiVersion`* __string__ | `appcat.vshn.io/v1`
+| *`apiVersion`* __string__ | `exoscale.appcat.vshn.io/v1`
 | *`kind`* __string__ | `ExoscaleMySQL`
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
 
@@ -331,7 +340,7 @@ ExoscaleOpenSearch is the API for creating OpenSearch on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`apiVersion`* __string__ | `exoscale.appcat.vshn.io/v1`
+| *`apiVersion`* __string__ | `exoscale.exoscale.appcat.vshn.io/v1`
 | *`kind`* __string__ | `ExoscaleOpenSearch`
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
 
@@ -406,7 +415,7 @@ ExoscalePostgreSQL is the API for creating PostgreSQL on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`apiVersion`* __string__ | `appcat.vshn.io/v1`
+| *`apiVersion`* __string__ | `exoscale.appcat.vshn.io/v1`
 | *`kind`* __string__ | `ExoscalePostgreSQL`
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
 
@@ -483,7 +492,7 @@ ExoscaleRedis is the API for creating Redis instances on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`apiVersion`* __string__ | `appcat.vshn.io/v1`
+| *`apiVersion`* __string__ | `exoscale.appcat.vshn.io/v1`
 | *`kind`* __string__ | `ExoscaleRedis`
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
 
@@ -558,7 +567,7 @@ ObjectBucket is the API for creating S3 buckets.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`apiVersion`* __string__ | `appcat.vshn.io/v1`
+| *`apiVersion`* __string__ | `exoscale.appcat.vshn.io/v1`
 | *`kind`* __string__ | `ObjectBucket`
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
 
@@ -603,3 +612,78 @@ ObjectBucketSpec defines the desired state of a ObjectBucket.
 
 
 
+// VSHN Postgresql section start
+// xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-postgresql[$$VSHNPostgreSQL$$]
+[id="{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-postgresql"]
+=== VSHNPostgreSQL 
+
+VSHNPostgreSQL is the API for creating VSHN managed PostgreSQL instances.
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `VSHNPostgreSQL`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-postgresql-spec[$$VSHNPostgreSQLSpec$$]__ | 
+|===
+
+[id="{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-postgresql-spec"]
+=== VSHNPostgreSQLSpec 
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-postgresql[$$ExoscalePostgreSQL$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`parameters`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-postgresql-parameters[$$VSHNPostgreSQLParameters$$]__ | Parameters are the configurable fields of a ExoscalePostgreSQL.
+|===
+
+[id="{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-postgresql"]
+=== VSHNPostgreSQLParameters 
+
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-postgresql-spec[$$VSHNPostgreSQLSpec$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`service`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-postgresql-service-spec[$$VSHNPostgreSQLServiceSpec$$]__ | Service contains VSHN PostgreSQL DBaaS specific properties
+| *`maintenance`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-dbaas-maintenance-schedule-spec[$$VSHNDBaaSMaintenanceScheduleSpec$$]__ | Maintenance contains settings to control the maintenance of an instance.
+| *`size`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-dbaas-size-spec[$$VSHNDBaaSSizeSpec$$]__ | Size contains settings to control the sizing of a service.
+| *`network`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-dbaas-network-spec[$$VSHNDBaaSNetworkSpec$$]__ | Network contains any network related settings.
+| *`backup`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-dbaas-backup-spec[$$VSHNPostgreSQLBackup$$]__ | Backup contains settings to control the backups of an instance.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-component-appcat-v1-vshn-postgresql-service-spec"]
+=== ExoscalePostgreSQLServiceSpec 
+
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscalepostgresqlparameters[$$ExoscalePostgreSQLParameters$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
+| *`majorVersion`* __string__ | MajorVersion contains the major version for PostgreSQL. Currently only "14" is supported. Leave it empty to always get the latest supported version.
+| *`pgSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | PGSettings contains additional PostgreSQL settings.
+|===
+
+
+// VSHN Postgresql section end

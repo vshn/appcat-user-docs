@@ -1,0 +1,12 @@
+= Exoscale DBaaS - PostgreSQL
+
+Welcome to the VSHN managed services in the VSHN Application Catalog.
+
+Please find more about the service description including pricing in our https://products.docs.vshn.ch/products/appcat/postgresql.html#_pricing[product portfolio].
+
+TIP: Get started with xref:vshn-managed/postgresql/create.adoc[Creating a PostgreSQL instance].
+
+== Links
+
+* https://www.postgresql.org/[PostgreSQL^]
+* xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[VSHN Application Catalog API reference]
