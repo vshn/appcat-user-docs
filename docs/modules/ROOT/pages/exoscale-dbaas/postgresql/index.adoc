@@ -17,6 +17,6 @@ Some important notes about this service:
 == Links
 
 * https://www.postgresql.org/[PostgreSQL^]
-* xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-v1-exoscalepostgresql[VSHN Application Catalog API reference]
+* xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalepostgresql[VSHN Application Catalog API reference]
 * https://community.exoscale.com/documentation/dbaas/managed-postgresql/[Exoscale documentation^]
 * https://docs.aiven.io/docs/products/postgresql[Aiven documentation^]

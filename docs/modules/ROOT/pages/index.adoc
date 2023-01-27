@@ -62,3 +62,21 @@ Get started with xref:object-storage/create.adoc[Create an Object Storage Bucket
 |✅ xref:exoscale-dbaas/opensearch/index.adoc[More infos]
 
 |===
+
+=== Vshn DBaaS
+
+[cols="1,1,1",options="header"]
+|===
+|Database
+|cloudscale.ch
+|Exoscale
+
+
+|PostgreSQL
+|✅ xref:vshn-managed/postgresql/index.adoc[More infos]
+|❌ (Coming soon)
+
+
+|===
+
+Get started with xref:vshn-managed/postgresql/create.adoc[Create a PostgreSQL instance].

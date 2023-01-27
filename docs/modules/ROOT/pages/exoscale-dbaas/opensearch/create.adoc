@@ -39,7 +39,7 @@ spec:
 <7> See https://products.docs.vshn.ch/products/appcat/exoscale_dbaas.html#_opensearch[reference] for a list of plans
 <8> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
 
-NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-v1-exoscaleopensearch[API Reference]
+NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleopensearch[API Reference]
 
 == Get information about your new OpenSearch instance
 

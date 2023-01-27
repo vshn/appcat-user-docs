@@ -1,0 +1,36 @@
+= How to use an AppCat PostgreSQL instance
+
+The YAML code below creates two objects: a `VSHNPostgreSQL` instance and a pod accessing it to show information about the instance.
+The latter references the `postgres-creds` secret that will contain the access keys required to connect to the instance.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: my-postgres-example
+  namespace: my-namespace
+spec:
+  parameters:
+    service:
+      majorVersion: "15"
+  writeConnectionSecretToRef:
+    name: postgres-creds-connection
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres-client
+spec:
+  containers:
+  - name: postgres
+    image: postgres:15
+    command:
+      - /bin/sh
+      - -c
+    args:
+      - PGPASSWORD=$POSTGRESQL_PASSWORD psql -h $POSTGRESQL_HOST -d $POSTGRESQL_DB -U $POSTGRESQL_USER -l
+    envFrom:
+      - secretRef:
+          name: postgres-creds-connection
+  restartPolicy: Never

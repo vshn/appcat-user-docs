@@ -11,43 +11,40 @@ include::user:ROOT:partial$login-in-terminal.adoc[]
 .Example to create a PostgreSQL instance
 [source,yaml]
 ----
-apiVersion: exoscale.appcat.vshn.io/v1
-kind: ExoscalePostgreSQL
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
 metadata:
-  name: my-postgres-example <1>
-  namespace: my-namespace <2>
+  name: pgsql-app1-prod <1>
+  namespace: prod-app <2>
 spec:
   parameters:
-    backup:
-      timeOfDay: "12:00:00" <3>
     service:
-      zone: ch-dk-2 <4>
-      majorVersion: "14" <5>
+      majorVersion: 15 <3>
       pgSettings:
-        timezone: Europe/Zurich <6>
-    size:
-      plan: hobbyist-2 <7>
+        timezone: Europe/Zurich <4>
+    size: <5>
+      cpu: "1500m"
+      memory: "500Mi"
+      disk: "80Gi"
   writeConnectionSecretToRef:
-    name: postgres-creds <8>
+    name: postgres-creds <6>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
-<3> Specify backup time of day
-<4> The Exoscale zone to use, see xref:references/clouds.adoc#_regions[list of regions]
 <5> PostgreSQL version
 <6> Specify custom PostgreSQL settings [optional]
-<7> See https://products.docs.vshn.ch/products/appcat/exoscale_dbaas.html#_postgresql[reference] for a list of plans
+<7> Cpu, memmory and disk configurations
 <8> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
 
-NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalepostgresql[API Reference]
+NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[API Reference]
 
 == Get information about your new PostgreSQL instance
 
 [source,bash]
 ----
-$ oc get exoscalepostgresql
-NAMESPACE      NAME                  PLAN         ZONE      READY   CONNECTION-SECRET   AGE
-my-namespace   my-postgres-example   hobbyist-2   ch-dk-2   True    postgres-creds      5m
+$  kubectl get vshnpostgresqls.vshn.appcat.vshn.io
+NAME              SYNCED   READY   CONNECTION-SECRET   AGE
+pgsql-app1-prod   True     True    postgres-creds      6m14s
 ----
 
 When you see `True` in the READY column, it means the instance is provisioned and ready to use.
@@ -74,7 +71,6 @@ data:
   POSTGRESQL_PORT: MjE2OTk= <4>
   POSTGRESQL_URL: cG9zdGdyZXM6Ly9hdm5hZG1pbjpBVk5TX3NvbWVzdXBlcnNlY3JldHB3QG15LXBvc3RncmVzLWV4YW1wbGUtZXhvc2NhbGUtMTIzNC5haXZlbmNsb3VkLmNvbToyMTY5OS9kZWZhdWx0ZGI/c3NsbW9kZT1yZXF1aXJlCg== <5>
   POSTGRESQL_USER: YXZuYWRtaW4= <6>
-  ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCkhleFZhbHVlcwotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg== <7>
 ----
 <1> Database name
 <2> Host to connect to
@@ -82,6 +78,5 @@ data:
 <4> Port
 <5> URL containing all necessary information to connect to the instance
 <6> Username
-<7> ca.crt to use when using `sslmode=verify-full`
 
 IMPORTANT: All data fields are Base64-encoded, like any other https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/[Kubernetes secret].
