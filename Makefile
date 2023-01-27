@@ -34,4 +34,4 @@ clone-crds:
 .PHONY: docs-generate-api
 docs-generate-api: $(crd_ref_docs_bin) ## Generates API reference documentation
 docs-generate-api: clone-crds
-	$(crd_ref_docs_bin) --source-path=.work/crds/apis/v1 --config=generator/api-gen-config.yaml --renderer=asciidoctor --templates-dir=generator/api-templates --output-path=docs/modules/ROOT/pages/references/crds.adoc
+	$(crd_ref_docs_bin) --source-path=.work/crds/apis --config=generator/api-gen-config.yaml --renderer=asciidoctor --templates-dir=generator/api-templates --output-path=docs/modules/ROOT/pages/references/crds.adoc

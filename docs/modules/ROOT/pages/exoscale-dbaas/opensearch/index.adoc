@@ -16,6 +16,6 @@ Some important notes about this service:
 == Links
 
 * https://opensearch.org/[OpenSearch^]
-* xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-v1-exoscaleopensearch[VSHN Application Catalog API reference]
+* xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleopensearch[VSHN Application Catalog API reference]
 * https://community.exoscale.com/documentation/dbaas/managed-opensearch/[Exoscale documentation^]
 * https://docs.aiven.io/docs/products/opensearch[Aiven documentation^]

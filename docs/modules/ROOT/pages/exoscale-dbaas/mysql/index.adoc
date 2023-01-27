@@ -16,6 +16,6 @@ Some important notes about this service:
 == Links
 
 * https://www.mysql.com/[MySQL^]
-* xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-v1-exoscalemysql[VSHN Application Catalog API reference]
+* xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalemysql[VSHN Application Catalog API reference]
 * https://community.exoscale.com/documentation/dbaas/managed-mysql/[Exoscale documentation^]
 * https://docs.aiven.io/docs/products/mysql[Aiven documentation^]
