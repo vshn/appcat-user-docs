@@ -63,7 +63,7 @@ Get started with xref:object-storage/create.adoc[Create an Object Storage Bucket
 
 |===
 
-=== Vshn DBaaS
+=== Managed by VSHN
 
 [cols="1,1,1",options="header"]
 |===
