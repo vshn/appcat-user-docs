@@ -28,7 +28,7 @@ include::user:ROOT:partial$shared-nav.adoc[]
 ** xref:exoscale-dbaas/opensearch/delete.adoc[]
 ** xref:exoscale-dbaas/opensearch/usage.adoc[]
 
-.VSHN managed
+.Managed by VSHN
 * xref:vshn-managed/postgresql/index.adoc[PostgreSQL]
 ** xref:vshn-managed/postgresql/create.adoc[]
 ** xref:vshn-managed/postgresql/delete.adoc[]
