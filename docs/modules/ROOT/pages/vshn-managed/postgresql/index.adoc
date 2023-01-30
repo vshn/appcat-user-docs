@@ -1,4 +1,4 @@
-= Exoscale DBaaS - PostgreSQL
+= Managed by VSHN - PostgreSQL
 
 Welcome to the VSHN managed services in the VSHN Application Catalog.
 
