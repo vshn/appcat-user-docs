@@ -19,7 +19,7 @@ metadata:
 spec:
   parameters:
     service:
-      majorVersion: 15 <3>
+      majorVersion: "15" <3>
       pgSettings:
         timezone: Europe/Zurich <4>
     size: <5>
