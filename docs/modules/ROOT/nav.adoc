@@ -34,6 +34,7 @@ include::user:ROOT:partial$shared-nav.adoc[]
 ** xref:vshn-managed/postgresql/delete.adoc[]
 ** xref:vshn-managed/postgresql/usage.adoc[]
 
-.Cloud References
+.References
 * xref:references/clouds.adoc[]
 * xref:references/crds.adoc[]
+* xref:references/secrets.adoc[]

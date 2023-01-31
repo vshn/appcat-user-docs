@@ -60,27 +60,4 @@ $ oc get secrets kafka-creds -o yaml
 
 The output of the command above is a secret specification with the following structure:
 
-[source,yaml]
-----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: kafka-creds
-data:
-  KAFKA_HOST: bXkta2Fma2EtZXhhbXBsZS04NGc3bi1leG9zY2FsZS04ZjExOTc2OC0xMDI3LTRiOWMtYmNhNy00YzE0ZjlmLmFpdmVuY2xvdWQuY29t <1>
-  KAFKA_NODES: MTk0LjE4Mi4xODkuMTI0OjIxNzAxIDE5NC4xODIuMTg4LjEwOToyMTcwMSAxOTQuMTgyLjE5MC4xNzc6MjE3MDE= <2>
-  KAFKA_PORT: MjE3MDE= <3>
-  KAFKA_URI: bXkta2Fma2EtZXhhbXBsZS04NGc3bi1leG9zY2FsZS04ZjExOTc2OC0xMDI3LTRiOWMtYmNhNy00YzE0ZjlmLmFpdmVuY2xvdWQuY29tOjIxNzAx <4>
-  ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVRVENDQXFtZ0F... <5>
-  service.cert: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUVTRENDQ... <6>
-  service.key: LS0tLS1CRUdJTiBQUklWQVRFIEtFWS0tLS0tCk1JSUcvQUlCQU... <7>
-----
-<1> Hostname for the Kafka instance
-<2> List of Kafka Node IPs
-<3> Port the Kafka instance listens on
-<4> Full URI including port number
-<5> Certificate Authority to verify the Kafka instance certificate
-<6> Client certificate to authenticate to the instance
-<6> Client key to authenticate to the instance
-
-IMPORTANT: All data fields are Base64-encoded, like any other https://kubernetes.io/docs/tasks/configmap-secret/managing-secret-using-kubectl/[Kubernetes secret].
+include::appcat:ROOT:page$references/secrets.adoc[tag=kafka]

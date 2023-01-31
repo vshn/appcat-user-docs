@@ -8,8 +8,6 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 
 .Packages
 - xref:{anchor_prefix}-appcat-vshn-io-v1[$$appcat.vshn.io/v1$$]
-- xref:{anchor_prefix}-exoscale-appcat-vshn-io-v1[$$exoscale.appcat.vshn.io/v1$$]
-- xref:{anchor_prefix}-vshn-appcat-vshn-io-v1[$$vshn.appcat.vshn.io/v1$$]
 
 
 [id="{anchor_prefix}-appcat-vshn-io-v1"]
@@ -28,13 +26,7 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 
 .Appears In:
 ****
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalekafkastatus[$$ExoscaleKafkaStatus$$]
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalemysqlstatus[$$ExoscaleMySQLStatus$$]
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleopensearchstatus[$$ExoscaleOpenSearchStatus$$]
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalepostgresqlstatus[$$ExoscalePostgreSQLStatus$$]
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleredisstatus[$$ExoscaleRedisStatus$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-v1-objectbucketstatus[$$ObjectBucketStatus$$]
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlstatus[$$VSHNPostgreSQLStatus$$]
 ****
 
 [cols="25a,75a", options="header"]
@@ -102,6 +94,17 @@ ObjectBucketSpec defines the desired state of a ObjectBucket.
 
 
 
+
+// Generated documentation. Please do not edit.
+:anchor_prefix: k8s-api
+
+[id="api-reference"]
+== Exoscale Reference
+
+This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
+
+.Packages
+- xref:{anchor_prefix}-exoscale-appcat-vshn-io-v1[$$exoscale.appcat.vshn.io/v1$$]
 
 
 [id="{anchor_prefix}-exoscale-appcat-vshn-io-v1"]
@@ -604,6 +607,17 @@ ExoscaleRedis is the API for creating Redis instances on Exoscale.
 
 
 
+
+// Generated documentation. Please do not edit.
+:anchor_prefix: k8s-api
+
+[id="api-reference"]
+== VSHN Reference
+
+This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
+
+.Packages
+- xref:{anchor_prefix}-vshn-appcat-vshn-io-v1[$$vshn.appcat.vshn.io/v1$$]
 
 
 [id="{anchor_prefix}-vshn-appcat-vshn-io-v1"]
