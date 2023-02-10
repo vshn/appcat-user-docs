@@ -23,8 +23,8 @@ spec:
       pgSettings:
         timezone: Europe/Zurich <4>
     size: <5>
-      cpu: "1500m"
-      memory: "500Mi"
+      cpu: "600m"
+      memory: "3500Mi"
       disk: "80Gi"
   writeConnectionSecretToRef:
     name: postgres-creds <6>
@@ -37,6 +37,19 @@ spec:
 <8> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[API Reference]
+
+=== Sidecar Overhead and Fair-Use Policy
+
+Each PostgreSQL Standalone instance has following overhead:
+
+* CPU: 364m
+* Memory: 704Mi
+
+These are for various sidecar containers that run alongside the actual PostgreSQL instance.
+These containers handle connection pooling, metrics and other internal functionality.
+
+NOTE: Please be aware that https://docs.appuio.cloud/user/explanation/fair-use-policy.html[Fair Use Policy] applies to all AppCat Services by VSHN.
+When chosing memory and CPU for your instance please keep the overhead in mind.
 
 == Get information about your new PostgreSQL instance
 
