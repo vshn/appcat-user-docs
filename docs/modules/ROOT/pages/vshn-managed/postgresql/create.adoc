@@ -48,7 +48,7 @@ Each PostgreSQL Standalone instance has following overhead:
 These are for various sidecar containers that run alongside the actual PostgreSQL instance.
 These containers handle connection pooling, metrics and other internal functionality.
 
-NOTE: Please be aware that the normal https://docs.appuio.cloud/user/explanation/fair-use-policy.html[Fair Use Policy] applies to AppCat Services by VSHN as well.
+NOTE: Please be aware that https://docs.appuio.cloud/user/explanation/fair-use-policy.html[Fair Use Policy] applies to all AppCat Services by VSHN.
 When chosing memory and CPU for your instance please keep the overhead in mind.
 
 == Get information about your new PostgreSQL instance
