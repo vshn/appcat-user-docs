@@ -1,0 +1,38 @@
+= How to use an AppCat Redis instance
+
+The YAML code below creates two objects: a `VSHNRedis` instance and a pod accessing it to show information about the instance.
+The latter references the `redis-creds` secret that will contain the access keys required to connect to the instance.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNRedis
+metadata:
+  name: my-redis-example
+  namespace: my-namespace
+spec:
+  parameters:
+    service:
+      version: "7.0"
+  writeConnectionSecretToRef:
+    name: redis-creds-connection
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: redis-client
+spec:
+  containers:
+  - name: redis
+    image: redis:7
+    command:
+      - /bin/sh
+      - -c
+    args:
+      - redis-cli -u redis://$REDIS_USERNAME:$REDIS_PASSWORD@$REDIS_HOST:$REDIS_PORT --insecure INFO <1>
+    envFrom:
+      - secretRef:
+          name: redis-creds-connection
+  restartPolicy: Never
+----
+<1> Uses redis-cli to print INFO into stdout. *Do not use --insecure in production. Only for demonstration purposes.*

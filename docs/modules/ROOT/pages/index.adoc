@@ -76,7 +76,12 @@ Get started with xref:object-storage/create.adoc[Create an Object Storage Bucket
 |✅ xref:vshn-managed/postgresql/index.adoc[More infos]
 |❌
 
+|Redis
+|✅ xref:vshn-managed/redis/index.adoc[More infos]
+|❌
+
 
 |===
 
 Get started with xref:vshn-managed/postgresql/create.adoc[Create a PostgreSQL instance].
+Get started with xref:vshn-managed/redis/create.adoc[Create a Redis instance].

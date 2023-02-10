@@ -776,3 +776,95 @@ VSHNPostgreSQLSpec defines the desired state of a VSHNPostgreSQL.
 
 
 
+[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredis"]
+=== VSHNRedis 
+
+VSHNRedis is the API for creating Redis clusters.
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `VSHNRedis`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredisspec[$$VSHNRedisSpec$$]__ | Spec defines the desired state of a VSHNRedis.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredisparameters"]
+=== VSHNRedisParameters 
+
+VSHNRedisParameters are the configurable fields of a VSHNRedis.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredisspec[$$VSHNRedisSpec$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`service`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredisservicespec[$$VSHNRedisServiceSpec$$]__ | Service contains Redis DBaaS specific properties
+| *`size`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredissizespec[$$VSHNRedisSizeSpec$$]__ | Size contains settings to control the sizing of a service.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredisservicespec"]
+=== VSHNRedisServiceSpec 
+
+VSHNRedisServiceSpec contains Redis DBaaS specific properties
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredisparameters[$$VSHNRedisParameters$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`version`* __string__ | Version contains supported version of Redis. Multiple versions are supported. The latest version "7.0" is the default version.
+| *`redisSettings`* __string__ | RedisSettings contains additional Redis settings.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredissizespec"]
+=== VSHNRedisSizeSpec 
+
+VSHNRedisSizeSpec contains settings to control the sizing of a service.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredisparameters[$$VSHNRedisParameters$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`cpuRequests`* __string__ | CPURequests defines the requests amount of Kubernetes CPUs for an instance.
+| *`cpuLimits`* __string__ | CPULimits defines the limits amount of Kubernetes CPUs for an instance.
+| *`memoryRequests`* __string__ | MemoryRequests defines the requests amount of memory in units of bytes for an instance.
+| *`memoryLimits`* __string__ | MemoryLimits defines the limits amount of memory in units of bytes for an instance.
+| *`disk`* __string__ | Disk defines the amount of disk space for an instance.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredisspec"]
+=== VSHNRedisSpec 
+
+VSHNRedisSpec defines the desired state of a VSHNRedis.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredis[$$VSHNRedis$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`parameters`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredisparameters[$$VSHNRedisParameters$$]__ | Parameters are the configurable fields of a VSHNRedis.
+|===
+
+
