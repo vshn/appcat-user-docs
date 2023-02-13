@@ -751,8 +751,8 @@ VSHNPostgreSQL is the API for creating Postgresql clusters.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`schedule`* __string__ | 
-| *`retention`* __integer__ | 
+| *`schedule`* __string__ | Schedule how often should backup be made,example: '30 23 * * *' - each day at 23:30. Please note that this is a standard Cron syntax.
+| *`retention`* __integer__ | Retention specifies how many backups should be kept, example: 6
 |===
 
 
