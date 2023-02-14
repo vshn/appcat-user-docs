@@ -626,24 +626,8 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 
 .Resource Types
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[$$VSHNPostgreSQL$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredis[$$VSHNRedis$$]
 
-
-
-[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaasbackupspec"]
-=== VSHNDBaaSBackupSpec 
-
-VSHNDBaaSBackupSpec contains settings to control the backups of an instance.
-
-.Appears In:
-****
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
-****
-
-[cols="25a,75a", options="header"]
-|===
-| Field | Description
-| *`timeOfDay`* __string__ | TimeOfDay for doing daily backups, in UTC. Format: "hh:mm:ss".
-|===
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaasmaintenanceschedulespec"]
@@ -718,6 +702,24 @@ VSHNPostgreSQL is the API for creating Postgresql clusters.
 |===
 
 
+[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlbackup"]
+=== VSHNPostgreSQLBackup 
+
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`schedule`* __string__ | 
+| *`retention`* __integer__ | 
+|===
+
+
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlparameters"]
 === VSHNPostgreSQLParameters 
 
@@ -735,7 +737,7 @@ VSHNPostgreSQLParameters are the configurable fields of a VSHNPostgreSQL.
 | *`maintenance`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaasmaintenanceschedulespec[$$VSHNDBaaSMaintenanceScheduleSpec$$]__ | Maintenance contains settings to control the maintenance of an instance.
 | *`size`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaassizespec[$$VSHNDBaaSSizeSpec$$]__ | Size contains settings to control the sizing of a service.
 | *`network`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaasnetworkspec[$$VSHNDBaaSNetworkSpec$$]__ | Network contains any network related settings.
-| *`backup`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaasbackupspec[$$VSHNDBaaSBackupSpec$$]__ | Backup contains settings to control the backups of an instance.
+| *`backup`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlbackup[$$VSHNPostgreSQLBackup$$]__ | Backup contains settings to control the backups of an instance.
 |===
 
 
