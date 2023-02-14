@@ -33,6 +33,10 @@ include::user:ROOT:partial$shared-nav.adoc[]
 ** xref:vshn-managed/postgresql/create.adoc[]
 ** xref:vshn-managed/postgresql/delete.adoc[]
 ** xref:vshn-managed/postgresql/usage.adoc[]
+* xref:vshn-managed/redis/index.adoc[Redis]
+** xref:vshn-managed/redis/create.adoc[]
+** xref:vshn-managed/redis/delete.adoc[]
+** xref:vshn-managed/redis/usage.adoc[]
 
 .References
 * xref:references/clouds.adoc[]
