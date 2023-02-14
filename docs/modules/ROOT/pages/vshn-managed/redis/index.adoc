@@ -1,0 +1,12 @@
+= Redis by VSHN
+
+Welcome to the VSHN managed services in the VSHN Application Catalog.
+
+Please find more about the service description including pricing in our https://products.docs.vshn.ch/products/appcat/redis.html#_pricing[product portfolio].
+
+TIP: Get started with xref:vshn-managed/redis/create.adoc[Creating a Redis instance].
+
+== Links
+
+* https://redis.io/[Redis^]
+* xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnredis[VSHN Application Catalog API reference]
