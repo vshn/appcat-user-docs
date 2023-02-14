@@ -1,4 +1,4 @@
-= Managed by VSHN - PostgreSQL
+= PostgreSQL by VSHN
 
 Welcome to the VSHN managed services in the VSHN Application Catalog.
 
