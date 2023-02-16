@@ -26,17 +26,23 @@ spec:
       cpu: "600m"
       memory: "3500Mi"
       disk: "80Gi"
+    scheduling:
+      nodeSelector: appuio.io/node-class=plus <6>
   writeConnectionSecretToRef:
-    name: postgres-creds <6>
+    name: postgres-creds <7>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
-<5> PostgreSQL version
-<6> Specify custom PostgreSQL settings [optional]
-<7> Cpu, memmory and disk configurations
-<8> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
+<3> PostgreSQL version
+<4> Specify custom PostgreSQL settings [optional]
+<5> Cpu, memmory and disk configurations
+<6> Specify the node class for the instance [optional]
+<7> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[API Reference]
+
+
+NOTE: The PostgreSQL instance will be scheduled on the platforms default node class. You can override this by setting the `spec.parameters.scheduling.nodeSelector` field accordingly. For more information see https://docs.appuio.cloud/user/references/node-classes.html[Node Classes]
 
 === Sidecar Overhead and Fair-Use Policy
 
