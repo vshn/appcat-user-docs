@@ -27,7 +27,8 @@ spec:
       memory: "3500Mi"
       disk: "80Gi"
     scheduling:
-      nodeSelector: appuio.io/node-class=plus <6>
+      nodeSelector:
+        appuio.io/node-class: "plus" <6>
   writeConnectionSecretToRef:
     name: postgres-creds <7>
 ----
