@@ -44,7 +44,7 @@ NOTE: To get more information about all available configuration options, please 
 
 [source,bash]
 ----
-$  kubectl get vshnredis.vshn.appcat.vshn.io
+$  oc get vshnredis.vshn.appcat.vshn.io
 NAME              SYNCED   READY   CONNECTION-SECRET   AGE
 pgsql-app1-prod   True     True    redis-creds         3m32s
 ----

@@ -829,6 +829,7 @@ VSHNRedisParameters are the configurable fields of a VSHNRedis.
 | Field | Description
 | *`service`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredisservicespec[$$VSHNRedisServiceSpec$$]__ | Service contains Redis DBaaS specific properties
 | *`size`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredissizespec[$$VSHNRedisSizeSpec$$]__ | Size contains settings to control the sizing of a service.
+| *`tls`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredistlsspec[$$VSHNRedisTLSSpec$$]__ | TLS contains settings to control tls traffic of a service.
 |===
 
 
@@ -885,6 +886,26 @@ VSHNRedisSpec defines the desired state of a VSHNRedis.
 |===
 | Field | Description
 | *`parameters`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredisparameters[$$VSHNRedisParameters$$]__ | Parameters are the configurable fields of a VSHNRedis.
+|===
+
+
+
+
+[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredistlsspec"]
+=== VSHNRedisTLSSpec 
+
+VSHNRedisTLSSpec contains settings to control tls traffic of a service.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredisparameters[$$VSHNRedisParameters$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`enabled`* __boolean__ | TLSEnabled enables TLS traffic for the service
+| *`authClients`* __boolean__ | TLSAuthClients enables client authentication requirement
 |===
 
 
