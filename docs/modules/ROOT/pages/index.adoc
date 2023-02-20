@@ -8,7 +8,7 @@ IMPORTANT: At this time AppCat only serves selected https://portal.appuio.cloud/
 
 == Available Services
 
-The table below provides a quick overview of the various AppCat services and their availability across APPUiO Cloud zones and service providers.
+The table below provides a quick overview of the various AppCat services and their availability across APPUiO Cloud zones and service providers. To list all available services directly in the cluster check out our xref:apiserver/how-to.adoc[AppCat API Server] documentation page.
 
 [cols="1,1,1,1"]
 |===
@@ -85,3 +85,4 @@ Get started with xref:object-storage/create.adoc[Create an Object Storage Bucket
 
 Get started with xref:vshn-managed/postgresql/create.adoc[Create a PostgreSQL instance].
 Get started with xref:vshn-managed/redis/create.adoc[Create a Redis instance].
+
