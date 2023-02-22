@@ -29,7 +29,7 @@ spec:
       - /bin/sh
       - -c
     args:
-      - redis-cli -u rediss://$REDIS_USERNAME:$REDIS_PASSWORD@$REDIS_HOST:$REDIS_PORT --tls --cert /etc/redis-tls/tls.crt --key /etc/redis-tls/tls.key --cacert /etc/redis-tls/ca.crt -- INFO <1>
+      - redis-cli -u rediss://$REDIS_USERNAME:$REDIS_PASSWORD@$REDIS_HOST:$REDIS_PORT --tls --cert /etc/redis-tls/tls.crt --key /etc/redis-tls/tls.key --cacert /etc/redis-tls/ca.crt INFO <1>
     volumeMounts:
     - name: redis-tls-secrets <2>
       readOnly: true
