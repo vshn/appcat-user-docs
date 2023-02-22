@@ -29,10 +29,69 @@ spec:
       - /bin/sh
       - -c
     args:
-      - redis-cli -u redis://$REDIS_USERNAME:$REDIS_PASSWORD@$REDIS_HOST:$REDIS_PORT --insecure INFO <1>
+      - redis-cli -u rediss://$REDIS_USERNAME:$REDIS_PASSWORD@$REDIS_HOST:$REDIS_PORT --tls --cert /etc/redis-tls/tls.crt --key /etc/redis-tls/tls.key --cacert /etc/redis-tls/ca.crt -- INFO <1>
+    volumeMounts:
+    - name: redis-tls-secrets <2>
+      readOnly: true
+      mountPath: "/etc/redis-tls"
     envFrom:
       - secretRef:
           name: redis-creds-connection
+  volumes:
+  - name: redis-tls-secrets <2>
+    secret:
+      defaultMode: 0600
+      secretName: redis-creds-connection
   restartPolicy: Never
 ----
-<1> Uses redis-cli to print INFO into stdout. *Do not use --insecure in production. Only for demonstration purposes.*
+<1> Uses redis-cli to print INFO into stdout.
+<2> Mount the secret with the credentials to the pod, for TLS support (enabled and enforced by default)
+
+== Debug instance
+
+To check the status and potential issues or erros of the created instance, check the `status` field of the created object
+
+[source,bash]
+----
+$  oc describe vshnredis.vshn.appcat.vshn.io my-redis-example
+[...]
+Status:
+  Certificate Debug:
+    Last Transition Time:  2023-02-17T23:25:58Z
+    Reason:                Available
+    Status:                True
+    Type:                  Ready
+    Last Transition Time:  2023-02-17T23:25:58Z
+    Reason:                ReconcileSuccess
+    Status:                True
+    Type:                  Synced
+  Conditions:
+    Last Transition Time:  2023-02-17T23:25:57Z
+    Reason:                ReconcileSuccess
+    Status:                True
+    Type:                  Synced
+    Last Transition Time:  2023-02-17T23:26:07Z
+    Reason:                Available
+    Status:                True
+    Type:                  Ready
+  Connection Details:
+    Last Published Time:  2023-02-17T23:26:07Z
+  Local CA Debug:
+    Last Transition Time:  2023-02-17T23:25:59Z
+    Reason:                Available
+    Status:                True
+    Type:                  Ready
+    Last Transition Time:  2023-02-17T23:25:58Z
+    Reason:                ReconcileSuccess
+    Status:                True
+    Type:                  Synced
+  Namespace Debug:
+    Last Transition Time:  2023-02-17T23:25:59Z
+    Reason:                Available
+    Status:                True
+    Type:                  Ready
+    Last Transition Time:  2023-02-17T23:25:58Z
+    Reason:                ReconcileSuccess
+    Status:                True
+    Type:                  Synced
+----
