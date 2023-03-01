@@ -1,0 +1,78 @@
+= How to manage backups
+
+Our xref:apiserver/how-to.adoc[AppCat API Server] allows managing backups for VSHN PostgreSQL instances. You can `watch`, `list` or `get` a specific backup with all its details. Other methods such as `delete` will be added in a subsequent API Server version.
+
+== Get a Backup
+
+In order to get details of a specific backup, issue the following command:
+
+[source,bash]
+----
+kubectl get vshnpostgresbackups database-prod-pk8k4-2023-03-01-16-52-02 -oyaml
+----
+
+[source,yaml]
+----
+apiVersion: api.appcat.vshn.io/v1
+kind: VSHNPostgresBackup
+metadata:
+  name: database-prod-sxbmc-2023-02-24-15-08-43
+  namespace: vshn-postgresql-database-prod-sxbmc
+spec:
+  databaseInstance: "database-prod" <1>
+  backupInformation: <2>
+    hostname: pgsql-app1-prod-sxbmc-0
+    lsn:
+      end: "33554744"
+      start: "33554472"
+    pgData: /var/lib/postgresql/data
+    postgresVersion: "150001"
+    size:
+      compressed: 4382456
+      uncompressed: 23472079
+  process: <3>
+    failure: ""
+    jobPod: pgsql-app1-prod-sxbmc-backup-27954186-kwzwv
+    managedLifecycle: true
+    status: Completed
+    timing:
+      end: "2023-02-24T15:09:09.185039Z"
+      start: "2023-02-24T15:08:57.376546Z"
+      stored: "2023-02-24T15:09:09.568Z"
+----
+<1> The database instance for which this backup has been done
+<2> Details of this backup
+<3> The current process status of this backup
+
+NOTE: The above information is only a part of the total details of a backup
+
+== Watch Backups
+
+In order to watch backups for any changes, issue the following command:
+
+[source,bash]
+----
+kubectl get vshnpostgresbackups -w
+
+BACKUP NAME                                 DATABASE INSTANCE   STATUS    AGE
+database-prod-pk8k4-2023-03-01-16-52-02     database-prod       Running   38s
+database-prod-pk8k4-2023-03-01-16-52-02     database-prod       Completed 58s
+...
+----
+
+== List Backups
+
+In order to list backups, issue the following command:
+
+[source,bash]
+----
+kubectl get vshnpostgresbackups
+
+BACKUP NAME                                 DATABASE INSTANCE   STATUS    AGE
+database-prod-pk8k4-2023-03-01-16-52-02     database-prod       Running   38s
+database-dev-pk8k4-2023-03-01-16-52-11      database-dev        Completed 28s
+----
+
+NOTE: The list will show all backups from all instances in this namespace. In the example above there are two database instances with one backup each.
+
+
