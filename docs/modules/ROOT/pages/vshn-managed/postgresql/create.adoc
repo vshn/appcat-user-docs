@@ -46,10 +46,13 @@ spec:
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[API Reference]
 
-
 NOTE: The PostgreSQL instance will be scheduled on the platforms default node class. You can override this by setting the `spec.parameters.scheduling.nodeSelector` field accordingly. For more information see https://docs.appuio.cloud/user/references/node-classes.html[Node Classes]
 
-NOTE: By default the resource requests and limits are set to the values defined in `spec.parameters.size.cpu` and `spec.parameters.size.memory`. If you want to explicitely set resource requests that are lower than the limit you need to define them in `spec.parameters.size.requests`.
+=== Configuring resource requests
+
+By default the resource requests and limits are set to the values defined in `spec.parameters.size.cpu` and `spec.parameters.size.memory`. If you want to explicitely set resource requests that are lower than the limit you need to define them in `spec.parameters.size.requests`.
+
+IMPORTANT: We don't recommend setting the requests to a lowewr value then the limit, as this might negatively impact the performance of your instance.
 
 === Sidecar Overhead and Fair-Use Policy
 
