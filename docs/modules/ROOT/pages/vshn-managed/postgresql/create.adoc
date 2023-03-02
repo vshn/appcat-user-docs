@@ -39,7 +39,7 @@ spec:
 <2> The namespace where the object will be created
 <3> PostgreSQL version
 <4> Specify custom PostgreSQL settings [optional]
-<5> Cpu, memory and disk configurations
+<5> CPU, memory and disk configurations
 <6> CPU and memory requests configuration [optional]
 <7> Specify the node class for the instance [optional]
 <8> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
