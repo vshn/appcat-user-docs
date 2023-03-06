@@ -682,6 +682,24 @@ VSHNDBaaSSchedulingSpec contains settings to control the scheduling of an instan
 |===
 
 
+[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaassizerequestsspec"]
+=== VSHNDBaaSSizeRequestsSpec 
+
+VSHNDBaaSSizeRequestsSpec contains settings to control the resoure requests of a service.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaassizespec[$$VSHNDBaaSSizeSpec$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`cpu`* __string__ | CPU defines the amount of Kubernetes CPUs for an instance.
+| *`memory`* __string__ | Memory defines the amount of memory in units of bytes for an instance.
+|===
+
+
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaassizespec"]
 === VSHNDBaaSSizeSpec 
 
@@ -697,6 +715,7 @@ VSHNDBaaSSizeSpec contains settings to control the sizing of a service.
 | Field | Description
 | *`cpu`* __string__ | CPU defines the amount of Kubernetes CPUs for an instance.
 | *`memory`* __string__ | Memory defines the amount of memory in units of bytes for an instance.
+| *`requests`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaassizerequestsspec[$$VSHNDBaaSSizeRequestsSpec$$]__ | Requests defines CPU and memory requests for an instance
 | *`disk`* __string__ | Disk defines the amount of disk space for an instance.
 |===
 
@@ -756,6 +775,26 @@ VSHNPostgreSQLParameters are the configurable fields of a VSHNPostgreSQL.
 | *`scheduling`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaasschedulingspec[$$VSHNDBaaSSchedulingSpec$$]__ | Scheduling contains settings to control the scheduling of an instance.
 | *`network`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaasnetworkspec[$$VSHNDBaaSNetworkSpec$$]__ | Network contains any network related settings.
 | *`backup`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlbackup[$$VSHNPostgreSQLBackup$$]__ | Backup contains settings to control the backups of an instance.
+| *`restore`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlrestore[$$VSHNPostgreSQLRestore$$]__ | Restore contains settings to control the restore of an instance.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlrestore"]
+=== VSHNPostgreSQLRestore 
+
+VSHNPostgreSQLRestore contains restore specific parameters.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`claimName`* __string__ | ClaimName specifies the name of the instance you want to restore from. The claim has to be in the same namespace as this new instance.
+| *`backupName`* __string__ | BackupName is the name of the specific backup you want to restore.
+| *`recoveryTimeStamp`* __string__ | RecoveryTimeStamp an ISO 8601 date, that holds UTC date indicating at which point-in-time the database has to be restored. This is optional and if no PIT recovery is required, it can be left empty.
 |===
 
 
