@@ -626,6 +626,7 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 
 .Resource Types
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[$$VSHNPostgreSQL$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqllist[$$VSHNPostgreSQLList$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredis[$$VSHNRedis$$]
 
 
@@ -643,7 +644,7 @@ VSHNDBaaSMaintenanceScheduleSpec contains settings to control the maintenance of
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`dayOfWeek`* __string__ | DayOfWeek specifies at which weekday the maintenance is held place. Allowed values are [monday, tuesday, wednesday, thursday, friday, saturday, sunday, never]
+| *`dayOfWeek`* __string__ | DayOfWeek specifies at which weekday the maintenance is held place. Allowed values are [monday, tuesday, wednesday, thursday, friday, saturday, sunday]
 | *`timeOfDay`* __string__ | TimeOfDay for installing updates in UTC. Format: "hh:mm:ss".
 |===
 
@@ -725,7 +726,10 @@ VSHNDBaaSSizeSpec contains settings to control the sizing of a service.
 
 VSHNPostgreSQL is the API for creating Postgresql clusters.
 
-
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqllist[$$VSHNPostgreSQLList$$]
+****
 
 [cols="25a,75a", options="header"]
 |===
@@ -753,6 +757,24 @@ VSHNPostgreSQL is the API for creating Postgresql clusters.
 | Field | Description
 | *`schedule`* __string__ | Schedule how often should backup be made,example: '30 23 * * *' - each day at 23:30. Please note that this is a standard Cron syntax.
 | *`retention`* __integer__ | Retention specifies how many backups should be kept, example: 6
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqllist"]
+=== VSHNPostgreSQLList 
+
+VSHNPostgreSQLList defines a list of VSHNPostgreSQL
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `VSHNPostgreSQLList`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`items`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[$$VSHNPostgreSQL$$] array__ | 
 |===
 
 
