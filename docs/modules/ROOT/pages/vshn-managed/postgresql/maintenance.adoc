@@ -1,0 +1,24 @@
+= Scheduled Maintenance
+
+By default, there will be a security maintenance on Tuesday night.
+The day and time can be adjusted as follows.
+For more information what the security maintenance entails, please visit https://products.docs.vshn.ch/products/appcat/redis.html#_recurring_maintenance[the product description].
+
+
+.Example of PostgreSQL instance with custom maintenance
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    maintenance:
+      dayOfWeek: wednesday <1>
+      timeOfDay: '23:30:00' <2>
+----
+<1> The day when the maintenance should take place
+<2> The time when the maintenance should be started
+
