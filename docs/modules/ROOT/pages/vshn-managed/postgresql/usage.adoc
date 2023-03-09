@@ -5,15 +5,24 @@ The latter references the `postgres-creds` secret that will contain the access k
 
 [source,yaml]
 ----
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: app1-prod
+  labels:
+    name: app1-prod
+---
 apiVersion: vshn.appcat.vshn.io/v1
 kind: VSHNPostgreSQL
 metadata:
-  name: my-postgres-example
-  namespace: my-namespace
+  name: postgresql-prod
+  namespace: app1-prod
 spec:
   parameters:
     service:
       majorVersion: "15"
+    backup:
+      schedule: '0 22 * * *'
   writeConnectionSecretToRef:
     name: postgres-creds-connection
 ---
@@ -21,16 +30,130 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: postgres-client
+  namespace: app1-prod
 spec:
   containers:
   - name: postgres
     image: postgres:15
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
     command:
       - /bin/sh
       - -c
     args:
-      - PGPASSWORD=$POSTGRESQL_PASSWORD psql -h $POSTGRESQL_HOST -d $POSTGRESQL_DB -U $POSTGRESQL_USER -l
+      - PGPASSWORD=$POSTGRESQL_PASSWORD psql "sslmode=verify-ca sslrootcert=/etc/secret-volume/ca.crt host=$POSTGRESQL_HOST port=$POSTGRESQL_PORT dbname=$POSTGRESQL_DB" -U $POSTGRESQL_USER -l
     envFrom:
       - secretRef:
           name: postgres-creds-connection
-  restartPolicy: Never
+    volumeMounts:
+    - name: secret-volume
+      readOnly: true
+      mountPath: "/etc/secret-volume"
+  volumes:
+  - name: secret-volume
+    secret:
+      defaultMode: 0600
+      secretName: postgres-creds-connection
+  restartPolicy: OnFailure
+----
+
+== Debug instance by yourself
+
+You can easily check what happened during creation by checking the status fields. PostgreSQL by VSHN is composed from many resources, responsible for
+cluster creation, bucket creation, backups and uploads to cloud, each of those components might break or be misconfigured (f.e typo). You can check what happend by running
+
+```
+# example assumes reuse of names and namespace from example above
+kubectl -n app1-prod describe vshnpostgresqls.vshn.appcat.vshn.io postgresql-prod 
+```
+
+Example output looks as follows:
+
+```
+status:
+  certificateConditions:
+  - lastTransitionTime: "2023-03-09T10:07:41Z"
+    reason: Available
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-03-09T10:07:30Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  conditions:
+  - lastTransitionTime: "2023-03-09T10:07:24Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  - lastTransitionTime: "2023-03-09T10:07:24Z"
+    reason: Composite resource claim is waiting for composite resource to become Ready
+    status: "False"
+    type: Ready
+  instanceNamespace: app1-prod-dsft
+  localCAConditions:
+  - lastTransitionTime: "2023-03-09T10:07:41Z"
+    reason: Available
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-03-09T10:07:30Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  namespaceConditions:
+  - lastTransitionTime: "2023-03-09T10:07:40Z"
+    reason: Available
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-03-09T10:07:30Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  networkPolicyConditions:
+  - lastTransitionTime: "2023-03-09T10:07:46Z"
+    reason: Available
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-03-09T10:07:36Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  pgclusterConditions:
+  - lastTransitionTime: "2023-03-09T10:07:34Z"
+    reason: Creating
+    status: "False"
+    type: Ready
+  - lastTransitionTime: "2023-03-09T10:07:44Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  pgconfigConditions:
+  - lastTransitionTime: "2023-03-09T10:07:43Z"
+    reason: Available
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-03-09T10:07:32Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  profileConditions:
+  - lastTransitionTime: "2023-03-09T10:07:41Z"
+    reason: Available
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-03-09T10:07:31Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  secretConditions:
+  - lastTransitionTime: "2023-03-09T10:07:34Z"
+    message: 'observe failed: cannot resolve resource references: cannot get referenced
+      resource: secrets "postgresql-prod-secret" not found'
+    reason: ReconcileError
+    status: "False"
+    type: Synced
+```
+
+If there are any issues with your instance, they will be mentioned in the status fields.
+
