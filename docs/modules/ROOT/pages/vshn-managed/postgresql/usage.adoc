@@ -72,108 +72,87 @@ kubectl -n app1-prod describe vshnpostgresqls.vshn.appcat.vshn.io postgresql-pro
 Example output looks as follows:
 
 ```
-Status:
-  Certificate Debug:
-    Last Transition Time:  2023-02-13T15:11:44Z
-    Reason:                Available
-    Status:                True
-    Type:                  Ready
-    Last Transition Time:  2023-02-13T15:11:42Z
-    Reason:                ReconcileSuccess
-    Status:                True
-    Type:                  Synced
-  Conditions:
-    Last Transition Time:  2023-02-13T15:11:39Z
-    Reason:                ReconcileSuccess
-    Status:                True
-    Type:                  Synced
-    Last Transition Time:  2023-02-13T15:12:21Z
-    Reason:                Available
-    Status:                True
-    Type:                  Ready
-  Connection Details:
-    Last Published Time:  2023-02-13T15:12:21Z
-  Local CA Debug:
-    Last Transition Time:  2023-02-13T15:11:43Z
-    Reason:                Available
-    Status:                True
-    Type:                  Ready
-    Last Transition Time:  2023-02-13T15:11:41Z
-    Reason:                ReconcileSuccess
-    Status:                True
-    Type:                  Synced
-  Namespace Debug:
-    Last Transition Time:  2023-02-13T15:11:41Z
-    Reason:                Available
-    Status:                True
-    Type:                  Ready
-    Last Transition Time:  2023-02-13T15:11:41Z
-    Reason:                ReconcileSuccess
-    Status:                True
-    Type:                  Synced
-  Network Policy Debug:
-    Last Transition Time:  2023-02-13T15:11:45Z
-    Reason:                Available
-    Status:                True
-    Type:                  Ready
-    Last Transition Time:  2023-02-13T15:11:43Z
-    Reason:                ReconcileSuccess
-    Status:                True
-    Type:                  Synced
-  Pgcluster Debug:
-    Last Transition Time:  2023-02-13T15:11:48Z
-    Reason:                Available
-    Status:                True
-    Type:                  Ready
-    Last Transition Time:  2023-02-13T15:11:47Z
-    Reason:                ReconcileSuccess
-    Status:                True
-    Type:                  Synced
-  Pgconfig Debug:
-    Last Transition Time:  2023-02-13T15:11:44Z
-    Reason:                Available
-    Status:                True
-    Type:                  Ready
-    Last Transition Time:  2023-02-13T15:11:43Z
-    Reason:                ReconcileSuccess
-    Status:                True
-    Type:                  Synced
-  Profile Debug:
-    Last Transition Time:  2023-02-13T15:11:44Z
-    Reason:                Available
-    Status:                True
-    Type:                  Ready
-    Last Transition Time:  2023-02-13T15:11:42Z
-    Reason:                ReconcileSuccess
-    Status:                True
-    Type:                  Synced
-  s3BackupConfigDebug:
-    Last Transition Time:  2023-02-13T15:11:48Z
-    Reason:                Available
-    Status:                True
-    Type:                  Ready
-    Last Transition Time:  2023-02-13T15:11:46Z
-    Reason:                ReconcileSuccess
-    Status:                True
-    Type:                  Synced
-  s3BucketDebug:
-    Last Transition Time:  2023-02-13T15:11:42Z
-    Reason:                ReconcileSuccess
-    Status:                True
-    Type:                  Synced
-    Last Transition Time:  2023-02-13T15:11:47Z
-    Reason:                Available
-    Status:                True
-    Type:                  Ready
-  Secret Debug:
-    Last Transition Time:  2023-02-13T15:12:07Z
-    Reason:                ReconcileSuccess
-    Status:                True
-    Type:                  Synced
-    Last Transition Time:  2023-02-13T15:12:13Z
-    Reason:                Available
-    Status:                True
-    Type:                  Ready
+status:
+  certificateConditions:
+  - lastTransitionTime: "2023-03-09T10:07:41Z"
+    reason: Available
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-03-09T10:07:30Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  conditions:
+  - lastTransitionTime: "2023-03-09T10:07:24Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  - lastTransitionTime: "2023-03-09T10:07:24Z"
+    reason: Composite resource claim is waiting for composite resource to become Ready
+    status: "False"
+    type: Ready
+  instanceNamespace: app1-prod-dsft
+  localCAConditions:
+  - lastTransitionTime: "2023-03-09T10:07:41Z"
+    reason: Available
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-03-09T10:07:30Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  namespaceConditions:
+  - lastTransitionTime: "2023-03-09T10:07:40Z"
+    reason: Available
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-03-09T10:07:30Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  networkPolicyConditions:
+  - lastTransitionTime: "2023-03-09T10:07:46Z"
+    reason: Available
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-03-09T10:07:36Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  pgclusterConditions:
+  - lastTransitionTime: "2023-03-09T10:07:34Z"
+    reason: Creating
+    status: "False"
+    type: Ready
+  - lastTransitionTime: "2023-03-09T10:07:44Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  pgconfigConditions:
+  - lastTransitionTime: "2023-03-09T10:07:43Z"
+    reason: Available
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-03-09T10:07:32Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  profileConditions:
+  - lastTransitionTime: "2023-03-09T10:07:41Z"
+    reason: Available
+    status: "True"
+    type: Ready
+  - lastTransitionTime: "2023-03-09T10:07:31Z"
+    reason: ReconcileSuccess
+    status: "True"
+    type: Synced
+  secretConditions:
+  - lastTransitionTime: "2023-03-09T10:07:34Z"
+    message: 'observe failed: cannot resolve resource references: cannot get referenced
+      resource: secrets "postgresql-prod-secret" not found'
+    reason: ReconcileError
+    status: "False"
+    type: Synced
 ```
 
 If there are any issues with your instance, they will be mentioned in the status fields.
