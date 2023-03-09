@@ -7,50 +7,25 @@ If the old instance has already been deleted the backups are deleted as well.
 +
 [source,bash]
 ----
-kubectl -n postgres get vshnpostgresbackups
-BACKUP NAME                                 DATABASE INSTANCE     STATUS     AGE
-pgsql-app1-prod-pk8k4-2023-03-05-13-05-00   pgsql-app1-prod       Completed  38s
-pgsql-app1-dev-pk8k4-2023-03-01-16-52-11    pgsql-app1-dev        Failed     28s
+kubectl -n <your-namespace> get vshnpostgresbackups
+BACKUP NAME                                 DATABASE INSTANCE   STORED TIME               STATUS     AGE
+
+pgsql-app1-prod-pk8k4-2023-03-05-13-05-00   pgsql-app1-prod     2023-03-05T13:05:15.755Z  Completed  38s
+pgsql-app1-dev-pk8k4-2023-03-01-16-52-11    pgsql-app1-dev                                Failed     28s
 ----
 NOTE: The list will show all backups from all instances in this namespace. In the example above there are two database instances with one backup each.
 
-. Choose a specific backup and get its details.
-+
-[source,bash]
-----
-kubectl -n postgres get vshnpostgresbackups pgsql-app1-prod-pk8k4-2023-03-05-13-05-00 -oyaml
-----
-+
-[source,yaml]
-----
-apiVersion: api.appcat.vshn.io/v1
-kind: VSHNPostgresBackup
-metadata:
-  name: pgsql-app1-prod-pk8k4-2023-03-05-13-05-00
-  namespace: postgres
-status:
-  databaseInstance: pgsql-app1-prod
-  process:
-    failure: "" <1>
-    jobPod: pgsql-app1-prod-pk8k4-backup-27967024-6xjpq
-    status: Completed
-    timing:
-      end: "2023-03-05T13:05:15.61228Z"
-      start: "2023-03-05T13:05:09.519369Z"
-      stored: "2023-03-05T13:05:15.755Z"
-----
-<1> The failure message in case the job fails.
 
 . Apply the following object on your namespace, as specified by its YAML description.
 +
-.Example to restore a PostgreSQL instance
+.Example to restore a PostgreSQL instance. Make sure to update the namespace
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
 kind: VSHNPostgreSQL
 metadata:
   name: pgsql-app1-restore
-  namespace: postgres
+  namespace: <your-namespace>
 spec:
   parameters:
     restore:
@@ -74,5 +49,5 @@ spec:
 <1> The name of the instance you want to restore from
 <2> The backup name you want to restore
 <3> You need to specify that this is not a normal instance but a restored one
-
-. After the restore the new instance will behave exactly the same as any other PostgreSQL by VSHN instance.
++
+NOTE: The restore process is the same as ordering a new instance. The only difference is the backup information in `spec.parameters.restore` and `spec.compositionRef` objects.

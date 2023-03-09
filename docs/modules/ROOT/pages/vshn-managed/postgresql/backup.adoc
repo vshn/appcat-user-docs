@@ -1,0 +1,61 @@
+= Backups
+
+Backups are enabled by default and your PostgreSQL instance  has the following backup configuration.
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    ...
+    backup:
+      schedule: 0 22 * * * <1>
+    ...
+----
+<1> The time when the backup should be started.
+
+== Listing Backups
+
+You can always have an overview of all backups of your database instance.
+
+[source,bash]
+----
+kubectl -n <your-namespace> get vshnpostgresbackups
+BACKUP NAME                                 DATABASE INSTANCE   STORED TIME               STATUS     AGE
+pgsql-app1-prod-pk8k4-2023-03-05-13-05-00   pgsql-app1-prod     2023-03-05T13:05:15.755Z  Completed  38s
+pgsql-app1-dev-pk8k4-2023-03-01-16-52-11    pgsql-app1-dev                                Failed     28s
+----
+NOTE: The list will show all backups from all instances in this namespace. In the example above there are two database instances with one backup each.
+
+== Backup Details
+
+Get backup details of a chosen backup.
+[source,bash]
+----
+kubectl -n <your-namespace> get vshnpostgresbackups pgsql-app1-prod-pk8k4-2023-03-05-13-05-00 -oyaml
+----
+[source,yaml]
+----
+apiVersion: api.appcat.vshn.io/v1
+kind: VSHNPostgresBackup
+metadata:
+  name: pgsql-app1-prod-pk8k4-2023-03-05-13-05-00 <1>
+  namespace: <your-namespace>
+status:
+  databaseInstance: pgsql-app1-prod <2>
+  process:
+    failure: "" <3>
+    jobPod: pgsql-app1-prod-pk8k4-backup-27967024-6xjpq
+    status: Completed
+    timing:
+      end: "2023-03-05T13:05:15.61228Z"
+      start: "2023-03-05T13:05:09.519369Z"
+      stored: "2023-03-05T13:05:15.755Z" <4>
+----
+<1> The name of the backup.
+<2> The name of the database instance of this backup.
+<3> A failure message should the backup job have been failed.
+<4> The date and time when the backup is stored on the disk.
