@@ -41,8 +41,7 @@ include::user:ROOT:partial$shared-nav.adoc[]
 ** xref:vshn-managed/redis/delete.adoc[]
 ** xref:vshn-managed/redis/usage.adoc[]
 
-.AppCat API Server
-** xref:apiserver/how-to.adoc[]
+xref:apiserver/how-to.adoc[]
 
 .References
 * xref:references/clouds.adoc[]
