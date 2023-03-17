@@ -1,0 +1,9 @@
+= AppCat By VSHN Namespace Permissions
+
+Each AppCat Service By VSHN is deployed into its own namespace.
+Only following read permissions are granted to these namespaces:
+
+* Pod logs and status
+* Events
+* Services
+* Port-foward
