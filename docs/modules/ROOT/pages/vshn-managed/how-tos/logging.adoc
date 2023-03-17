@@ -1,0 +1,55 @@
+= How-To Access Service Logs
+
+== Via CLI [[viacli]]
+
+Each service provided by VSHN is deployed in its own namespace.
+The access to those namespaces is deliberately limited, for more information see xref:references/permissions.adoc[].
+
+It is possible to list and view the logs of all pods in those namespaces.
+
+.Get the instance namespaces
+[source,bash]
+----
+kubectl  get vshnredis claim -ojsonpath="{.status.instanceNamespace}"
+----
+
+Once the instance namespace is identified, it's possible to list the pods within it.
+
+.List pods in the namespace
+[source,bash]
+----
+oc -n vshn-redis-app1-prod-rt4w5 get pods
+NAME             READY   STATUS    RESTARTS   AGE
+redis-master-0   1/1     Running   0          105m
+----
+
+After the correct pod has been found the logs can be shown as usual via the CLI.
+
+.Print redis logs
+[source,bash]
+----
+oc -n vshn-redis-app1-prod-rt4w5 logs redis-master-0
+1:C 17 Mar 2023 10:21:19.049 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+1:C 17 Mar 2023 10:21:19.049 # Redis version=7.0.9, bits=64, commit=00000000, modified=0, pid=1, just started
+----
+
+== Via Kibana
+
+Please consult https://docs.appuio.cloud/user/how-to/access-logs-through-kibana.html[Access Logs Through Kibana] for general access to Kibana.
+
+In order to show the logs of a VSHN services, the namespace where it's deployed has to be determined first.
+Please consult the <<viacli>> section for a how-to.
+
+By default Kibana will show everything.
+To limit it to the instance namespace add a filter `kubernetes.namespace_name`.
+
+.Add a filter to Kibana
+image:addfilter.png[]
+
+.Filter for namespace
+image:namespacefilter.png[]
+
+Afterwards Kibana will show all logs for the given instance.
+
+.Filtered log messages
+image:instancelogs.png[]
