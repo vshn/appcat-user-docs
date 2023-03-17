@@ -27,9 +27,12 @@ $(crd_ref_docs_bin): export GOBIN = $(go_bin)
 $(crd_ref_docs_bin): | $(go_bin)
 	go install github.com/elastic/crd-ref-docs@latest
 
+crd_branch ?= master
+
 clone-crds:
 	rm -rf .work/crds
-	git clone --depth 1 https://github.com/vshn/component-appcat/ .work/crds
+	git clone https://github.com/vshn/component-appcat/ .work/crds
+	cd .work/crds && git checkout $(crd_branch)
 
 .PHONY: docs-generate-api
 docs-generate-api: $(crd_ref_docs_bin) ## Generates API reference documentation
