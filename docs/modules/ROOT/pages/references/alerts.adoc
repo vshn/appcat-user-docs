@@ -6,3 +6,10 @@ This happens if the AppCat service is running out of disk space.
 
 * Either reduce the amount of data
 * Or increase the allocated disk space for the instance
+
+== PostgreSQLMemoryCritical
+
+This indicates that the AppCat service is running out of memory.
+
+* Either reduce the load for the service
+* Or increase the memory size
