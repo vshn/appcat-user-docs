@@ -23,52 +23,23 @@ spec:
       pgSettings:
         timezone: Europe/Zurich <4>
     size: <5>
-      cpu: "600m"
-      memory: "3500Mi"
-      requests: <6>
-        cpu: "300m"
-        memory: "1000Mi"
-      disk: "80Gi"
+      plan: plus-4
     backup: <6>
       schedule: "30 23 * * *" 
       retention: 12
-    scheduling:
-      nodeSelector:
-        appuio.io/node-class: "plus" <7>
   writeConnectionSecretToRef:
-    name: postgres-creds <8>
+    name: postgres-creds <7>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
 <3> PostgreSQL version
 <4> Specify custom PostgreSQL settings [optional]
-<5> CPU, memory and disk configurations
+<5> Size of the PostgreSQL instance. See xref:vshn-managed/postgresql/plans.adoc[Plans and Sizing] for more information.
 <6> Backup configuration, `schedule` standard cron: https://en.wikipedia.org/wiki/Cron, `retention` field specify how many backups should be kept
-<7> Specify the node class for the instance [optional]
-<8> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
+<7> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[API Reference]
 
-NOTE: The PostgreSQL instance will be scheduled on the platforms default node class. You can override this by setting the `spec.parameters.scheduling.nodeSelector` field accordingly. For more information see https://docs.appuio.cloud/user/references/node-classes.html[Node Classes]
-
-=== Configuring resource requests
-
-By default the resource requests and limits are set to the values defined in `spec.parameters.size.cpu` and `spec.parameters.size.memory`. If you want to explicitely set resource requests that are lower than the limit you need to define them in `spec.parameters.size.requests`.
-
-IMPORTANT: We don't recommend setting the requests to a lowewr value then the limit, as this might negatively impact the performance of your instance.
-
-=== Sidecar Overhead and Fair-Use Policy
-
-Each PostgreSQL Standalone instance has following overhead:
-
-* CPU: 364m
-* Memory: 704Mi
-
-These are for various sidecar containers that run alongside the actual PostgreSQL instance.
-These containers handle connection pooling, metrics and other internal functionality.
-
-NOTE: Please be aware that https://docs.appuio.cloud/user/explanation/fair-use-policy.html[Fair Use Policy] applies to all AppCat Services by VSHN.
-When chosing memory and CPU for your instance please keep the overhead in mind.
 
 == Get information about your new PostgreSQL instance
 

@@ -718,6 +718,7 @@ VSHNDBaaSSizeSpec contains settings to control the sizing of a service.
 | *`memory`* __string__ | Memory defines the amount of memory in units of bytes for an instance.
 | *`requests`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaassizerequestsspec[$$VSHNDBaaSSizeRequestsSpec$$]__ | Requests defines CPU and memory requests for an instance
 | *`disk`* __string__ | Disk defines the amount of disk space for an instance.
+| *`plan`* __string__ | Plan is the name of the resource plan that defines the compute resources.
 |===
 
 
