@@ -674,6 +674,7 @@ VSHNDBaaSSchedulingSpec contains settings to control the scheduling of an instan
 .Appears In:
 ****
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredisparameters[$$VSHNRedisParameters$$]
 ****
 
 [cols="25a,75a", options="header"]
@@ -891,6 +892,7 @@ VSHNRedisParameters are the configurable fields of a VSHNRedis.
 | Field | Description
 | *`service`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredisservicespec[$$VSHNRedisServiceSpec$$]__ | Service contains Redis DBaaS specific properties
 | *`size`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredissizespec[$$VSHNRedisSizeSpec$$]__ | Size contains settings to control the sizing of a service.
+| *`scheduling`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshndbaasschedulingspec[$$VSHNDBaaSSchedulingSpec$$]__ | Scheduling contains settings to control the scheduling of an instance.
 | *`tls`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredistlsspec[$$VSHNRedisTLSSpec$$]__ | TLS contains settings to control tls traffic of a service.
 |===
 
@@ -931,6 +933,7 @@ VSHNRedisSizeSpec contains settings to control the sizing of a service.
 | *`memoryRequests`* __string__ | MemoryRequests defines the requests amount of memory in units of bytes for an instance.
 | *`memoryLimits`* __string__ | MemoryLimits defines the limits amount of memory in units of bytes for an instance.
 | *`disk`* __string__ | Disk defines the amount of disk space for an instance.
+| *`plan`* __string__ | Plan is the name of the resource plan that defines the compute resources.
 |===
 
 

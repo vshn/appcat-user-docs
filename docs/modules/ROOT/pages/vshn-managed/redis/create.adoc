@@ -20,23 +20,19 @@ spec:
   parameters:
     service:
       version: "7.0" <3>
-      redisSettings: |
+      redisSettings: | <4>
         activedefrag yes
     size: <5>
-      cpuRequests: "500m"
-      cpuLimits: "1000m"
-      memoryRequests: "500Mi"
-      memoryLimits: "1Gi"
-      disk: "80Gi"
+      plan: standard-2
   writeConnectionSecretToRef:
     name: redis-creds <6>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
-<5> Redis version
-<6> Specify custom Redis settings [optional]
-<7> Cpu, memory and disk configurations
-<8> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
+<3> Redis version
+<4> Specify custom Redis settings [optional]
+<5> Size of the Redis instance. See xref:vshn-managed/redis/plans.adoc[Plans and Sizing] for more information.
+<6> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnredis[API Reference]
 
