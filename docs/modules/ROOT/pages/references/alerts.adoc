@@ -13,3 +13,10 @@ This indicates that the AppCat service is running out of memory.
 
 * Either reduce the load for the service
 * Or increase the memory size
+
+== PostgreSQLConnectionsCritical
+
+The connections have been over 90% of the configure `max_connections` setting.
+
+* Either reduce the amount of connections to the database
+* Or increase the `max_connections` setting in your instance
