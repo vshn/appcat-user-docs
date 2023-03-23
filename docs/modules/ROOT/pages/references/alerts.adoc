@@ -1,15 +1,23 @@
 = User Alerts
 
-== PostgreSQLPersistentVolumeFillingUp
+== PersistentVolumeFillingUp
 
 This happens if the AppCat service is running out of disk space.
 
 * Either reduce the amount of data
 * Or increase the allocated disk space for the instance
 
-== PostgreSQLMemoryCritical
+== PersistentVolumeExpectedToFillUp
 
-This indicates that the AppCat service is running out of memory.
+This indicates that the AppCat service will run out of disk space in 4 days based on the current growth
+
+* Either reduce the amount of data
+* Or increase the allocated disk space for the instance
+
+== MemoryCritical
+
+The memory usage of the service is above 85%.
 
 * Either reduce the load for the service
 * Or increase the memory size
+
