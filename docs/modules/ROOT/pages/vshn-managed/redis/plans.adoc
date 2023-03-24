@@ -24,7 +24,7 @@ By default, the following plans are available on every cluster:
 [cols="25a,15,15,15", options="header"]
 |===
 | Plan | CPU | Memory | Disk 
-| standard-512m | 125m | 512Gi | 16Gi
+| standard-512m | 125m | 512Mi | 16Gi
 | standard-1 | 250m | 1Gi | 16Gi
 | standard-2 | 500m | 2Gi | 16Gi
 | standard-4 | 1 | 4Gi | 16Gi
