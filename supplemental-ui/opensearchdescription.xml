@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+<ShortName>VSHN AppCat Docs</ShortName>
+<Description>VSHN Application Catalog User Documentation</Description>
+<Tags>AppCat</Tags>
+<Url type="text/html" method="get" template="https://docs.appcat.ch/search.html?q={searchTerms}"/>
+<Image width="16" height="16">https://docs.appcat.ch/_/img/favicon-16x16.png</Image>
+<InputEncoding>UTF-8</InputEncoding>
+<SearchForm>https://docs.appcat.ch/search.html</SearchForm>
+</OpenSearchDescription>

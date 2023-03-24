@@ -7,13 +7,14 @@ site:
 content:
   sources:
     - url: https://github.com/appuio/appcat-docs.git
-      branches: master
+      branches: overhaul-deployment
       start_path: docs
       edit_url: "https://github.com/appuio/appcat-docs/edit/master/{path}"
 ui:
   bundle:
     url: https://github.com/vshn/antora-ui-default/releases/download/2.2.1/ui-bundle.zip
     snapshot: false
+  supplemental_files: ./supplemental-ui
 asciidoc:
   attributes:
     page-pagination: ""

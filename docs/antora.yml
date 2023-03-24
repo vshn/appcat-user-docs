@@ -1,6 +1,6 @@
-name: appcat
-title: VSHN AppCat Documentation
-version: master
+name: ROOT
+title: VSHN Application Catalog Documentation
+version: ~
 start_page: ROOT:index.adoc
 nav:
-- modules/ROOT/nav.adoc
+  - modules/ROOT/nav.adoc
