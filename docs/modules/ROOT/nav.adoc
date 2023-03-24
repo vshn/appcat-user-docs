@@ -1,5 +1,3 @@
-include::user:ROOT:partial$shared-nav.adoc[]
-
 .Object Storage Buckets
 * xref:object-storage/create.adoc[]
 * xref:object-storage/delete.adoc[]

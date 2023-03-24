@@ -4,7 +4,7 @@ AppCat allows DevOps engineers to quickly provision a PostgreSQL instance.
 
 == Create a PostgreSQL service
 
-include::user:ROOT:partial$login-in-terminal.adoc[]
+include::partial$login-in-terminal.adoc[]
 
 . Apply the following object on your namespace, as specified by its YAML description.
 +
@@ -61,4 +61,4 @@ $ oc get secrets postgres-creds -o yaml
 
 The output of the command above is a secret specification with the following structure:
 
-include::appcat:ROOT:page$references/secrets.adoc[tag=postgres]
+include::page$references/secrets.adoc[tag=postgres]
