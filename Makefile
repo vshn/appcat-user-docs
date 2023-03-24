@@ -17,7 +17,7 @@ else
 endif
 
 vale_cmd ?= $(engine_cmd) run $(engine_opts) --volume "$${PWD}"/docs/modules/ROOT/pages:/pages docker.io/vshn/vale:2.10.5.1 --minAlertLevel=error /pages
-preview_cmd ?= $(engine_cmd) run --rm --publish 35729:35729 --publish 2020:2020 --volume "${PWD}":/preview/antora docker.io/vshn/antora-preview:3.1.1.1 --antora=docs --style=appuio
+preview_cmd ?= $(engine_cmd) run --rm --publish 35729:35729 --publish 2020:2020 --volume "${PWD}":/preview/antora docker.io/vshn/antora-preview:3.1.2.3 --antora=docs --style=vshn
 antora_cmd  ?= $(engine_cmd) run $(engine_opts) --volume "$${PWD}":/antora docker.io/vshn/antora:3.1.2.2
 antora_opts ?= --cache-dir=.cache/antora
 

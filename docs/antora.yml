@@ -1,5 +1,5 @@
 name: ROOT
-title: VSHN Application Catalog Documentation
+title: VSHN AppCat Documentation
 version: ~
 start_page: ROOT:index.adoc
 nav:
