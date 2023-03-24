@@ -1,8 +1,25 @@
-docker_cmd  ?= docker
-docker_opts ?= --rm --tty --user "$$(id -u)"
+pages   := $(shell find . -type f -name '*.adoc')
+web_dir := ./_public
 
-vale_cmd ?= $(docker_cmd) run $(docker_opts) --volume "$${PWD}"/docs/modules/ROOT/pages:/pages docker.io/vshn/vale:2.10.5.1 --minAlertLevel=error /pages
-preview_cmd ?= $(docker_cmd) run --rm --publish 35729:35729 --publish 2020:2020 --volume "${PWD}":/preview/antora docker.io/vshn/antora-preview:3.1.1.1 --antora=docs --style=appuio
+# Determine whether to use podman
+#
+# podman currently fails when executing in GitHub actions on Ubuntu LTS 20.04,
+# so we never use podman if GITHUB_ACTIONS==true.
+use_podman := $(shell command -v podman 2>&1 >/dev/null; p="$$?"; \
+		if [ "$${GITHUB_ACTIONS}" != "true" ]; then echo "$$p"; else echo 1; fi)
+
+ifeq ($(use_podman),0)
+	engine_cmd  ?= podman
+	engine_opts ?= --rm --tty --userns=keep-id
+else
+	engine_cmd  ?= docker
+	engine_opts ?= --rm --tty --user "$$(id -u)"
+endif
+
+vale_cmd ?= $(engine_cmd) run $(engine_opts) --volume "$${PWD}"/docs/modules/ROOT/pages:/pages docker.io/vshn/vale:2.10.5.1 --minAlertLevel=error /pages
+preview_cmd ?= $(engine_cmd) run --rm --publish 35729:35729 --publish 2020:2020 --volume "${PWD}":/preview/antora docker.io/vshn/antora-preview:3.1.1.1 --antora=docs --style=appuio
+antora_cmd  ?= $(engine_cmd) run $(engine_opts) --volume "$${PWD}":/antora docker.io/vshn/antora:3.1.2.2
+antora_opts ?= --cache-dir=.cache/antora
 
 .PHONY: all
 all: preview
@@ -14,6 +31,13 @@ check:
 .PHONY: preview
 preview:
 	$(preview_cmd)
+
+.PHONY: html
+html:    $(web_dir)/index.html
+
+$(web_dir)/index.html: playbook.yml $(pages)
+	$(antora_cmd) $(antora_opts) $<
+
 
 ## CRD API doc generator
 
