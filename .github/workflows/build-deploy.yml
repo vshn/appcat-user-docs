@@ -2,6 +2,8 @@ name: Build and Deploy
 
 on:
   push:
+    branches:
+      - master
 
 env:
   APPUIO_PROJECT_NAME: vshn-docs

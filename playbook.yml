@@ -7,7 +7,7 @@ site:
 content:
   sources:
     - url: https://github.com/vshn/appcat-user-docs.git
-      branches: overhaul-deployment
+      branches: master
       start_path: docs
       edit_url: "https://github.com/vshn/appcat-user-docs/edit/master/{path}"
 ui:
