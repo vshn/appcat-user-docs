@@ -7,11 +7,11 @@
 
 .PostgreSQL
 * xref:exoscale-dbaas/postgresql/index.adoc[On Exoscale]
-** xref:exoscale-dbaas/postgresql/create.adoc[Order]
+** xref:exoscale-dbaas/postgresql/create.adoc[Create]
 ** xref:exoscale-dbaas/postgresql/delete.adoc[Delete]
 ** xref:exoscale-dbaas/postgresql/usage.adoc[Use]
 * On cloudscale.ch
-** xref:vshn-managed/postgresql/create.adoc[Order]
+** xref:vshn-managed/postgresql/create.adoc[Create]
 ** xref:vshn-managed/postgresql/delete.adoc[Delete]
 ** xref:vshn-managed/postgresql/usage.adoc[Use]
 ** xref:vshn-managed/postgresql/backup.adoc[Backup]
@@ -21,35 +21,35 @@
 
 .MySQL
 * xref:exoscale-dbaas/mysql/index.adoc[On Exoscale]
-** xref:exoscale-dbaas/mysql/create.adoc[Order]
+** xref:exoscale-dbaas/mysql/create.adoc[Create]
 ** xref:exoscale-dbaas/mysql/delete.adoc[Delete]
 ** xref:exoscale-dbaas/mysql/usage.adoc[Use]
 
 .Redis
 * xref:exoscale-dbaas/redis/index.adoc[On Exoscale]
-** xref:exoscale-dbaas/redis/create.adoc[Order]
+** xref:exoscale-dbaas/redis/create.adoc[Create]
 ** xref:exoscale-dbaas/redis/delete.adoc[Delete]
 ** xref:exoscale-dbaas/redis/usage.adoc[Use]
 * On cloudscale.ch
-** xref:vshn-managed/redis/create.adoc[Order]
+** xref:vshn-managed/redis/create.adoc[Create]
 ** xref:vshn-managed/redis/delete.adoc[Delete]
 ** xref:vshn-managed/redis/usage.adoc[Use]
 ** xref:vshn-managed/redis/plans.adoc[]
 
 .Kafka
 * xref:exoscale-dbaas/kafka/index.adoc[On Exoscale]
-** xref:exoscale-dbaas/kafka/create.adoc[Order]
+** xref:exoscale-dbaas/kafka/create.adoc[Create]
 ** xref:exoscale-dbaas/kafka/delete.adoc[Delete]
 ** xref:exoscale-dbaas/kafka/usage.adoc[Use]
 
 .OpenSearch
 * xref:exoscale-dbaas/opensearch/index.adoc[On Exoscale]
-** xref:exoscale-dbaas/opensearch/create.adoc[Order]
+** xref:exoscale-dbaas/opensearch/create.adoc[Create]
 ** xref:exoscale-dbaas/opensearch/delete.adoc[Delete]
 ** xref:exoscale-dbaas/opensearch/usage.adoc[Use]
 
 .Object Storage (S3)
-* xref:object-storage/create.adoc[Order]
+* xref:object-storage/create.adoc[Create]
 * xref:object-storage/delete.adoc[Delete]
 * xref:object-storage/usage.adoc[Use]
 * xref:object-storage/secrets.adoc[Connection Secrets]
