@@ -6,37 +6,35 @@ TIP: To get more information about the product, please consult our https://produ
 
 To get started, click xref:getting-started.adoc[here].
 
-[cols="1,2", options="header", stripes="even"]
+[cols="1,1,1", options="header", stripes="even"]
 |===
 |Service
-|Availability
+|Exoscale
+|cloudscale.ch
 
 |PostgreSQL
-|
-xref:exoscale-dbaas/postgresql/index.adoc[On Exoscale] +
-xref:vshn-managed/postgresql/create.adoc[On cloudscale.ch]
+|xref:exoscale-dbaas/postgresql/create.adoc[Create] and xref:exoscale-dbaas/postgresql/usage.adoc[use]
+|xref:vshn-managed/postgresql/create.adoc[Create] and xref:vshn-managed/postgresql/usage.adoc[use]
 
 |MySQL
+|xref:exoscale-dbaas/mysql/create.adoc[Create] and xref:exoscale-dbaas/mysql/usage.adoc[use]
 |
-xref:exoscale-dbaas/mysql/index.adoc[On Exoscale]
 
 |Redis
-|
-xref:exoscale-dbaas/redis/index.adoc[On Exoscale] +
-xref:vshn-managed/redis/create.adoc[On cloudscale.ch]
+|xref:exoscale-dbaas/redis/create.adoc[Create] and xref:exoscale-dbaas/redis/usage.adoc[use]
+|xref:vshn-managed/redis/create.adoc[Create] and xref:vshn-managed/redis/usage.adoc[use]
 
 |Kafka
+|xref:exoscale-dbaas/kafka/create.adoc[Create] and xref:exoscale-dbaas/kafka/usage.adoc[use]
 |
-xref:exoscale-dbaas/kafka/index.adoc[On Exoscale]
 
 |OpenSearch
+|xref:exoscale-dbaas/opensearch/create.adoc[Create] and xref:exoscale-dbaas/opensearch/usage.adoc[use]
 |
-xref:exoscale-dbaas/opensearch/index.adoc[On Exoscale]
 
-|Object Storage
-|
-xref:object-storage/create.adoc[On Exoscale] +
-xref:object-storage/create.adoc[On cloudscale.ch]
+|Object Storage (S3)
+|xref:object-storage/create.adoc[Create] and xref:object-storage/create.adoc[use]
+|xref:object-storage/create.adoc[Create] and xref:object-storage/create.adoc[use]
 
 |===
 

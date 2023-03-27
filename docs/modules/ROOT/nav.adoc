@@ -48,7 +48,7 @@
 ** xref:exoscale-dbaas/opensearch/delete.adoc[Delete]
 ** xref:exoscale-dbaas/opensearch/usage.adoc[Use]
 
-.Object Storage
+.Object Storage (S3)
 * xref:object-storage/create.adoc[Order]
 * xref:object-storage/delete.adoc[Delete]
 * xref:object-storage/usage.adoc[Use]
