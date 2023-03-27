@@ -6,10 +6,10 @@ site:
     google_analytics: "G-EK99C4QT4T"
 content:
   sources:
-    - url: https://github.com/appuio/appcat-docs.git
+    - url: https://github.com/vshn/appcat-user-docs.git
       branches: overhaul-deployment
       start_path: docs
-      edit_url: "https://github.com/appuio/appcat-docs/edit/master/{path}"
+      edit_url: "https://github.com/vshn/appcat-user-docs/edit/master/{path}"
 ui:
   bundle:
     url: https://github.com/vshn/antora-ui-default/releases/download/2.2.1/ui-bundle.zip
