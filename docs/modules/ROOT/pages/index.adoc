@@ -6,7 +6,7 @@ TIP: To get more information about the product, please consult our https://produ
 
 To get started, click xref:getting-started.adoc[here].
 
-[cols="1,1,1", options="header", stripes="even"]
+[cols="1s,1,1", options="header", stripes="even"]
 |===
 |Service
 |Exoscale
