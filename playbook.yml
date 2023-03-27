@@ -1,0 +1,33 @@
+site:
+  title: VSHN AppCat Documentation
+  url: https://docs.appcat.ch
+  start_page: ROOT::index.adoc
+  keys:
+    google_analytics: "G-EK99C4QT4T"
+content:
+  sources:
+    - url: https://github.com/vshn/appcat-user-docs.git
+      branches: master
+      start_path: docs
+      edit_url: "https://github.com/vshn/appcat-user-docs/edit/master/{path}"
+ui:
+  bundle:
+    url: https://github.com/vshn/antora-ui-default/releases/download/2.2.1/ui-bundle.zip
+    snapshot: false
+  supplemental_files: ./supplemental-ui
+asciidoc:
+  attributes:
+    page-pagination: ""
+    hide-uri-scheme: ""
+    experimental: ""
+    stem: ""
+    icons: font
+    kroki-server-url: https://kroki.vshn.net/
+    kroki-fetch-diagram: ""
+  extensions:
+    - asciidoctor-kroki
+output:
+  destinations:
+    - provider: fs
+      path: ./_public
+      clean: true

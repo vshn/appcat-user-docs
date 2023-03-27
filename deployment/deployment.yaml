@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appcat-user
+  labels:
+    app: appcat-user
+spec:
+  replicas: 1
+  revisionHistoryLimit: 5
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: appcat-user
+  template:
+    metadata:
+      labels:
+        app: appcat-user
+      annotations:
+        gitsha: GITSHAFULL
+    spec:
+      containers:
+        - name: site
+          image: SITEIMAGE
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              path: "/index.html"
+              port: 8080
+            periodSeconds: 60
+          livenessProbe:
+            httpGet:
+              path: "/index.html"
+              port: 8080
+            periodSeconds: 60
+            initialDelaySeconds: 5
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 1
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+        - name: search
+          image: SEARCHIMAGE
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              path: "/search?q=readinessProbe"
+              port: 3000
+            periodSeconds: 60
+          livenessProbe:
+            httpGet:
+              path: "/search?q=livenessProbe"
+              port: 3000
+            periodSeconds: 60
+            initialDelaySeconds: 5
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 1
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP

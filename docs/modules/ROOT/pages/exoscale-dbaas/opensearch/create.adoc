@@ -4,7 +4,7 @@ AppCat allows DevOps engineers to quickly provision an OpenSearch instance.
 
 == Create an OpenSearch service
 
-include::user:ROOT:partial$login-in-terminal.adoc[]
+include::partial$login-in-terminal.adoc[]
 
 . Apply the following object on your namespace, as specified by its YAML description.
 +
@@ -61,7 +61,7 @@ $ oc get secrets opensearch-creds -o yaml
 
 The output of the command above is a secret specification with the following structure:
 
-include::appcat:ROOT:page$references/secrets.adoc[tag=opensearch]
+include::page$references/secrets.adoc[tag=opensearch]
 
 NOTE: Exoscale OpenSearch supports only connection via TLS.
 The certificates are signed by Let's Encrypt, so no ca.crt file required.

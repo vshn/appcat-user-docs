@@ -1,8 +1,8 @@
-= VSHN Application Catalog Documentation
+= VSHN AppCat Documentation
 
-image::appuio-cloud.svg[APPUiO Cloud,400,link=https://www.appuio.ch/en/offering/cloud/]
+image::vshn-appcat.svg[VSHN AppCat,400,link=https://www.appcat.ch/]
 
-Welcome to the AppCat Documentation! AppCat allows DevOps engineers to quickly and safely provision cloud services.
+Welcome to the VSHN Application Catalog (AppCat) Documentation Documentation! AppCat allows DevOps engineers to quickly and safely provision cloud services.
 
 IMPORTANT: At this time AppCat only serves selected https://portal.appuio.cloud/zones[APPUiO Cloud zones]. Please check the availability of your desired feature in the tables below.
 

@@ -1,0 +1,28 @@
+Follow these steps to login to APPUiO Cloud on your terminal:
+
+. Login to the APPUiO Cloud console:
++
+[source,shell]
+--
+oc login --server=https://api.${zone}.appuio.cloud:6443
+--
++
+You can find the exact URL of your chosen zone in the https://portal.appuio.cloud/zones[APPUiO Cloud Portal].
++
+This command displays a URL on your terminal:
++
+[source,shell]
+--
+You must obtain an API token by visiting
+https://oauth-openshift.apps.${zone}.appuio.cloud/oauth/token/request
+--
+
+. Click on the link above and open it in your browser.
+. Click "Display token" and copy the login command shown as "Log in with this token"
+. Paste the `oc login` command on the terminal:
++
+[source,shell]
+--
+oc login --token=sha256~_xxxxxx_xxxxxxxxxxxxxxxxxxxxxx-xxxxxxxxxx-X \
+    --server=https://api.${zone}.appuio.cloud:6443
+--
