@@ -1,88 +1,43 @@
-= VSHN AppCat Documentation
+= VSHN AppCat User Documentation
 
 image::vshn-appcat.svg[VSHN AppCat,400,link=https://www.appcat.ch/]
 
-Welcome to the VSHN Application Catalog (AppCat) Documentation Documentation! AppCat allows DevOps engineers to quickly and safely provision cloud services.
+TIP: To get more information about the product, please consult our https://products.docs.vshn.ch/products/appcat/index.html[Product Documentation^].
 
-IMPORTANT: At this time AppCat only serves selected https://portal.appuio.cloud/zones[APPUiO Cloud zones]. Please check the availability of your desired feature in the tables below.
+To get started, click xref:getting-started.adoc[here].
 
-== Available Services
-
-The table below provides a quick overview of the various AppCat services and their availability across APPUiO Cloud zones and service providers. To list all available services directly in the cluster check out our xref:apiserver/how-to.adoc[AppCat API Server] documentation page.
-
-[cols="1,1,1,1"]
+[cols="1,2", options="header", stripes="even"]
 |===
-.2+.^h|Service
-.2+.^h|Service Provider
-2+^h| Zones
+|Service
+|Availability
 
-h|`cloudscale-lpg-2`
-h|`exoscale-ch-gva-2-0`
-
-
-.2+|Object Storage
-| cloudscale.ch
-^|✅
-^|✅
-
-|Exoscale
-^|✅
-^|✅
-
-|===
-
-Get started with xref:object-storage/create.adoc[Create an Object Storage Bucket].
-
-=== Exoscale DBaaS
-
-[cols="1,1,1",options="header"]
-|===
-|Database
-|cloudscale.ch
-|Exoscale
+|PostgreSQL
+|
+xref:exoscale-dbaas/postgresql/index.adoc[On Exoscale] +
+xref:vshn-managed/postgresql/create.adoc[On cloudscale.ch]
 
 |MySQL
-|❌
-|✅ xref:exoscale-dbaas/mysql/index.adoc[More infos]
-
-|PostgreSQL
-|❌
-|✅ xref:exoscale-dbaas/postgresql/index.adoc[More infos]
+|
+xref:exoscale-dbaas/mysql/index.adoc[On Exoscale]
 
 |Redis
-|❌
-|✅ xref:exoscale-dbaas/redis/index.adoc[More infos]
+|
+xref:exoscale-dbaas/redis/index.adoc[On Exoscale] +
+xref:vshn-managed/redis/create.adoc[On cloudscale.ch]
 
 |Kafka
-|❌
-|✅ xref:exoscale-dbaas/kafka/index.adoc[More infos]
+|
+xref:exoscale-dbaas/kafka/index.adoc[On Exoscale]
 
 |OpenSearch
-|❌
-|✅ xref:exoscale-dbaas/opensearch/index.adoc[More infos]
+|
+xref:exoscale-dbaas/opensearch/index.adoc[On Exoscale]
+
+|Object Storage
+|
+xref:object-storage/create.adoc[On Exoscale] +
+xref:object-storage/create.adoc[On cloudscale.ch]
 
 |===
 
-=== Managed by VSHN
-
-[cols="1,1,1",options="header"]
-|===
-|Database
-|cloudscale.ch
-|Exoscale
-
-
-|PostgreSQL
-|✅ xref:vshn-managed/postgresql/index.adoc[More infos]
-|❌
-
-|Redis
-|✅ xref:vshn-managed/redis/index.adoc[More infos]
-|❌
-
-
-|===
-
-Get started with xref:vshn-managed/postgresql/create.adoc[Create a PostgreSQL instance].
-Get started with xref:vshn-managed/redis/create.adoc[Create a Redis instance].
-
+AppCat stands for VSHN **App**lication **Cat**alog, sometimes also abbreviated as AppCatalog.

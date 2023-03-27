@@ -1,24 +1,17 @@
 = Getting Started
 
-TODO!!
+To get started with the VSHN Application Catalog:
 
+. Login to an APPUiO Cloud zone or an APPUiO Managed cluster
 
-Our AppCat API Server lets you query the state of AppCat services in the cluster. The operations can be performed through the oc command-line interface. Below is a list of available operations.
-
-== List
-To list all AppCat services available in the cluster issue the following command:
-
+. Query the available services with: 
++
 [source,bash]
 $ oc get appcat
 
-== Get
-To get the details of a specific AppCat service in the cluster issue the following command:
+. Lookup the linked documentation under "USER DOCS" to get started with the service
+
+You can also get details of a specific AppCat service in the cluster with the following command:
 
 [source,bash]
 $ oc get appcat $service-name -oyaml
-
-== Watch
-To get change notification of AppCat service in the cluster issue the following command:
-
-[source,bash]
-$ oc get appcat -w

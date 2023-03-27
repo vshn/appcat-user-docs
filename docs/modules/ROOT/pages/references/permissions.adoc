@@ -1,4 +1,4 @@
-= AppCat By VSHN Namespace Permissions
+= Namespace Permissions
 
 Each AppCat Service By VSHN is deployed into its own namespace.
 Only following read permissions are granted to these namespaces:
