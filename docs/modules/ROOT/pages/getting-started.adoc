@@ -1,0 +1,17 @@
+= Getting Started
+
+To get started with the VSHN Application Catalog:
+
+. Login to an APPUiO Cloud zone or an APPUiO Managed cluster
+
+. Query the available services with: 
++
+[source,bash]
+$ oc get appcat
+
+. Lookup the linked documentation under "USER DOCS" to get started with the service
+
+You can also get details of a specific AppCat service in the cluster with the following command:
+
+[source,bash]
+$ oc get appcat $service-name -oyaml

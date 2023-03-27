@@ -1,53 +1,58 @@
-.Object Storage Buckets
-* xref:object-storage/create.adoc[]
-* xref:object-storage/delete.adoc[]
-* xref:object-storage/secrets.adoc[]
-* xref:object-storage/usage.adoc[]
+.The Application Catalog
+* xref:getting-started.adoc[]
+* xref:references/crds.adoc[CRD Reference]
+* xref:references/secrets.adoc[Connection Secrets]
+* xref:references/cloud-zones.adoc[Cloud Zones]
+* xref:vshn-managed/how-tos/logging.adoc[Service Logs]
 
-.Exoscale DBaaS
-* xref:exoscale-dbaas/mysql/index.adoc[MySQL]
-** xref:exoscale-dbaas/mysql/create.adoc[]
-** xref:exoscale-dbaas/mysql/delete.adoc[]
-** xref:exoscale-dbaas/mysql/usage.adoc[]
-* xref:exoscale-dbaas/postgresql/index.adoc[PostgreSQL]
-** xref:exoscale-dbaas/postgresql/create.adoc[]
-** xref:exoscale-dbaas/postgresql/delete.adoc[]
-** xref:exoscale-dbaas/postgresql/usage.adoc[]
-* xref:exoscale-dbaas/redis/index.adoc[Redis]
-** xref:exoscale-dbaas/redis/create.adoc[]
-** xref:exoscale-dbaas/redis/delete.adoc[]
-** xref:exoscale-dbaas/redis/usage.adoc[]
-* xref:exoscale-dbaas/kafka/index.adoc[Kafka]
-** xref:exoscale-dbaas/kafka/create.adoc[]
-** xref:exoscale-dbaas/kafka/delete.adoc[]
-** xref:exoscale-dbaas/kafka/usage.adoc[]
-* xref:exoscale-dbaas/opensearch/index.adoc[OpenSearch]
-** xref:exoscale-dbaas/opensearch/create.adoc[]
-** xref:exoscale-dbaas/opensearch/delete.adoc[]
-** xref:exoscale-dbaas/opensearch/usage.adoc[]
-
-.Managed by VSHN
-* xref:vshn-managed/postgresql/index.adoc[PostgreSQL]
-** xref:vshn-managed/postgresql/create.adoc[]
-** xref:vshn-managed/postgresql/delete.adoc[]
-** xref:vshn-managed/postgresql/usage.adoc[]
-** xref:vshn-managed/postgresql/restore.adoc[]
-** xref:vshn-managed/postgresql/backup.adoc[]
+.PostgreSQL
+* xref:exoscale-dbaas/postgresql/index.adoc[On Exoscale]
+** xref:exoscale-dbaas/postgresql/create.adoc[Create]
+** xref:exoscale-dbaas/postgresql/delete.adoc[Delete]
+** xref:exoscale-dbaas/postgresql/usage.adoc[Use]
+* On cloudscale.ch
+** xref:vshn-managed/postgresql/create.adoc[Create]
+** xref:vshn-managed/postgresql/delete.adoc[Delete]
+** xref:vshn-managed/postgresql/usage.adoc[Use]
+** xref:vshn-managed/postgresql/backup.adoc[Backup]
+** xref:vshn-managed/postgresql/restore.adoc[Restore]
 ** xref:vshn-managed/postgresql/maintenance.adoc[]
 ** xref:vshn-managed/postgresql/plans.adoc[]
-* xref:vshn-managed/redis/index.adoc[Redis]
-** xref:vshn-managed/redis/create.adoc[]
-** xref:vshn-managed/redis/delete.adoc[]
-** xref:vshn-managed/redis/usage.adoc[]
+
+.MySQL
+* xref:exoscale-dbaas/mysql/index.adoc[On Exoscale]
+** xref:exoscale-dbaas/mysql/create.adoc[Create]
+** xref:exoscale-dbaas/mysql/delete.adoc[Delete]
+** xref:exoscale-dbaas/mysql/usage.adoc[Use]
+
+.Redis
+* xref:exoscale-dbaas/redis/index.adoc[On Exoscale]
+** xref:exoscale-dbaas/redis/create.adoc[Create]
+** xref:exoscale-dbaas/redis/delete.adoc[Delete]
+** xref:exoscale-dbaas/redis/usage.adoc[Use]
+* On cloudscale.ch
+** xref:vshn-managed/redis/create.adoc[Create]
+** xref:vshn-managed/redis/delete.adoc[Delete]
+** xref:vshn-managed/redis/usage.adoc[Use]
 ** xref:vshn-managed/redis/plans.adoc[]
-* How-To Guides
-** xref:vshn-managed/how-tos/logging.adoc[]
 
-.AppCat API Server
-** xref:apiserver/how-to.adoc[]
+.Kafka
+* xref:exoscale-dbaas/kafka/index.adoc[On Exoscale]
+** xref:exoscale-dbaas/kafka/create.adoc[Create]
+** xref:exoscale-dbaas/kafka/delete.adoc[Delete]
+** xref:exoscale-dbaas/kafka/usage.adoc[Use]
 
-.References
-* xref:references/clouds.adoc[]
-* xref:references/crds.adoc[]
-* xref:references/secrets.adoc[]
-* xref:references/permissions.adoc[]
+.OpenSearch
+* xref:exoscale-dbaas/opensearch/index.adoc[On Exoscale]
+** xref:exoscale-dbaas/opensearch/create.adoc[Create]
+** xref:exoscale-dbaas/opensearch/delete.adoc[Delete]
+** xref:exoscale-dbaas/opensearch/usage.adoc[Use]
+
+.Object Storage (S3)
+* xref:object-storage/create.adoc[Create]
+* xref:object-storage/delete.adoc[Delete]
+* xref:object-storage/usage.adoc[Use]
+* xref:object-storage/secrets.adoc[Connection Secrets]
+
+.Advanced
+* xref:references/permissions.adoc[Namespace Permissions]
