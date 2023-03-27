@@ -4,10 +4,11 @@ on:
   push:
 
 env:
-  REGISTRY: registry.cloudscale-lpg-2.appuio.cloud
-  PROJECT_NAME: vshn-docs
-  SITE_IMAGE: registry.cloudscale-lpg-2.appuio.cloud/vshn-docs/appcat-user-main:latest
-  SEARCH_IMAGE: registry.cloudscale-lpg-2.appuio.cloud/vshn-docs/appcat-user-search:latest
+  APPUIO_PROJECT_NAME: vshn-docs
+  IMAGE_NAME: appcat-user-docs
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  REGISTRY_USER: ${{ github.actor }}
+  REGISTRY_PASSWORD: ${{ github.token }}
 
 jobs:
   build:
@@ -17,35 +18,42 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Build Antora Site
+        id: build_site
         uses: redhat-actions/buildah-build@v2
         with:
-          tags: ${{ env.SITE_IMAGE }}
+          image: ${{ env.IMAGE_NAME }}-site
+          tags: latest
           containerfiles: |
             ./deployment/main/Containerfile
+          oci: true
 
       - name: Build Antora Search Index
+        id: build_search
         uses: redhat-actions/buildah-build@v2
         with:
-          tags: ${{ env.SEARCH_IMAGE }}
+          image: ${{ env.IMAGE_NAME }}-search
+          tags: latest
           containerfiles: |
             ./deployment/search/Containerfile
-
-      - name: Log in to APPUiO Cloud registry
-        uses: redhat-actions/podman-login@v1
-        with:
-          username: serviceaccount
-          password: ${{ secrets.REGISTRY_PASSWORD }}
-          registry: ${{ env.REGISTRY }}
+          oci: true
 
       - name: Push Antora Site Image
         uses: redhat-actions/push-to-registry@v2
         with:
-          tags: ${{ env.SITE_IMAGE }}
+          image: ${{ steps.build_site.outputs.image }}
+          tags: ${{ steps.build_site.outputs.tags }}
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
 
       - name: Push Search Image
         uses: redhat-actions/push-to-registry@v2
         with:
-          tags: ${{ env.SEARCH_IMAGE }}
+          image: ${{ steps.build_search.outputs.image }}
+          tags: ${{ steps.build_search.outputs.tags }}
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ env.REGISTRY_USER }}
+          password: ${{ env.REGISTRY_PASSWORD }}
 
   deploy:
     name: Deploy Antora Site 🚀
@@ -64,9 +72,11 @@ jobs:
         with:
           openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
-          namespace: ${{ env.PROJECT_NAME }}
+          namespace: ${{ env.APPUIO_PROJECT_NAME }}
 
       - name: Apply Manifests
         run: |
-          sed -i "s/GITSHAFULL/$GITHUB_SHA/" deployment/deployment.yaml
+          sed -i "s#SITEIMAGE#ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}-site:latest#" deployment/deployment.yaml
+          sed -i "s#SEARCHIMAGE#ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}-search:latest#" deployment/deployment.yaml
+          sed -i "s#GITSHAFULL#$GITHUB_SHA#" deployment/deployment.yaml
           oc apply -f deployment/

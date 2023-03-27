@@ -7,6 +7,8 @@ metadata:
 spec:
   replicas: 1
   revisionHistoryLimit: 5
+  strategy:
+    type: Recreate
   selector:
     matchLabels:
       app: appcat-user
@@ -18,12 +20,9 @@ spec:
         gitsha: GITSHAFULL
     spec:
       containers:
-        - name: appcat-user-main
-          image: registry.cloudscale-lpg-2.appuio.cloud/vshn-docs/appcat-user-main:latest
+        - name: site
+          image: SITEIMAGE
           imagePullPolicy: Always
-          env:
-            - name: GITSHA
-              value: GITSHAFULL
           readinessProbe:
             httpGet:
               path: "/index.html"
@@ -43,8 +42,8 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-        - name: appcat-user-search
-          image: registry.cloudscale-lpg-2.appuio.cloud/vshn-docs/appcat-user-search:latest
+        - name: search
+          image: SEARCHIMAGE
           imagePullPolicy: Always
           readinessProbe:
             httpGet:
