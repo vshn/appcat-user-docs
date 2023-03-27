@@ -1,3 +1,27 @@
+.TODO
+* How to structure into Brokered vs VSHN?
+* How to structure into references vs usage?
+
+.Application Catalog
+* xref:getting-started.adoc[]
+
+.Services by VSHN
+* xref:vshn-managed/postgresql/index.adoc[PostgreSQL]
+** xref:vshn-managed/postgresql/create.adoc[]
+** xref:vshn-managed/postgresql/delete.adoc[]
+** xref:vshn-managed/postgresql/usage.adoc[]
+** xref:vshn-managed/postgresql/restore.adoc[]
+** xref:vshn-managed/postgresql/backup.adoc[]
+** xref:vshn-managed/postgresql/maintenance.adoc[]
+** xref:vshn-managed/postgresql/plans.adoc[]
+* xref:vshn-managed/redis/index.adoc[Redis]
+** xref:vshn-managed/redis/create.adoc[]
+** xref:vshn-managed/redis/delete.adoc[]
+** xref:vshn-managed/redis/usage.adoc[]
+** xref:vshn-managed/redis/plans.adoc[]
+* How-To Guides
+** xref:vshn-managed/how-tos/logging.adoc[]
+
 .Object Storage Buckets
 * xref:object-storage/create.adoc[]
 * xref:object-storage/delete.adoc[]
@@ -26,28 +50,12 @@
 ** xref:exoscale-dbaas/opensearch/delete.adoc[]
 ** xref:exoscale-dbaas/opensearch/usage.adoc[]
 
-.Managed by VSHN
-* xref:vshn-managed/postgresql/index.adoc[PostgreSQL]
-** xref:vshn-managed/postgresql/create.adoc[]
-** xref:vshn-managed/postgresql/delete.adoc[]
-** xref:vshn-managed/postgresql/usage.adoc[]
-** xref:vshn-managed/postgresql/restore.adoc[]
-** xref:vshn-managed/postgresql/backup.adoc[]
-** xref:vshn-managed/postgresql/maintenance.adoc[]
-** xref:vshn-managed/postgresql/plans.adoc[]
-* xref:vshn-managed/redis/index.adoc[Redis]
-** xref:vshn-managed/redis/create.adoc[]
-** xref:vshn-managed/redis/delete.adoc[]
-** xref:vshn-managed/redis/usage.adoc[]
-** xref:vshn-managed/redis/plans.adoc[]
-* How-To Guides
-** xref:vshn-managed/how-tos/logging.adoc[]
-
 .AppCat API Server
 ** xref:apiserver/how-to.adoc[]
 
 .References
-* xref:references/clouds.adoc[]
-* xref:references/crds.adoc[]
-* xref:references/secrets.adoc[]
-* xref:references/permissions.adoc[]
+* xref:references/clouds.adoc[Cloud Service Providers]
+* xref:references/crds.adoc[CRDs]
+* xref:references/secrets.adoc[Connection Secrets]
+* xref:references/permissions.adoc[Namespace Permissions]
+* xref:references/apiserver.adoc[API Server]
