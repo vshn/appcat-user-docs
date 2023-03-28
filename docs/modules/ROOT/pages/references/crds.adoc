@@ -114,7 +114,7 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 .Resource Types
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalekafka[$$ExoscaleKafka$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalemysql[$$ExoscaleMySQL$$]
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleopensearchservicespec[$$ExoscaleOpenSearchServiceSpec$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleopensearch[$$ExoscaleOpenSearch$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscalepostgresql[$$ExoscalePostgreSQL$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleredis[$$ExoscaleRedis$$]
 
@@ -393,6 +393,22 @@ ExoscaleMySQL is the API for creating MySQL on Exoscale.
 
 
 
+[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleopensearch"]
+=== ExoscaleOpenSearch 
+
+ExoscaleOpenSearch is the api for creating OpenSearch on Exoscale
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `exoscale.appcat.vshn.io/v1`
+| *`kind`* __string__ | `ExoscaleOpenSearch`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleopensearchspec[$$ExoscaleOpenSearchSpec$$]__ | Spec defines the desired state of an ExoscaleOpenSearch
+|===
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleopensearchparameters"]
@@ -429,8 +445,6 @@ ExoscaleMySQL is the API for creating MySQL on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`apiVersion`* __string__ | `exoscale.appcat.vshn.io/v1`
-| *`kind`* __string__ | `ExoscaleOpenSearchServiceSpec`
 | *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
 | *`majorVersion`* __string__ | MajorVersion contains the version for OpenSearch. Currently only "2" and "1" is supported. Leave it empty to always get the latest supported version.
 | *`opensearchSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | OpenSearchSettings contains additional OpenSearch settings.
