@@ -10,5 +10,5 @@ $ oc delete exoscalemysql my-mysql-example
 [IMPORTANT]
 .Non-reversible operation
 ====
-If you delete the `ExoscaleMySQL` object from the cluster, it will delete the it together with all of its data!
+If you delete the `ExoscaleMySQL` object from the cluster, it will be deleted together with all of its data!
 ====

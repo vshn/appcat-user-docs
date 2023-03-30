@@ -10,5 +10,5 @@ $ oc delete vshnpostgresqls.vshn.appcat.vshn.io my-postgres-example
 [IMPORTANT]
 .Non-reversible operation
 ====
-If you delete the `VSHNPostgreSQL` object from the cluster, it will delete the it together with all of its data!
+If you delete the `VSHNPostgreSQL` object from the cluster, it will be deleted together with all of its data!
 ====
