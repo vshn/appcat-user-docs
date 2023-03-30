@@ -1,6 +1,6 @@
 = Delete a PostgreSQL service
 
-If you do not need your PostgreSQL service anymore, you can delete it in the same way as you would with any other object in your cluster:
+If you do not need a PostgreSQL service anymore, you can delete it in the same way as you would with any other object in your cluster:
 
 [source,bash]
 ----

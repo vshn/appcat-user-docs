@@ -1,4 +1,4 @@
-= How to use an AppCat MySQL instance
+= Using a MySQL service
 
 The YAML code below creates two objects: a `ExoscaleMySQL` instance and a pod accessing it to show information about the instance.
 The latter references the `mysql-creds` secret that will contain the access keys required to connect to the instance.
@@ -20,7 +20,7 @@ spec:
     size:
       plan: hobbyist-2
   writeConnectionSecretToRef:
-    name: mysql-creds
+    name: mysql-creds # <1>
 ---
 apiVersion: v1
 kind: Pod
@@ -37,5 +37,8 @@ spec:
       - mysql --host=$MYSQL_HOST --user=$MYSQL_USER --port=$MYSQL_PORT --password=$MYSQL_PASSWORD -e 'SHOW TABLES' $MYSQL_DB
     envFrom:
       - secretRef:
-          name: mysql-creds
+          name: mysql-creds # <2>
 ----
+
+<1> The secret will be created by the operator and will contain the access keys to connect to the instance.
+<2> The pod will use the secret to connect to the instance.
