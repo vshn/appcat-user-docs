@@ -12,21 +12,21 @@ AppCat allows DevOps engineers to quickly provision a PostgreSQL instance.
 apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscalePostgreSQL
 metadata:
-  name: my-postgres-example <1>
-  namespace: my-namespace <2>
+  name: my-postgres-example # <1>
+  namespace: my-namespace # <2>
 spec:
   parameters:
     backup:
-      timeOfDay: "12:00:00" <3>
+      timeOfDay: "12:00:00" # <3>
     service:
-      zone: ch-dk-2 <4>
-      majorVersion: "14" <5>
+      zone: ch-dk-2 # <4>
+      majorVersion: "14" # <5>
       pgSettings:
-        timezone: Europe/Zurich <6>
+        timezone: Europe/Zurich # <6>
     size:
-      plan: hobbyist-2 <7>
+      plan: hobbyist-2 # <7>
   writeConnectionSecretToRef:
-    name: postgres-creds <8>
+    name: postgres-creds # <8>
 ----
 <1> Instance name
 <2> The namespace where the object will be created

@@ -4,8 +4,6 @@ AppCat allows DevOps engineers to quickly provision a PostgreSQL instance.
 
 == Create a PostgreSQL service
 
-include::partial$login-in-terminal.adoc[]
-
 . Apply the following object on your namespace, as specified by its YAML description.
 +
 .Example to create a PostgreSQL instance
@@ -14,21 +12,21 @@ include::partial$login-in-terminal.adoc[]
 apiVersion: vshn.appcat.vshn.io/v1
 kind: VSHNPostgreSQL
 metadata:
-  name: pgsql-app1-prod <1>
-  namespace: prod-app <2>
+  name: pgsql-app1-prod # <1>
+  namespace: prod-app # <2>
 spec:
   parameters:
     service:
-      majorVersion: "15" <3>
+      majorVersion: "15" # <3>
       pgSettings:
-        timezone: Europe/Zurich <4>
-    size: <5>
+        timezone: Europe/Zurich # <4>
+    size: # <5>
       plan: plus-4
-    backup: <6>
-      schedule: "30 23 * * *" 
+    backup: # <6>
+      schedule: "30 23 * * *"
       retention: 12
   writeConnectionSecretToRef:
-    name: postgres-creds <7>
+    name: postgres-creds # <7>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
@@ -41,7 +39,7 @@ spec:
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[API Reference]
 
 
-== Get information about your new PostgreSQL instance
+== Inspect your new PostgreSQL service
 
 [source,bash]
 ----
@@ -52,7 +50,7 @@ pgsql-app1-prod   True     True    postgres-creds      6m14s
 
 When you see `True` in the READY column, it means the instance is provisioned and ready to use.
 
-== Get the credentials to access the instance
+== Access the service from your application
 
 [source,bash]
 ----
