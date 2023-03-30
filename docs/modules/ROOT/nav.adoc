@@ -10,7 +10,7 @@
 ** xref:exoscale-dbaas/postgresql/create.adoc[Create]
 ** xref:exoscale-dbaas/postgresql/delete.adoc[Delete]
 ** xref:exoscale-dbaas/postgresql/usage.adoc[Use]
-* On cloudscale.ch
+* xref:vshn-managed/postgresql/index.adoc[On cloudscale.ch]
 ** xref:vshn-managed/postgresql/create.adoc[Create]
 ** xref:vshn-managed/postgresql/delete.adoc[Delete]
 ** xref:vshn-managed/postgresql/usage.adoc[Use]
@@ -30,7 +30,7 @@
 ** xref:exoscale-dbaas/redis/create.adoc[Create]
 ** xref:exoscale-dbaas/redis/delete.adoc[Delete]
 ** xref:exoscale-dbaas/redis/usage.adoc[Use]
-* On cloudscale.ch
+* xref:vshn-managed/redis/index.adoc[On cloudscale.ch]
 ** xref:vshn-managed/redis/create.adoc[Create]
 ** xref:vshn-managed/redis/delete.adoc[Delete]
 ** xref:vshn-managed/redis/usage.adoc[Use]
@@ -53,6 +53,7 @@
 * xref:object-storage/delete.adoc[Delete]
 * xref:object-storage/usage.adoc[Use]
 * xref:object-storage/secrets.adoc[Connection Secrets]
+* xref:object-storage/references.adoc[Reference Documentation]
 
 .Advanced
 * xref:references/permissions.adoc[Namespace Permissions]

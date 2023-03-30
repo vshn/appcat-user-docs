@@ -16,9 +16,10 @@ else
 	engine_opts ?= --rm --tty --user "$$(id -u)"
 endif
 
-vale_cmd ?= $(engine_cmd) run $(engine_opts) --volume "$${PWD}"/docs/modules/ROOT/pages:/pages docker.io/vshn/vale:2.10.5.1 --minAlertLevel=error /pages
-preview_cmd ?= $(engine_cmd) run --rm --publish 35729:35729 --publish 2020:2020 --volume "${PWD}":/preview/antora docker.io/vshn/antora-preview:3.1.2.3 --antora=docs --style=vshn
-antora_cmd  ?= $(engine_cmd) run $(engine_opts) --volume "$${PWD}":/antora docker.io/vshn/antora:3.1.2.2
+orphans_cmd ?= $(engine_cmd) run $(engine_opts) --volume "$${PWD}:/antora" ghcr.io/vshn/antora-nav-orphans-checker:1.1 -antoraPath /antora/docs
+vale_cmd ?= $(engine_cmd) run $(engine_opts) --volume "$${PWD}"/docs/modules/ROOT/pages:/pages --workdir /pages ghcr.io/vshn/vale:2.15.5 --minAlertLevel=error .
+preview_cmd ?= $(engine_cmd) run --rm --publish 35729:35729 --publish 2020:2020 --volume "${PWD}":/preview/antora ghcr.io/vshn/antora-preview:3.1.2.3 --antora=docs --style=vshn
+antora_cmd  ?= $(engine_cmd) run $(engine_opts) --volume "$${PWD}":/antora ghcr.io/vshn/antora:3.1.2.2
 antora_opts ?= --cache-dir=.cache/antora
 
 .PHONY: all
@@ -26,6 +27,7 @@ all: preview
 
 .PHONY: check
 check:
+	$(orphans_cmd)
 	$(vale_cmd)
 
 .PHONY: preview

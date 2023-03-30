@@ -1,6 +1,6 @@
 = Cloud References
 
-This page contains detailed information about the various supported clouds.
+This page contains detailed information about various supported cloud providers.
 
 == Regions
 
