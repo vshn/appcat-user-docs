@@ -51,8 +51,8 @@
 .Object Storage (S3)
 * xref:object-storage/create.adoc[Creation]
 * xref:object-storage/usage.adoc[Usage]
-* xref:object-storage/delete.adoc[Deletion]
 * xref:object-storage/secrets.adoc[Connection Secrets]
+* xref:object-storage/delete.adoc[Deletion]
 * xref:object-storage/references.adoc[Reference Documentation]
 
 .Advanced

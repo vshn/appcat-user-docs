@@ -1,8 +1,8 @@
-= How to Use an AppCat Object Bucket
+= Using an AppCat Object Bucket
 
 == Usage Example within an APPUiO Cloud Zone
 
-Object Buckets are https://en.wikipedia.org/wiki/Amazon_S3[Amazon S3] compatible, and they have a wide range of applications. In the example below we use it as a storage container for backups triggered using https://k8up.io/[K8up], the Open Source Kubernetes backup operator.
+Object Buckets are https://en.wikipedia.org/wiki/Amazon_S3[Amazon S3^] compatible, and they have a wide range of applications. In the example below we use it as a storage container for backups triggered using https://k8up.io/[K8up], the Open Source Kubernetes backup operator.
 
 The YAML code below creates two objects: an `ObjectBucket` and a K8up `Backup`, the latter referencing the `objectbucket-creds` secret that will contain the access keys required to write to the bucket.
 
@@ -31,39 +31,39 @@ spec:
       name: backup-repo
       key: password
     s3:
-      endpoint: https://objects.rma.cloudscale.ch <1>
-      bucket: k8up-backup-sample-name <1>
+      endpoint: https://objects.rma.cloudscale.ch # <1>
+      bucket: k8up-backup-sample-name # <1>
       accessKeyIDSecretRef:
         name: objectbucket-creds
-        key: AWS_ACCESS_KEY_ID <2>
+        key: AWS_ACCESS_KEY_ID # <2>
       secretAccessKeySecretRef:
         name: objectbucket-creds
-        key: AWS_SECRET_ACCESS_KEY <2>
+        key: AWS_SECRET_ACCESS_KEY # <2>
 ----
 <1> Values copied from the secret's `ENDPOINT` and `BUCKET` fields.
 <2> Directly referencing the fields in the generated secret `objectbucket-creds`.
 
-== List of Clients and Libraries
+== Clients and Libraries
 
 If you want to inspect the object buckets or access it outside of APPUiO you can use one of these client tools:
 
-* https://cyberduck.io/
-* https://rclone.org/
-* https://s3tools.org/s3cmd
-* https://filezillapro.com/docs/v3/cloud/configure-filezilla-pro-to-connect-to-s3/
+* https://cyberduck.io[^]
+* https://rclone.org[^]
+* https://s3tools.org/s3cmd[^]
+* https://filezillapro.com/docs/v3/cloud/configure-filezilla-pro-to-connect-to-s3[^]
 
 The following client libraries are a suggestion:
 
-* Go: https://minio-go.min.io/[MinIO Go Client SDK]
-* JavaScript: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/index.html[AWS SDK for JavaScript v3]
-* Python: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html[Boto3]
+* Go: https://minio-go.min.io/[MinIO Go Client SDK^]
+* JavaScript: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-s3/index.html[AWS SDK for JavaScript v3^]
+* Python: https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html[Boto3^]
 
-== How to set Well-Known Environment Variables
+== Environment Variables
 
 You'll need:
 
-* jq
-* kubectl and be connected to APPUiO
+* https://stedolan.github.io/jq/[jq^]
+* `kubectl` or `oc` and a connection to your cluster.
 
 Many libraries and tools use some well-known environment variables to configure the connection:
 
