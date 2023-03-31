@@ -1,4 +1,4 @@
-= How to use an AppCat Redis instance
+= Using a Redis service
 
 The YAML code below creates two objects: a `ExoscaleRedis` instance and a Pod accessing it to show information about the instance.
 The latter references the `redis-creds` secret that will contain the access keys required to connect to the instance.
@@ -17,7 +17,7 @@ spec:
     size:
       plan: hobbyist-2
   writeConnectionSecretToRef:
-    name: redis-creds
+    name: redis-creds # <1>
 ---
 apiVersion: v1
 kind: Pod
@@ -31,9 +31,11 @@ spec:
       - /bin/sh
       - -c
     args:
-      - redis-cli -u $REDIS_URL --insecure INFO <1>
+      - redis-cli -u $REDIS_URL --insecure INFO # <3>
     envFrom:
       - secretRef:
-          name: redis-creds
+          name: redis-creds # <2>
 ----
-<1> Uses redis-cli to print INFO into stdout. *Do not use --insecure in production. Only for demonstration purposes.*
+<1> The operator will create a secret with the access keys to connect to the instance.
+<2> The pod will use the secret to connect to the instance.
+<3> Uses redis-cli to print INFO into stdout. *Do not use --insecure in production. Only for demonstration purposes.*

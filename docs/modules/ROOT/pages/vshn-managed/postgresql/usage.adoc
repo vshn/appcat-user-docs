@@ -58,8 +58,7 @@ spec:
       secretName: postgres-creds-connection # <2>
   restartPolicy: OnFailure
 ----
-
-<1> The secret will be created by the operator and will contain the access keys to connect to the instance.
+<1> The operator will create a secret with the access keys to connect to the instance.
 <2> The pod will use the secret to connect to the instance.
 
 == Debug your instance

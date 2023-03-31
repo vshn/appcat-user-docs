@@ -5,7 +5,7 @@ AppCat allows DevOps engineers to quickly provision a PostgreSQL instance.
 == Create a PostgreSQL service
 
 Apply the following object on your namespace, as specified by its YAML description.
-+
+
 .Example to create a PostgreSQL instance
 [source,yaml]
 ----
@@ -50,7 +50,9 @@ my-namespace   my-postgres-example   hobbyist-2   ch-dk-2   True    postgres-cre
 
 When you see `True` in the READY column, it means the instance is provisioned and ready to use.
 
-== Access the service from your application
+== Find the connection details
+
+The connection details are stored in a secret. You can retrieve them with the following command:
 
 [source,bash]
 ----

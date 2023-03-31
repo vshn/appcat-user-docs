@@ -1,10 +1,14 @@
-= Delete a Redis instance
+= Delete a Redis service
 
-If you do not need a Redis instance anymore, you can delete it in the same way as you would with any other object in your cluster:
+If you do not need a Redis service anymore, you can delete it in the same way as you would with any other object in your cluster:
 
 [source,bash]
 ----
 $ oc delete vshnredis.vshn.appcat.vshn.io my-redis-example
 ----
 
-IMPORTANT: If you delete the `VSHNRedis` object from the cluster, it will delete the actual instance including all data in it!
+[IMPORTANT]
+.Non-reversible operation
+====
+If you delete the `VSHNRedis` object from the cluster, it will be deleted together with all of its data!
+====

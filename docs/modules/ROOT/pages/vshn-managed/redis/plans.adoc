@@ -3,7 +3,7 @@
 == Plans
 
 We provide a few preconfigured plans that should make sizing your Redis instance easier.
-You can just set one of the provided plans and your instance should run reliably.
+Just choose one of the provided plans.
 
 [source,yaml]
 ----
@@ -23,7 +23,7 @@ By default, the following plans are available on every cluster:
 
 [cols="25a,15,15,15", options="header"]
 |===
-| Plan | CPU | Memory | Disk 
+| Plan | CPU | Memory | Disk
 | standard-512m | 125m | 512Mi | 16Gi
 | standard-1 | 250m | 1Gi | 16Gi
 | standard-2 | 500m | 2Gi | 16Gi
@@ -61,14 +61,15 @@ DESCRIPTION:
      standard-512m - CPU: 125m; Memory: 512Mi; Disk: 16Gi
 ----
 
-[WARNING,caption="APPUiO Cloud"]
+[WARNING]
+.About APPUiO Cloud
 ====
-On APPUiO Cloud there are two important difference for the plans:
+On https://docs.appuio.cloud[APPUiO Cloud^] two important differences apply:
 
 * There is a `plus-X` variant of each plan that will schedule the instance on a https://docs.appuio.cloud/user/references/node-classes.html[Plus Node].
 If you use the `standard-X` plans, the instance will be scheduled on a `flex` node.
 * The `standard-8` plan is not available as it requests more memory than the https://docs.appuio.cloud/user/references/default-quota.html[Default Quota] allows.
- If you need a larger instance, please contact https://docs.appuio.cloud/user/contact.html[APPUiO Cloud support] and manually request more memory according to <<_custom_sizing>>.
+If you need a larger instance, please contact https://docs.appuio.cloud/user/contact.html[APPUiO Cloud support] and manually request more memory according to <<_custom_sizing>>.
 ====
 
 
@@ -78,6 +79,7 @@ While we provide some pre-configured plans, you are free to choose custom values
 To do that simply set `spec.parameters.size.cpuRequests`, `spec.parameters.size.cpuLimits`, `spec.parameters.size.memoryRequests`, `spec.parameters.size.memoryLimits`,or `spec.parameters.size.disk`.
 
 The following example would keep the memory requests from the `standard-2` plan while increasing the CPU request to `1` and the CPU limits to `9`.
+
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
@@ -98,14 +100,14 @@ IMPORTANT: Changing disk size after initial provisioning is currently not suppor
 
 NOTE: We don't recommend setting the requests to a lower value then the limit, as this might negatively impact the performance and stability of your instance.
 
-[WARNING,caption="APPUiO Cloud"]
+[WARNING]
+.APPUiO Cloud Fair Use Policy
 ====
 On APPUiO Cloud, the https://docs.appuio.cloud/user/explanation/fair-use-policy.html[Fair Use Policy] also applies to all AppCat Services by VSHN.
 You will be billed extra for CPU requests that exceed the memory to CPU ratio.
 
 The default plans all adhere to the Fair Use Policy.
 ====
-
 
 == Node Selectors
 
@@ -126,15 +128,17 @@ spec:
       plan: standard-4
     scheduling:
       nodeSelector:
-        speed: fast
+        speed: fast # <1>
   writeConnectionSecretToRef:
     name: redis-creds
 ----
+<1> Annotation specifying a faster node.
 
 Please consult the Kubernetes documentation on https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/[how to assign workloads to nodes using node selectors].
 
 
-[WARNING,caption="APPUiO Cloud"]
+[WARNING]
+.APPUiO Cloud Node Classes
 ====
 On APPUiO Cloud, this can be used to schedule instances on specific https://docs.appuio.cloud/user/references/node-classes.html[Node Classes].
 
