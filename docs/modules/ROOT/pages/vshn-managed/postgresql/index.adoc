@@ -2,7 +2,7 @@
 
 This section provides documentation related to the PostgreSQL service managed by VSHN in the Application Catalog.
 
-Learn more about this service, including its pricing, in our https://products.docs.vshn.ch/products/appcat/postgresql.html#_pricing[product portfolio].
+Learn more about this service, including its pricing, in our https://products.docs.vshn.ch/products/appcat/postgresql.html#_pricing[product portfolio^].
 
 TIP: Get started and xref:vshn-managed/postgresql/create.adoc[create a PostgreSQL instance].
 

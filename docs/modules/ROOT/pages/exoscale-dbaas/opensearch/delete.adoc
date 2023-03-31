@@ -1,10 +1,14 @@
-= Delete an OpenSearch instance
+= Delete an OpenSearch service
 
-If you do not need an OpenSearch instance anymore, you can delete it in the same way as you would with any other object in your cluster:
+If you do not need an OpenSearch service anymore, you can delete it in the same way as you would with any other object in your cluster:
 
 [source,bash]
 ----
 $ oc delete exoscaleopensearches.exoscale.appcat.vshn.io opensearch-instance
 ----
 
-IMPORTANT: If you delete the `ExoscaleOpenSearch` object from the cluster, it will delete the actual instance including all data in it!
+[IMPORTANT]
+.Non-reversible operation
+====
+If you delete the `ExoscaleOpenSearch` object from the cluster, it will be deleted together with all of its data!
+====

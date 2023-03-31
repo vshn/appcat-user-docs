@@ -2,7 +2,7 @@
 
 This section provides documentation related to the https://www.exoscale.com/dbaas/postgresql/[Exoscale DBaaS Managed PostgreSQL^] service in the VSHN Application Catalog.
 
-Learn more about this service, including its pricing, in our https://products.docs.vshn.ch/products/appcat/exoscale_dbaas.html[product documentation site].
+Learn more about this service, including its pricing, in our https://products.docs.vshn.ch/products/appcat/exoscale_dbaas.html[product documentation site^].
 
 TIP: Get started and xref:exoscale-dbaas/postgresql/create.adoc[create a PostgreSQL instance].
 

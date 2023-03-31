@@ -2,7 +2,7 @@
 
 This section provides documentation related to the Redis service managed by VSHN in the Application Catalog.
 
-Learn more about this service, including its pricing, in our https://products.docs.vshn.ch/products/appcat/redis.html#_pricing[product portfolio].
+Learn more about this service, including its pricing, in our https://products.docs.vshn.ch/products/appcat/redis.html#_pricing[product portfolio^].
 
 TIP: Get started and xref:vshn-managed/redis/create.adoc[create a Redis instance].
 
