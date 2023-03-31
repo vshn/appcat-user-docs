@@ -1,10 +1,10 @@
 = Exoscale DBaaS - Apache Kafka
 
-Welcome to the https://www.exoscale.com/dbaas/kafka/[Exoscale DBaaS Managed Apache Kafka^] service in the VSHN Application Catalog.
+This section provides documentation related to the https://www.exoscale.com/dbaas/kafka/[Exoscale DBaaS Managed Apache Kafka^] service in the VSHN Application Catalog.
 
-Please find more about the service description including pricing in our https://products.docs.vshn.ch/products/appcat/exoscale_dbaas.html[product documentation site].
+Learn more about this service, including its pricing, in our https://products.docs.vshn.ch/products/appcat/exoscale_dbaas.html[product documentation site].
 
-TIP: Get started with xref:exoscale-dbaas/kafka/create.adoc[Creating an Apache Kafka instance].
+TIP: Get started and xref:exoscale-dbaas/kafka/create.adoc[create an Apache Kafka instance].
 
 == Notes
 
