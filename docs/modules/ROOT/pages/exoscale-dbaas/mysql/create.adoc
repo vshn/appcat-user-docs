@@ -1,9 +1,5 @@
 = Create a MySQL service
 
-AppCat allows DevOps engineers to quickly provision a MySQL instance.
-
-== Create a MySQL service
-
 Apply the following object on your namespace, as specified by its YAML description.
 
 .Example to create a MySQL instance

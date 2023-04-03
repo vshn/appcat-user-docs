@@ -2,8 +2,6 @@
 
 AppCat allows DevOps engineers to quickly provision https://en.wikipedia.org/wiki/Amazon_S3[Amazon S3^]-compatible Object Storage Buckets in various environments.
 
-== Create a Bucket
-
 Apply the following object on your namespace, as specified by its YAML description.
 
 .Example to create an Object Storage bucket

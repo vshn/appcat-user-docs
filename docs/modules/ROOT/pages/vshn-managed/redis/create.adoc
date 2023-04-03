@@ -1,9 +1,5 @@
 = Create a Redis service
 
-AppCat allows DevOps engineers to quickly provision a Redis instance.
-
-== Create a Redis service
-
 Apply the following object on your namespace, as specified by its YAML description.
 
 .Example to create a Redis instance

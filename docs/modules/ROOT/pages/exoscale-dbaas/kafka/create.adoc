@@ -1,9 +1,5 @@
 = Create a Kafka service
 
-AppCat allows DevOps engineers to quickly provision a Kafka instance.
-
-== Create a Kafka service
-
 Apply the following object on your namespace, as specified by its YAML description.
 
 .Example to create a Kafka instance

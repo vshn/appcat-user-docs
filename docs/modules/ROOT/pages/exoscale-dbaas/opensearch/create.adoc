@@ -1,9 +1,5 @@
 = Create an OpenSearch service
 
-AppCat allows DevOps engineers to quickly provision an OpenSearch instance.
-
-== Create an OpenSearch service
-
 Apply the following object on your namespace, as specified by its YAML description.
 
 .Example to create an OpenSearch instance

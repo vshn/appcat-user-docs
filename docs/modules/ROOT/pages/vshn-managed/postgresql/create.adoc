@@ -1,9 +1,5 @@
 = Create a PostgreSQL service
 
-AppCat allows DevOps engineers to quickly provision a PostgreSQL instance.
-
-== Create a PostgreSQL service
-
 Apply the following object on your namespace, as specified by its YAML description.
 
 .Example to create a PostgreSQL instance
