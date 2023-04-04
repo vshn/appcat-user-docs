@@ -1,9 +1,13 @@
-= Restore a PostgreSQL service
+= Restore a Backup
 
-IMPORTANT: The restores can only be triggered from an instance in the same namespace.
+[IMPORTANT]
+.Backups are tied to instances
+====
+Restorations can only be triggered from an instance in the same namespace.
 If the old instance has already been deleted the backups are deleted as well.
+====
 
-. Get the name of the backup you want to restore by listing all available backups.
+. Get the ID of the backup you want to restore by listing all available backups.
 +
 [source,bash]
 ----
@@ -13,12 +17,12 @@ BACKUP NAME                                 DATABASE INSTANCE   STORED TIME     
 pgsql-app1-prod-pk8k4-2023-03-05-13-05-00   pgsql-app1-prod     2023-03-05T13:05:15.755Z  Completed  38s
 pgsql-app1-dev-pk8k4-2023-03-01-16-52-11    pgsql-app1-dev                                Failed     28s
 ----
-NOTE: The list will show all backups from all instances in this namespace. In the example above there are two database instances with one backup each.
-
++
+This list will show all backups from all instances in this namespace. In the example above there are two database instances with one backup each.
 
 . Apply the following object on your namespace, as specified by its YAML description.
 +
-.Example to restore a PostgreSQL instance. Make sure to update the namespace
+.Example to restore a PostgreSQL instance. Update the namespace!
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
@@ -29,8 +33,8 @@ metadata:
 spec:
   parameters:
     restore:
-      claimName: pgsql-app1-prod <1>
-      backupName: pgsql-app1-prod-pk8k4-2023-03-01-16-52-02 <2>
+      claimName: pgsql-app1-prod # <1>
+      backupName: pgsql-app1-prod-pk8k4-2023-03-01-16-52-02 # <2>
     backup:
       schedule: '0 22 * * *'
     service:
@@ -44,7 +48,7 @@ spec:
   writeConnectionSecretToRef:
     name: postgres-creds-restored
   compositionRef:
-    name: vshnpostgresrestore.vshn.appcat.vshn.io <3>
+    name: vshnpostgresrestore.vshn.appcat.vshn.io # <3>
 ----
 <1> The name of the instance you want to restore from
 <2> The backup name you want to restore

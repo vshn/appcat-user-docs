@@ -1,4 +1,4 @@
-= How to use an AppCat PostgreSQL instance
+= Using a PostgreSQL service
 
 The YAML code below creates two objects: a `VSHNPostgreSQL` instance and a pod accessing it to show information about the instance.
 The latter references the `postgres-creds` secret that will contain the access keys required to connect to the instance.
@@ -24,7 +24,7 @@ spec:
     backup:
       schedule: '0 22 * * *'
   writeConnectionSecretToRef:
-    name: postgres-creds-connection
+    name: postgres-creds-connection # <1>
 ---
 apiVersion: v1
 kind: Pod
@@ -46,7 +46,7 @@ spec:
       - PGPASSWORD=$POSTGRESQL_PASSWORD psql "sslmode=verify-ca sslrootcert=/etc/secret-volume/ca.crt host=$POSTGRESQL_HOST port=$POSTGRESQL_PORT dbname=$POSTGRESQL_DB" -U $POSTGRESQL_USER -l
     envFrom:
       - secretRef:
-          name: postgres-creds-connection
+          name: postgres-creds-connection # <2>
     volumeMounts:
     - name: secret-volume
       readOnly: true
@@ -55,23 +55,22 @@ spec:
   - name: secret-volume
     secret:
       defaultMode: 0600
-      secretName: postgres-creds-connection
+      secretName: postgres-creds-connection # <2>
   restartPolicy: OnFailure
 ----
+<1> The operator will create a secret with the access keys to connect to the instance.
+<2> The pod will use the secret to connect to the instance.
 
-== Debug instance by yourself
+== Debug your instance
 
-You can easily check what happened during creation by checking the status fields. PostgreSQL by VSHN is composed from many resources, responsible for
-cluster creation, bucket creation, backups and uploads to cloud, each of those components might break or be misconfigured (f.e typo). You can check what happend by running
+You can easily check the status of your instance.
+PostgreSQL by VSHN is composed of many resources, responsible for creating the database cluster and bucket, setting up backups and uploads, and each of these components might present issues, for example in case of a typo.
 
-```
-# example assumes reuse of names and namespace from example above
-kubectl -n app1-prod describe vshnpostgresqls.vshn.appcat.vshn.io postgresql-prod 
-```
-
-Example output looks as follows:
+Learn about the status of your instance by running the following command. If there are any issues with your instance, they will be mentioned in the status fields.
 
 ```
+# This example shows objects created in the example above
+$ kubectl -n app1-prod describe vshnpostgresqls.vshn.appcat.vshn.io postgresql-prod
 status:
   certificateConditions:
   - lastTransitionTime: "2023-03-09T10:07:41Z"
@@ -154,6 +153,3 @@ status:
     status: "False"
     type: Synced
 ```
-
-If there are any issues with your instance, they will be mentioned in the status fields.
-

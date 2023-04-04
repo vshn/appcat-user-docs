@@ -1,6 +1,8 @@
 = How-To Access Service Logs
 
-== Via CLI [[viacli]]
+NOTE: This page describes how to access the logs of a VSHN service deployed on https://docs.appuio.cloud/[APPUiO Cloud^].
+
+== Via the Command Line [[viacli]]
 
 Each service provided by VSHN is deployed in its own namespace.
 The access to those namespaces is deliberately limited, for more information see xref:references/permissions.adoc[].
@@ -37,19 +39,20 @@ oc -n vshn-redis-app1-prod-rt4w5 logs redis-master-0
 
 Please consult https://docs.appuio.cloud/user/how-to/access-logs-through-kibana.html[Access Logs Through Kibana] for general access to Kibana.
 
-In order to show the logs of a VSHN services, the namespace where it's deployed has to be determined first.
+In order to show the logs of a VSHN services, you need to know first the namespace where it's deployed.
 Please consult the <<viacli>> section for a how-to.
 
-By default Kibana will show everything.
-To limit it to the instance namespace add a filter `kubernetes.namespace_name`.
+By default Kibana will show all logs available.
+To limit it to the instance namespace use the filter `kubernetes.namespace_name` as shown on the images below.
 
-.Add a filter to Kibana
-image:addfilter.png[]
+. Add a filter to Kibana
++
+image::addfilter.png[]
 
-.Filter for namespace
-image:namespacefilter.png[]
+. Then filter per namespace
++
+image::namespacefilter.png[]
 
-Afterwards Kibana will show all logs for the given instance.
+Afterwards Kibana will show all logs, filtered to the requested instance.
 
-.Filtered log messages
 image:instancelogs.png[]

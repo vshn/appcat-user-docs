@@ -1,7 +1,7 @@
-= How to use an AppCat OpenSearch instance
+= Using an OpenSearch service
 
-The YAML code below creates two objects: a `ExoscaleOpenSearch` instance and a pod accessing it to show information about the instance.
-The latter references the `opensearch-creds` secret that will contain the access keys required to connect to the instance.
+The YAML code below creates two objects: a `ExoscaleOpenSearch` service and a pod accessing it to show information about the service.
+The latter references the `opensearch-creds` secret that will contain the access keys required to connect to the service.
 
 [source,yaml]
 ----
@@ -20,7 +20,7 @@ spec:
     size:
       plan: hobbyist-2
   writeConnectionSecretToRef:
-    name: opensearch-creds
+    name: opensearch-creds # <1>
 ---
 apiVersion: v1
 kind: Pod
@@ -37,11 +37,15 @@ spec:
       - curl "$OPENSEARCH_URI"
     envFrom:
       - secretRef:
-          name: opensearch-creds
+          name: opensearch-creds # <2>
 ----
+<1> The operator will create a secret with the access keys to connect to the instance.
+<2> The pod will use the secret to connect to the instance.
 
 Example output:
-```
+
+[source,console]
+--
 {
   "name" : "test1-dn9r5-1",
   "cluster_name" : "1798f368-60b2-4192-9da4-faa63b8a30e8",
@@ -59,4 +63,4 @@ Example output:
   },
   "tagline" : "The OpenSearch Project: https://opensearch.org/"
 }
-```
+--

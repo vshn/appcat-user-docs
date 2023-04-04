@@ -1,8 +1,7 @@
-= How to use an AppCat Kafka instance
+= Using a Kafka service
 
 The YAML code below creates two objects: a `ExoscaleKafka` instance and a Pod accessing it to show information about the instance.
 The latter references the `kafka-creds` secret that will contain the access keys required to connect to the instance.
-
 
 NOTE: We provide a sample container that supports client side certificates and should work out of the box.
 It will create a test topic and will continuously publish to and read from that topic.
@@ -20,7 +19,7 @@ spec:
     service:
       zone: ch-dk-2
   writeConnectionSecretToRef:
-    name: kafka-creds
+    name: kafka-creds # <1>
 ---
 apiVersion: v1
 kind: Pod
@@ -40,12 +39,14 @@ spec:
         - /.kafka/certs/service.key
       envFrom:
         - secretRef:
-            name: kafka-creds
+            name: kafka-creds # <2>
       volumeMounts:
         - name: certs
           mountPath: /.kafka/certs
   volumes:
     - name: certs
       secret:
-        secretName: kafka-creds
+        secretName: kafka-creds # <2>
 ----
+<1> The operator will create a secret with the access keys to connect to the instance.
+<2> The pod and its volume will use the secret.

@@ -1,39 +1,33 @@
 = Create an OpenSearch service
 
-AppCat allows DevOps engineers to quickly provision an OpenSearch instance.
+Apply the following object on your namespace, as specified by its YAML description.
 
-== Create an OpenSearch service
-
-include::partial$login-in-terminal.adoc[]
-
-. Apply the following object on your namespace, as specified by its YAML description.
-+
 .Example to create an OpenSearch instance
 [source,yaml]
 ----
 apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscaleOpenSearch
 metadata:
-  name: my-opensearch-example <1>
-  namespace: my-namespace <2>
+  name: my-opensearch-example # <1>
+  namespace: my-namespace # <2>
 spec:
   parameters:
     backup:
-      timeOfDay: "12:00:00" <3>
+      timeOfDay: "12:00:00" # <3>
     service:
-      zone: ch-dk-2 <4>
-      majorVersion: "2" <5>
+      zone: ch-dk-2 # <4>
+      majorVersion: "2" # <5>
       opensearchSettings:
-        http_max_content_length: 12345 <6>
+        http_max_content_length: 12345 # <6>
     size:
-      plan: hobbyist-2 <7>
+      plan: hobbyist-2 # <7>
   writeConnectionSecretToRef:
-    name: opensearch-creds <8>
+    name: opensearch-creds # <8>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
 <3> Specify backup time of day
-<4> The Exoscale zone to use, see xref:references/clouds.adoc#_regions[list of regions]
+<4> The Exoscale zone to use, see xref:references/cloud-zones.adoc#_regions[list of regions]
 <5> OpenSearch major version
 <6> Specify custom OpenSearch settings [optional] https://docs.aiven.io/docs/products/opensearch/reference/advanced-params.html#opensearch[full list of params]
 <7> See https://products.docs.vshn.ch/products/appcat/exoscale_dbaas.html#_opensearch[reference] for a list of plans
@@ -41,7 +35,7 @@ spec:
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaleopensearch[API Reference]
 
-== Get information about your new OpenSearch instance
+== Inspect your new OpenSearch instance
 
 [source,bash]
 ----
@@ -52,7 +46,9 @@ test1   True     True    opensearch-creds   8m21s
 
 When you see `True` in the READY column, it means the instance is provisioned and ready to use.
 
-== Get the credentials to access the instance
+== Find the connection details
+
+The connection details are stored in a secret. You can retrieve them with the following command:
 
 [source,bash]
 ----
@@ -64,4 +60,4 @@ The output of the command above is a secret specification with the following str
 include::page$references/secrets.adoc[tag=opensearch]
 
 NOTE: Exoscale OpenSearch supports only connection via TLS.
-The certificates are signed by Let's Encrypt, so no ca.crt file required.
+The certificates are signed by Let's Encrypt, so no `ca.crt` file required.

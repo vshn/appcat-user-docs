@@ -1,31 +1,25 @@
 = Create a Redis service
 
-AppCat allows DevOps engineers to quickly provision a Redis instance.
+Apply the following object on your namespace, as specified by its YAML description.
 
-== Create a Redis service
-
-include::partial$login-in-terminal.adoc[]
-
-. Apply the following object on your namespace, as specified by its YAML description.
-+
-.Example to create a PostgreSQL instance
+.Example to create a Redis instance
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
 kind: VSHNRedis
 metadata:
-  name: redis-app1-prod <1>
-  namespace: prod-app <2>
+  name: redis-app1-prod # <1>
+  namespace: prod-app # <2>
 spec:
   parameters:
     service:
-      version: "7.0" <3>
-      redisSettings: | <4>
+      version: "7.0" # <3>
+      redisSettings: | # <4>
         activedefrag yes
     size: <5>
       plan: standard-2
   writeConnectionSecretToRef:
-    name: redis-creds <6>
+    name: redis-creds # <6>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
@@ -36,7 +30,7 @@ spec:
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnredis[API Reference]
 
-== Get information about your new Redis instance
+== Inspect your new Redis service
 
 [source,bash]
 ----
@@ -47,7 +41,9 @@ pgsql-app1-prod   True     True    redis-creds         3m32s
 
 When you see `True` in the READY column, it means the instance is provisioned and ready to use.
 
-== Get the credentials to access the instance
+== Find the connection details
+
+The connection details are stored in a secret. You can retrieve them with the following command:
 
 [source,bash]
 ----

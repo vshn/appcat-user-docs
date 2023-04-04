@@ -1,17 +1,17 @@
 = Exoscale DBaaS - MySQL
 
-Welcome to the https://www.exoscale.com/dbaas/mysql/[Exoscale DBaaS Managed MySQL^] service in the VSHN Application Catalog.
+This section provides documentation related to the https://www.exoscale.com/dbaas/mysql/[Exoscale DBaaS Managed MySQL^] service in the VSHN Application Catalog.
 
-Please find more about the service description including pricing in our https://products.docs.vshn.ch/products/appcat/exoscale_dbaas.html[product documentation site].
+Learn more about this service, including its pricing, in our https://products.docs.vshn.ch/products/appcat/exoscale_dbaas.html[product documentation site^].
 
-TIP: Get started with xref:exoscale-dbaas/mysql/create.adoc[Creating a MySQL instance].
+TIP: Get started and xref:exoscale-dbaas/mysql/create.adoc[create a MySQL instance].
 
 == Notes
 
 Some important notes about this service:
 
 * Connections are only possible using authenticated TLS encrypted connections.
-* The service uses a self-signed certificate which can be verified using the CA certificate provided in the connection secret (Key `ca.crt`).
+* The service uses a self-signed certificate which can be verified using the CA certificate provided in the connection secret (key `ca.crt`).
 
 == Links
 

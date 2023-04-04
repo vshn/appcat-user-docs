@@ -1,4 +1,4 @@
-= How to use an AppCat Redis instance
+= Using a Redis service
 
 The YAML code below creates two objects: a `VSHNRedis` instance and a pod accessing it to show information about the instance.
 The latter references the `redis-creds` secret that will contain the access keys required to connect to the instance.
@@ -15,7 +15,7 @@ spec:
     service:
       version: "7.0"
   writeConnectionSecretToRef:
-    name: redis-creds-connection
+    name: redis-creds-connection # <1>
 ---
 apiVersion: v1
 kind: Pod
@@ -29,27 +29,29 @@ spec:
       - /bin/sh
       - -c
     args:
-      - redis-cli -u rediss://$REDIS_USERNAME:$REDIS_PASSWORD@$REDIS_HOST:$REDIS_PORT --tls --cert /etc/redis-tls/tls.crt --key /etc/redis-tls/tls.key --cacert /etc/redis-tls/ca.crt INFO <1>
+      - redis-cli -u rediss://$REDIS_USERNAME:$REDIS_PASSWORD@$REDIS_HOST:$REDIS_PORT --tls --cert /etc/redis-tls/tls.crt --key /etc/redis-tls/tls.key --cacert /etc/redis-tls/ca.crt INFO # <3>
     volumeMounts:
-    - name: redis-tls-secrets <2>
+    - name: redis-tls-secrets # <4>
       readOnly: true
       mountPath: "/etc/redis-tls"
     envFrom:
       - secretRef:
-          name: redis-creds-connection
+          name: redis-creds-connection # <2>
   volumes:
-  - name: redis-tls-secrets <2>
+  - name: redis-tls-secrets # <4>
     secret:
       defaultMode: 0600
-      secretName: redis-creds-connection
+      secretName: redis-creds-connection # <2>
   restartPolicy: Never
 ----
-<1> Uses redis-cli to print INFO into stdout.
-<2> Mount the secret with the credentials to the pod, for TLS support (enabled and enforced by default)
+<1> The operator will create a secret with the access keys to connect to the instance.
+<2> The pod and the volume will use the new secret.
+<3> Uses redis-cli to print INFO into stdout.
+<4> Mount the secret with the credentials to the pod, for TLS support (enabled and enforced by default)
 
-== Debug instance
+== Debug the service
 
-To check the status and potential issues or erros of the created instance, check the `status` field of the created object
+To check the status and potential issues or errors in the service, check the `status` field of the new object:
 
 [source,bash]
 ----

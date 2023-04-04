@@ -1,13 +1,9 @@
 = Create an Object Storage Bucket
 
-AppCat allows DevOps engineers to quickly provision S3-compatible Object Storage Buckets in various environments.
+AppCat allows DevOps engineers to quickly provision https://en.wikipedia.org/wiki/Amazon_S3[Amazon S3^]-compatible Object Storage Buckets in various environments.
 
-== Create a Bucket
+Apply the following object on your namespace, as specified by its YAML description.
 
-include::partial$login-in-terminal.adoc[]
-
-. Apply the following object on your namespace, as specified by its YAML description.
-+
 .Example to create an Object Storage bucket
 [source,yaml]
 ----
@@ -15,17 +11,17 @@ apiVersion: appcat.vshn.io/v1
 kind: ObjectBucket
 metadata:
   name: my-cool-bucket
-  namespace: my-namespace <1>
+  namespace: my-namespace # <1>
 spec:
   parameters:
-    bucketName: my-bucket-change-name <2>
-    region: rma <3>
+    bucketName: my-bucket-change-name # <2>
+    region: rma # <3>
   writeConnectionSecretToRef:
-    name: objectbucket-creds <4>
+    name: objectbucket-creds # <4>
 ----
 <1> The namespace where the object will be created.
 <2> Bucket name: *don't just copy/paste this code, remember to choose your own name here!*
-<3> The bucket's region depends on the selected Provider, see xref:references/clouds.adoc#_regions[here] for more details
+<3> The bucket's region depends on the selected Provider, see xref:references/cloud-zones.adoc#_regions[here] for more details
 <4> Secret where the connection details are provisioned. This secret shouldn't exist at this time.
 +
 IMPORTANT: Object Storage Bucket names must be unique across providers. Make sure to choose a name with prefixes and other guards, to prevent any issue during the creation of the bucket. No error message is returned if the bucket cannot be created.
@@ -39,12 +35,12 @@ For instance, if you are on an Exoscale cluster, to create an ObjectBucket on cl
 ----
 spec:
   compositionRef:
-    name: cloudscale.objectbuckets.appcat.vshn.io <1>
+    name: cloudscale.objectbuckets.appcat.vshn.io # <1>
   parameters:
-    region: rma <2>
+    region: rma # <2>
 ----
 <1> The reference name of the backing cloud provider, see xref:object-storage/references.adoc#_provider_references[here] for available references.
-<2> Change the region identifier in accordance for the resp. cloud provider, see xref:references/clouds.adoc#_regions[here] for more details.
+<2> Change the region identifier in accordance for the resp. cloud provider, see xref:references/cloud-zones.adoc#_regions[here] for more details.
 
 [TIP]
 ====
@@ -72,7 +68,8 @@ IMPORTANT: If your object bucket doesn't get the state ready after a while, try 
 ----
 $ oc get secrets objectbucket-creds -oyaml
 ----
-The complete specification of the generated secret object can be found in the xref:object-storage/secrets.adoc[secrets page].
+
+Find the complete specification of the generated secret in the xref:object-storage/secrets.adoc[secrets page].
 
 . Check the bucket status
 +
