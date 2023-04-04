@@ -1,6 +1,6 @@
 # ---------- STEP 1 ----------
 # Build the documentation in web format
-FROM dockerhub.vshn.net/vshn/antora:3.1.2.2 AS antora
+FROM ghcr.io/vshn/antora:3.1.2.2 AS antora
 
 WORKDIR /build
 COPY . /build
@@ -8,7 +8,7 @@ RUN make html antora_cmd=antora antora_opts=--fetch
 
 # ---------- STEP 2 ----------
 # Docker image only containing nginx and the freshly built documentation
-FROM dockerhub.vshn.net/vshn/nginx:1.23.3
+FROM ghcr.io/vshn/nginx:1.23.3
 
 # Finally, copy the contents of the documentation to be served
 COPY --from=antora /build/_public /usr/share/nginx/html

@@ -1,6 +1,6 @@
 # ---------- STEP 1 ----------
 # Index the project files
-FROM dockerhub.vshn.net/vshn/antora-indexer-cli:1.12 as indexer
+FROM ghcr.io/vshn/antora-indexer-cli:1.13 as indexer
 
 COPY playbook.yml /playbook.yml
 RUN \
@@ -10,7 +10,7 @@ RUN \
 
 # ---------- STEP 2 ----------
 # Docker image only containing the search engine and the freshly built index
-FROM dockerhub.vshn.net/vshn/embedded-search-engine:1.7
+FROM ghcr.io/vshn/embedded-search-engine:1.8
 
 # Copy the index of the search engine
 COPY --from=indexer /index/files.json /site/index/files.json
