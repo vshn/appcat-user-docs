@@ -4,6 +4,7 @@
 * xref:references/secrets.adoc[Connection Secrets]
 * xref:references/cloud-zones.adoc[Cloud Zones]
 * xref:vshn-managed/how-tos/logging.adoc[Service Logs]
+* xref:vshn-managed/how-tos/access_metrics.adoc[Metrics]
 
 .PostgreSQL
 * xref:exoscale-dbaas/postgresql/index.adoc[On Exoscale]

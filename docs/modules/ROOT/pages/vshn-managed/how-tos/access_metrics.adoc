@@ -1,0 +1,19 @@
+= Access VSHN Managed Services metrics in Openshift console
+
+You can browse VSHN Managed Services metrics in Openshift console. To do that, please follow below steps:
+
+. Login to Openshift console
+. Ensure You're working in `Developer Mode`
+. In left sidenav go to `Observe` tab
++
+image::appuio_developer_observe.png[]
+. Switch to project (namespace) of Your choice
+. Browse Your metrics
+
+
+You can check `Dashboard` for preconfigred metrics and charts.
+If You want to query prometheus database using custom query, please switch to `Metrics` tab, then from Select chose `Custom query`. For PostgreSQL namespaces You should have access to all metrics provided by https://github.com/prometheus-community/postgres_exporter/blob/master/queries.yaml[PostgreSQL Exporter].
+
+
+Custom PromQL: 
+image:custom_promQL.png[]
