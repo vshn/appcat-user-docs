@@ -1,0 +1,69 @@
+= User Alerting
+
+VSHN Managed PostgreSQL allows to configure https://prometheus.io/docs/alerting/latest/alertmanager[alertmanager] in
+`spec.paremeters.monitoring`. Alertmanager handles alerts sent by client applications. For more details how to configure
+Alertmanager to your needs, check out APPUiO Alertmanager configuration
+https://docs.appuio.cloud/user/how-to/configure-alertmanager.html#_configure_alertmanager[page].
+You can enable alerting for your PostgreSQL instance either using an existing `alertmanagerConfig` or an Alertmanager Template.
+See below configuration examples for both use cases.
+
+== Providing an Alertmanager Template
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    monitoring:
+      alertmanagerConfigSecretRef: alert-secret # <1>
+      alertmanagerConfigTemplate: # <2>
+        receivers:
+          - name: default
+            slackConfigs:
+            - apiURL:
+                key: url
+                name: alert-secret # <3>
+              channel: '#prometheus'
+          route:
+            groupBy: [alertname, instance]
+            receiver: default
+            service:
+      majorVersion: "15"
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> Name of the secret used inside alertmanager config.
+<2> An `AlertmanagerConfigSpec` object from an `AlertmanagerConfig` resource.
+<3> The secret from `1` being used in `AlertmanagerConfig` template.
+
+NOTE: The secret must be in the same namespace of PostgreSQL instance. The template approach does not require an existing
+`AlertmanagerConfig` resource.
+
+== From existing alertmanagerConfig
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    monitoring:
+      alertmanagerConfigSecretRef: alert-secret # <1>
+      alertmanagerConfigRef: my-alert # <2>
+    service:
+      majorVersion: "15"
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> Name of a secret used inside `AlertmanagerConfig` resource.
+<2> Name of an existing `AlertmanagerConfig` resource.
+
+NOTE: Both secret and alertmanager configuration must be in the same namespace of PostgreSQL instance.
+The configuration secret contains keys to sensitive information such as passwords used in alertmanager configuration.
