@@ -1,0 +1,41 @@
+= Database Deletion Protection
+
+[IMPORTANT]
+====
+The Deletion Protection feature is enabled by default and ensures backups are available for 7 days
+after a database instance is deleted. Any backup available at the time of an instance deletion can be used
+to restore data into a new instance. The Deletion Protection feature does not restore the deleted
+database instance.
+====
+
+== Configuration
+
+Deletion protection can be enabled or disabled and the retention period can be defined using the following configuration:
+
+.Example of a PostgreSQL instance with database deletion protection on. Update the namespace!
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-restore
+  namespace: <your-namespace>
+spec:
+  parameters:
+    backup:
+      deletionProtection: true <1>
+      deletionRetention: 10 <2>
+      schedule: '0 22 * * *'
+    service:
+      majorVersion: "15"
+      pgSettings:
+        timezone: Europe/Zurich
+    size:
+      cpu: "600m"
+      memory: "3500Mi"
+      disk: "80Gi"
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> Enable or disable database deletion protection.
+<2> The number of days the backups should be available after a database is deleted.
