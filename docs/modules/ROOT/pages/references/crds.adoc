@@ -663,9 +663,11 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 
 
 .Resource Types
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[$$VSHNPostgreSQL$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-xvshnpostgresql[$$XVSHNPostgreSQL$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqllist[$$VSHNPostgreSQLList$$]
 - xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredis[$$VSHNRedis$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-xvshnpostgresql[$$XVSHNPostgreSQL$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-xvshnpostgresqllist[$$XVSHNPostgreSQLList$$]
 
 
 
@@ -761,27 +763,6 @@ VSHNDBaaSSizeSpec contains settings to control the sizing of a service.
 |===
 
 
-[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql"]
-=== VSHNPostgreSQL 
-
-VSHNPostgreSQL is the API for creating Postgresql clusters.
-
-.Appears In:
-****
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqllist[$$VSHNPostgreSQLList$$]
-****
-
-[cols="25a,75a", options="header"]
-|===
-| Field | Description
-| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
-| *`kind`* __string__ | `VSHNPostgreSQL`
-| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
-
-| *`spec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlspec[$$VSHNPostgreSQLSpec$$]__ | Spec defines the desired state of a VSHNPostgreSQL.
-|===
-
-
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlbackup"]
 === VSHNPostgreSQLBackup 
 
@@ -797,6 +778,8 @@ VSHNPostgreSQL is the API for creating Postgresql clusters.
 | Field | Description
 | *`schedule`* __string__ | 
 | *`retention`* __integer__ | 
+| *`deletionProtection`* __boolean__ | DeletionProtection will protect the instance from being deleted for the given retention time. This is enabled by default.
+| *`deletionRetention`* __integer__ | DeletionRetention specifies in days how long the instance should be kept after deletion. The default is keeping it one week.
 |===
 
 
@@ -831,7 +814,7 @@ VSHNPostgreSQLList defines a list of VSHNPostgreSQL
 | *`kind`* __string__ | `VSHNPostgreSQLList`
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
 
-| *`items`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[$$VSHNPostgreSQL$$] array__ | 
+| *`items`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-xvshnpostgresql[$$XVSHNPostgreSQL$$] array__ | 
 |===
 
 
@@ -876,6 +859,7 @@ VSHNPostgreSQLParameters are the configurable fields of a VSHNPostgreSQL.
 | *`restore`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlrestore[$$VSHNPostgreSQLRestore$$]__ | Restore contains settings to control the restore of an instance.
 | *`monitoring`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlmonitoring[$$VSHNPostgreSQLMonitoring$$]__ | Monitoring contains settings to control monitoring.
 | *`encryption`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlencryption[$$VSHNPostgreSQLEncryption$$]__ | Encryption contains settings to control the storage encryption of an instance.
+| *`updateStrategy`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlupdatestrategy[$$VSHNPostgreSQLUpdateStrategy$$]__ | UpdateStrategy indicates how and when updates to the instance spec will be applied.
 |===
 
 
@@ -923,7 +907,7 @@ VSHNPostgreSQLSpec defines the desired state of a VSHNPostgreSQL.
 
 .Appears In:
 ****
-- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[$$VSHNPostgreSQL$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-xvshnpostgresql[$$XVSHNPostgreSQL$$]
 ****
 
 [cols="25a,75a", options="header"]
@@ -931,9 +915,28 @@ VSHNPostgreSQLSpec defines the desired state of a VSHNPostgreSQL.
 | Field | Description
 | *`parameters`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]__ | Parameters are the configurable fields of a VSHNPostgreSQL.
 | *`writeConnectionSecretToRef`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-v1-localobjectreference[$$LocalObjectReference$$]__ | WriteConnectionSecretToRef references a secret to which the connection details will be written.
+| *`resourceRef`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectreference-v1-core[$$ObjectReference$$]__ | ResourceRef contains a reference to the composite.
+| *`compositeDeletePolicy`* __string__ | CompositeDeletePolicy defines how the claim should behave if it's deleted. This field definition will be overwritten by crossplane again, once the XRD is applied to a cluster. It's added here so it can be marshalled correctly in third party operators or composition functions.
 |===
 
 
+
+
+[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlupdatestrategy"]
+=== VSHNPostgreSQLUpdateStrategy 
+
+VSHNPostgreSQLUpdateStrategy indicates how and when updates to the instance spec will be applied.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`type`* __string__ | Type indicates the type of the UpdateStrategy. Default is OnDelete. Possible enum values: - `"OnRestart"` indicates that the changes to the spec will only be applied once the instance is restarted by other means, most likely during maintenance. - `"Immediate"` indicates that update will be applied to the instance as soon as the spec changes. Please be aware that this might lead to short downtime.
+|===
 
 
 [id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnredis"]
@@ -1049,6 +1052,68 @@ VSHNRedisTLSSpec contains settings to control tls traffic of a service.
 | Field | Description
 | *`enabled`* __boolean__ | TLSEnabled enables TLS traffic for the service
 | *`authClients`* __boolean__ | TLSAuthClients enables client authentication requirement
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-xvshnpostgresql"]
+=== XVSHNPostgreSQL 
+
+XVSHNPostgreSQL represents the internal composite of this claim
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqllist[$$VSHNPostgreSQLList$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-xvshnpostgresqllist[$$XVSHNPostgreSQLList$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `XVSHNPostgreSQL`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlspec[$$VSHNPostgreSQLSpec$$]__ | Spec defines the desired state of a VSHNPostgreSQL.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-xvshnpostgresql"]
+=== XVSHNPostgreSQL 
+
+XVSHNPostgreSQL represents the internal composite of this claim
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqllist[$$VSHNPostgreSQLList$$]
+- xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-xvshnpostgresqllist[$$XVSHNPostgreSQLList$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `XVSHNPostgreSQL`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlspec[$$VSHNPostgreSQLSpec$$]__ | Spec defines the desired state of a VSHNPostgreSQL.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-xvshnpostgresqllist"]
+=== XVSHNPostgreSQLList 
+
+XVSHNPostgreSQLList represents a list of composites
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `XVSHNPostgreSQLList`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`items`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-xvshnpostgresql[$$XVSHNPostgreSQL$$] array__ | 
 |===
 
 

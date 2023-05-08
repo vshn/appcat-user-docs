@@ -1,0 +1,48 @@
+= Instance Update Strategy
+
+Certain changes to the PostgreSQL instance spec requires a restart of the database to take effect.
+Most importantly changes to the `size` of the instance will need a restart of the instance to apply.§
+
+An instance's `.spec.parameters.updateStrategy` field allows you to configure and disable automated retarts after an upated of the PostgreSQL instance.
+There are two possible values:
+
+.Immediate
+
+The `Immediate` strategy will automatically restart the database if one is necessary for the updates to the instance to apply.
+This is the default update strategy.
+
+[IMPORTANT]
+Please be aware for single instance databases, this might cause a short downtime after updating.
+ 
+.OnRestart
+
+When an instance's `.spec.parameters.updateStrategy.type` is set to `OnRestart`, the database will not automatically be restarted.
+This means changes to the `spec` will potentially not immediately take effect.
+At the latest, changes will be applied during the next maintenance window.
+
+== Configuration
+
+
+.Example of a PostgreSQL instance with `OnRestart` update strategy
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-restore
+spec:
+  parameters:
+    service:
+      majorVersion: "15"
+      pgSettings:
+        timezone: Europe/Zurich
+    size:
+      cpu: "600m"
+      memory: "3500Mi"
+      disk: "80Gi"
+    updateStrategy:
+      type: OnRestart <1>
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> The update strategy `OnRestart` will never trigger a restart after an update
