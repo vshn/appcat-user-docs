@@ -1,0 +1,36 @@
+= Encrypted Storage
+
+The underlying storage (PVC) is by default not encrypted. However, you have the possibility to encrypt the PVC with LUKS. The encryption key is created automatically upon creation of the instance.
+
+[IMPORTANT]
+
+It is not possible to change the storage from unencrypted to encrypted for an existing instance. You need to enable the storage encryption upon creating the instance.
+
+== Configuration
+
+Storage encryption can be enabled or disabled using the following configuration:
+
+.Example of a PostgreSQL instance with encrypted storage enabled. Update the namespace!
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-encrypted
+  namespace: <your-namespace>
+spec:
+  parameters:
+    service:
+      majorVersion: "15"
+      pgSettings:
+        timezone: Europe/Zurich
+    size:
+      cpu: "600m"
+      memory: "3500Mi"
+      disk: "80Gi"
+    encryption:
+      enabled: true <1>
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> Enable or disable encrypted storage (disabled by default).
