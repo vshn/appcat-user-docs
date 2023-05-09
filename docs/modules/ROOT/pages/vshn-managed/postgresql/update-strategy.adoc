@@ -12,7 +12,7 @@ The `Immediate` strategy will automatically restart the database if one is neces
 This is the default update strategy.
 
 [IMPORTANT]
-Please be aware for single instance databases, this might cause a short downtime after updating.
+Please be aware that this might cause a short downtime after updating, especially for single instance databases.
  
 .OnRestart
 
