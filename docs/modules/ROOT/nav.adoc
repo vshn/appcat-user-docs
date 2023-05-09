@@ -22,6 +22,7 @@
 ** xref:vshn-managed/postgresql/deletion-protection.adoc[]
 ** xref:vshn-managed/postgresql/encrypted-pvc.adoc[]
 ** xref:vshn-managed/postgresql/alerting.adoc[]
+** xref:vshn-managed/postgresql/update-strategy.adoc[]
 
 .MySQL
 * xref:exoscale-dbaas/mysql/index.adoc[On Exoscale]
