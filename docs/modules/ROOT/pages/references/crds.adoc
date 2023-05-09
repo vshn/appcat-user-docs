@@ -859,7 +859,7 @@ VSHNPostgreSQLParameters are the configurable fields of a VSHNPostgreSQL.
 | *`restore`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlrestore[$$VSHNPostgreSQLRestore$$]__ | Restore contains settings to control the restore of an instance.
 | *`monitoring`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlmonitoring[$$VSHNPostgreSQLMonitoring$$]__ | Monitoring contains settings to control monitoring.
 | *`encryption`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlencryption[$$VSHNPostgreSQLEncryption$$]__ | Encryption contains settings to control the storage encryption of an instance.
-| *`updateStrategy`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlupdatestrategy[$$VSHNPostgreSQLUpdateStrategy$$]__ | UpdateStrategy indicates how and when updates to the instance spec will be applied.
+| *`updateStrategy`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresqlupdatestrategy[$$VSHNPostgreSQLUpdateStrategy$$]__ | UpdateStrategy indicates when updates to the instance spec will be applied.
 |===
 
 
@@ -935,7 +935,7 @@ VSHNPostgreSQLUpdateStrategy indicates how and when updates to the instance spec
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`type`* __string__ | Type indicates the type of the UpdateStrategy. Default is OnDelete. Possible enum values: - `"OnRestart"` indicates that the changes to the spec will only be applied once the instance is restarted by other means, most likely during maintenance. - `"Immediate"` indicates that update will be applied to the instance as soon as the spec changes. Please be aware that this might lead to short downtime.
+| *`type`* __string__ | Type indicates the type of the UpdateStrategy. Default is OnRestart. Possible enum values: - `"OnRestart"` indicates that the changes to the spec will only be applied once the instance is restarted by other means, most likely during maintenance. - `"Immediate"` indicates that update will be applied to the instance as soon as the spec changes. Please be aware that this might lead to short downtime.
 |===
 
 
