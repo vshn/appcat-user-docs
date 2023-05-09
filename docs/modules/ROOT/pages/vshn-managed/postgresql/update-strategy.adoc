@@ -1,7 +1,7 @@
 = Instance Update Strategy
 
 Certain changes to the PostgreSQL instance spec requires a restart of the database to take effect.
-Most importantly changes to the `size` of the instance will need a restart of the instance to apply.§
+Most importantly changes to the `size` of the instance will need a restart of the instance to apply.
 
 An instance's `.spec.parameters.updateStrategy` field allows you to configure and disable automated retarts after an upated of the PostgreSQL instance.
 There are two possible values:
