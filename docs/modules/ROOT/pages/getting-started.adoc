@@ -1,5 +1,7 @@
 = Getting Started
 
+== Via CLI
+
 To get started with the VSHN Application Catalog:
 
 . Login to an APPUiO Cloud zone or an APPUiO Managed cluster
@@ -15,6 +17,40 @@ You can also get details of a specific AppCat service in the cluster with the fo
 
 [source,bash]
 $ oc get appcat $service-name -oyaml
+
+== Via OpenShift Console
+
+You can also find the VSHN AppCat services in the OpenShift catalog.
+
+. Login to an APPUiO Cloud zone or an APPUiO Managed cluster
+
+. Open the OpenShift Console in your project and click on `+Add`
++
+image::project.png[]
+
+. Click on `All Services` on the right side
++
+image::developercatalog.png[]
+
+. Navigate to databases -> Postgre to see all available PostgreSQL services.
++
+image::developercatalog-details.png[]
+
+. In this example there's PostgreSQL by VSHN and by Exoscale that belong to the AppCat.
++
+image::pgoverview.png[]
+
+. By clicking on one of the available services, a more detailed page will be shown.
+There's also a link to the documentation of that specific service.
++
+image::pgdetails.png[]
+
+. `Instantiate Template` brings up a wizard, were some variables for the AppCat service can be customized.
+For more options please consult the AppCat service's documentation.
++
+image::create.png[]
+
+. After a few minutes there should be a secret in your project with credentials and access URLs for your new AppCat service.
 
 [discrete]
 == Video
