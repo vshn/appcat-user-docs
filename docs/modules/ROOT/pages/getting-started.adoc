@@ -46,7 +46,7 @@ There is also a link to the documentation of that specific service.
 image::pgdetails.png[]
 
 . `Instantiate Template` brings up a wizard, where some variables for the AppCat service can be customized.
-For more options please consult the AppCat service's documentation.
+For more options please consult the AppCat service's https://docs.appcat.ch/[documentatio].
 +
 image::create.png[]
 
