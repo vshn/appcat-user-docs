@@ -36,7 +36,7 @@ image::developercatalog.png[]
 +
 image::developercatalog-details.png[]
 
-. In this example there's PostgreSQL by VSHN and by Exoscale that belong to the AppCat.
+. In this example, there are PostgreSQL by VSHN and by Exoscale that belong to AppCat.
 +
 image::pgoverview.png[]
 
