@@ -310,9 +310,9 @@ ExoscaleKafka is the API for creating Kafka instances on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`zone`* __string__ | Zone is the datacenter identifier in which the instance runs in.
+| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
 | *`kafkaSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | KafkaSettings contains additional Kafka settings.
-| *`version`* __string__ | Version contains the minor version for Kafka. Currently only "3.2" is supported. Leave it empty to always get the latest supported version.
+| *`version`* __string__ | Version contains the minor version for Kafka. Currently only "3.4" is supported. Leave it empty to always get the latest supported version.
 |===
 
 
@@ -388,7 +388,7 @@ ExoscaleMySQL is the API for creating MySQL on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`zone`* __string__ | Zone is the datacenter identifier in which the instance runs in.
+| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
 | *`majorVersion`* __string__ | MajorVersion contains the major version for MySQL. Currently only "8" is supported. Leave it empty to always get the latest supported version.
 | *`mysqlSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | MySQLSettings contains additional MySQL settings.
 |===
@@ -466,7 +466,7 @@ ExoscaleOpenSearch is the api for creating OpenSearch on Exoscale
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`zone`* __string__ | Zone is the datacenter identifier in which the instance runs in.
+| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
 | *`majorVersion`* __string__ | MajorVersion contains the version for OpenSearch. Currently only "2" and "1" is supported. Leave it empty to always get the latest supported version.
 | *`opensearchSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | OpenSearchSettings contains additional OpenSearch settings.
 |===
@@ -544,7 +544,7 @@ ExoscalePostgreSQL is the API for creating PostgreSQL on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`zone`* __string__ | Zone is the datacenter identifier in which the instance runs in.
+| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
 | *`majorVersion`* __string__ | MajorVersion contains the major version for PostgreSQL. Currently only "14" is supported. Leave it empty to always get the latest supported version.
 | *`pgSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | PGSettings contains additional PostgreSQL settings.
 |===
@@ -621,7 +621,7 @@ ExoscaleRedis is the API for creating Redis instances on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`zone`* __string__ | Zone is the datacenter identifier in which the instance runs in.
+| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-component-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
 | *`redisSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | RedisSettings contains additional Redis settings.
 |===
 
@@ -935,7 +935,7 @@ VSHNPostgreSQLUpdateStrategy indicates how and when updates to the instance spec
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`type`* __string__ | Type indicates the type of the UpdateStrategy. Default is OnRestart. Possible enum values: - `"OnRestart"` indicates that the changes to the spec will only be applied once the instance is restarted by other means, most likely during maintenance. - `"Immediate"` indicates that update will be applied to the instance as soon as the spec changes. Please be aware that this might lead to short downtime.
+| *`type`* __string__ | Type indicates the type of the UpdateStrategy. Default is OnRestart. Possible enum values:   - `"OnRestart"` indicates that the changes to the spec will only be applied once the instance is restarted by other means, most likely during maintenance.   - `"Immediate"` indicates that update will be applied to the instance as soon as the spec changes. Please be aware that this might lead to short downtime.
 |===
 
 
