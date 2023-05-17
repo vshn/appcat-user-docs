@@ -41,7 +41,7 @@ image::developercatalog-details.png[]
 image::pgoverview.png[]
 
 . By clicking on one of the available services, a more detailed page will be shown.
-There's also a link to the documentation of that specific service.
+There is also a link to the documentation of that specific service.
 +
 image::pgdetails.png[]
 
