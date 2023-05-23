@@ -57,7 +57,7 @@ crd_branch ?= master
 
 clone-crds:
 	rm -rf .work/crds
-	git clone https://github.com/vshn/component-appcat/ .work/crds
+	git clone https://github.com/vshn/appcat/ .work/crds
 	cd .work/crds && git checkout $(crd_branch)
 
 .PHONY: docs-generate-api
