@@ -41,6 +41,8 @@ my-namespace   my-redis-example   hobbyist-2   ch-dk-2   True    redis-creds    
 
 When you see `True` in the READY column, it means the instance is provisioned and ready to use.
 
+Please note that creating a new service can take up to 5 minutes to become ready. Meanwhile, you can get more details using `oc describe exoscaleredis` where you see the provisioning progressing from "ReconcileSuccess" (service provisioning started) to "Available" (service provisioning finished).
+
 == Find the connection details
 
 The connection details are stored in a secret. You can retrieve them with the following command:
