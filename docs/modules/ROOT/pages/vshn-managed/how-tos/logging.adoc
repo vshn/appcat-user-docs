@@ -9,13 +9,16 @@ The access to those namespaces is deliberately limited, for more information see
 
 It is possible to list and view the logs of all pods in those namespaces.
 
-.Get the instance namespaces
+.Get the instance namespaces for your services
 [source,bash]
 ----
-oc describe vshnredis | grep "Instance Namespace"
+kubectl get vshnredis,vshnpostgresql -o custom-columns="KIND":.kind,"NAME":.metadata.name,"INSTANCE NAMESPACE":.status.instanceNamespace
+KIND             NAME         INSTANCE NAMESPACE
+VSHNRedis        app1-prod    vshn-redis-app1-prod-rt4w5
+VSHNPostgreSQL   buzz         vshn-postgresql-buzz-qvgrd
 ----
 
-Once the instance namespace is identified, it's possible to list the pods within it.
+Once the instance namespace is identified, it's possible to list the pods within it, in this case all pods of our redis instance.
 
 .List pods in the namespace
 [source,bash]
@@ -26,6 +29,7 @@ redis-master-0   1/1     Running   0          105m
 ----
 
 After the correct pod has been found the logs can be shown as usual via the CLI.
+For our example we look at the logs of the redis pod.
 
 .Print redis logs
 [source,bash]
