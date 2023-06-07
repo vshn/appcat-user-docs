@@ -12,7 +12,7 @@ It is possible to list and view the logs of all pods in those namespaces.
 .Get the instance namespaces
 [source,bash]
 ----
-kubectl  get vshnredis claim -ojsonpath="{.status.instanceNamespace}"
+oc describe vshnredis | grep "Instance Namespace"
 ----
 
 Once the instance namespace is identified, it's possible to list the pods within it.
