@@ -67,3 +67,23 @@ spec:
 
 NOTE: Both secret and alertmanager configuration must be in the same namespace of PostgreSQL instance.
 The configuration secret contains keys to sensitive information such as passwords used in alertmanager configuration.
+
+== Sending alerts to e-mail
+
+You can also send alerts to any e-mail address, by specifing the address in `spec.paremeters.monitoring.email`:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    monitoring:
+      email: foo@example.com # <1>
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> E-Mail address to be used to receive alerts.
