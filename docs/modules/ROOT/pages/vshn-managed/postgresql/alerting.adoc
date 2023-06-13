@@ -68,7 +68,7 @@ spec:
 NOTE: Both secret and alertmanager configuration must be in the same namespace of PostgreSQL instance.
 The configuration secret contains keys to sensitive information such as passwords used in alertmanager configuration.
 
-== Sending alerts to e-mail
+== Receive monitoring alerts via E-Mail
 
 You can also send alerts to any e-mail address, by specifing the address in `spec.paremeters.monitoring.email`:
 
