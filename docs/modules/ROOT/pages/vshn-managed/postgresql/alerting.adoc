@@ -70,7 +70,7 @@ The configuration secret contains keys to sensitive information such as password
 
 == Receive monitoring alerts via E-Mail
 
-You can also send alerts to any e-mail address, by specifing the address in `spec.paremeters.monitoring.email`:
+You can also receive alerts to any e-mail address, by specifing the address in `spec.paremeters.monitoring.email`:
 
 [source,yaml]
 ----
