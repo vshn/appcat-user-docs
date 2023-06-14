@@ -83,6 +83,8 @@ spec:
   parameters:
     monitoring:
       email: foo@example.com # <1>
+    service:
+      majorVersion: "15"
   writeConnectionSecretToRef:
     name: postgres-creds
 ----
