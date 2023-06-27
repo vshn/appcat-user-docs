@@ -1,0 +1,21 @@
+= Usage with ArgoCD
+
+In order for AppCat to work properly in conjecture with ArgoCD there are two requirements that need to be fullfilled:
+
+* ArgoCD has to be at least v2.4.8
+* The `ResourceTrackingMethod` needs to be set to `annotation`
+
+== Workaround
+
+If the requirements can't be satisfied, following workaround will help.
+On any instance that should be managed by ArgoCD it will need following annotations:
+
+[source,yaml]
+----
+annotations:
+  argocd.argoproj.io/compare-options: IgnoreExtraneous
+  argocd.argoproj.io/sync-options: Prune=false
+----
+
+NOTE: With these annotations ArgoCD won't clean up left over objects.
+So it might be possible that manual deletion is required if the instance is removed from ArgoCD.
