@@ -9,7 +9,7 @@ Aiven has https://github.com/aiven/aiven-examples/tree/main/kafka[example code i
 
 [source,yaml]
 ----
-apiVersion: appcat.vshn.io/v1
+apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscaleKafka
 metadata:
   name: my-kafka-example
