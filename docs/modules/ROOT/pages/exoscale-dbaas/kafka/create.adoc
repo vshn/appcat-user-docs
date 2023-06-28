@@ -5,7 +5,7 @@ Apply the following object on your namespace, as specified by its YAML descripti
 .Example to create a Kafka instance
 [source,yaml]
 ----
-apiVersion: appcat.vshn.io/v1
+apiVersion: exoscale.appcat.vshn.io/v1
 kind: ExoscaleKafka
 metadata:
   name: my-kafka-example # <1>
