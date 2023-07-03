@@ -2,17 +2,17 @@
 
 By default, there will be a security maintenance on Tuesday night (Central Europe Time).
 
-NOTE: For more information about maintenance procedures, please visit https://products.docs.vshn.ch/products/appcat/postgresql.html#_recurring_maintenance[the product description].
+NOTE: For more information about maintenance procedures, please visit https://products.docs.vshn.ch/products/appcat/redis.html#_recurring_maintenance[the product description].
 
 The day and time can be adjusted as described below. Times are in the CET time zone.
 
-.PostgreSQL instance with custom maintenance
+.Redis instance with custom maintenance
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
-kind: VSHNPostgreSQL
+kind: Redis
 metadata:
-  name: pgsql-app1-prod
+  name: redis-app1-prod
   namespace: prod-app
 spec:
   parameters:

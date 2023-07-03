@@ -37,6 +37,7 @@
 ** xref:exoscale-dbaas/redis/delete.adoc[Deletion]
 * xref:vshn-managed/redis/index.adoc[On cloudscale.ch]
 ** xref:vshn-managed/redis/create.adoc[Creation]
+** xref:vshn-managed/redis/maintenance.adoc[]
 ** xref:vshn-managed/redis/usage.adoc[Usage]
 ** xref:vshn-managed/redis/delete.adoc[Deletion]
 ** xref:vshn-managed/redis/plans.adoc[]
