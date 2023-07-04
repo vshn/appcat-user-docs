@@ -1,6 +1,9 @@
 = Backups
 
 Backups are enabled by default. The PostgreSQL instance will be backed up daily at a randomly chosen time between 22:00 and 4:00.
+The backup is done using https://www.postgresql.org/docs/current/app-pgbasebackup.html[`pg_basebackup`^] tool which supports _Point-in-Time Recovery_.
+This approach allows to make a backup of an online database with minimum performance hit.
+It also guarantees that the changes made to the data during the backup process will also end up in the backup files.
 
 You can specify a different backup time and interval using the following backup configuration:
 
