@@ -22,3 +22,5 @@ spec:
 ----
 <1> The day when the maintenance should take place
 <2> The time when the maintenance should be started
+
+NOTE: Besides version upgrades, https://reorg.github.io/pg_repack/[pg_repack] is performed on all databases of this instance.
