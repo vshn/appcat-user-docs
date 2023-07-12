@@ -1,0 +1,27 @@
+= Add extensions to the instance
+
+PostgreSQL supports many different extenions, such as PostGIS and TimescaleDB.
+These extensions can be used in PostgreSQL by VSHN as well.
+For a list of all available extensions please https://stackgres.io/doc/latest/intro/extensions/[consult this page].
+
+== Enable extenions
+
+To enable an extension add the following to your instance:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+spec:
+  parameters:
+    service:
+      extensions:
+        - name: ltree
+----
+
+After applying the change AppCat will ensure that the extension is available after a short while.
+
+WARNING: Some extension like `timescaldb` or `postgis` will require a restart of the instance to be available.
+Depending on your https://docs.appcat.ch/vshn-managed/postgresql/update-strategy.html[Instance Update Strategy] it's possible that the instance will restart immediately.
