@@ -2,7 +2,7 @@
 
 PostgreSQL supports many different extensions, such as https://postgis.net/[PostGIS^] or https://www.timescale.com/[TimescaleDB^].
 These extensions can be used in PostgreSQL by VSHN as well.
-For a list of all available extensions please https://stackgres.io/doc/latest/intro/extensions/[consult this page].
+For a list of all available extensions please https://stackgres.io/doc/latest/intro/extensions/[consult this page^].
 
 == Enable PostgreSQL Extensions
 
