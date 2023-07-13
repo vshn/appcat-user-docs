@@ -21,7 +21,7 @@ spec:
         - name: ltree
 ----
 
-After applying the change AppCat will ensure that the extension is available after a short while.
+After applying the change, AppCat will ensure that the extension is available after a short while.
 
 WARNING: Some extension like `timescaldb` or `postgis` will require a restart of the instance to be available.
 Depending on your https://docs.appcat.ch/vshn-managed/postgresql/update-strategy.html[Instance Update Strategy] it's possible that the instance will restart immediately.
