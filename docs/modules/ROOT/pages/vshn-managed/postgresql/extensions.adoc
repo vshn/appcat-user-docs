@@ -6,7 +6,7 @@ For a list of all available extensions please https://stackgres.io/doc/latest/in
 
 == Enable PostgreSQL Extensions
 
-To enable an extension add the following to your instance:
+To enable an extension, add the following configuration to your instance:
 
 [source,yaml]
 ----
