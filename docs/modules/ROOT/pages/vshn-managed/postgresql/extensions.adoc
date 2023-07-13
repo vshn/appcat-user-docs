@@ -18,9 +18,10 @@ spec:
   parameters:
     service:
       extensions:
-        - name: ltree
+        - name: ltree <1>
 ----
 
+<1> Name of the extension as found on the "Name" column at https://stackgres.io/doc/latest/intro/extensions/[the official listing^]. Add more extensions to the list as needed.
 After applying the change, AppCat will ensure that the extension is available after a short while.
 
 WARNING: Some extension like `timescaldb` or `postgis` will require a restart of the instance to be available.
