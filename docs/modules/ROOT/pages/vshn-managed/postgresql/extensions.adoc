@@ -1,4 +1,4 @@
-= Add extensions to the instance
+= PostgreSQL Extensions
 
 PostgreSQL supports many different extensions, such as https://postgis.net/[PostGIS^] and https://www.timescale.com/[TimescaleDB^].
 These extensions can be used in PostgreSQL by VSHN as well.
