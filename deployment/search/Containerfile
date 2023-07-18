@@ -1,6 +1,6 @@
 # ---------- STEP 1 ----------
 # Index the project files
-FROM ghcr.io/vshn/antora-indexer-cli:1.13 as indexer
+FROM ghcr.io/vshn/antora-indexer-cli:1.14 as indexer
 
 COPY playbook.yml /playbook.yml
 RUN \
