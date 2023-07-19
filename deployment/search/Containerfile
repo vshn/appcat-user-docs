@@ -10,7 +10,7 @@ RUN \
 
 # ---------- STEP 2 ----------
 # Docker image only containing the search engine and the freshly built index
-FROM ghcr.io/vshn/embedded-search-engine:1.8
+FROM ghcr.io/vshn/embedded-search-engine:1.9
 
 # Copy the index of the search engine
 COPY --from=indexer /index/files.json /site/index/files.json
