@@ -1,0 +1,69 @@
+= Replication and High Availability
+
+PostgreSQL by VSHN comes with support for multiple instances and High Availability using https://github.com/zalando/patroni[Patroni].
+You have the option to configure up to two additional replicas and also choose between three replication modes.
+
+== Enable High Availability
+
+To enable high availability you need to set the number of instances to `2` or `3`, which will provision one or two stand-by replicas.
+
+The following example configuration will start a PostgreSQL service with two replicas.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+spec:
+  parameters:
+    instances: 3
+----
+
+NOTE: Please be aware that enabling high availability will use significantly more resources and will cost two to three times more.
+
+IMPORTANT: On APPUiO Cloud, it's currently not possible to deploy more than two instances, or more than a single instance that is larger than `standard-2`.
+Please contact https://docs.appuio.cloud/user/contact.html[APPUiO Cloud support], if this blocks you from running your application.
+
+
+== Replication Modes
+
+You can also choose between one of three replication modes, by configuring it in the `replication` parameter.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+spec:
+  parameters:
+    instances: 3
+    replication:
+      mode: sync
+----
+
+
+The three available modes are:
+
+`async`::
+The asynchronous mode is the default replication mode.
+In this mode the cluster is allowed to lose some committed transactions to ensure availability. 
+When the primary server fails or becomes unavailable for any other reason a sufficiently healthy standby will be promoted to primary.
+Any transactions that have not been replicated to that standby remain in a “forked timeline” on the primary, and are effectively unrecoverable.
+
+
+`sync`::
+When synchronous mode is turned on a standby will not be promoted unless it is certain that the standby contains all transactions that may have returned a successful commit status to client.
+If no suitable standby is available, primary server will still accept writes, but does not guarantee their replication.
+When the primary fails in this situation no standby will be promoted.
++
+NOTE: This mode essentially reduces the availability guarantee for better consistency guarantees.
+If you don't have a use case where losing committed transactions is not permissible, we recommend using the asynchronous mode instead.
+
+`strict-sync`::
+If it is absolutely necessary to guarantee that each write is stored durably on at least two nodes, you can enable the strict synchronous mode.
+In this mode, when no synchronous standby candidates are available, the primary won't be available for writes, blocking all client write requests until at least one synchronous replica comes up.
++
+WARNING: We recommend to only use this mode if you have very strong consistency requirements and that you only use this mode with three instances, otherwise your instance will likely not accept any writes during maintenance and similar events.
+
