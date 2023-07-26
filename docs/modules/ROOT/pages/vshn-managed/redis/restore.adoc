@@ -1,0 +1,42 @@
+= Restores
+
+By default, every redis instance creates a backup once a day or at the time you specified.
+
+Please visit the (xref:vshn-managed/redis/backup.adoc[Backup documentation] for more information.
+
+You can list all the backups that are available with the following command:
+
+[source,bash]
+----
+kubectl -n <your-namespace> get vshnredisbackups
+
+BACKUP ID   DATABASE INSTANCE   BACKUP TIME
+ddy2d749    redis-app1-prod     2023-07-25T22:48:03Z
+f22ag4fc    redis-app1-prod     2023-07-24T22:48:03Z
+34996c63    redis-app1-prod     2023-07-23T22:48:03Z
+ag83ae9g    redis-app1-prod     2023-07-22T22:48:03Z
+----
+
+This will list all the backup available to you.
+You can then restore the backup to a new instance, by using the following restore configuration:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNRedis
+metadata:
+  name: redis-app2-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    ...
+    restore:
+      claimName: edis-app1-prod <1>
+      backupName: f22ag4fc <2>
+    ...
+----
+<1> The claimName of the original redis instance to restore from
+<2> The Backup ID which you want to restore
+
+This configuration will spin up a new redis instance and will restore the specified backup to your instance.
+In the example above, the new redis instance will be called `redis-app2-prod` and will be running the restored data from the redis instance `redis-app1-prod` using the backup `f22ag4fc` tat was taken at `2023-07-24T22:48:03Z`
