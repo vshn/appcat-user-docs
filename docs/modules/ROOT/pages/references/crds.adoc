@@ -366,7 +366,7 @@ ExoscaleKafka is the API for creating Kafka instances on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
+| *`zone`* __string__ | Zone is the datacenter identifier in which the instance runs in.
 | *`kafkaSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | KafkaSettings contains additional Kafka settings.
 | *`version`* __string__ | Version contains the minor version for Kafka. Currently only "3.4" is supported. Leave it empty to always get the latest supported version.
 |===
@@ -444,7 +444,7 @@ ExoscaleMySQL is the API for creating MySQL on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
+| *`zone`* __string__ | Zone is the datacenter identifier in which the instance runs in.
 | *`majorVersion`* __string__ | MajorVersion contains the major version for MySQL. Currently only "8" is supported. Leave it empty to always get the latest supported version.
 | *`mysqlSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | MySQLSettings contains additional MySQL settings.
 |===
@@ -522,7 +522,7 @@ ExoscaleOpenSearch is the api for creating OpenSearch on Exoscale
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
+| *`zone`* __string__ | Zone is the datacenter identifier in which the instance runs in.
 | *`majorVersion`* __string__ | MajorVersion contains the version for OpenSearch. Currently only "2" and "1" is supported. Leave it empty to always get the latest supported version.
 | *`opensearchSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | OpenSearchSettings contains additional OpenSearch settings.
 |===
@@ -600,7 +600,7 @@ ExoscalePostgreSQL is the API for creating PostgreSQL on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
+| *`zone`* __string__ | Zone is the datacenter identifier in which the instance runs in.
 | *`majorVersion`* __string__ | MajorVersion contains the major version for PostgreSQL. Currently only "14" is supported. Leave it empty to always get the latest supported version.
 | *`pgSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | PGSettings contains additional PostgreSQL settings.
 |===
@@ -677,7 +677,7 @@ ExoscaleRedis is the API for creating Redis instances on Exoscale.
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`ExoscaleDBaaSServiceSpec`* __xref:{anchor_prefix}-github-com-vshn-appcat-apis-exoscale-v1-exoscaledbaasservicespec[$$ExoscaleDBaaSServiceSpec$$]__ | 
+| *`zone`* __string__ | Zone is the datacenter identifier in which the instance runs in.
 | *`redisSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | RedisSettings contains additional Redis settings.
 |===
 
@@ -722,6 +722,7 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 - xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-xvshnpostgresql[$$XVSHNPostgreSQL$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshnpostgresqllist[$$VSHNPostgreSQLList$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshnredis[$$VSHNRedis$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshnredislist[$$VSHNRedisList$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-xvshnpostgresql[$$XVSHNPostgreSQL$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-xvshnpostgresqllist[$$XVSHNPostgreSQLList$$]
 
@@ -800,6 +801,23 @@ VSHNDBaaSNetworkSpec contains any network related settings.
 |===
 | Field | Description
 | *`ipFilter`* __string array__ | IPFilter is a list of allowed IPv4 CIDR ranges that can access the service. If no IP Filter is set, you may not be able to reach the service. A value of `0.0.0.0/0` will open the service to all addresses on the public internet.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshndbaaspostgresextension"]
+=== VSHNDBaaSPostgresExtension 
+
+VSHNDBaaSPostgresExtension contains the name of a single extension.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshnpostgresqlservicespec[$$VSHNPostgreSQLServiceSpec$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`name`* __string__ | Name is the name of the extension to enable. For an extensive list, please consult https://stackgres.io/doc/latest/intro/extensions/
 |===
 
 
@@ -958,6 +976,30 @@ VSHNPostgreSQLParameters are the configurable fields of a VSHNPostgreSQL.
 | *`monitoring`* __xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshnpostgresqlmonitoring[$$VSHNPostgreSQLMonitoring$$]__ | Monitoring contains settings to control monitoring.
 | *`encryption`* __xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshnpostgresqlencryption[$$VSHNPostgreSQLEncryption$$]__ | Encryption contains settings to control the storage encryption of an instance.
 | *`updateStrategy`* __xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshnpostgresqlupdatestrategy[$$VSHNPostgreSQLUpdateStrategy$$]__ | UpdateStrategy indicates when updates to the instance spec will be applied.
+| *`instances`* __integer__ | Instances configures the number of PostgreSQL instances for the cluster. Each instance contains one Postgres server. Out of all of the Postgres servers, one is elected as the primary, the rest remain as read-only replicas.
+| *`replication`* __xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshnpostgresqlreplicationstrategy[$$VSHNPostgreSQLReplicationStrategy$$]__ | This section allows to configure Postgres replication mode and HA roles groups. 
+ The main replication group is implicit and contains the total number of instances less the sum of all instances in other replication groups.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshnpostgresqlreplicationstrategy"]
+=== VSHNPostgreSQLReplicationStrategy 
+
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`mode`* __string__ | Mode defines the replication mode applied to the whole cluster. Possible values are: "async"(default), "sync", and "strict-sync" 
+ "async": When in asynchronous mode the cluster is allowed to lose some committed transactions. When the primary server fails or becomes unavailable for any other reason a sufficiently healthy standby will automatically be promoted to primary. Any transactions that have not been replicated to that standby remain in a “forked timeline” on the primary, and are effectively unrecoverable 
+ "sync": When in synchronous mode a standby will not be promoted unless it is certain that the standby contains all transactions that may have returned a successful commit status to client. This means that the system may be unavailable for writes even though some servers are available. 
+ "strict-sync": When it is absolutely necessary to guarantee that each write is stored durably on at least two nodes, use the strict synchronous mode. This mode prevents synchronous replication to be switched off on the primary when no synchronous standby candidates are available. As a downside, the primary will not be available for writes, blocking all client write requests until at least one synchronous replica comes up. 
+ NOTE: We recommend to always use three intances when setting the mode to "strict-sync".
 |===
 
 
@@ -995,6 +1037,7 @@ VSHNPostgreSQLServiceSpec contains PostgreSQL DBaaS specific properties
 | Field | Description
 | *`majorVersion`* __string__ | MajorVersion contains supported version of PostgreSQL. Multiple versions are supported. The latest version "15" is the default version.
 | *`pgSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | PGSettings contains additional PostgreSQL settings.
+| *`extensions`* __xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshndbaaspostgresextension[$$VSHNDBaaSPostgresExtension$$] array__ | Extensions allow to enable/disable any of the supported
 |===
 
 
@@ -1033,7 +1076,7 @@ VSHNPostgreSQLUpdateStrategy indicates how and when updates to the instance spec
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`type`* __string__ | Type indicates the type of the UpdateStrategy. Default is OnRestart. Possible enum values:   - `"OnRestart"` indicates that the changes to the spec will only be applied once the instance is restarted by other means, most likely during maintenance.   - `"Immediate"` indicates that update will be applied to the instance as soon as the spec changes. Please be aware that this might lead to short downtime.
+| *`type`* __string__ | Type indicates the type of the UpdateStrategy. Default is OnRestart. Possible enum values: - `"OnRestart"` indicates that the changes to the spec will only be applied once the instance is restarted by other means, most likely during maintenance. - `"Immediate"` indicates that update will be applied to the instance as soon as the spec changes. Please be aware that this might lead to short downtime.
 |===
 
 
@@ -1042,7 +1085,10 @@ VSHNPostgreSQLUpdateStrategy indicates how and when updates to the instance spec
 
 VSHNRedis is the API for creating Redis clusters.
 
-
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshnredislist[$$VSHNRedisList$$]
+****
 
 [cols="25a,75a", options="header"]
 |===
@@ -1052,6 +1098,24 @@ VSHNRedis is the API for creating Redis clusters.
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
 
 | *`spec`* __xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshnredisspec[$$VSHNRedisSpec$$]__ | Spec defines the desired state of a VSHNRedis.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshnredislist"]
+=== VSHNRedisList 
+
+
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `VSHNRedisList`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`items`* __xref:{anchor_prefix}-github-com-vshn-appcat-apis-vshn-v1-vshnredis[$$VSHNRedis$$] array__ | 
 |===
 
 
