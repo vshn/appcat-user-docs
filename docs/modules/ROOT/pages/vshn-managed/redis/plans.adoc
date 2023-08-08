@@ -72,7 +72,6 @@ If you use the `standard-X` plans, the instance will be scheduled on a `flex` no
 If you need a larger instance, please contact https://docs.appuio.cloud/user/contact.html[APPUiO Cloud support] and manually request more memory according to <<_custom_sizing>>.
 ====
 
-
 == Custom Sizing
 
 While we provide some pre-configured plans, you are free to choose custom values for CPU, memory, and disk size.
@@ -96,7 +95,7 @@ spec:
     name: postgres-creds
 ----
 
-IMPORTANT: Changing disk size after initial provisioning is currently not supported.
+NOTE: Changing the disk size from a default plan will restart the Redis pods. Any further disk size changes should not trigger a restart.
 
 NOTE: We don't recommend setting the requests to a lower value then the limit, as this might negatively impact the performance and stability of your instance.
 
