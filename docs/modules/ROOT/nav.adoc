@@ -44,6 +44,7 @@
 ** xref:vshn-managed/redis/delete.adoc[Deletion]
 ** xref:vshn-managed/redis/plans.adoc[]
 ** xref:vshn-managed/redis/backup.adoc[Backup]
+** xref:vshn-managed/redis/restore.adoc[Restore]
 
 .Kafka
 * xref:exoscale-dbaas/kafka/index.adoc[On Exoscale]
