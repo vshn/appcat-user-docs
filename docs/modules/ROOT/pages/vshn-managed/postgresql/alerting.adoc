@@ -28,9 +28,9 @@ spec:
                 key: url
                 name: alert-secret # <3>
               channel: '#prometheus'
-            route:
-              groupBy: [alertname, instance]
-              receiver: default
+        route:
+          groupBy: [alertname, instance]
+          receiver: default
     service:
       majorVersion: "15"
   writeConnectionSecretToRef:
