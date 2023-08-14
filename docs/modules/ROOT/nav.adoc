@@ -19,6 +19,7 @@
 ** xref:vshn-managed/postgresql/restore.adoc[Restore]
 ** xref:vshn-managed/postgresql/maintenance.adoc[]
 ** xref:vshn-managed/postgresql/plans.adoc[]
+** xref:vshn-managed/postgresql/sla.adoc[]
 ** xref:vshn-managed/postgresql/deletion-protection.adoc[]
 ** xref:vshn-managed/postgresql/encrypted-pvc.adoc[]
 ** xref:vshn-managed/postgresql/alerting.adoc[]

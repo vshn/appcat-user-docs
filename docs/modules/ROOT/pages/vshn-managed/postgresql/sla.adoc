@@ -1,0 +1,32 @@
+= Service Level Agreement
+
+[IMPORTANT]
+====
+The Service Level Agreement can be chosen during a PostgreSQL instance request.
+It can be changed later on. The price together with the provided service will be updated accordingly. The change takes effect on the 1st of the next month.
+For more information regarding price check https://products.vshn.ch/appcat/postgresql.html#_pricing[products.vshn.ch]
+====
+
+== Configuration
+
+The Service Level is enabled by default as `besteffort`. To upgrade the service to `guaranteed` use the following configuration:
+
+.Example of a PostgreSQL instance with `besteffort` service level. Update the namespace!
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-guaranteed
+  namespace: <your-namespace>
+spec:
+  parameters:
+    service:
+      serviceLevel: guaranteed <1>
+      majorVersion: "15"
+      pgSettings:
+        timezone: Europe/Zurich
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> Choose between `besteffort` or `guaranteed` service level.
