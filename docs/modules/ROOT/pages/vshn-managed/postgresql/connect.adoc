@@ -1,15 +1,16 @@
 == How to connect to Your instance ==
 
-== How to connect to Your instance ==
-
 === Problem
 
 You want to either connect to Your PostgreSQL cluster from outside of the cluster, or You need to port-forward, so You can use Your favorite database management tool.
 
+
 === LoadBalancer
 
+WARNING: While using LoadBalancer additional charges may apply for additional IPv4 address. https://products.vshn.ch/appuio/cloud/pricing.html#_service_type_loadbalancer[Check pricing]
+
 LoadBalncer service type is supported on LPG-2 Appuio Cluster and You can use it by setting:
-```yaml
+```
 apiVersion: vshn.appcat.vshn.io/v1
 kind: VSHNPostgreSQL
 metadata:
@@ -26,22 +27,24 @@ spec:
 ```
 
 This YAML snippet would create a PostgreSQL cluster and Service of type LoadBalancer. The Service would be accessible from outside of the cluster. You can get IP address of the service using either:
-```bash
+```
 kubectl -n $instanceNamespace get service primary-service
 ```
 link:../how-tos/logging.adoc[Check how to find instanceNamespace]
 
 or access it directly from connection secret
 
-```bash
+```
 kubectl -n app1-dev get secrets my-postgresql-dev-connection -o yaml | yq .data.LOADBALANCER_IP  | base64 -d
 ```
 
 === Port-forward
 
+TIP: This is the default serviceType
+
 You can port-forward to Your PostgreSQL cluster using kubectl port-forward command. This command works always, no matter what is set as serviceType.
 
-```bash
+```
 kubectl -n $instanceNamespace port-forward services/primary-service 5432
 ```
 link:../how-tos/logging.adoc[Check how to find instanceNamespace]
