@@ -1,13 +1,13 @@
 = Quotas on cloudscale.ch
 
-To protect the APPUiO Cloud cloudscale.ch cluster from abusive resource consumption, there are some quotas in place.
+The resource quotas are in place to protect the APPUiO Cloud cloudscale.ch cluster from abusive resource consumption.
 You might be familiar with the https://docs.appuio.cloud/user/references/default-quota.html[APPUiO Cloud default quotas].
-However AppCat has slightly higher quotas than APPUiO Cloud's default:
+However, AppCat has slightly higher quotas than APPUiO Cloud's default:
 
 * 4.5 CPU limits/requests
 * 16.5 Gb Memory limits/requests
 
 These are to ensure that the `standard-8` and `plus-8` plans of each service should at least be available with one replica (if the service provides support for that).
 
-If you need an instance with more resources than the quotas allow, then please create the instance initially with less resources and then open a ticket with the VSHN support.
-Be sure to mention the name of the instance, so that the support engineer can find it.
+If you need an instance with more resources than the quotas allow, then initially create an instance with fewer resources. Afterward, open a ticket with VSHN support.
+Be sure to mention the name of the instance in the support ticket, so that the support engineer can find it.
