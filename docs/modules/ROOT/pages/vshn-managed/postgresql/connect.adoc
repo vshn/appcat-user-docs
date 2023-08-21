@@ -2,7 +2,7 @@
 
 === Problem
 
-You want to either connect to Your PostgreSQL cluster from outside of the cluster, or You need to port-forward, so You can use Your favorite database management tool.
+You want to either connect to your PostgreSQL cluster from outside of the cluster or need to port-forward so that you can use your favorite database management tool.
 
 
 === LoadBalancer
