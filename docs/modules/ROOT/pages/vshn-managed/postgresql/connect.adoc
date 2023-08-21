@@ -42,7 +42,7 @@ kubectl -n app1-dev get secrets my-postgresql-dev-connection -o yaml | yq .data.
 
 TIP: This is the default serviceType
 
-You can port-forward to Your PostgreSQL cluster using kubectl port-forward command. This command works always, no matter what is set as serviceType.
+You can port-forward to your PostgreSQL cluster using kubectl port-forward command. This command works always, no matter what is set as serviceType.
 
 ```
 kubectl -n $instanceNamespace port-forward services/primary-service 5432
