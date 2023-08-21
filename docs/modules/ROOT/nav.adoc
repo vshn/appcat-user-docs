@@ -14,6 +14,7 @@
 * xref:vshn-managed/postgresql/index.adoc[On cloudscale.ch]
 ** xref:vshn-managed/postgresql/create.adoc[Creation]
 ** xref:vshn-managed/postgresql/usage.adoc[Usage]
+** xref:vshn-managed/postgresql/connect.adoc[Connect]
 ** xref:vshn-managed/postgresql/delete.adoc[Deletion]
 ** xref:vshn-managed/postgresql/backup.adoc[Backup]
 ** xref:vshn-managed/postgresql/restore.adoc[Restore]
