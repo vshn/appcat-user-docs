@@ -70,3 +70,4 @@
 .Advanced
 * xref:references/permissions.adoc[Namespace Permissions]
 * xref:references/argocd.adoc[Usage with ArgoCD]
+* xref:references/quotas.adoc[]
