@@ -1,7 +1,7 @@
 // Generated documentation. Please do not edit.
 :anchor_prefix: k8s-api
 
-[id="api-reference2"]
+[id="api-reference"]
 = API Reference
 
 This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
@@ -173,7 +173,7 @@ XObjectBucketSpec defines the desired state of a ObjectBucket.
 // Generated documentation. Please do not edit.
 :anchor_prefix: k8s-api
 
-[id="api-reference2"]
+[id="api-reference1"]
 == Exoscale Reference
 
 This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
