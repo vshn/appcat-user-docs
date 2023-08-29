@@ -55,6 +55,7 @@ $(crd_ref_docs_bin): | $(go_bin)
 
 crd_branch ?= master
 
+
 clone-crds:
 	rm -rf .work/crds
 	git clone https://github.com/vshn/appcat/ .work/crds
@@ -70,3 +71,4 @@ docs-generate-api: clone-crds
 	cat docs/modules/ROOT/pages/references/crds_exo.adoc | sed "s/= API Reference/== Exoscale Reference/g" >> docs/modules/ROOT/pages/references/crds.adoc
 	cat docs/modules/ROOT/pages/references/crds_vshn.adoc | sed "s/= API Reference/== VSHN Reference/g" >> docs/modules/ROOT/pages/references/crds.adoc
 	rm docs/modules/ROOT/pages/references/crds_*.adoc
+	go run main.go
