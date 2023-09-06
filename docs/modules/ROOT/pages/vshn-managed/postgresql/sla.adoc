@@ -21,12 +21,14 @@ metadata:
   namespace: <your-namespace>
 spec:
   parameters:
+    instances: 2 <1>
     service:
-      serviceLevel: guaranteed <1>
+      serviceLevel: guaranteed <2>
       majorVersion: "15"
       pgSettings:
         timezone: Europe/Zurich
   writeConnectionSecretToRef:
     name: postgres-creds
 ----
-<1> Choose between `besteffort` or `guaranteed` service level.
+<1> Number of instances. When using `guaranteed` service level, the minimum number of instances is 2, maximum is 3.
+<2> Choose between `besteffort` or `guaranteed` service level.
