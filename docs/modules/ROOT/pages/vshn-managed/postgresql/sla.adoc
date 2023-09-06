@@ -21,6 +21,8 @@ metadata:
   namespace: <your-namespace>
 spec:
   parameters:
+    # instances must be either 2 or 3 when serviceLevel=guaranteed is set 
+    instances: 2
     service:
       serviceLevel: guaranteed <1>
       majorVersion: "15"
