@@ -1,9 +1,24 @@
 = Object Storage References
 
-== Provider References
+== APPUiO Cloud
 
 The following Cloud Provider references are available, to be used in the `ObjectBucket` object under `spec.compositionRef`
 
 cloudscale.ch:: `cloudscale.objectbuckets.appcat.vshn.io`
 
 Exoscale:: `exoscale.objectbuckets.appcat.vshn.io`
+
+
+== APPUiO Managed
+
+On an APPUiO Managed cluster, it's possible to get a list of available references via `kubectl`.
+
+[source,bash]
+----
+kubectl get appcat | grep "objectbuckets"
+cloudscale.objectbuckets.appcat.vshn.io      cloudscale.ch Object Storage   lpg, rma                                                    https://vs.hn/objstor           390d
+exoscale.objectbuckets.appcat.vshn.io        Exoscale Object Storage        de-fra-1, de-muc-1, at-vie-1, ch-gva-2, ch-dk-2, bg-sof-1   https://vs.hn/objstor           370d
+minio.objectbuckets.appcat.vshn.io           Minio-minio Object Storage     default                                                     https://vs.hn/objstor           85d
+----
+
+NOTE: This list will look different depending on what cluster you're connected to.
