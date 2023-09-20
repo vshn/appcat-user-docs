@@ -11,7 +11,7 @@ Exoscale:: `exoscale.objectbuckets.appcat.vshn.io`
 
 == APPUiO Managed
 
-On an APPUiO Manged cluster, it's possible to get a list of available references via `kubectl`.
+On an APPUiO Managed cluster, it's possible to get a list of available references via `kubectl`.
 
 [source,bash]
 ----
