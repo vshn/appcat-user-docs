@@ -7,9 +7,23 @@ If you do not need an Object Storage bucket anymore, you can delete it in the sa
 $ oc delete objectbucket my-bucket
 ----
 
-[IMPORTANT]
-.Non-reversible operation
-====
-If you delete the `ObjectBucket` object from the cluster, it will delete the actual bucket including all stored objects in it as well (recursive delete)!
-There will be a `DeletionPolicy` soon, that will provide accidental deletion protection.
-====
+== DeletionPolicy
+
+By default, deleting the `ObjectBucket` will also recursively delete all objects within it and the bucket itself.
+
+To prevent that, there's a `deletionPolicy` called `DeletIfEmpty`. As the name suggests, it will then only delete the bucket if it's empty. However, you will still lose access to the data. If you've deleted a bucket by mistake and had the `DeletIfEmpty` policy set, please contact support@vshn.ch and we will help you get your data back.
+
+.Example
+[source,yaml]
+----
+apiVersion: appcat.vshn.io/v1
+kind: ObjectBucket
+metadata:
+  name: my-cool-bucket
+  namespace: my-cool-ns
+spec:
+  parameters:
+    bucketName: my-bucket-change-name
+    region: ch-gva-2
+    bucketDeletionPolicy: DeleteIfEmpty
+----
