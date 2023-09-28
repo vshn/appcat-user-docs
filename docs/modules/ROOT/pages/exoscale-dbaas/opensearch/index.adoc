@@ -1,6 +1,6 @@
 = Exoscale DBaaS - OpenSearch
 
-This section provides documentation related to the https://www.exoscale.com/dbaas/kafka/[Exoscale DBaaS Managed OpenSearch^] service in the VSHN Application Catalog.
+This section provides documentation related to the https://www.exoscale.com/dbaas/opensearch/[Exoscale DBaaS Managed OpenSearch^] service in the VSHN Application Catalog.
 
 Learn more about this service, including its pricing, in our https://products.docs.vshn.ch/products/appcat/exoscale_dbaas.html[product documentation site^].
 
