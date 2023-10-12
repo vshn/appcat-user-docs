@@ -1,3 +1,5 @@
+= Connect
+
 == How to connect to Your instance ==
 
 === Problem
@@ -30,7 +32,7 @@ This YAML snippet would create a PostgreSQL cluster and Service of type LoadBala
 ```
 kubectl -n $instanceNamespace get service primary-service
 ```
-link:../how-tos/logging.adoc[Check how to find instanceNamespace]
+link:../how-tos/logging.html[Check how to find instanceNamespace]
 
 or access it directly from connection secret
 
@@ -47,4 +49,4 @@ You can port-forward to your PostgreSQL cluster using kubectl port-forward comma
 ```
 kubectl -n $instanceNamespace port-forward services/primary-service 5432
 ```
-link:../how-tos/logging.adoc[Check how to find instanceNamespace]
+link:../how-tos/logging.html[Check how to find instanceNamespace]
