@@ -20,11 +20,11 @@ spec:
     name: objectbucket-creds # <4>
 ----
 <1> The namespace where the object will be created.
-<2> Bucket name: *don't just copy/paste this code, remember to choose your own name here!*
+<2> The bucket name for this ObjectBucket.
 <3> The bucket's region depends on the selected Provider, see xref:references/cloud-zones.adoc#_regions[here] for more details
 <4> Secret where the connection details are provisioned. This secret shouldn't exist at this time.
 +
-IMPORTANT: Object Storage Bucket names must be unique across providers. Make sure to choose a name with prefixes and other guards, to prevent any issue during the creation of the bucket. No error message is returned if the bucket cannot be created.
+IMPORTANT: Object Storage Bucket names must be unique across providers. Make sure to choose a name with prefixes and other guards, to prevent any issue during the creation of the bucket. Check the status field of the custom resource for such errors.
 
 == Create a Bucket in another cloud provider
 
