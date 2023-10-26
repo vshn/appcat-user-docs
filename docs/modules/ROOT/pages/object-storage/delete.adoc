@@ -11,7 +11,7 @@ $ oc delete objectbucket my-bucket
 
 By default, deleting the `ObjectBucket` will also recursively delete all objects within it and the bucket itself.
 
-To prevent that, there's a `deletionPolicy` called `DeletIfEmpty`. As the name suggests, it will then only delete the bucket if it's empty. However, you will still lose access to the data. If you've deleted a bucket by mistake and had the `DeletIfEmpty` policy set, please contact support@vshn.ch and we will help you get your data back.
+To prevent that, there's a `deletionPolicy` called `DeleteIfEmpty`. As the name suggests, it will then only delete the bucket if it's empty. However, you will still lose access to the data. If you've deleted a bucket by mistake and had the `DeletIfEmpty` policy set, please contact support@vshn.ch and we will help you get your data back.
 
 .Example
 [source,yaml]
@@ -27,3 +27,5 @@ spec:
     region: ch-gva-2
     bucketDeletionPolicy: DeleteIfEmpty
 ----
+
+IMPORTANT: Before deleting an ObjectBucket with deletion policy `DeleteIfEmpty` be sure to remove all data from the bucket itself. Failing to do so may incur additional costs due to bucket not being effectively deleted. Please contact support@vshn.ch for further assistance.
