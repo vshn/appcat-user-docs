@@ -21,4 +21,10 @@ exoscale.objectbuckets.appcat.vshn.io        Exoscale Object Storage        de-f
 minio.objectbuckets.appcat.vshn.io           Minio-minio Object Storage     default                                                     https://vs.hn/objstor           85d
 ----
 
+The first column contains the names of the references that are available.
+For example the reference `minio.objectbuckets.appcat.vshn.io` would create a bucket on Minio.
+
+It's possible that a cluster can have multiple Minio instances, like Prod and Test.
+These can be listed and referenced in exactly the same manner.
+
 NOTE: This list will look different depending on what cluster you're connected to.
