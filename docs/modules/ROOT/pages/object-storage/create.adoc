@@ -24,7 +24,7 @@ spec:
 <3> The bucket's region depends on the selected Provider, see xref:references/cloud-zones.adoc#_regions[here] for more details
 <4> Secret where the connection details are provisioned. This secret shouldn't exist at this time.
 +
-IMPORTANT: Object Storage Bucket names must be unique across providers. Make sure to choose a name with prefixes and other guards, to prevent any issue during the creation of the bucket. Check the status field of the custom resource for such errors.
+IMPORTANT: Object Storage Bucket names must be unique across providers. Make sure to choose a name with prefixes and other guards, to prevent any issue during the creation of the bucket. Check the status field of the `ObjectBucket` for such errors.
 
 == Create a Bucket in another cloud provider
 
