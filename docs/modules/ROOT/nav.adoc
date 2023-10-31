@@ -67,8 +67,8 @@
 * xref:object-storage/delete.adoc[Deletion]
 * xref:object-storage/references.adoc[Reference Documentation]
 
-.Minio
-* xref:vshn-managed/minio.adoc[On APPPUiO Managed]
+.MinIO
+* xref:vshn-managed/minio.adoc[On On-Premise]
 
 .Advanced
 * xref:references/permissions.adoc[Namespace Permissions]

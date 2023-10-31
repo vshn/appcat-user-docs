@@ -1,10 +1,6 @@
-= Minio by VSHN
+= MinIO by VSHN
 
-APPUiO Managed clusters will use the underlying cloud's Object Storage to provide Object Storage by default.
-For example: if the APPUiO Managed cluster is running on Exoscale, then AppCat will provide Exoscale's SOS service for `ObjectBuckets`.
-If you're on-premise without any existing Object Storage solution, then Minio will already be installed on the cluster, as it's required for AppCat to work.
-If you have any other use-cases for Minio, please open a ticket or contact us via support@vshn.ch.
-We will then provision Minio according to your specifications on the cluster.
+MinIO by VSHN is currently only available on APPUiO Managed on request.
+Please https://www.vshn.ch/en/contact/[contact^] us to discuss your requirements.
 
-Once Minio is enabled on an APPUiO Managed cluster, please follow xref:object-storage/create.adoc[this page] on how to create an object bucket.
-Please refer to the xref:object-storage/references.adoc[reference documentation] to learn how to select the Minio instances, if multiple instances are available.
+Once MinIO is enabled on your cluster, please follow xref:object-storage/create.adoc[this page] to learn how to create an object storage bucket.
