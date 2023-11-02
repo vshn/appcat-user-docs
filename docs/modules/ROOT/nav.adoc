@@ -67,6 +67,9 @@
 * xref:object-storage/delete.adoc[Deletion]
 * xref:object-storage/references.adoc[Reference Documentation]
 
+.MinIO
+* xref:vshn-managed/minio.adoc[On Private Cloud]
+
 .Advanced
 * xref:references/permissions.adoc[Namespace Permissions]
 * xref:references/argocd.adoc[Usage with ArgoCD]

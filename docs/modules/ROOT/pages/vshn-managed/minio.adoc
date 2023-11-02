@@ -1,0 +1,6 @@
+= MinIO by VSHN
+
+MinIO by VSHN is currently only available on APPUiO Managed on request.
+Please https://www.vshn.ch/en/contact/[contact^] us to discuss your requirements.
+
+Once MinIO is enabled on your cluster, please follow xref:object-storage/create.adoc[this page] to learn how to create an object storage bucket.
