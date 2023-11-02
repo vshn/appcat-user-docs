@@ -11,7 +11,7 @@ To get started, click xref:getting-started.adoc[here].
 |Service
 |Exoscale
 |cloudscale.ch
-|On-Premise
+|Private Cloud
 
 |PostgreSQL
 |xref:exoscale-dbaas/postgresql/create.adoc[Create] and xref:exoscale-dbaas/postgresql/usage.adoc[use]
