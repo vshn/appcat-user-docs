@@ -33,7 +33,7 @@ spec:
   parameters:
     ...
     restore:
-      claimName: edis-app1-prod <1>
+      claimName: redis-app1-prod <1>
       backupName: f22ag4fc <2>
     ...
 ----
