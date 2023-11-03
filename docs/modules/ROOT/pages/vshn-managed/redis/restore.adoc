@@ -1,5 +1,7 @@
 = Restores
 
+IMPORTANT: *Restore operation will create a new Redis instance with new credentials*
+
 By default, every redis instance creates a backup once a day or at the time you specified.
 
 Please visit the (xref:vshn-managed/redis/backup.adoc[Backup documentation] for more information.

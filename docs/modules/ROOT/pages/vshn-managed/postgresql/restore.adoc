@@ -1,5 +1,7 @@
 = Restore a Backup
 
+IMPORTANT: *Restore operation will create a new PostgreSQL instance with new credentials*
+
 [IMPORTANT]
 .Backups are tied to instances
 ====
