@@ -56,4 +56,13 @@ spec:
 <2> The backup name you want to restore
 <3> You need to specify that this is not a normal instance but a restored one
 +
-NOTE: The restore process is the same as ordering a new instance. The only difference is the backup information in `spec.parameters.restore` and `spec.compositionRef` objects.
+[NOTE]
+====
+The restore process is the same as ordering a new instance.
+The only difference is the backup information in `spec.parameters.restore` and `spec.compositionRef` objects.
+====
+
+== Deleting a Restored Instance
+
+The deletion process of a restored instance is the same as for normal instance.
+Check out xref:vshn-managed/postgresql/delete.adoc[this guide] how to delete a PostgreSQL instance.
