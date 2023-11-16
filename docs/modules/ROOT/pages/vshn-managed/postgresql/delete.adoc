@@ -1,5 +1,7 @@
 = Delete a PostgreSQL service
 
+== Delete non protected PostgreSQL instance
+
 If you do not need your PostgreSQL service anymore, you can delete it in the same way as you would with any other object in your cluster:
 
 [source,bash]
@@ -7,6 +9,47 @@ If you do not need your PostgreSQL service anymore, you can delete it in the sam
 $ oc delete vshnpostgresqls.vshn.appcat.vshn.io my-postgres-example
 ----
 
+[IMPORTANT]
+.Non-reversible operation
+====
+If you delete the `VSHNPostgreSQL` object from the cluster, it will be deleted together with all of its data!
+====
+
+== Delete protected PostgreSQL instance
+
+A PostgreSQL instance that is protected from deletion cannot be deleted right away.
+First disable deletion protection then delete the instance.
+
+. Disable deletion protection:
++
+[source,bash]
+----
+$ oc edit vshnpostgresqls.vshn.appcat.vshn.io my-postgres-example
+----
++
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    backup:
+      deletionProtection: false # <1>
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> Make sure the parameter is set to false
+
+. Delete the instance
++
+[source,bash]
+----
+$ oc delete vshnpostgresqls.vshn.appcat.vshn.io my-postgres-example
+----
++
 [IMPORTANT]
 .Non-reversible operation
 ====
