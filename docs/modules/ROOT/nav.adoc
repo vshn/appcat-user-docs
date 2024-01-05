@@ -34,6 +34,16 @@
 ** xref:exoscale-dbaas/mysql/usage.adoc[Usage]
 ** xref:exoscale-dbaas/mysql/delete.adoc[Deletion]
 
+.MariaDB
+* xref:vshn-managed/mariadb/index.adoc[On cloudscale.ch]
+** xref:vshn-managed/mariadb/create.adoc[Creation]
+** xref:vshn-managed/mariadb/maintenance.adoc[]
+** xref:vshn-managed/mariadb/usage.adoc[Usage]
+** xref:vshn-managed/mariadb/delete.adoc[Deletion]
+** xref:vshn-managed/mariadb/plans.adoc[]
+** xref:vshn-managed/mariadb/backup.adoc[Backup]
+** xref:vshn-managed/mariadb/restore.adoc[Restore]
+
 .Redis
 * xref:exoscale-dbaas/redis/index.adoc[On Exoscale]
 ** xref:exoscale-dbaas/redis/create.adoc[Creation]

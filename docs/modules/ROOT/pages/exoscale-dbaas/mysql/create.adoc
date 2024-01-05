@@ -57,4 +57,4 @@ $ oc get secrets mysql-creds -o yaml
 
 The output of the command above is a secret specification with the following structure:
 
-include::page$references/secrets.adoc[tag=mariadb]
+include::page$references/secrets.adoc[tag=mysql]

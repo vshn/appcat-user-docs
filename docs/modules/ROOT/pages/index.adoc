@@ -23,6 +23,12 @@ To get started, click xref:getting-started.adoc[here].
 |
 |
 
+|MariaDB
+|
+|xref:vshn-managed/mariadb/create.adoc[Create] and xref:vshn-managed/mariadb/usage.adoc[use]
+|xref:vshn-managed/mariadb/create.adoc[Create] and xref:vshn-managed/mariadb/usage.adoc[use]
+
+
 |Redis
 |xref:exoscale-dbaas/redis/create.adoc[Create] and xref:exoscale-dbaas/redis/usage.adoc[use]
 |xref:vshn-managed/redis/create.adoc[Create] and xref:vshn-managed/redis/usage.adoc[use]

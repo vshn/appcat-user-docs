@@ -2,13 +2,13 @@
 
 == Plans
 
-We provide a few preconfigured plans that should make sizing your Redis instance easier.
+We provide a few preconfigured plans that should make sizing your MariaDB instance easier.
 Just choose one of the provided plans.
 
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
-kind: VSHNRedis
+kind: VSHNMariaDB
 metadata:
   name: example
 spec:
@@ -16,7 +16,7 @@ spec:
     size:
       plan: standard-2
   writeConnectionSecretToRef:
-    name: redis-creds
+    name: mariadb-creds
 ----
 
 By default, the following plans are available on every cluster:
@@ -36,9 +36,9 @@ You can see all available plans running:
 
 [source,bash]
 ----
-$ kubectl explain vshnredis.spec.parameters.size.plan
+$ kubectl explain vshnmariadb.spec.parameters.size.plan
 
-KIND:     VSHNRedis
+KIND:     VSHNMariaDB
 VERSION:  vshn.appcat.vshn.io/v1
 
 FIELD:    plan <string>
@@ -82,7 +82,7 @@ The following example would keep the memory requests from the `standard-2` plan 
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
-kind: VSHNRedis
+kind: VSHNMariaDB
 metadata:
   name: example
 spec:
@@ -92,10 +92,10 @@ spec:
       cpuRequests: "2"
       cpuLimits: "9"
   writeConnectionSecretToRef:
-    name: redis-creds
+    name: mariadb-creds
 ----
 
-NOTE: Changing the disk size from a default plan will restart the Redis pods. Any further disk size changes should not trigger a restart.
+NOTE: Changing the disk size from a default plan will restart the MariaDB pods. Any further disk size changes should not trigger a restart.
 
 NOTE: We don't recommend setting the requests to a lower value then the limit, as this might negatively impact the performance and stability of your instance.
 
@@ -110,15 +110,15 @@ The default plans all adhere to the Fair Use Policy.
 
 == Node Selectors
 
-You have the option to specify a custom node selector for your Redis instance.
+You have the option to specify a custom node selector for your MariaDB instance.
 This allows you to assign the instance to a specific node, which can be helpful if your cluster has dedicated nodes to run databases on.
 
-The following configuration would create a Redis instance that runs on a node with the label `speed=fast`.
+The following configuration would create a MariaDB instance that runs on a node with the label `speed=fast`.
 
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
-kind: VSHNRedis
+kind: VSHNMariaDB
 metadata:
   name: example
 spec:
@@ -129,7 +129,7 @@ spec:
       nodeSelector:
         speed: fast # <1>
   writeConnectionSecretToRef:
-    name: redis-creds
+    name: mariadb-creds
 ----
 <1> Annotation specifying a faster node.
 

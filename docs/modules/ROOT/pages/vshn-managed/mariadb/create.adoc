@@ -1,0 +1,56 @@
+= Create a MariaDB service
+
+Apply the following object on your namespace, as specified by its YAML description.
+
+.Example to create a MariaDB instance
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNMariaDB
+metadata:
+  name: mariadb-app1-prod # <1>
+  namespace: prod-app # <2>
+spec:
+  parameters:
+    service:
+      version: "11.2" # <3>
+      mariadbSettings: | # <4>
+        [mariadb]
+        enable_slow_query_log
+    size: <5>
+      plan: standard-2
+  writeConnectionSecretToRef:
+    name: mariadb-creds # <6>
+----
+<1> Instance name
+<2> The namespace where the object will be created
+<3> MariaDB version
+<4> Specify custom MariaDB settings [optional]
+<5> Size of the MariaDB instance. See xref:vshn-managed/mariadb/plans.adoc[Plans and Sizing] for more information.
+<6> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
+
+NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnmariadb[API Reference]
+
+== Inspect your new MariaDB service
+
+[source,bash]
+----
+$  oc get vshnmariadb.vshn.appcat.vshn.io
+NAME                SYNCED   READY   CONNECTION-SECRET   AGE
+mariadb-app1-prod   True     True    mariadb-creds       3m32s
+----
+
+When you see `True` in the READY column, it means the instance is provisioned and ready to use.
+
+== Find the connection details
+
+The connection details are stored in a secret. You can retrieve them with the following command:
+
+[source,bash]
+----
+$ oc get secrets mariadb-creds -o yaml
+----
+
+The output of the command above is a secret specification with the following structure:
+
+include::page$references/secrets.adoc[tag=mariadb]
