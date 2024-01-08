@@ -1,7 +1,7 @@
 = Using a MariaDB service
 
 The YAML code below creates two objects: a `VSHNMariaDB` instance and a pod accessing it to show information about the instance.
-The latter references the `redis-creds` secret that will contain the access keys required to connect to the instance.
+The latter references the `mariadb-creds-connection` secret that will contain the access keys required to connect to the instance.
 
 [source,yaml]
 ----
