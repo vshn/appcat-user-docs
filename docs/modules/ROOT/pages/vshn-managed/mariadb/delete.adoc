@@ -1,0 +1,16 @@
+= Delete a MariaDB service
+
+== Delete non protected MariaDB instance
+
+If you do not need your MariaDB service anymore, you can delete it in the same way as you would with any other object in your cluster:
+
+[source,bash]
+----
+$ oc delete vshnmariadb.vshn.appcat.vshn.io mariadb-app1-prod
+----
+
+[IMPORTANT]
+.Non-reversible operation
+====
+If you delete the `VSHNMariaDB` object from the cluster, it will be deleted together with all of its data!
+====

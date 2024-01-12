@@ -1,0 +1,12 @@
+= MariaDB by VSHN
+
+This section provides documentation related to the MariaDB service managed by VSHN in the Application Catalog.
+
+Learn more about this service, including its pricing, in our https://products.docs.vshn.ch/products/appcat/mariadb.html#_pricing[product portfolio^].
+
+TIP: Get started and xref:vshn-managed/mariadb/create.adoc[create a MariaDB instance].
+
+== Links
+
+* https://mariadb.org/[Mariadb^]
+* xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnmariadb[VSHN Application Catalog API reference]
