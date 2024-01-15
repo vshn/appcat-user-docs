@@ -1,0 +1,4 @@
+= Restores
+
+Self-service restores aren't implemented yet. If you need to restore a database
+please contact our mailto:support@vshn.ch[Support].
