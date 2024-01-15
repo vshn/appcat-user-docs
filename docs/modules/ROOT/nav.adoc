@@ -41,6 +41,7 @@
 ** xref:vshn-managed/mariadb/usage.adoc[Usage]
 ** xref:vshn-managed/mariadb/delete.adoc[Deletion]
 ** xref:vshn-managed/mariadb/plans.adoc[]
+** xref:vshn-managed/mariadb/restore.adoc[Restore]
 
 .Redis
 * xref:exoscale-dbaas/redis/index.adoc[On Exoscale]
