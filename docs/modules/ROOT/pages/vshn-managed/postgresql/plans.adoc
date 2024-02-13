@@ -48,11 +48,11 @@ DESCRIPTION:
      Plan is the name of the resource plan that defines the compute resources.
      The following plans are available:
 
-     standard-2 - CPU: 400m; Memory: 1728Mi; Disk: 20Gi
+     standard-2 - CPU: 400m; Memory: 1936Mi; Disk: 20Gi
 
-     standard-4 - CPU: 900m; Memory: 3776Mi; Disk: 40Gi
+     standard-4 - CPU: 900m; Memory: 33984Mi; Disk: 40Gi
 
-     standard-8 - CPU: 1900m; Memory: 7872Mi; Disk: 80Gi
+     standard-8 - CPU: 1900m; Memory: 8080Mi; Disk: 80Gi
 ----
 
 [WARNING]
@@ -108,8 +108,8 @@ The default plans all adhere to the Fair Use Policy.
 
 Each PostgreSQL Standalone instance has the following overhead:
 
-* CPU: 100m
-* Memory: 320Mi
+* CPU: 390m
+* Memory: 408Mi
 
 These are for various sidecar containers that run alongside the actual PostgreSQL instance.
 These containers handle connection pooling, metrics and other internal functionality.
