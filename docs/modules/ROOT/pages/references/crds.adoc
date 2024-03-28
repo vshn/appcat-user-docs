@@ -20,6 +20,18 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 
 
 
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-v1-bucketdeletionpolicy"]
+=== BucketDeletionPolicy (string) 
+
+BucketDeletionPolicy determines how buckets should be deleted when a Bucket is deleted.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-v1-objectbucketparameters[$$ObjectBucketParameters$$]
+****
+
+
+
 [id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-v1-condition"]
 === Condition 
 
@@ -59,22 +71,6 @@ LocalObjectReference contains enough information to let you locate the reference
 |===
 
 
-[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-v1-namespacedname"]
-=== NamespacedName 
-
-NamespacedName describes an object reference by its name and namespace
-
-.Appears In:
-****
-- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-v1-xobjectbucketspec[$$XObjectBucketSpec$$]
-****
-
-[cols="25a,75a", options="header"]
-|===
-| Field | Description
-| *`namespace`* __string__ | 
-| *`name`* __string__ | 
-|===
 
 
 [id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-v1-objectbucket"]
@@ -111,6 +107,7 @@ ObjectBucketParameters are the configurable fields of a ObjectBucket.
 | Field | Description
 | *`bucketName`* __string__ | BucketName is the name of the bucket to create. Cannot be changed after bucket is created. Name must be acceptable by the S3 protocol, which follows RFC 1123. Be aware that S3 providers may require a unique name across the platform or region.
 | *`region`* __string__ | Region is the name of the region where the bucket shall be created. The region must be available in the S3 endpoint.
+| *`bucketDeletionPolicy`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-v1-bucketdeletionpolicy[$$BucketDeletionPolicy$$]__ | BucketDeletionPolicy determines how buckets should be deleted when Bucket is deleted. `DeleteIfEmpty` only deletes the bucket if the bucket is empty. `DeleteAll` recursively deletes all objects in the bucket and then removes it.
 |===
 
 
@@ -129,6 +126,7 @@ ObjectBucketSpec defines the desired state of a ObjectBucket.
 | Field | Description
 | *`parameters`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-v1-objectbucketparameters[$$ObjectBucketParameters$$]__ | 
 | *`writeConnectionSecretToRef`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-v1-localobjectreference[$$LocalObjectReference$$]__ | WriteConnectionSecretToRef references a secret to which the connection details will be written.
+| *`compositionRef`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-apis-apiextensions-v1-compositionreference[$$CompositionReference$$]__ | 
 |===
 
 
@@ -166,7 +164,11 @@ XObjectBucketSpec defines the desired state of a ObjectBucket.
 |===
 | Field | Description
 | *`parameters`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-v1-objectbucketparameters[$$ObjectBucketParameters$$]__ | 
-| *`writeConnectionSecretToRef`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-v1-namespacedname[$$NamespacedName$$]__ | WriteConnectionSecretToRef references a secret to which the connection details will be written.
+| *`writeConnectionSecretToRef`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-secretreference[$$SecretReference$$]__ | WriteConnectionSecretToReference specifies the namespace and name of a Secret to which any connection details for this managed resource should be written. Connection details frequently include the endpoint, username, and password required to connect to the managed resource. This field is planned to be replaced in a future release in favor of PublishConnectionDetailsTo. Currently, both could be set independently and connection details would be published to both without affecting each other.
+| *`publishConnectionDetailsTo`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-publishconnectiondetailsto[$$PublishConnectionDetailsTo$$]__ | PublishConnectionDetailsTo specifies the connection secret config which contains a name, metadata and a reference to secret store config to which any connection details for this managed resource should be written. Connection details frequently include the endpoint, username, and password required to connect to the managed resource.
+| *`providerConfigRef`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-reference[$$Reference$$]__ | ProviderConfigReference specifies how the provider that will be used to create, observe, update, and delete this managed resource should be configured.
+| *`managementPolicies`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-managementpolicies[$$ManagementPolicies$$]__ | THIS IS A BETA FIELD. It is on by default but can be opted out through a Crossplane feature flag. ManagementPolicies specify the array of actions Crossplane is allowed to take on the managed and external resources. This field is planned to replace the DeletionPolicy field in a future release. Currently, both could be set independently and non-default values would be honored if the feature flag is enabled. If both are custom, the DeletionPolicy field will be ignored. See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223 and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+| *`deletionPolicy`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-deletionpolicy[$$DeletionPolicy$$]__ | DeletionPolicy specifies what will happen to the underlying external when this managed resource is deleted - either "Delete" or "Orphan" the external resource. This field is planned to be deprecated in favor of the ManagementPolicies field in a future release. Currently, both could be set independently and non-default values would be honored if the feature flag is enabled. See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
 |===
 
 
@@ -719,12 +721,26 @@ This is a https://github.com/elastic/crd-ref-docs[generated] API documentation.
 
 
 .Resource Types
-- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresql[$$XVSHNPostgreSQL$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloak[$$VSHNKeycloak$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloaklist[$$VSHNKeycloakList$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadb[$$VSHNMariaDB$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadblist[$$VSHNMariaDBList$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminio[$$VSHNMinio$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminiolist[$$VSHNMinioList$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresql[$$VSHNPostgreSQL$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqllist[$$VSHNPostgreSQLList$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnredis[$$VSHNRedis$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnredislist[$$VSHNRedisList$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnkeycloak[$$XVSHNKeycloak$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnkeycloaklist[$$XVSHNKeycloakList$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnmariadb[$$XVSHNMariaDB$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnmariadblist[$$XVSHNMariaDBList$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnminio[$$XVSHNMinio$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnminiolist[$$XVSHNMinioList$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresql[$$XVSHNPostgreSQL$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresqllist[$$XVSHNPostgreSQLList$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnredis[$$XVSHNRedis$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnredislist[$$XVSHNRedisList$$]
 
 
 
@@ -735,6 +751,9 @@ K8upBackupSpec specifies when a backup for redis should be triggered. It also co
 
 .Appears In:
 ****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakparameters[$$VSHNKeycloakParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbparameters[$$VSHNMariaDBParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminioparameters[$$VSHNMinioParameters$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnredisparameters[$$VSHNRedisParameters$$]
 ****
 
@@ -753,6 +772,9 @@ K8upRestoreSpec contains restore specific parameters.
 
 .Appears In:
 ****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakparameters[$$VSHNKeycloakParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbparameters[$$VSHNMariaDBParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminioparameters[$$VSHNMinioParameters$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnredisparameters[$$VSHNRedisParameters$$]
 ****
 
@@ -793,8 +815,12 @@ VSHNDBaaSMaintenanceScheduleSpec contains settings to control the maintenance of
 
 .Appears In:
 ****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakparameters[$$VSHNKeycloakParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbparameters[$$VSHNMariaDBParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminioparameters[$$VSHNMinioParameters$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnredisparameters[$$VSHNRedisParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnschedulestatus[$$VSHNScheduleStatus$$]
 ****
 
 [cols="25a,75a", options="header"]
@@ -823,21 +849,6 @@ VSHNDBaaSNetworkSpec contains any network related settings.
 |===
 
 
-[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaaspostgresextension"]
-=== VSHNDBaaSPostgresExtension 
-
-VSHNDBaaSPostgresExtension contains the name of a single extension.
-
-.Appears In:
-****
-- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlservicespec[$$VSHNPostgreSQLServiceSpec$$]
-****
-
-[cols="25a,75a", options="header"]
-|===
-| Field | Description
-| *`name`* __string__ | Name is the name of the extension to enable. For an extensive list, please consult https://stackgres.io/doc/latest/intro/extensions/
-|===
 
 
 [id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasschedulingspec"]
@@ -847,6 +858,8 @@ VSHNDBaaSSchedulingSpec contains settings to control the scheduling of an instan
 
 .Appears In:
 ****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakparameters[$$VSHNKeycloakParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbparameters[$$VSHNMariaDBParameters$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnredisparameters[$$VSHNRedisParameters$$]
 ****
@@ -858,6 +871,20 @@ VSHNDBaaSSchedulingSpec contains settings to control the scheduling of an instan
 |===
 
 
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasservicelevel"]
+=== VSHNDBaaSServiceLevel (string) 
+
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakservicespec[$$VSHNKeycloakServiceSpec$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbservicespec[$$VSHNMariaDBServiceSpec$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnredisservicespec[$$VSHNRedisServiceSpec$$]
+****
+
+
+
 [id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaassizerequestsspec"]
 === VSHNDBaaSSizeRequestsSpec 
 
@@ -865,7 +892,7 @@ VSHNDBaaSSizeRequestsSpec contains settings to control the resoure requests of a
 
 .Appears In:
 ****
-- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaassizespec[$$VSHNDBaaSSizeSpec$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnsizespec[$$VSHNSizeSpec$$]
 ****
 
 [cols="25a,75a", options="header"]
@@ -876,29 +903,471 @@ VSHNDBaaSSizeRequestsSpec contains settings to control the resoure requests of a
 |===
 
 
-[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaassizespec"]
-=== VSHNDBaaSSizeSpec 
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloak"]
+=== VSHNKeycloak 
 
-VSHNDBaaSSizeSpec contains settings to control the sizing of a service.
+VSHNKeycloak is the API for creating keycloak instances.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloaklist[$$VSHNKeycloakList$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `VSHNKeycloak`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakspec[$$VSHNKeycloakSpec$$]__ | Spec defines the desired state of a VSHNKeycloak.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakcustomizationimage"]
+=== VSHNKeycloakCustomizationImage 
+
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakservicespec[$$VSHNKeycloakServiceSpec$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`image`* __string__ | Path to a valid image
+| *`imagePullSecretRef`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#secretreference-v1-core[$$SecretReference$$]__ | Reference to an imagePullSecret
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloaklist"]
+=== VSHNKeycloakList 
+
+
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `VSHNKeycloakList`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`items`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloak[$$VSHNKeycloak$$] array__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakparameters"]
+=== VSHNKeycloakParameters 
+
+VSHNKeycloakParameters are the configurable fields of a VSHNKeycloak.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakspec[$$VSHNKeycloakSpec$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnkeycloakspec[$$XVSHNKeycloakSpec$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`service`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakservicespec[$$VSHNKeycloakServiceSpec$$]__ | Service contains keycloak DBaaS specific properties
+| *`size`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnsizespec[$$VSHNSizeSpec$$]__ | Size contains settings to control the sizing of a service.
+| *`scheduling`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasschedulingspec[$$VSHNDBaaSSchedulingSpec$$]__ | Scheduling contains settings to control the scheduling of an instance.
+| *`tls`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloaktlsspec[$$VSHNKeycloakTLSSpec$$]__ | TLS contains settings to control tls traffic of a service.
+| *`backup`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-k8upbackupspec[$$K8upBackupSpec$$]__ | Backup contains settings to control how the instance should get backed up.
+| *`restore`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-k8uprestorespec[$$K8upRestoreSpec$$]__ | Restore contains settings to control the restore of an instance.
+| *`maintenance`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasmaintenanceschedulespec[$$VSHNDBaaSMaintenanceScheduleSpec$$]__ | Maintenance contains settings to control the maintenance of an instance.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakservicespec"]
+=== VSHNKeycloakServiceSpec 
+
+VSHNKeycloakServiceSpec contains keycloak DBaaS specific properties
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakparameters[$$VSHNKeycloakParameters$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`fqdn`* __string__ | FQDN contains the FQDN which will be used for the ingress. If it's not set, no ingress will be deployed. This also enables strict hostname checking for this FQDN.
+| *`relativePath`* __string__ | RelativePath on which Keycloak will listen.
+| *`version`* __string__ | Version contains supported version of keycloak. Multiple versions are supported. The latest version 23 is the default version.
+| *`serviceLevel`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasservicelevel[$$VSHNDBaaSServiceLevel$$]__ | ServiceLevel defines the service level of this service. Either Best Effort or Guaranteed Availability is allowed.
+| *`postgreSQLParameters`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]__ | PostgreSQLParameters can be used to set any supported setting in the underlying PostgreSQL instance.
+| *`customizationImage`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakcustomizationimage[$$VSHNKeycloakCustomizationImage$$]__ | CustomizationImage can be used to provide an image with custom themes and providers. The themes need to be be placed in the `/themes` directory of the custom image. the providers need to be placed in the `/providers` directory of the custom image.
+|===
+
+
+
+
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakspec"]
+=== VSHNKeycloakSpec 
+
+VSHNKeycloakSpec defines the desired state of a VSHNKeycloak.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloak[$$VSHNKeycloak$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`parameters`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakparameters[$$VSHNKeycloakParameters$$]__ | Parameters are the configurable fields of a VSHNKeycloak.
+| *`writeConnectionSecretToRef`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-v1-localobjectreference[$$LocalObjectReference$$]__ | WriteConnectionSecretToRef references a secret to which the connection details will be written.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakstatus"]
+=== VSHNKeycloakStatus 
+
+VSHNKeycloakStatus reflects the observed state of a VSHNKeycloak.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnkeycloakstatus[$$XVSHNKeycloakStatus$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`instanceNamespace`* __string__ | InstanceNamespace contains the name of the namespace where the instance resides
+| *`schedules`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnschedulestatus[$$VSHNScheduleStatus$$]__ | Schedules keeps track of random generated schedules, is overwriten by schedules set in the service's spec.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloaktlsspec"]
+=== VSHNKeycloakTLSSpec 
+
+VSHNKeycloakTLSSpec contains settings to control tls traffic of a service.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakparameters[$$VSHNKeycloakParameters$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`enabled`* __boolean__ | TLSEnabled enables TLS traffic for the service
+| *`authClients`* __boolean__ | TLSAuthClients enables client authentication requirement
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadb"]
+=== VSHNMariaDB 
+
+VSHNMariaDB is the API for creating MariaDB instances.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadblist[$$VSHNMariaDBList$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `VSHNMariaDB`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbspec[$$VSHNMariaDBSpec$$]__ | Spec defines the desired state of a VSHNMariaDB.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadblist"]
+=== VSHNMariaDBList 
+
+
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `VSHNMariaDBList`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`items`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadb[$$VSHNMariaDB$$] array__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbparameters"]
+=== VSHNMariaDBParameters 
+
+VSHNMariaDBParameters are the configurable fields of a VSHNMariaDB.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbspec[$$VSHNMariaDBSpec$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnmariadbspec[$$XVSHNMariaDBSpec$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`service`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbservicespec[$$VSHNMariaDBServiceSpec$$]__ | Service contains MariaDB DBaaS specific properties
+| *`size`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnsizespec[$$VSHNSizeSpec$$]__ | Size contains settings to control the sizing of a service.
+| *`scheduling`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasschedulingspec[$$VSHNDBaaSSchedulingSpec$$]__ | Scheduling contains settings to control the scheduling of an instance.
+| *`tls`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbtlsspec[$$VSHNMariaDBTLSSpec$$]__ | TLS contains settings to control tls traffic of a service.
+| *`backup`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-k8upbackupspec[$$K8upBackupSpec$$]__ | Backup contains settings to control how the instance should get backed up.
+| *`restore`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-k8uprestorespec[$$K8upRestoreSpec$$]__ | Restore contains settings to control the restore of an instance.
+| *`storageClass`* __string__ | StorageClass configures the storageClass to use for the PVC used by MariaDB.
+| *`maintenance`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasmaintenanceschedulespec[$$VSHNDBaaSMaintenanceScheduleSpec$$]__ | Maintenance contains settings to control the maintenance of an instance.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbservicespec"]
+=== VSHNMariaDBServiceSpec 
+
+VSHNMariaDBServiceSpec contains MariaDB DBaaS specific properties
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbparameters[$$VSHNMariaDBParameters$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`version`* __string__ | Version contains supported version of MariaDB. Multiple versions are supported. The latest version "11.2" is the default version.
+| *`mariadbSettings`* __string__ | MariadbSettings contains additional MariaDB settings.
+| *`serviceLevel`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasservicelevel[$$VSHNDBaaSServiceLevel$$]__ | ServiceLevel defines the service level of this service. Either Best Effort or Guaranteed Availability is allowed.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbspec"]
+=== VSHNMariaDBSpec 
+
+VSHNMariaDBSpec defines the desired state of a VSHNMariaDB.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadb[$$VSHNMariaDB$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`parameters`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbparameters[$$VSHNMariaDBParameters$$]__ | Parameters are the configurable fields of a VSHNMariaDB.
+| *`writeConnectionSecretToRef`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-v1-localobjectreference[$$LocalObjectReference$$]__ | WriteConnectionSecretToRef references a secret to which the connection details will be written.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbstatus"]
+=== VSHNMariaDBStatus 
+
+VSHNMariaDBStatus reflects the observed state of a VSHNMariaDB.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnmariadbstatus[$$XVSHNMariaDBStatus$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`namespaceConditions`* __Condition array__ | 
+| *`selfSignedIssuerConditions`* __Condition array__ | 
+| *`localCAConditions`* __Condition array__ | 
+| *`caCertificateConditions`* __Condition array__ | 
+| *`serverCertificateConditions`* __Condition array__ | 
+| *`clientCertificateConditions`* __Condition array__ | 
+| *`instanceNamespace`* __string__ | InstanceNamespace contains the name of the namespace where the instance resides
+| *`schedules`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnschedulestatus[$$VSHNScheduleStatus$$]__ | Schedules keeps track of random generated schedules, is overwriten by schedules set in the service's spec.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbtlsspec"]
+=== VSHNMariaDBTLSSpec 
+
+VSHNMariaDBTLSSpec contains settings to control tls traffic of a service.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbparameters[$$VSHNMariaDBParameters$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`enabled`* __boolean__ | TLSEnabled enables TLS traffic for the service
+| *`authClients`* __boolean__ | TLSAuthClients enables client authentication requirement
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminio"]
+=== VSHNMinio 
+
+VSHNMinio is the API for creating Minio instances.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminiolist[$$VSHNMinioList$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `VSHNMinio`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminiospec[$$VSHNMinioSpec$$]__ | Spec defines the desired state of a VSHNMinio.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminiolist"]
+=== VSHNMinioList 
+
+
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `VSHNMinioList`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`items`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminio[$$VSHNMinio$$] array__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminioparameters"]
+=== VSHNMinioParameters 
+
+VSHNMinioParameters are the configurable fields of a VSHNMinio.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminiospec[$$VSHNMinioSpec$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnminiospec[$$XVSHNMinioSpec$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`size`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnsizespec[$$VSHNSizeSpec$$]__ | Size contains settings to control the sizing of a service.
+| *`backup`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-k8upbackupspec[$$K8upBackupSpec$$]__ | Backup contains settings to control how the instance should get backed up.
+| *`restore`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-k8uprestorespec[$$K8upRestoreSpec$$]__ | Restore contains settings to control the restore of an instance.
+| *`instances`* __integer__ | Instances configures the number of Minio instances for the cluster. Each instance contains one Minio server.
+| *`storageClass`* __string__ | StorageClass configures the storageClass to use for the PVC used by MinIO.
+| *`service`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminioservicespec[$$VSHNMinioServiceSpec$$]__ | Service contains the Minio specific configurations
+| *`maintenance`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasmaintenanceschedulespec[$$VSHNDBaaSMaintenanceScheduleSpec$$]__ | Maintenance contains settings to control the maintenance of an instance.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminioservicespec"]
+=== VSHNMinioServiceSpec 
+
+VSHNMinioServiceSpec contains Redis DBaaS specific properties
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminioparameters[$$VSHNMinioParameters$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`mode`* __string__ | Mode configures the mode of MinIO. Valid values are "distributed" and "standalone".
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminiospec"]
+=== VSHNMinioSpec 
+
+VSHNMinioSpec defines the desired state of a VSHNMinio.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminio[$$VSHNMinio$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`parameters`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminioparameters[$$VSHNMinioParameters$$]__ | Parameters are the configurable fields of a VSHNMinio.
+| *`writeConnectionSecretToRef`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-v1-localobjectreference[$$LocalObjectReference$$]__ | WriteConnectionSecretToRef references a secret to which the connection details will be written.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminiostatus"]
+=== VSHNMinioStatus 
+
+VSHNMinioStatus reflects the observed state of a VSHNMinio.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnminiostatus[$$XVSHNMinioStatus$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`namespaceConditions`* __Condition array__ | MinioConditions contains the status conditions of the backing object.
+| *`instanceNamespace`* __string__ | InstanceNamespace contains the name of the namespace where the instance resides
+| *`schedules`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnschedulestatus[$$VSHNScheduleStatus$$]__ | Schedules keeps track of random generated schedules, is overwriten by schedules set in the service's spec.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmonitoring"]
+=== VSHNMonitoring 
+
+VSHNMonitoring contains settings to configure monitoring aspects of databases managed by VSHN
 
 .Appears In:
 ****
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnredisparameters[$$VSHNRedisParameters$$]
 ****
 
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
-| *`cpu`* __string__ | CPU defines the amount of Kubernetes CPUs for an instance.
-| *`memory`* __string__ | Memory defines the amount of memory in units of bytes for an instance.
-| *`requests`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaassizerequestsspec[$$VSHNDBaaSSizeRequestsSpec$$]__ | Requests defines CPU and memory requests for an instance
-| *`disk`* __string__ | Disk defines the amount of disk space for an instance.
-| *`plan`* __string__ | Plan is the name of the resource plan that defines the compute resources.
+| *`alertmanagerConfigRef`* __string__ | AlertmanagerConfigRef contains the name of the AlertmanagerConfig that should be copied over to the namespace of the instance.
+| *`alertmanagerConfigSecretRef`* __string__ | AlertmanagerConfigSecretRef contains the name of the secret that is used in the referenced AlertmanagerConfig
+| *`alertmanagerConfigTemplate`* __xref:{anchor_prefix}-github-com-prometheus-operator-prometheus-operator-pkg-apis-monitoring-v1alpha1-alertmanagerconfigspec[$$AlertmanagerConfigSpec$$]__ | AlertmanagerConfigSpecTemplate takes an AlertmanagerConfigSpec object. This takes precedence over the AlertmanagerConfigRef.
+| *`email`* __string__ | Email necessary to send alerts via email
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresql"]
+=== VSHNPostgreSQL 
+
+VSHNPostgreSQL is the API for creating Postgresql clusters.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqllist[$$VSHNPostgreSQLList$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `VSHNPostgreSQL`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlspec[$$VSHNPostgreSQLSpec$$]__ | Spec defines the desired state of a VSHNPostgreSQL.
 |===
 
 
 [id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlbackup"]
-=== VSHNPostgreSQLBackup 
+=== VSHNPostgreSQLBackup (xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-struct-schedule string -json-schedule-omitempty- retention int -json-retention-omitempty- deletionprotection bool -json-deletionprotection-omitempty- deletionretention int -json-deletionretention-omitempty-[$$struct{Schedule string "json:\"schedule,omitempty\""; Retention int "json:\"retention,omitempty\""; DeletionProtection bool "json:\"deletionProtection,omitempty\""; DeletionRetention int "json:\"deletionRetention,omitempty\""}$$]) 
 
 
 
@@ -907,18 +1376,10 @@ VSHNDBaaSSizeSpec contains settings to control the sizing of a service.
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
 ****
 
-[cols="25a,75a", options="header"]
-|===
-| Field | Description
-| *`schedule`* __string__ | 
-| *`retention`* __integer__ | 
-| *`deletionProtection`* __boolean__ | DeletionProtection will protect the instance from being deleted for the given retention time. This is enabled by default.
-| *`deletionRetention`* __integer__ | DeletionRetention specifies in days how long the instance should be kept after deletion. The default is keeping it one week.
-|===
 
 
 [id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlencryption"]
-=== VSHNPostgreSQLEncryption 
+=== VSHNPostgreSQLEncryption (xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-struct-enabled bool -json-enabled-omitempty-[$$struct{Enabled bool "json:\"enabled,omitempty\""}$$]) 
 
 VSHNPostgreSQLEncryption contains storage encryption specific parameters
 
@@ -927,11 +1388,6 @@ VSHNPostgreSQLEncryption contains storage encryption specific parameters
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
 ****
 
-[cols="25a,75a", options="header"]
-|===
-| Field | Description
-| *`enabled`* __boolean__ | Enabled specifies if the instance should use encrypted storage for the instance.
-|===
 
 
 [id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqllist"]
@@ -948,27 +1404,7 @@ VSHNPostgreSQLList defines a list of VSHNPostgreSQL
 | *`kind`* __string__ | `VSHNPostgreSQLList`
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
 
-| *`items`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresql[$$XVSHNPostgreSQL$$] array__ | 
-|===
-
-
-[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlmonitoring"]
-=== VSHNPostgreSQLMonitoring 
-
-VSHNPostgreSQLMonitoring contains settings to configure monitoring aspects of PostgreSQL
-
-.Appears In:
-****
-- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
-****
-
-[cols="25a,75a", options="header"]
-|===
-| Field | Description
-| *`alertmanagerConfigRef`* __string__ | AlertmanagerConfigRef contains the name of the AlertmanagerConfig that should be copied over to the namespace of the PostgreSQL instance.
-| *`alertmanagerConfigSecretRef`* __string__ | AlertmanagerConfigSecretRef contains the name of the secret that is used in the referenced AlertmanagerConfig
-| *`alertmanagerConfigTemplate`* __AlertmanagerConfigSpec__ | AlertmanagerConfigSpecTemplate takes an AlertmanagerConfigSpec object. This takes precedence over the AlertmanagerConfigRef.
-| *`email`* __string__ | Email necessary to send alerts via email
+| *`items`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresql[$$VSHNPostgreSQL$$] array__ | 
 |===
 
 
@@ -979,7 +1415,9 @@ VSHNPostgreSQLParameters are the configurable fields of a VSHNPostgreSQL.
 
 .Appears In:
 ****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakservicespec[$$VSHNKeycloakServiceSpec$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlspec[$$VSHNPostgreSQLSpec$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresqlspec[$$XVSHNPostgreSQLSpec$$]
 ****
 
 [cols="25a,75a", options="header"]
@@ -987,12 +1425,12 @@ VSHNPostgreSQLParameters are the configurable fields of a VSHNPostgreSQL.
 | Field | Description
 | *`service`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlservicespec[$$VSHNPostgreSQLServiceSpec$$]__ | Service contains PostgreSQL DBaaS specific properties
 | *`maintenance`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasmaintenanceschedulespec[$$VSHNDBaaSMaintenanceScheduleSpec$$]__ | Maintenance contains settings to control the maintenance of an instance.
-| *`size`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaassizespec[$$VSHNDBaaSSizeSpec$$]__ | Size contains settings to control the sizing of a service.
+| *`size`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnsizespec[$$VSHNSizeSpec$$]__ | Size contains settings to control the sizing of a service.
 | *`scheduling`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasschedulingspec[$$VSHNDBaaSSchedulingSpec$$]__ | Scheduling contains settings to control the scheduling of an instance.
 | *`network`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasnetworkspec[$$VSHNDBaaSNetworkSpec$$]__ | Network contains any network related settings.
 | *`backup`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlbackup[$$VSHNPostgreSQLBackup$$]__ | Backup contains settings to control the backups of an instance.
 | *`restore`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlrestore[$$VSHNPostgreSQLRestore$$]__ | Restore contains settings to control the restore of an instance.
-| *`monitoring`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlmonitoring[$$VSHNPostgreSQLMonitoring$$]__ | Monitoring contains settings to control monitoring.
+| *`monitoring`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmonitoring[$$VSHNMonitoring$$]__ | Monitoring contains settings to control monitoring.
 | *`encryption`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlencryption[$$VSHNPostgreSQLEncryption$$]__ | Encryption contains settings to control the storage encryption of an instance.
 | *`updateStrategy`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlupdatestrategy[$$VSHNPostgreSQLUpdateStrategy$$]__ | UpdateStrategy indicates when updates to the instance spec will be applied.
 | *`instances`* __integer__ | Instances configures the number of PostgreSQL instances for the cluster. Each instance contains one Postgres server. Out of all Postgres servers, one is elected as the primary, the rest remain as read-only replicas.
@@ -1002,7 +1440,7 @@ VSHNPostgreSQLParameters are the configurable fields of a VSHNPostgreSQL.
 
 
 [id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlreplicationstrategy"]
-=== VSHNPostgreSQLReplicationStrategy 
+=== VSHNPostgreSQLReplicationStrategy (xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-struct-mode string -json-mode-omitempty-[$$struct{Mode string "json:\"mode,omitempty\""}$$]) 
 
 
 
@@ -1011,19 +1449,10 @@ VSHNPostgreSQLParameters are the configurable fields of a VSHNPostgreSQL.
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
 ****
 
-[cols="25a,75a", options="header"]
-|===
-| Field | Description
-| *`mode`* __string__ | Mode defines the replication mode applied to the whole cluster. Possible values are: "async"(default), "sync", and "strict-sync" 
- "async": When in asynchronous mode the cluster is allowed to lose some committed transactions. When the primary server fails or becomes unavailable for any other reason a sufficiently healthy standby will automatically be promoted to primary. Any transactions that have not been replicated to that standby remain in a “forked timeline” on the primary, and are effectively unrecoverable 
- "sync": When in synchronous mode a standby will not be promoted unless it is certain that the standby contains all transactions that may have returned a successful commit status to client. This means that the system may be unavailable for writes even though some servers are available. 
- "strict-sync": When it is absolutely necessary to guarantee that each write is stored durably on at least two nodes, use the strict synchronous mode. This mode prevents synchronous replication to be switched off on the primary when no synchronous standby candidates are available. As a downside, the primary will not be available for writes, blocking all client write requests until at least one synchronous replica comes up. 
- NOTE: We recommend to always use three intances when setting the mode to "strict-sync".
-|===
 
 
 [id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlrestore"]
-=== VSHNPostgreSQLRestore 
+=== VSHNPostgreSQLRestore (xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-struct-claimname string -json-claimname-omitempty- backupname string -json-backupname-omitempty- recoverytimestamp string -json-recoverytimestamp-omitempty-[$$struct{ClaimName string "json:\"claimName,omitempty\""; BackupName string "json:\"backupName,omitempty\""; RecoveryTimeStamp string "json:\"recoveryTimeStamp,omitempty\""}$$]) 
 
 VSHNPostgreSQLRestore contains restore specific parameters.
 
@@ -1032,17 +1461,10 @@ VSHNPostgreSQLRestore contains restore specific parameters.
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
 ****
 
-[cols="25a,75a", options="header"]
-|===
-| Field | Description
-| *`claimName`* __string__ | ClaimName specifies the name of the instance you want to restore from. The claim has to be in the same namespace as this new instance.
-| *`backupName`* __string__ | BackupName is the name of the specific backup you want to restore.
-| *`recoveryTimeStamp`* __string__ | RecoveryTimeStamp an ISO 8601 date, that holds UTC date indicating at which point-in-time the database has to be restored. This is optional and if no PIT recovery is required, it can be left empty.
-|===
 
 
 [id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlservicespec"]
-=== VSHNPostgreSQLServiceSpec 
+=== VSHNPostgreSQLServiceSpec (xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-struct-majorversion string -json-majorversion-omitempty- postgresqlsettings k8s-io-apimachinery-pkg-runtime-rawextension -json-pgsettings-omitempty- extensions -vshndbaaspostgresextension -json-extensions-omitempty- servicelevel vshndbaasservicelevel -json-servicelevel-omitempty- pgbouncersettings -github-com-vshn-appcat-v4-apis-stackgres-v1-sgpoolingconfigspecpgbouncerpgbouncerini -json-pgbouncersettings-omitempty-[$$struct{MajorVersion string "json:\"majorVersion,omitempty\""; PostgreSQLSettings k8s.io/apimachinery/pkg/runtime.RawExtension "json:\"pgSettings,omitempty\""; Extensions []VSHNDBaaSPostgresExtension "json:\"extensions,omitempty\""; ServiceLevel VSHNDBaaSServiceLevel "json:\"serviceLevel,omitempty\""; PgBouncerSettings *github.com/vshn/appcat/v4/apis/stackgres/v1.SGPoolingConfigSpecPgBouncerPgbouncerIni "json:\"pgBouncerSettings,omitempty\""}$$]) 
 
 VSHNPostgreSQLServiceSpec contains PostgreSQL DBaaS specific properties
 
@@ -1051,14 +1473,6 @@ VSHNPostgreSQLServiceSpec contains PostgreSQL DBaaS specific properties
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
 ****
 
-[cols="25a,75a", options="header"]
-|===
-| Field | Description
-| *`majorVersion`* __string__ | MajorVersion contains supported version of PostgreSQL. Multiple versions are supported. The latest version "15" is the default version.
-| *`pgSettings`* __xref:{anchor_prefix}-k8s-io-apimachinery-pkg-runtime-rawextension[$$RawExtension$$]__ | PGSettings contains additional PostgreSQL settings.
-| *`extensions`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaaspostgresextension[$$VSHNDBaaSPostgresExtension$$] array__ | Extensions allow to enable/disable any of the supported
-| *`serviceLevel`* __VSHNDBaaSServiceLevel__ | ServiceLevel defines the service level of this service. Either Best Effort or Guaranteed Availability is allowed.
-|===
 
 
 [id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlspec"]
@@ -1068,23 +1482,53 @@ VSHNPostgreSQLSpec defines the desired state of a VSHNPostgreSQL.
 
 .Appears In:
 ****
-- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresql[$$XVSHNPostgreSQL$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresql[$$VSHNPostgreSQL$$]
 ****
 
 [cols="25a,75a", options="header"]
 |===
 | Field | Description
 | *`parameters`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]__ | Parameters are the configurable fields of a VSHNPostgreSQL.
-| *`writeConnectionSecretToRef`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-v1-localobjectreference[$$LocalObjectReference$$]__ | WriteConnectionSecretToRef references a secret to which the connection details will be written.
-| *`resourceRef`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectreference-v1-core[$$ObjectReference$$]__ | ResourceRef contains a reference to the composite.
-| *`compositeDeletePolicy`* __string__ | CompositeDeletePolicy defines how the claim should behave if it's deleted. This field definition will be overwritten by crossplane again, once the XRD is applied to a cluster. It's added here so it can be marshalled correctly in third party operators or composition functions.
+| *`writeConnectionSecretToRef`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-secretreference[$$SecretReference$$]__ | WriteConnectionSecretToReference specifies the namespace and name of a Secret to which any connection details for this managed resource should be written. Connection details frequently include the endpoint, username, and password required to connect to the managed resource. This field is planned to be replaced in a future release in favor of PublishConnectionDetailsTo. Currently, both could be set independently and connection details would be published to both without affecting each other.
+| *`publishConnectionDetailsTo`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-publishconnectiondetailsto[$$PublishConnectionDetailsTo$$]__ | PublishConnectionDetailsTo specifies the connection secret config which contains a name, metadata and a reference to secret store config to which any connection details for this managed resource should be written. Connection details frequently include the endpoint, username, and password required to connect to the managed resource.
+| *`providerConfigRef`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-reference[$$Reference$$]__ | ProviderConfigReference specifies how the provider that will be used to create, observe, update, and delete this managed resource should be configured.
+| *`managementPolicies`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-managementpolicies[$$ManagementPolicies$$]__ | THIS IS A BETA FIELD. It is on by default but can be opted out through a Crossplane feature flag. ManagementPolicies specify the array of actions Crossplane is allowed to take on the managed and external resources. This field is planned to replace the DeletionPolicy field in a future release. Currently, both could be set independently and non-default values would be honored if the feature flag is enabled. If both are custom, the DeletionPolicy field will be ignored. See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223 and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+| *`deletionPolicy`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-deletionpolicy[$$DeletionPolicy$$]__ | DeletionPolicy specifies what will happen to the underlying external when this managed resource is deleted - either "Delete" or "Orphan" the external resource. This field is planned to be deprecated in favor of the ManagementPolicies field in a future release. Currently, both could be set independently and non-default values would be honored if the feature flag is enabled. See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
 |===
 
 
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlstatus"]
+=== VSHNPostgreSQLStatus 
+
+VSHNPostgreSQLStatus reflects the observed state of a VSHNPostgreSQL.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresqlstatus[$$XVSHNPostgreSQLStatus$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`instanceNamespace`* __string__ | InstanceNamespace contains the name of the namespace where the instance resides
+| *`postgresqlConditions`* __Condition array__ | PostgreSQLConditions contains the status conditions of the backing object.
+| *`namespaceConditions`* __Condition array__ | 
+| *`profileConditions`* __Condition array__ | 
+| *`pgconfigConditions`* __Condition array__ | 
+| *`pgclusterConditions`* __Condition array__ | 
+| *`secretConditions`* __Condition array__ | 
+| *`objectBucketConditions`* __Condition array__ | 
+| *`objectBackupConfigConditions`* __Condition array__ | 
+| *`networkPolicyConditions`* __Condition array__ | 
+| *`localCAConditions`* __Condition array__ | 
+| *`certificateConditions`* __Condition array__ | 
+| *`isEOL`* __boolean__ | IsEOL indicates if this instance is using an EOL version of PostgreSQL.
+| *`schedules`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnschedulestatus[$$VSHNScheduleStatus$$]__ | Schedules keeps track of random generated schedules, is overwriten by schedules set in the service's spec.
+|===
 
 
 [id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlupdatestrategy"]
-=== VSHNPostgreSQLUpdateStrategy 
+=== VSHNPostgreSQLUpdateStrategy (xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-struct-type string -json-type-omitempty-[$$struct{Type string "json:\"type,omitempty\""}$$]) 
 
 VSHNPostgreSQLUpdateStrategy indicates how and when updates to the instance spec will be applied.
 
@@ -1093,11 +1537,6 @@ VSHNPostgreSQLUpdateStrategy indicates how and when updates to the instance spec
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
 ****
 
-[cols="25a,75a", options="header"]
-|===
-| Field | Description
-| *`type`* __string__ | Type indicates the type of the UpdateStrategy. Default is OnRestart. Possible enum values: - `"OnRestart"` indicates that the changes to the spec will only be applied once the instance is restarted by other means, most likely during maintenance. - `"Immediate"` indicates that update will be applied to the instance as soon as the spec changes. Please be aware that this might lead to short downtime.
-|===
 
 
 [id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnredis"]
@@ -1147,6 +1586,7 @@ VSHNRedisParameters are the configurable fields of a VSHNRedis.
 .Appears In:
 ****
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnredisspec[$$VSHNRedisSpec$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnredisspec[$$XVSHNRedisSpec$$]
 ****
 
 [cols="25a,75a", options="header"]
@@ -1159,6 +1599,7 @@ VSHNRedisParameters are the configurable fields of a VSHNRedis.
 | *`backup`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-k8upbackupspec[$$K8upBackupSpec$$]__ | Backup contains settings to control how the instance should get backed up.
 | *`restore`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-k8uprestorespec[$$K8upRestoreSpec$$]__ | Restore contains settings to control the restore of an instance.
 | *`maintenance`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasmaintenanceschedulespec[$$VSHNDBaaSMaintenanceScheduleSpec$$]__ | Maintenance contains settings to control the maintenance of an instance.
+| *`monitoring`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmonitoring[$$VSHNMonitoring$$]__ | Monitoring contains settings to control monitoring.
 |===
 
 
@@ -1177,6 +1618,7 @@ VSHNRedisServiceSpec contains Redis DBaaS specific properties
 | Field | Description
 | *`version`* __string__ | Version contains supported version of Redis. Multiple versions are supported. The latest version "7.0" is the default version.
 | *`redisSettings`* __string__ | RedisSettings contains additional Redis settings.
+| *`serviceLevel`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasservicelevel[$$VSHNDBaaSServiceLevel$$]__ | ServiceLevel defines the service level of this service. Either Best Effort or Guaranteed Availability is allowed.
 |===
 
 
@@ -1220,6 +1662,28 @@ VSHNRedisSpec defines the desired state of a VSHNRedis.
 |===
 
 
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnredisstatus"]
+=== VSHNRedisStatus 
+
+VSHNRedisStatus reflects the observed state of a VSHNRedis.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnredisstatus[$$XVSHNRedisStatus$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`namespaceConditions`* __Condition array__ | RedisConditions contains the status conditions of the backing object.
+| *`selfSignedIssuerConditions`* __Condition array__ | 
+| *`localCAConditions`* __Condition array__ | 
+| *`caCertificateConditions`* __Condition array__ | 
+| *`serverCertificateConditions`* __Condition array__ | 
+| *`clientCertificateConditions`* __Condition array__ | 
+| *`instanceNamespace`* __string__ | InstanceNamespace contains the name of the namespace where the instance resides
+| *`schedules`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnschedulestatus[$$VSHNScheduleStatus$$]__ | Schedules keeps track of random generated schedules, is overwriten by schedules set in the service's spec.
+|===
 
 
 [id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnredistlsspec"]
@@ -1240,6 +1704,246 @@ VSHNRedisTLSSpec contains settings to control tls traffic of a service.
 |===
 
 
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnschedulestatus"]
+=== VSHNScheduleStatus 
+
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakstatus[$$VSHNKeycloakStatus$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbstatus[$$VSHNMariaDBStatus$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminiostatus[$$VSHNMinioStatus$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlstatus[$$VSHNPostgreSQLStatus$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnredisstatus[$$VSHNRedisStatus$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnkeycloakstatus[$$XVSHNKeycloakStatus$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnmariadbstatus[$$XVSHNMariaDBStatus$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnminiostatus[$$XVSHNMinioStatus$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresqlstatus[$$XVSHNPostgreSQLStatus$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnredisstatus[$$XVSHNRedisStatus$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`maintenance`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasmaintenanceschedulespec[$$VSHNDBaaSMaintenanceScheduleSpec$$]__ | Maintenance keeps track of the maintenance schedule.
+| *`backup`* __string__ | Backup keeps track of the backup schedule.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnsizespec"]
+=== VSHNSizeSpec 
+
+VSHNSizeSpec contains settings to control the sizing of a service.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakparameters[$$VSHNKeycloakParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbparameters[$$VSHNMariaDBParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminioparameters[$$VSHNMinioParameters$$]
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`cpu`* __string__ | CPU defines the amount of Kubernetes CPUs for an instance.
+| *`memory`* __string__ | Memory defines the amount of memory in units of bytes for an instance.
+| *`requests`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaassizerequestsspec[$$VSHNDBaaSSizeRequestsSpec$$]__ | Requests defines CPU and memory requests for an instance
+| *`disk`* __string__ | Disk defines the amount of disk space for an instance.
+| *`plan`* __string__ | Plan is the name of the resource plan that defines the compute resources.
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnkeycloak"]
+=== XVSHNKeycloak 
+
+XVSHNKeycloak represents the internal composite of this claim
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnkeycloaklist[$$XVSHNKeycloakList$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `XVSHNKeycloak`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnkeycloakspec[$$XVSHNKeycloakSpec$$]__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnkeycloaklist"]
+=== XVSHNKeycloakList 
+
+XVSHNKeycloakList represents a list of composites
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `XVSHNKeycloakList`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`items`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnkeycloak[$$XVSHNKeycloak$$] array__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnkeycloakspec"]
+=== XVSHNKeycloakSpec 
+
+XVSHNKeycloakSpec defines the desired state of a VSHNKeycloak.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnkeycloak[$$XVSHNKeycloak$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`parameters`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloakparameters[$$VSHNKeycloakParameters$$]__ | Parameters are the configurable fields of a VSHNKeycloak.
+| *`writeConnectionSecretToRef`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-secretreference[$$SecretReference$$]__ | WriteConnectionSecretToReference specifies the namespace and name of a Secret to which any connection details for this managed resource should be written. Connection details frequently include the endpoint, username, and password required to connect to the managed resource. This field is planned to be replaced in a future release in favor of PublishConnectionDetailsTo. Currently, both could be set independently and connection details would be published to both without affecting each other.
+| *`publishConnectionDetailsTo`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-publishconnectiondetailsto[$$PublishConnectionDetailsTo$$]__ | PublishConnectionDetailsTo specifies the connection secret config which contains a name, metadata and a reference to secret store config to which any connection details for this managed resource should be written. Connection details frequently include the endpoint, username, and password required to connect to the managed resource.
+| *`providerConfigRef`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-reference[$$Reference$$]__ | ProviderConfigReference specifies how the provider that will be used to create, observe, update, and delete this managed resource should be configured.
+| *`managementPolicies`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-managementpolicies[$$ManagementPolicies$$]__ | THIS IS A BETA FIELD. It is on by default but can be opted out through a Crossplane feature flag. ManagementPolicies specify the array of actions Crossplane is allowed to take on the managed and external resources. This field is planned to replace the DeletionPolicy field in a future release. Currently, both could be set independently and non-default values would be honored if the feature flag is enabled. If both are custom, the DeletionPolicy field will be ignored. See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223 and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+| *`deletionPolicy`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-deletionpolicy[$$DeletionPolicy$$]__ | DeletionPolicy specifies what will happen to the underlying external when this managed resource is deleted - either "Delete" or "Orphan" the external resource. This field is planned to be deprecated in favor of the ManagementPolicies field in a future release. Currently, both could be set independently and non-default values would be honored if the feature flag is enabled. See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+|===
+
+
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnmariadb"]
+=== XVSHNMariaDB 
+
+XVSHNMariaDB represents the internal composite of this claim
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnmariadblist[$$XVSHNMariaDBList$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `XVSHNMariaDB`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnmariadbspec[$$XVSHNMariaDBSpec$$]__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnmariadblist"]
+=== XVSHNMariaDBList 
+
+XVSHNMariaDBList represents a list of composites
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `XVSHNMariaDBList`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`items`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnmariadb[$$XVSHNMariaDB$$] array__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnmariadbspec"]
+=== XVSHNMariaDBSpec 
+
+XVSHNMariaDBSpec defines the desired state of a VSHNMariaDB.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnmariadb[$$XVSHNMariaDB$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`parameters`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadbparameters[$$VSHNMariaDBParameters$$]__ | Parameters are the configurable fields of a VSHNMariaDB.
+| *`writeConnectionSecretToRef`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-secretreference[$$SecretReference$$]__ | WriteConnectionSecretToReference specifies the namespace and name of a Secret to which any connection details for this managed resource should be written. Connection details frequently include the endpoint, username, and password required to connect to the managed resource. This field is planned to be replaced in a future release in favor of PublishConnectionDetailsTo. Currently, both could be set independently and connection details would be published to both without affecting each other.
+| *`publishConnectionDetailsTo`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-publishconnectiondetailsto[$$PublishConnectionDetailsTo$$]__ | PublishConnectionDetailsTo specifies the connection secret config which contains a name, metadata and a reference to secret store config to which any connection details for this managed resource should be written. Connection details frequently include the endpoint, username, and password required to connect to the managed resource.
+| *`providerConfigRef`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-reference[$$Reference$$]__ | ProviderConfigReference specifies how the provider that will be used to create, observe, update, and delete this managed resource should be configured.
+| *`managementPolicies`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-managementpolicies[$$ManagementPolicies$$]__ | THIS IS A BETA FIELD. It is on by default but can be opted out through a Crossplane feature flag. ManagementPolicies specify the array of actions Crossplane is allowed to take on the managed and external resources. This field is planned to replace the DeletionPolicy field in a future release. Currently, both could be set independently and non-default values would be honored if the feature flag is enabled. If both are custom, the DeletionPolicy field will be ignored. See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223 and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+| *`deletionPolicy`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-deletionpolicy[$$DeletionPolicy$$]__ | DeletionPolicy specifies what will happen to the underlying external when this managed resource is deleted - either "Delete" or "Orphan" the external resource. This field is planned to be deprecated in favor of the ManagementPolicies field in a future release. Currently, both could be set independently and non-default values would be honored if the feature flag is enabled. See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+|===
+
+
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnminio"]
+=== XVSHNMinio 
+
+XVSHNMinios represents the internal composite of this claim
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnminiolist[$$XVSHNMinioList$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `XVSHNMinio`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnminiospec[$$XVSHNMinioSpec$$]__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnminiolist"]
+=== XVSHNMinioList 
+
+XVSHNMiniosList represents a list of composites
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `XVSHNMinioList`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`items`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnminio[$$XVSHNMinio$$] array__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnminiospec"]
+=== XVSHNMinioSpec 
+
+XVSHNMinioSpec defines the desired state of a VSHNMinio.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnminio[$$XVSHNMinio$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`parameters`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnminioparameters[$$VSHNMinioParameters$$]__ | Parameters are the configurable fields of a VSHNMinio.
+| *`writeConnectionSecretToRef`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-secretreference[$$SecretReference$$]__ | WriteConnectionSecretToReference specifies the namespace and name of a Secret to which any connection details for this managed resource should be written. Connection details frequently include the endpoint, username, and password required to connect to the managed resource. This field is planned to be replaced in a future release in favor of PublishConnectionDetailsTo. Currently, both could be set independently and connection details would be published to both without affecting each other.
+| *`publishConnectionDetailsTo`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-publishconnectiondetailsto[$$PublishConnectionDetailsTo$$]__ | PublishConnectionDetailsTo specifies the connection secret config which contains a name, metadata and a reference to secret store config to which any connection details for this managed resource should be written. Connection details frequently include the endpoint, username, and password required to connect to the managed resource.
+| *`providerConfigRef`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-reference[$$Reference$$]__ | ProviderConfigReference specifies how the provider that will be used to create, observe, update, and delete this managed resource should be configured.
+| *`managementPolicies`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-managementpolicies[$$ManagementPolicies$$]__ | THIS IS A BETA FIELD. It is on by default but can be opted out through a Crossplane feature flag. ManagementPolicies specify the array of actions Crossplane is allowed to take on the managed and external resources. This field is planned to replace the DeletionPolicy field in a future release. Currently, both could be set independently and non-default values would be honored if the feature flag is enabled. If both are custom, the DeletionPolicy field will be ignored. See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223 and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+| *`deletionPolicy`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-deletionpolicy[$$DeletionPolicy$$]__ | DeletionPolicy specifies what will happen to the underlying external when this managed resource is deleted - either "Delete" or "Orphan" the external resource. This field is planned to be deprecated in favor of the ManagementPolicies field in a future release. Currently, both could be set independently and non-default values would be honored if the feature flag is enabled. See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+|===
+
+
+
+
 [id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresql"]
 === XVSHNPostgreSQL 
 
@@ -1247,7 +1951,6 @@ XVSHNPostgreSQL represents the internal composite of this claim
 
 .Appears In:
 ****
-- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqllist[$$VSHNPostgreSQLList$$]
 - xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresqllist[$$XVSHNPostgreSQLList$$]
 ****
 
@@ -1258,29 +1961,7 @@ XVSHNPostgreSQL represents the internal composite of this claim
 | *`kind`* __string__ | `XVSHNPostgreSQL`
 | *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
 
-| *`spec`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlspec[$$VSHNPostgreSQLSpec$$]__ | Spec defines the desired state of a VSHNPostgreSQL.
-|===
-
-
-[id="2-{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresql"]
-=== XVSHNPostgreSQL 
-
-XVSHNPostgreSQL represents the internal composite of this claim
-
-.Appears In:
-****
-- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqllist[$$VSHNPostgreSQLList$$]
-- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresqllist[$$XVSHNPostgreSQLList$$]
-****
-
-[cols="25a,75a", options="header"]
-|===
-| Field | Description
-| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
-| *`kind`* __string__ | `XVSHNPostgreSQL`
-| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
-
-| *`spec`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlspec[$$VSHNPostgreSQLSpec$$]__ | Spec defines the desired state of a VSHNPostgreSQL.
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresqlspec[$$XVSHNPostgreSQLSpec$$]__ | 
 |===
 
 
@@ -1300,5 +1981,92 @@ XVSHNPostgreSQLList represents a list of composites
 
 | *`items`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresql[$$XVSHNPostgreSQL$$] array__ | 
 |===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresqlspec"]
+=== XVSHNPostgreSQLSpec 
+
+
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnpostgresql[$$XVSHNPostgreSQL$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`parameters`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresqlparameters[$$VSHNPostgreSQLParameters$$]__ | Parameters are the configurable fields of a VSHNPostgreSQL.
+| *`writeConnectionSecretToRef`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-secretreference[$$SecretReference$$]__ | WriteConnectionSecretToReference specifies the namespace and name of a Secret to which any connection details for this managed resource should be written. Connection details frequently include the endpoint, username, and password required to connect to the managed resource. This field is planned to be replaced in a future release in favor of PublishConnectionDetailsTo. Currently, both could be set independently and connection details would be published to both without affecting each other.
+| *`publishConnectionDetailsTo`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-publishconnectiondetailsto[$$PublishConnectionDetailsTo$$]__ | PublishConnectionDetailsTo specifies the connection secret config which contains a name, metadata and a reference to secret store config to which any connection details for this managed resource should be written. Connection details frequently include the endpoint, username, and password required to connect to the managed resource.
+| *`providerConfigRef`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-reference[$$Reference$$]__ | ProviderConfigReference specifies how the provider that will be used to create, observe, update, and delete this managed resource should be configured.
+| *`managementPolicies`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-managementpolicies[$$ManagementPolicies$$]__ | THIS IS A BETA FIELD. It is on by default but can be opted out through a Crossplane feature flag. ManagementPolicies specify the array of actions Crossplane is allowed to take on the managed and external resources. This field is planned to replace the DeletionPolicy field in a future release. Currently, both could be set independently and non-default values would be honored if the feature flag is enabled. If both are custom, the DeletionPolicy field will be ignored. See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223 and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+| *`deletionPolicy`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-deletionpolicy[$$DeletionPolicy$$]__ | DeletionPolicy specifies what will happen to the underlying external when this managed resource is deleted - either "Delete" or "Orphan" the external resource. This field is planned to be deprecated in favor of the ManagementPolicies field in a future release. Currently, both could be set independently and non-default values would be honored if the feature flag is enabled. See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+|===
+
+
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnredis"]
+=== XVSHNRedis 
+
+XVSHNRedis represents the internal composite of this claim
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnredislist[$$XVSHNRedisList$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `XVSHNRedis`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#objectmeta-v1-meta[$$ObjectMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`spec`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnredisspec[$$XVSHNRedisSpec$$]__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnredislist"]
+=== XVSHNRedisList 
+
+XVSHNRedisList represents a list of composites
+
+
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`apiVersion`* __string__ | `vshn.appcat.vshn.io/v1`
+| *`kind`* __string__ | `XVSHNRedisList`
+| *`metadata`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#listmeta-v1-meta[$$ListMeta$$]__ | Refer to Kubernetes API documentation for fields of `metadata`.
+
+| *`items`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnredis[$$XVSHNRedis$$] array__ | 
+|===
+
+
+[id="{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnredisspec"]
+=== XVSHNRedisSpec 
+
+XVSHNRedisSpec defines the desired state of a VSHNRedis.
+
+.Appears In:
+****
+- xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-xvshnredis[$$XVSHNRedis$$]
+****
+
+[cols="25a,75a", options="header"]
+|===
+| Field | Description
+| *`parameters`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnredisparameters[$$VSHNRedisParameters$$]__ | Parameters are the configurable fields of a VSHNRedis.
+| *`writeConnectionSecretToRef`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-secretreference[$$SecretReference$$]__ | WriteConnectionSecretToReference specifies the namespace and name of a Secret to which any connection details for this managed resource should be written. Connection details frequently include the endpoint, username, and password required to connect to the managed resource. This field is planned to be replaced in a future release in favor of PublishConnectionDetailsTo. Currently, both could be set independently and connection details would be published to both without affecting each other.
+| *`publishConnectionDetailsTo`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-publishconnectiondetailsto[$$PublishConnectionDetailsTo$$]__ | PublishConnectionDetailsTo specifies the connection secret config which contains a name, metadata and a reference to secret store config to which any connection details for this managed resource should be written. Connection details frequently include the endpoint, username, and password required to connect to the managed resource.
+| *`providerConfigRef`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-reference[$$Reference$$]__ | ProviderConfigReference specifies how the provider that will be used to create, observe, update, and delete this managed resource should be configured.
+| *`managementPolicies`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-managementpolicies[$$ManagementPolicies$$]__ | THIS IS A BETA FIELD. It is on by default but can be opted out through a Crossplane feature flag. ManagementPolicies specify the array of actions Crossplane is allowed to take on the managed and external resources. This field is planned to replace the DeletionPolicy field in a future release. Currently, both could be set independently and non-default values would be honored if the feature flag is enabled. If both are custom, the DeletionPolicy field will be ignored. See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223 and this one: https://github.com/crossplane/crossplane/blob/444267e84783136daa93568b364a5f01228cacbe/design/one-pager-ignore-changes.md
+| *`deletionPolicy`* __xref:{anchor_prefix}-github-com-crossplane-crossplane-runtime-apis-common-v1-deletionpolicy[$$DeletionPolicy$$]__ | DeletionPolicy specifies what will happen to the underlying external when this managed resource is deleted - either "Delete" or "Orphan" the external resource. This field is planned to be deprecated in favor of the ManagementPolicies field in a future release. Currently, both could be set independently and non-default values would be honored if the feature flag is enabled. See the design doc for more information: https://github.com/crossplane/crossplane/blob/499895a25d1a1a0ba1604944ef98ac7a1a71f197/design/design-doc-observe-only-resources.md?plain=1#L223
+|===
+
+
 
 

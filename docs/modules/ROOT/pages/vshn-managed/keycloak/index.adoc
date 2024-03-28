@@ -1,0 +1,12 @@
+= Keycloak by VSHN
+
+This section provides documentation related to the Keycloak service managed by VSHN in the Application Catalog.
+
+Learn more about this service, including its pricing, in our https://products.docs.vshn.ch/products/appcat/keycloak.html#_pricing[product portfolio^].
+
+TIP: Get started and xref:vshn-managed/keycloak/create.adoc[create a Keycloak instance].
+
+== Links
+
+* https://keycloak.org/[Keycloak^]
+* xref:references/crds.adoc#k8s-api-github-com-vshn-appcat-v4-apis-vshn-v1-vshnkeycloak[VSHN Application Catalog API reference]

@@ -9,4 +9,4 @@ TIP: Get started and xref:vshn-managed/redis/create.adoc[create a Redis instance
 == Links
 
 * https://redis.io/[Redis^]
-* xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnredis[VSHN Application Catalog API reference]
+* xref:references/crds.adoc#k8s-api-github-com-vshn-appcat-v4-apis-vshn-v1-vshnredis[VSHN Application Catalog API reference]

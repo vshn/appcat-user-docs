@@ -63,6 +63,15 @@
 ** xref:exoscale-dbaas/kafka/usage.adoc[Usage]
 ** xref:exoscale-dbaas/kafka/delete.adoc[Deletion]
 
+.Keycloak
+* xref:vshn-managed/keycloak/index.adoc[On cloudscale.ch]
+** xref:vshn-managed/keycloak/create.adoc[Creation]
+** xref:vshn-managed/keycloak/maintenance.adoc[]
+** xref:vshn-managed/keycloak/usage.adoc[Usage]
+** xref:vshn-managed/keycloak/delete.adoc[Deletion]
+** xref:vshn-managed/keycloak/plans.adoc[]
+** xref:vshn-managed/keycloak/restore.adoc[Restore]
+
 .OpenSearch
 * xref:exoscale-dbaas/opensearch/index.adoc[On Exoscale]
 ** xref:exoscale-dbaas/opensearch/create.adoc[Creation]
