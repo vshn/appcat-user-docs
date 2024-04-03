@@ -1,0 +1,138 @@
+= Plans and Sizing
+
+== Plans
+
+We provide a few preconfigured plans that should make sizing your Keycloak instance easier.
+Just choose one of the provided plans.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: example
+spec:
+  parameters:
+    size:
+      plan: standard-2
+  writeConnectionSecretToRef:
+    name: keycloak-creds
+----
+
+By default, the following plans are available on every cluster:
+
+[cols="25a,15,15,15", options="header"]
+|===
+| Plan | CPU | Memory | Disk
+| standard-2 | 500m | 2Gi | 16Gi
+| standard-4 | 1 | 4Gi | 16Gi
+| standard-8 | 2 | 8Gi | 16Gi
+|===
+
+Depending on which cluster you're working with, there might be some slight differences in available plans.
+You can see all available plans running:
+
+[source,bash]
+----
+$ kubectl explain vshnkeycloak.spec.parameters.size.plan
+
+GROUP:      vshn.appcat.vshn.io
+KIND:       VSHNKeycloak
+VERSION:    v1
+
+FIELD: plan <string>
+
+DESCRIPTION:
+    Plan is the name of the resource plan that defines the compute resources.
+
+    The following plans are available:
+
+      standard-2 - CPU: 500m; Memory: 2Gi; Disk: 16Gi
+
+      standard-4 - CPU: 1; Memory: 4Gi; Disk: 16Gi
+
+      standard-8 - CPU: 2; Memory: 8Gi; Disk: 16Gi
+
+----
+
+[WARNING]
+.About APPUiO Cloud
+====
+On https://docs.appuio.cloud[APPUiO Cloud^] two important differences apply:
+
+* The `standard-8` plan is not available as it requests more memory than the https://docs.appuio.cloud/user/references/default-quota.html[Default Quota] allows.
+If you need a larger instance, please contact https://docs.appuio.cloud/user/contact.html[APPUiO Cloud support] and manually request more memory according to <<_custom_sizing>>.
+====
+
+== Custom Sizing
+
+While we provide some pre-configured plans, you are free to choose custom values for CPU, memory, and disk size.
+To do that simply set `spec.parameters.size.disk`, `spec.parameters.size.cpu`, `spec.parameters.size.memory`, `spec.parameters.size.requests.cpu` or `spec.parameters.size.requests.memory`.
+
+The following example would keep the memory requests from the `standard-2` plan while increasing the CPU request to `1` and the CPU limits to `9`.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: example
+spec:
+  parameters:
+    size:
+      plan: standard-2
+      cpu: "9"
+      requests:
+        cpu: "1"
+  writeConnectionSecretToRef:
+    name: keycloak-creds
+----
+
+NOTE: Changing the disk size from a default plan will restart the Keycloak pods. Any further disk size changes should not trigger a restart.
+
+NOTE: We don't recommend setting the requests to a lower value then the limit, as this might negatively impact the performance and stability of your instance.
+
+[WARNING]
+.APPUiO Cloud Fair Use Policy
+====
+On APPUiO Cloud, the https://docs.appuio.cloud/user/explanation/fair-use-policy.html[Fair Use Policy] also applies to all AppCat Services by VSHN.
+You will be billed extra for CPU requests that exceed the memory to CPU ratio.
+
+The default plans all adhere to the Fair Use Policy.
+====
+
+== Node Selectors
+
+You have the option to specify a custom node selector for your Keycloak instance.
+This allows you to assign the instance to a specific node, which can be helpful if your cluster has dedicated nodes to run databases on.
+
+The following configuration would create a Keycloak instance that runs on a node with the label `speed=fast`.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: example
+spec:
+  parameters:
+    size:
+      plan: standard-4
+    scheduling:
+      nodeSelector:
+        speed: fast # <1>
+  writeConnectionSecretToRef:
+    name: keycloak-creds
+----
+<1> Annotation specifying a faster node.
+
+Please consult the Kubernetes documentation on https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/[how to assign workloads to nodes using node selectors].
+
+
+[WARNING]
+.APPUiO Cloud Node Classes
+====
+On APPUiO Cloud, this can be used to schedule instances on specific https://docs.appuio.cloud/user/references/node-classes.html[Node Classes].
+
+However, this can also be done by choosing the `standard-x` or `plus-X` plans, which will schedule the instance on `flex` or `plus` nodes.
+====

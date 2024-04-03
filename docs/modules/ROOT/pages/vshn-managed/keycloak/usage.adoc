@@ -1,0 +1,68 @@
+= Using a Keycloak service with FQDN
+
+== Issue a Keycloak instance
+The YAML code below creates the service `VSHNKeycloak` with a Full Qualified Domain Name(FQDN).
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: keycloak-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      version: "23"
+      fqdn: my-keycloak.example.com # <1>
+    size:
+      plan: standard-2
+  writeConnectionSecretToRef:
+    name: keycloak-creds-connection # <2>
+----
+
+<1> Your full qualified domain name
+<2> Credentials to access the keycloak
+
+== Configure your DNS server
+
+On APPUiO Cloud we provide you with a cert-manager setup which you can use to create, sign, install and renew certificates for your domains running on APPUiO Cloud.
+
+To create a certificate for the Keycloak FQDN in your domain, you need to create a CNAME record in your domain’s DNS pointing to your APPUiO Zone’s well-defined cname record.
+
+[source, text]
+----
+my-keycloak  IN  CNAME  cname.cloudscale-lpg-0.appuio.cloud.
+----
+
+== Access Keycloak
+
+Once the Keycloak instance is running in the cluster and DNS server has been configured with the new CNAME then the service should be accessible in your browser via FQDN `my-keycloak.example.com` with credentials from `keycloak-creds-connection` secret.
+The `admin` password can be changed but be aware the secret credentials will not be valid anymore.
+
+[WARNING]
+Our keycloak service uses an internal administrator account named `internaladmin`.
+It's used by VSHN for various scripts and configurations.
+Changing the user credentials of `internaladmin` account may break your instance!
+
+== Debug the service
+
+To check the status and potential issues or errors in the service, check the `status` field of the new object:
+
+[source,bash]
+----
+$  oc describe vshnkeycloak.vshn.appcat.vshn.io my-keycloak-example
+[...]
+Status:
+  Conditions:
+    Last Transition Time:  2024-03-28T10:08:04Z
+    Reason:                ReconcileSuccess
+    Status:                True
+    Type:                  Synced
+    Last Transition Time:  2024-03-28T10:09:30Z
+    Reason:                Available
+    Status:                True
+    Type:                  Ready
+  Connection Details:
+    Last Published Time:  2024-03-28T10:09:30Z
+----

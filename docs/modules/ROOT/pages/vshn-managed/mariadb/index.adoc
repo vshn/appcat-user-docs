@@ -9,4 +9,4 @@ TIP: Get started and xref:vshn-managed/mariadb/create.adoc[create a MariaDB inst
 == Links
 
 * https://mariadb.org/[Mariadb^]
-* xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnmariadb[VSHN Application Catalog API reference]
+* xref:references/crds.adoc#k8s-api-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmariadb[VSHN Application Catalog API reference]

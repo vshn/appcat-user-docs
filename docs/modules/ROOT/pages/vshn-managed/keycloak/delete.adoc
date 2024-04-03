@@ -1,0 +1,16 @@
+= Delete a Keycloak service
+
+== Delete non protected Keycloak instance
+
+If you do not need your Keycloak service anymore, you can delete it in the same way as you would with any other object in your cluster:
+
+[source,bash]
+----
+$ oc delete vshnkeycloak.vshn.appcat.vshn.io keycloak-app1-prod
+----
+
+[IMPORTANT]
+.Non-reversible operation
+====
+If you delete the `VSHNKeycloak` object from the cluster without having xref:vshn-managed/postgresql/deletion-protection.adoc[deletion-protection] enabled, the Keycloak instance will be deleted together with all of its data and backups!
+====

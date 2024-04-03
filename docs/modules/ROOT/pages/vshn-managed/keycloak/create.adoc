@@ -1,0 +1,55 @@
+= Create a Keycloak service
+
+Apply the following object on your namespace, as specified by its YAML description.
+
+.Example to create a Keycloak instance
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: keycloak-app1-prod # <1>
+  namespace: prod-app # <2>
+spec:
+  parameters:
+    service:
+      version: "23" # <3>
+      postgreSQLParameters: {} # <4>
+    size: # <5>
+      plan: standard-2
+  writeConnectionSecretToRef:
+    name: keycloack-creds # <6>
+----
+<1> Instance name
+<2> The namespace where the object will be created
+<3> Keycloak version
+<4> PostgreSQL database parameters. See xref:vshn-managed/postgresql/index.adoc[PostgreSQL by VSHN]
+<5> Size of the Keycloak instance. See xref:vshn-managed/keycloak/plans.adoc[Plans and Sizing] for more information.
+<6> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
+
+NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnmkeycloak[API Reference]
+
+== Inspect your new Keycloak service
+
+[source,bash]
+----
+$  oc get vshnkeycloak.vshn.appcat.vshn.io
+NAME                SYNCED   READY   CONNECTION-SECRET   AGE
+keycloak-app1-prod   True     True    keycloak-creds       3m32s
+----
+
+When you see `True` in the READY column, it means the instance is provisioned but the pods might still be starting.
+It may take some time for the instance to be available especially during the provisioning phase.
+
+== Find the connection details
+
+The connection details are stored in a secret. You can retrieve them with the following command:
+
+[source,bash]
+----
+$ oc get secrets keycloak-creds -o yaml
+----
+
+The output of the command above is a secret specification with the following structure:
+
+include::page$references/secrets.adoc[tag=keycloak]
