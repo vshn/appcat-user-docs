@@ -45,14 +45,19 @@ To get started, click xref:getting-started.adoc[here].
 |
 
 |Object Storage (S3)
-|xref:object-storage/create.adoc[Create] and xref:object-storage/create.adoc[use]
-|xref:object-storage/create.adoc[Create] and xref:object-storage/create.adoc[use]
-|xref:object-storage/create.adoc[Create] and xref:object-storage/create.adoc[use]
+|xref:object-storage/create.adoc[Create] and xref:object-storage/usage.adoc[use]
+|xref:object-storage/create.adoc[Create] and xref:object-storage/usage.adoc[use]
+|xref:object-storage/create.adoc[Create] and xref:object-storage/usage.adoc[use]
 
 |MinIO
-|xref:vshn-managed/minio.adoc[Create] and xref:object-storage/create.adoc[use]
-|xref:vshn-managed/minio.adoc[Create] and xref:object-storage/create.adoc[use]
-|xref:vshn-managed/minio.adoc[Create] and xref:object-storage/create.adoc[use]
+|xref:vshn-managed/minio.adoc[On request]
+|xref:vshn-managed/minio.adoc[On request]
+|xref:vshn-managed/minio.adoc[On request]
+
+|Keycloak
+|
+|xref:vshn-managed/keycloak/create.adoc[Create] and xref:vshn-managed/keycloak/usage.adoc[use]
+|xref:vshn-managed/keycloak/create.adoc[Create] and xref:vshn-managed/keycloak/usage.adoc[use]
 
 |===
 
