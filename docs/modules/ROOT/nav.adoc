@@ -71,6 +71,7 @@
 ** xref:vshn-managed/keycloak/delete.adoc[Deletion]
 ** xref:vshn-managed/keycloak/plans.adoc[]
 ** xref:vshn-managed/keycloak/restore.adoc[Restore]
+** xref:vshn-managed/keycloak/replicas.adoc[]
 
 .OpenSearch
 * xref:exoscale-dbaas/opensearch/index.adoc[On Exoscale]
