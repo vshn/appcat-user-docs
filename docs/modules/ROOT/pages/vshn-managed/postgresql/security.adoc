@@ -1,0 +1,26 @@
+= PostgreSQL security
+
+== Namespace access
+
+By default, PostgreSQL can be accessed only from the namespace it was issued.
+To access PostgreSQL from other namespaces the service must be configured.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: postgres-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    security:
+      allowedNamespaces:
+        - postgres-prod <1>
+      allowAllNamespaces: false <2>
+  writeConnectionSecretToRef:
+    name: postgres-creds-connection
+----
+
+<1> List of namespaces to be allowed to PostgreSQL
+<2> Allows access to PostgreSQL from any namespace in the cluster. Supersedes `allowedNamespaces` if true.

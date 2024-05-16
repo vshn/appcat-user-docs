@@ -1,0 +1,26 @@
+= Keycloak security
+
+== Namespace access
+
+By default, Keycloak can be accessed only from the namespace it was issued.
+To access Keycloak from other namespaces the service must be configured.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: keycloak-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    security:
+      allowedNamespaces:
+        - keycloak-prod <1>
+      allowAllNamespaces: false <2>
+  writeConnectionSecretToRef:
+    name: keycloak-creds-connection
+----
+
+<1> List of namespaces to be allowed to Keycloak
+<2> Allows access to Keycloak from any namespace in the cluster. Supersedes `allowedNamespaces` if true.

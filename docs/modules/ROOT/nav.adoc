@@ -18,6 +18,7 @@
 ** xref:vshn-managed/postgresql/delete.adoc[Deletion]
 ** xref:vshn-managed/postgresql/backup.adoc[Backup]
 ** xref:vshn-managed/postgresql/restore.adoc[Restore]
+** xref:vshn-managed/postgresql/security.adoc[Security]
 ** xref:vshn-managed/postgresql/maintenance.adoc[]
 ** xref:vshn-managed/postgresql/plans.adoc[]
 ** xref:vshn-managed/postgresql/sla.adoc[]
@@ -42,6 +43,7 @@
 ** xref:vshn-managed/mariadb/delete.adoc[Deletion]
 ** xref:vshn-managed/mariadb/plans.adoc[]
 ** xref:vshn-managed/mariadb/restore.adoc[Restore]
+** xref:vshn-managed/mariadb/security.adoc[Security]
 
 .Redis
 * xref:exoscale-dbaas/redis/index.adoc[On Exoscale]
@@ -56,6 +58,7 @@
 ** xref:vshn-managed/redis/plans.adoc[]
 ** xref:vshn-managed/redis/backup.adoc[Backup]
 ** xref:vshn-managed/redis/restore.adoc[Restore]
+** xref:vshn-managed/redis/security.adoc[Security]
 
 .Kafka
 * xref:exoscale-dbaas/kafka/index.adoc[On Exoscale]
@@ -71,6 +74,7 @@
 ** xref:vshn-managed/keycloak/delete.adoc[Deletion]
 ** xref:vshn-managed/keycloak/plans.adoc[]
 ** xref:vshn-managed/keycloak/restore.adoc[Restore]
+** xref:vshn-managed/keycloak/security.adoc[Security]
 
 .OpenSearch
 * xref:exoscale-dbaas/opensearch/index.adoc[On Exoscale]
