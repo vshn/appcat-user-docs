@@ -1,0 +1,26 @@
+= Redis security
+
+== Namespace access
+
+By default, Redis can be accessed only from the namespace it was issued.
+To access Redis from other namespaces the service must be configured.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNRedis
+metadata:
+  name: redis-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    security:
+      allowedNamespaces:
+        - redis-prod <1>
+      allowAllNamespaces: false <2>
+  writeConnectionSecretToRef:
+    name: redis-creds-connection
+----
+
+<1> List of namespaces to be allowed to access Redis
+<2> Allows access to Redis from any namespace in the cluster. Supersedes `allowedNamespaces` if true.

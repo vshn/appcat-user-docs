@@ -1,0 +1,26 @@
+= MariaDB security
+
+== Namespace access
+
+By default, MariaDB can be accessed only from the namespace it was issued.
+To access MariaDB from other namespaces the service must be configured.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNMariaDB
+metadata:
+  name: mariadb-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    security:
+      allowedNamespaces:
+        - mariadb-prod <1>
+      allowAllNamespaces: false <2>
+  writeConnectionSecretToRef:
+    name: mariadb-creds-connection
+----
+
+<1> List of namespaces to be allowed to access MariaDB
+<2> Allows access to MariaDB from any namespace in the cluster. Supersedes `allowedNamespaces` if true.
