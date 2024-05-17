@@ -19,8 +19,13 @@ spec:
     maintenance:
       dayOfWeek: wednesday # <1>
       timeOfDay: '23:30:00' # <2>
+    service:
+      repackEnabled: true # <3>
+      vacuumEnabled: false # <4> 
 ----
 <1> The day when the maintenance should take place
 <2> The time when the maintenance should be started
+<3> Enable or disable https://reorg.github.io/pg_repack/[pg_repack] for all databases
+<4> Enable or disable VACUUM for all databases
 
-NOTE: Besides version upgrades, https://reorg.github.io/pg_repack/[pg_repack] is performed on all databases of this instance.
+NOTE: Besides version upgrades, https://reorg.github.io/pg_repack/[pg_repack] is performed on all databases by default. It can run alongside the VACUUM operation. It's impossible to set both vacuumEnabled and repackEnabled to false.

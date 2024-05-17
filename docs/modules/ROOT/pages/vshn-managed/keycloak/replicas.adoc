@@ -1,0 +1,29 @@
+= High Availability
+
+Keycloak by VSHN comes with support for multiple instances and High Availability using https://infinispan.org/[Infinispan].
+You have the option to configure up to two additional replicas.
+
+== Enable High Availability
+
+To enable high availability you need to set the number of instances to `2` or `3`, which will provision one or two replicas.
+
+The following example configuration will start a Keycloak service with two replicas.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: keycloak-app1-prod
+spec:
+  parameters:
+    instances: 3
+----
+
+NOTE: When enabling HA for Keycloak, the underlying PostgreSQL database will also be switched to HA and will use the same amount of replicas as defined for Keycloak.
+
+NOTE: Please be aware that enabling high availability will use significantly more resources and will cost two to three times more.
+
+IMPORTANT: On APPUiO Cloud, it's currently not possible to deploy more than two instances, or more than a single instance that is larger than `standard-2`.
+Please contact https://docs.appuio.cloud/user/contact.html[APPUiO Cloud support], if this blocks you from running your application.
+
