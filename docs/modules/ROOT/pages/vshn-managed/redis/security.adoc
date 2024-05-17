@@ -22,5 +22,5 @@ spec:
     name: redis-creds-connection
 ----
 
-<1> List of namespaces to be allowed to Redis
+<1> List of namespaces to be allowed to access Redis
 <2> Allows access to Redis from any namespace in the cluster. Supersedes `allowedNamespaces` if true.
