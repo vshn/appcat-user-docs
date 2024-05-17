@@ -22,5 +22,5 @@ spec:
     name: mariadb-creds-connection
 ----
 
-<1> List of namespaces to be allowed to MariaDB
+<1> List of namespaces to be allowed to access MariaDB
 <2> Allows access to MariaDB from any namespace in the cluster. Supersedes `allowedNamespaces` if true.
