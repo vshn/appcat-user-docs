@@ -22,5 +22,5 @@ spec:
     name: postgres-creds-connection
 ----
 
-<1> List of namespaces to be allowed to PostgreSQL
+<1> List of namespaces to be allowed to access PostgreSQL
 <2> Allows access to PostgreSQL from any namespace in the cluster. Supersedes `allowedNamespaces` if true.
