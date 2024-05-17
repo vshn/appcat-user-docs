@@ -22,5 +22,5 @@ spec:
     name: keycloak-creds-connection
 ----
 
-<1> List of namespaces to be allowed to Keycloak
+<1> List of namespaces to be allowed to access Keycloak
 <2> Allows access to Keycloak from any namespace in the cluster. Supersedes `allowedNamespaces` if true.
