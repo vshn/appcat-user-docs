@@ -90,7 +90,7 @@ spec:
     name: postgres-creds
 ----
 
-When specifying custom CPU or memory limits you need to be aware that there is an additional resource overhead of `408Mi` of memory and `3900m` CPU for each PostgreSQL instance.
+When specifying custom CPU or memory limits you need to be aware that there is an additional resource overhead of `408Mi` of memory and `390m` CPU for each PostgreSQL instance.
 See section <<_sidecar_overhead>>.
 
 This means, if you for example set the memory request to `2000Mi`, the instance will use, and you will be billed for, `2320Mi` of RAM.
