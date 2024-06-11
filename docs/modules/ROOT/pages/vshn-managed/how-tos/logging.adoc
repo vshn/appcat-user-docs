@@ -12,11 +12,12 @@ It is possible to list and view the logs of all pods in those namespaces.
 .Get the instance namespaces for your services
 [source,bash]
 ----
-kubectl get vshnredis,vshnpostgresql -o custom-columns="KIND":.kind,"NAME":.metadata.name,"INSTANCE NAMESPACE":.status.instanceNamespace
+kubectl get <vshn-service> -o custom-columns="KIND":.kind,"NAME":.metadata.name,"INSTANCE NAMESPACE":.status.instanceNamespace <1>
 KIND             NAME         INSTANCE NAMESPACE
 VSHNRedis        app1-prod    vshn-redis-app1-prod-rt4w5
 VSHNPostgreSQL   buzz         vshn-postgresql-buzz-qvgrd
 ----
+<1> vshn-service can be any of vshnredis, vshnkeycloak, vshnmariadb, vshnpostgresql etc.
 
 Once the instance namespace is identified, it's possible to list the pods within it, in this case all pods of our redis instance.
 
