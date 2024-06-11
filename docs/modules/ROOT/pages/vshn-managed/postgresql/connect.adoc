@@ -4,14 +4,14 @@
 
 === Problem
 
-You want to either connect to your PostgreSQL cluster from outside of the cluster or need to port-forward so that you can use your favorite database management tool.
+You either want to connect to your PostgreSQL cluster from outside of the cluster or need to port forward so that you can use your favorite database management tool.
 
 
 === LoadBalancer
 
-WARNING: While using LoadBalancer additional charges may apply for additional IPv4 address. https://products.vshn.ch/appuio/cloud/pricing.html#_service_type_loadbalancer[Check pricing]
+WARNING: While using LoadBalancer, additional charges may apply for additional IPv4 addresses. https://products.vshn.ch/appuio/cloud/pricing.html#_service_type_loadbalancer[Check pricing]
 
-LoadBalncer service type is supported on LPG-2 Appuio Cluster and You can use it by setting:
+LoadBalancer service type is supported on LPG-2 Appuio Cluster, and You can use it by setting:
 ```
 apiVersion: vshn.appcat.vshn.io/v1
 kind: VSHNPostgreSQL
@@ -34,8 +34,7 @@ kubectl -n $instanceNamespace get service primary-service
 ```
 link:../how-tos/logging.html[Check how to find instanceNamespace]
 
-or access it directly from connection secret
-
+Or access it directly from the connection secret:
 ```
 kubectl -n app1-dev get secrets my-postgresql-dev-connection -o yaml | yq .data.LOADBALANCER_IP  | base64 -d
 ```
@@ -44,7 +43,7 @@ kubectl -n app1-dev get secrets my-postgresql-dev-connection -o yaml | yq .data.
 
 TIP: This is the default serviceType
 
-You can port-forward to your PostgreSQL cluster using kubectl port-forward command. This command works always, no matter what is set as serviceType.
+You can port-forward to your PostgreSQL cluster using the kubectl port-forward command. This command always works, no matter what is set as serviceType.
 
 ```
 kubectl -n $instanceNamespace port-forward services/primary-service 5432
