@@ -1,0 +1,57 @@
+= Create a Nextcloud service
+
+Apply the following object on your namespace, as specified by its YAML description.
+
+.Example to create a Nextcloud instance
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNNextcloud
+metadata:
+  name: nextcloud-app1-prod # <1>
+  namespace: prod-app # <2>
+spec:
+  parameters:
+    service:
+      version: "23" # <3>
+      useExternalPostgreSQL: true # <4>
+      postgreSQLParameters: {} # <5>
+    size: # <6>
+      plan: standard-2
+  writeConnectionSecretToRef:
+    name: nextcloud-creds # <7>
+----
+<1> Instance name
+<2> The namespace where the object will be created
+<3> Nextcloud version
+<4> If we should use the VSHNPostgreSQL as a database backend instead of the build-in SqLite database backend. (defaults to true)
+<5> PostgreSQL database parameters. See xref:vshn-managed/postgresql/index.adoc[PostgreSQL by VSHN] (Only used when `useExternalPostgreSQL` is false)
+<6> Size of the Nextcloud instance. See xref:vshn-managed/nextcloud/plans.adoc[Plans and Sizing] for more information.
+<7> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
+
+NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnnextcloud[API Reference]
+
+== Inspect your new Nextcloud service
+
+[source,bash]
+----
+$  oc get vshnnextcloud.vshn.appcat.vshn.io
+NAME                SYNCED   READY   CONNECTION-SECRET   AGE
+nextcloud-app1-prod   True     True    nextcloud-creds       4m23s
+----
+
+When you see `True` in the READY column, it means the instance is provisioned but the pods might still be starting.
+It may take some time for the instance to be available especially during the provisioning phase.
+
+== Find the connection details
+
+The connection details are stored in a secret. You can retrieve them with the following command:
+
+[source,bash]
+----
+$ oc get secrets nextcloud-creds -o yaml
+----
+
+The output of the command above is a secret specification with the following structure:
+
+include::page$references/secrets.adoc[tag=nextcloud]

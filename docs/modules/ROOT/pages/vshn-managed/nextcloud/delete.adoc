@@ -1,0 +1,16 @@
+= Delete a Nextcloud service
+
+== Delete non protected Nextcloud instance
+
+If you do not need your Nextcloud service anymore, you can delete it in the same way as you would with any other object in your cluster:
+
+[source,bash]
+----
+$ oc delete vshnnextcloud.vshn.appcat.vshn.io nextcloud-app1-prod
+----
+
+[IMPORTANT]
+.Non-reversible operation
+====
+If you delete the `VSHNNextcloud` object from the cluster without having xref:vshn-managed/postgresql/deletion-protection.adoc[deletion-protection] enabled, the Nextcloud instance will be deleted together with all of its data and backups!
+====

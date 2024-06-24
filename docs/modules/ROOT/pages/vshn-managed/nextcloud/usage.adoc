@@ -1,0 +1,63 @@
+= Using a Nextcloud service with FQDN
+
+== Issue a Nextcloud instance
+The YAML code below creates the service `VSHNNextcloud` with a Full Qualified Domain Name(FQDN).
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNNextcloud
+metadata:
+  name: nextcloud-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      version: "23"
+      fqdn: my-nextcloud.example.com # <1>
+    size:
+      plan: standard-2
+  writeConnectionSecretToRef:
+    name: nextcloud-creds-connection # <2>
+----
+
+<1> Your full qualified domain name
+<2> Credentials to access the nextcloud
+
+== Configure your DNS server
+
+On APPUiO Cloud we provide you with a cert-manager setup which you can use to create, sign, install and renew certificates for your domains running on APPUiO Cloud.
+
+To create a certificate for the Nextcloud FQDN in your domain, you need to create a CNAME record in your domain’s DNS pointing to your APPUiO Zone’s well-defined cname record.
+
+[source, text]
+----
+my-nextcloud  IN  CNAME  cname.cloudscale-lpg-0.appuio.cloud.
+----
+
+== Access Nextcloud
+
+Once the Nextcloud instance is running in the cluster and DNS server has been configured with the new CNAME then the service should be accessible in your browser via FQDN `my-nextcloud.example.com` with credentials from `nextcloud-creds-connection` secret.
+The `admin` password can be changed but be aware the secret credentials will not be valid anymore.
+
+== Debug the service
+
+To check the status and potential issues or errors in the service, check the `status` field of the new object:
+
+[source,bash]
+----
+$  oc describe vshnnextcloud.vshn.appcat.vshn.io my-nextcloud-example
+[...]
+Status:
+  Conditions:
+    Last Transition Time:  2024-06-20T13:12:04Z
+    Reason:                ReconcileSuccess
+    Status:                True
+    Type:                  Synced
+    Last Transition Time:  2024-06-20T13:13:36Z
+    Reason:                Available
+    Status:                True
+    Type:                  Ready
+  Connection Details:
+    Last Published Time:  2024-06-20T13:13:36Z
+----
