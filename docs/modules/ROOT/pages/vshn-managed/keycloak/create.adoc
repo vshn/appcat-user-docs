@@ -27,7 +27,7 @@ spec:
 <5> Size of the Keycloak instance. See xref:vshn-managed/keycloak/plans.adoc[Plans and Sizing] for more information.
 <6> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
 
-NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnmkeycloak[API Reference]
+NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnkeycloak[API Reference]
 
 == Inspect your new Keycloak service
 

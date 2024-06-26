@@ -78,6 +78,13 @@
 ** xref:vshn-managed/keycloak/security.adoc[Security]
 ** xref:vshn-managed/keycloak/replicas.adoc[]
 
+.Nextcloud
+* xref:vshn-managed/nextcloud/index.adoc[On cloudscale.ch]
+** xref:vshn-managed/nextcloud/create.adoc[Creation]
+** xref:vshn-managed/nextcloud/usage.adoc[Usage]
+** xref:vshn-managed/nextcloud/delete.adoc[Deletion]
+** xref:vshn-managed/nextcloud/plans.adoc[]
+
 .OpenSearch
 * xref:exoscale-dbaas/opensearch/index.adoc[On Exoscale]
 ** xref:exoscale-dbaas/opensearch/create.adoc[Creation]

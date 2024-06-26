@@ -1,0 +1,12 @@
+= Nextcloud by VSHN
+
+This section provides documentation related to the Nextcloud service managed by VSHN in the Application Catalog.
+
+Learn more about this service, including its pricing, in our https://products.docs.vshn.ch/products/appcat/nextcloud.html#_pricing[product portfolio^].
+
+TIP: Get started and xref:vshn-managed/nextcloud/create.adoc[create a Nextcloud instance].
+
+== Links
+
+* https://nextcloud.com/[Keycloak^]
+* xref:references/crds.adoc#k8s-api-github-com-vshn-appcat-v4-apis-vshn-v1-vshnnextcloud[VSHN Application Catalog API reference]
