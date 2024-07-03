@@ -24,7 +24,7 @@ spec:
 <1> Instance name
 <2> The namespace where the object will be created
 <3> Nextcloud version
-<4> If we should use the VSHNPostgreSQL as a database backend instead of the build-in SqLite database backend. (defaults to true)
+<4> If we should use the VSHNPostgreSQL as a managed backend database instead of the build-in SQLite database. (defaults to true)
 <5> PostgreSQL database parameters. See xref:vshn-managed/postgresql/index.adoc[PostgreSQL by VSHN] (Only used when `useExternalPostgreSQL` is false)
 <6> Size of the Nextcloud instance. See xref:vshn-managed/nextcloud/plans.adoc[Plans and Sizing] for more information.
 <7> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
