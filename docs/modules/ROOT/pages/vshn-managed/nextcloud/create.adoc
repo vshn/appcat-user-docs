@@ -13,7 +13,7 @@ metadata:
 spec:
   parameters:
     service:
-      version: "23" # <3>
+      version: "29" # <3>
       useExternalPostgreSQL: true # <4>
       postgreSQLParameters: {} # <5>
     size: # <6>
