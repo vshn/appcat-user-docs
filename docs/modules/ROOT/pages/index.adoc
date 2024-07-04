@@ -59,6 +59,12 @@ To get started, click xref:getting-started.adoc[here].
 |xref:vshn-managed/keycloak/create.adoc[Create] and xref:vshn-managed/keycloak/usage.adoc[use]
 |xref:vshn-managed/keycloak/create.adoc[Create] and xref:vshn-managed/keycloak/usage.adoc[use]
 
+
+|Nextcloud
+|
+|xref:vshn-managed/nextcloud/create.adoc[Create] and xref:vshn-managed/nextcloud/usage.adoc[use]
+|xref:vshn-managed/nextcloud/create.adoc[Create] and xref:vshn-managed/nextcloud/usage.adoc[use]
+
 |===
 
 AppCat stands for VSHN **App**lication **Cat**alog, sometimes also abbreviated as AppCatalog.
