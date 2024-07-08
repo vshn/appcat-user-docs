@@ -49,17 +49,15 @@ spec:
       disk: "80Gi"
   writeConnectionSecretToRef:
     name: postgres-creds-restored
-  compositionRef:
-    name: vshnpostgresrestore.vshn.appcat.vshn.io # <3>
+
 ----
 <1> The name of the instance you want to restore from
 <2> The backup name you want to restore
-<3> You need to specify that this is not a normal instance but a restored one
-+
+
 [NOTE]
 ====
 The restore process is the same as ordering a new instance.
-The only difference is the backup information in `spec.parameters.restore` and `spec.compositionRef` objects.
+The only difference is the backup information in `spec.parameters.restore`.
 ====
 
 == Deleting a Restored Instance
