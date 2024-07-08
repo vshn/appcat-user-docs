@@ -57,7 +57,6 @@ spec:
 [NOTE]
 ====
 The restore process is the same as ordering a new instance.
-The only difference is the backup information in `spec.parameters.restore` and `spec.compositionRef` objects.
 ====
 
 == Deleting a Restored Instance
