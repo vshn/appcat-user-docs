@@ -13,21 +13,23 @@ metadata:
 spec:
   parameters:
     service:
-      version: "29" # <3>
-      useExternalPostgreSQL: true # <4>
-      postgreSQLParameters: {} # <5>
-    size: # <6>
+      fqdn: my-nextcloud.example.com <3>
+      version: "29" # <4>
+      useExternalPostgreSQL: true # <5>
+      postgreSQLParameters: {} # <6>
+    size: # <7>
       plan: standard-2
   writeConnectionSecretToRef:
-    name: nextcloud-creds # <7>
+    name: nextcloud-creds # <8>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
-<3> Nextcloud version
-<4> If we should use the VSHNPostgreSQL as a managed backend database instead of the build-in SQLite database. (defaults to true)
-<5> PostgreSQL database parameters. See xref:vshn-managed/postgresql/index.adoc[PostgreSQL by VSHN] (Only used when `useExternalPostgreSQL` is false)
-<6> Size of the Nextcloud instance. See xref:vshn-managed/nextcloud/plans.adoc[Plans and Sizing] for more information.
-<7> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
+<3> Your full qualified domain name
+<4> Nextcloud version
+<5> If we should use the VSHNPostgreSQL as a managed backend database instead of the build-in SQLite database. (defaults to true)
+<6> PostgreSQL database parameters. See xref:vshn-managed/postgresql/index.adoc[PostgreSQL by VSHN] (Only used when `useExternalPostgreSQL` is false)
+<7> Size of the Nextcloud instance. See xref:vshn-managed/nextcloud/plans.adoc[Plans and Sizing] for more information.
+<8> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnnextcloud[API Reference]
 
