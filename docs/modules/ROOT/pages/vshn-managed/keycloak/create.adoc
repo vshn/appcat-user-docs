@@ -18,7 +18,7 @@ spec:
     size: # <5>
       plan: standard-2
   writeConnectionSecretToRef:
-    name: keycloack-creds # <6>
+    name: keycloak-creds # <6>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
