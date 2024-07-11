@@ -6,7 +6,7 @@ NOTE: For more information about maintenance procedures, please visit https://pr
 
 The day and time can be adjusted as described below. Times are in the CET time zone.
 
-.Redis instance with custom maintenance
+.Keycloak instance with custom maintenance
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1

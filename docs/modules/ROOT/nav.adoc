@@ -81,6 +81,7 @@
 .Nextcloud
 * xref:vshn-managed/nextcloud/index.adoc[On cloudscale.ch]
 ** xref:vshn-managed/nextcloud/create.adoc[Creation]
+** xref:vshn-managed/nextcloud/maintenance.adoc[]
 ** xref:vshn-managed/nextcloud/usage.adoc[Usage]
 ** xref:vshn-managed/nextcloud/delete.adoc[Deletion]
 ** xref:vshn-managed/nextcloud/plans.adoc[]
