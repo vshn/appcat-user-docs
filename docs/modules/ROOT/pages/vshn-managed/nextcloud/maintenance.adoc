@@ -28,7 +28,7 @@ NOTE: In case PostgreSQL database is used then it is also configured to have mai
 == Nextcloud Background Jobs
 
 Nextcloud https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html[background jobs] are also part of the maintenance.
-In most cases, the schedule is configured for next hour after the main security update.
+In most cases, the schedule is configured at least one hour after the main security update.
 Background jobs run every day unlike security updates which run on a weekly basis.
 Since these jobs may decrease performance of the Nexcloud instance, we advise to set the maintenance window after work hours.
 It make take up to 4 hours for this process to finish.
