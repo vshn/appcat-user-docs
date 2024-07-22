@@ -1,0 +1,34 @@
+= Customization
+
+This page will describe how you can customize your Keycloak instance.
+
+== Themes and providers
+
+`VSHNKeycloak` allows to use custom providers and themes.
+xref:vshn-managed/how-tos/custom-image-keycloak.adoc[Create] a custom container image and use it to customize your Keycloak instance as described below.
+
+.Example to create a Keycloak instance an image containing custom themes and providers
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: keycloak-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      version: "23"
+      customizationImage:
+        image: https://registry/user/image:tag # <1>
+        imagePullSecretRef:
+          name: secret-name # <2>
+          namespace: secret-namespace # <3>
+    size:
+      plan: standard-2
+  writeConnectionSecretToRef:
+    name: keycloak-creds
+----
+<1> Container image url.
+<2> Secret name containing credentials for the registry.
+<3> Secret namespace

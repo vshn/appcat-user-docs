@@ -1,0 +1,32 @@
+= How to create a customization container image for Keycloak
+
+This page describes how to create a container image with custom https://www.keycloak.org/docs/latest/server_development/#_themes[themes^] and https://www.keycloak.org/docs/latest/server_development/#_providers[providers^] to use along with `VSHNKeycloak` service.
+
+. Open a command line and create two directories.
++
+[source,bash]
+----
+mkdir themes && mkdir providers
+----
+
+. Place your themes and providers in respective directories.
+
+. Create the following docker file.
++
+[source,bash]
+----
+cat <<EOF >>Dockerfile
+FROM alpine
+
+COPY themes /themes
+COPY providers /providers
+EOF
+----
+
+. Build your Docker image.
++
+[source,bash]
+----
+docker build -t myuser/keycloak-custom:v1 .
+----
+. Push your image to the registry.
