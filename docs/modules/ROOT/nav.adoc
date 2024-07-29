@@ -16,13 +16,13 @@
 ** xref:vshn-managed/postgresql/usage.adoc[Usage]
 ** xref:vshn-managed/postgresql/connect.adoc[Connect]
 ** xref:vshn-managed/postgresql/delete.adoc[Deletion]
+** xref:vshn-managed/postgresql/deletion-protection.adoc[]
 ** xref:vshn-managed/postgresql/backup.adoc[Backup]
 ** xref:vshn-managed/postgresql/restore.adoc[Restore]
 ** xref:vshn-managed/postgresql/security.adoc[Security]
 ** xref:vshn-managed/postgresql/maintenance.adoc[]
 ** xref:vshn-managed/postgresql/plans.adoc[]
 ** xref:vshn-managed/postgresql/sla.adoc[]
-** xref:vshn-managed/postgresql/deletion-protection.adoc[]
 ** xref:vshn-managed/postgresql/encrypted-pvc.adoc[]
 ** xref:vshn-managed/postgresql/alerting.adoc[]
 ** xref:vshn-managed/postgresql/update-strategy.adoc[]
@@ -42,9 +42,11 @@
 ** xref:vshn-managed/mariadb/maintenance.adoc[]
 ** xref:vshn-managed/mariadb/usage.adoc[Usage]
 ** xref:vshn-managed/mariadb/delete.adoc[Deletion]
+** xref:vshn-managed/mariadb/deletion-protection.adoc[]
 ** xref:vshn-managed/mariadb/plans.adoc[]
 ** xref:vshn-managed/mariadb/restore.adoc[Restore]
 ** xref:vshn-managed/mariadb/security.adoc[Security]
+
 
 .Redis
 * xref:exoscale-dbaas/redis/index.adoc[On Exoscale]
@@ -56,10 +58,12 @@
 ** xref:vshn-managed/redis/maintenance.adoc[]
 ** xref:vshn-managed/redis/usage.adoc[Usage]
 ** xref:vshn-managed/redis/delete.adoc[Deletion]
+** xref:vshn-managed/redis/deletion-protection.adoc[]
 ** xref:vshn-managed/redis/plans.adoc[]
 ** xref:vshn-managed/redis/backup.adoc[Backup]
 ** xref:vshn-managed/redis/restore.adoc[Restore]
 ** xref:vshn-managed/redis/security.adoc[Security]
+
 
 .Kafka
 * xref:exoscale-dbaas/kafka/index.adoc[On Exoscale]
@@ -73,11 +77,13 @@
 ** xref:vshn-managed/keycloak/maintenance.adoc[]
 ** xref:vshn-managed/keycloak/usage.adoc[Usage]
 ** xref:vshn-managed/keycloak/delete.adoc[Deletion]
+** xref:vshn-managed/keycloak/deletion-protection.adoc[]
 ** xref:vshn-managed/keycloak/plans.adoc[]
 ** xref:vshn-managed/keycloak/restore.adoc[Restore]
 ** xref:vshn-managed/keycloak/security.adoc[Security]
 ** xref:vshn-managed/keycloak/replicas.adoc[]
 ** xref:vshn-managed/keycloak/customization.adoc[]
+
 
 .Nextcloud
 * xref:vshn-managed/nextcloud/index.adoc[On cloudscale.ch]
@@ -85,7 +91,9 @@
 ** xref:vshn-managed/nextcloud/maintenance.adoc[]
 ** xref:vshn-managed/nextcloud/usage.adoc[Usage]
 ** xref:vshn-managed/nextcloud/delete.adoc[Deletion]
+** xref:vshn-managed/nextcloud/deletion-protection.adoc[]
 ** xref:vshn-managed/nextcloud/plans.adoc[]
+
 
 .OpenSearch
 * xref:exoscale-dbaas/opensearch/index.adoc[On Exoscale]
