@@ -4,11 +4,44 @@ If you do not need a Redis service anymore, you can delete it in the same way as
 
 [source,bash]
 ----
-$ oc delete vshnredis.vshn.appcat.vshn.io my-redis-example
+$ oc delete vshnredis.vshn.appcat.vshn.io redis-app1-prod
 ----
 
-[IMPORTANT]
-.Non-reversible operation
-====
-If you delete the `VSHNRedis` object from the cluster, it will be deleted together with all of its data!
-====
+include::page$references/delete.adoc[tag=common]
+
+== Delete protected Redis instance
+
+A Redis instance that is protected from deletion cannot be deleted right away.
+First disable deletion protection then delete the instance.
+
+. Disable deletion protection:
++
+[source,bash]
+----
+$ oc delete vshnredis.vshn.appcat.vshn.io redis-app1-prod
+----
++
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNRedis
+metadata:
+  name: redis-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    security:
+      deletionProtection: false # <1>
+  writeConnectionSecretToRef:
+    name: redis-creds
+----
+<1> Make sure the parameter is set to false
+
+. Delete the instance
++
+[source,bash]
+----
+$ oc delete vshnredis.vshn.appcat.vshn.io redis-app1-prod
+----
++
+include::page$references/delete.adoc[tag=common]

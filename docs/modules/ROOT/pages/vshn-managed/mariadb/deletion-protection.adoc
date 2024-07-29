@@ -1,0 +1,5 @@
+= Deletion Protection
+
+include::page$references/deletion-protection.adoc[tag=common]
+
+include::page$references/deletion-protection.adoc[tag=mariadb]

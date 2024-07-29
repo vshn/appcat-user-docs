@@ -1,0 +1,7 @@
+// tag::common[]
+[IMPORTANT]
+.Non-reversible operation
+====
+If you delete the instance from the cluster, it will be deleted together with all of its data and backups!
+====
+// end::common[]

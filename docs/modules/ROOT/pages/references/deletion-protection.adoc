@@ -1,0 +1,144 @@
+= Instance Deletion Protection
+
+// tag::common[]
+[IMPORTANT]
+====
+The Deletion Protection feature is enabled by default and ensures your instance is not deleted by accident.
+====
+
+== Configuration
+
+Deletion protection can be enabled or disabled using the following configuration:
+// end::common[]
+
+// tag::keycloak[]
+.Example of a Keycloak instance with deletion protection on. Update the namespace!
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: keycloak-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    security:
+      deletionProtection: true # <1>
+    service:
+      version: "23"
+      postgreSQLParameters: {}
+    size:
+      plan: standard-2
+  writeConnectionSecretToRef:
+    name: keycloak-creds
+----
+<1> Enable or disable instance deletion protection.
+// end::keycloak[]
+
+// tag::mariadb[]
+.Example of a MariaDB instance with deletion protection on. Update the namespace!
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNMariaDB
+metadata:
+  name: mariadb-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    security:
+      deletionProtection: true # <1>
+    service:
+      version: "11.2"
+    size:
+      plan: standard-2
+  writeConnectionSecretToRef:
+    name: mariadb-creds
+----
+<1> Enable or disable instance deletion protection.
+// end::mariadb[]
+
+// tag::nextcloud[]
+.Example of a Nextcloud instance with deletion protection on. Update the namespace!
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNNextcloud
+metadata:
+  name: nextcloud-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    security:
+      deletionProtection: true # <1>
+    service:
+      fqdn: my-nextcloud.example.com
+      version: "29"
+      useExternalPostgreSQL: true
+      postgreSQLParameters: {}
+    size:
+      plan: standard-2
+  writeConnectionSecretToRef:
+    name: nextcloud-creds
+----
+<1> Enable or disable instance deletion protection.
+// end::nextcloud[]
+
+// tag::postgresql[]
+.Example of a PostgreSQL instance with deletion protection on. Update the namespace!
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1
+  namespace: <your-namespace>
+spec:
+  parameters:
+    security:
+      deletionProtection: true # <1>
+    backup:
+      deletionProtection: true <2>
+      deletionRetention: 10 <2>
+      schedule: '0 22 * * *'
+    service:
+      majorVersion: "15"
+      pgSettings:
+        timezone: Europe/Zurich
+    size:
+      cpu: "600m"
+      memory: "3500Mi"
+      disk: "80Gi"
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> Enable or disable instance deletion protection.
+<2> This is now deprecated and doesn't have any effect. Upon deletion of the instance, the backups are deleted as well.
+// end::postgresql[]
+
+// tag::redis[]
+.Example of a Redis instance with deletion protection on. Update the namespace!
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNRedis
+metadata:
+  name: redis-app1
+  namespace: <your-namespace>
+spec:
+  parameters:
+    security:
+      deletionProtection: true # <1>
+    backup:
+      schedule: '0 22 * * *'
+    service:
+      version: "7.0"
+      redisSettings: |
+        activedefrag yes
+    size:
+      plan: standard-2
+  writeConnectionSecretToRef:
+    name: redis-creds
+----
+<1> Enable or disable instance deletion protection.
+// end::redis[]
