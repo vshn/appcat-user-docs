@@ -11,8 +11,6 @@ $ oc delete vshnkeycloak.vshn.appcat.vshn.io keycloak-app1-prod
 
 include::page$references/delete.adoc[tag=common]
 
-====
-
 == Delete protected Keycloak instance
 
 A Keycloak instance that is protected from deletion cannot be deleted right away.
