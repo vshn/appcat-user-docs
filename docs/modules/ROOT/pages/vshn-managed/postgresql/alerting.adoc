@@ -89,3 +89,20 @@ spec:
     name: postgres-creds
 ----
 <1> E-Mail address to be used to receive alerts.
+
+== Alert Specifications
+
+include::page$references/alerts.adoc[tag=common]
+
+=== PostgreSQLConnectionsCritical
+
+The connections have been over 90% of the configured `max_connections` setting.
+
+* Either reduce the amount of connections to the database
+* Or increase the `max_connections` setting in your instance
+
+[NOTE]
+====
+Please be aware that changing the `max_connection` setting can have an impact on the memory usage of PostgreSQL.
+====
+
