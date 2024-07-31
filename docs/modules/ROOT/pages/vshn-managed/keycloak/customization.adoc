@@ -38,7 +38,7 @@ spec:
 
 You can provide a custom configuration to Keycloak using a `ConfigMap`.
 The content of the `ConfigMap` is a JSON file based on the Keycloak export files.
-The configuration *must* be in the key `keycloak-config.json` inside the `ConfigMap`
+You can logically separate different configurations inside the `ConfigMap` by using different keys. However, each key *must* end in `.json`.
 
 The configuration will be read during the startup of Keycloak and loaded into the database.
 
