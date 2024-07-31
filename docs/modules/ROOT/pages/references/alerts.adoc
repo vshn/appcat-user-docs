@@ -9,7 +9,7 @@ This happens if the AppCat service is running out of disk space.
 
 === PersistentVolumeExpectedToFillUp
 
-This indicates that the AppCat service will run out of disk space in 4 days based on the current growth
+This indicates that the AppCat service will run out of disk space in 4 days based on the current growth pattern.
 
 * Either reduce the amount of data
 * Or increase the allocated disk space for the instance
