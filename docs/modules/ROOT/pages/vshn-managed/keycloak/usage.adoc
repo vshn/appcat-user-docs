@@ -13,7 +13,7 @@ metadata:
 spec:
   parameters:
     service:
-      version: "23"
+      version: "25"
       fqdn: my-keycloak.example.com # <1>
     size:
       plan: standard-2
