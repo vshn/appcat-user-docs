@@ -1,5 +1,7 @@
 = Delete an Object Storage Bucket
 
+== Delete a non protected Object Storage Bucket
+
 If you do not need an Object Storage bucket anymore, you can delete it in the same way as you would with any other object in your cluster:
 
 [source,bash]
@@ -7,7 +9,7 @@ If you do not need an Object Storage bucket anymore, you can delete it in the sa
 $ oc delete objectbucket my-bucket
 ----
 
-== DeletionPolicy
+=== DeletionPolicy
 
 By default, deleting the `ObjectBucket` will also recursively delete all objects within it and the bucket itself.
 
@@ -29,3 +31,40 @@ spec:
 ----
 
 IMPORTANT: Before deleting an ObjectBucket with deletion policy `DeleteIfEmpty` be sure to remove all data from the bucket itself. Failing to do so may incur additional costs due to bucket not being effectively deleted. Please contact support@vshn.ch for further assistance.
+
+== Delete a protected Object Storage Bucket
+
+An Object Stroage bcuket that is protected from deletion cannot be deleted right away.
+First disable deletion protection then delete the instance.
+
+
+. Disable deletion protection:
++
+[source,bash]
+----
+$ oc edit objectbucket my-bucket
+----
++
+[source,yaml]
+----
+apiVersion: appcat.vshn.io/v1
+kind: ObjectBucket
+metadata:
+  name: my-cool-bucket
+  namespace: my-cool-ns
+spec:
+  parameters:
+    bucketName: my-bucket-change-name
+    region: ch-gva-2
+    bucketDeletionPolicy: DeleteIfEmpty
+    security:
+      deletionProtection: false # <1>
+----
+<1> Make sure the parameter is set to false
+
+. Delete the instance
++
+[source,bash]
+----
+$ oc delete objectbucket my-bucket
+----
