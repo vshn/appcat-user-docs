@@ -34,9 +34,8 @@ IMPORTANT: Before deleting an ObjectBucket with deletion policy `DeleteIfEmpty` 
 
 == Delete a protected Object Storage Bucket
 
-An Object Stroage bcuket that is protected from deletion cannot be deleted right away.
-First disable deletion protection then delete the instance.
-
+An Object Storage bucket that is protected from deletion cannot be deleted right away.
+First disable deletion protection, then delete the instance.
 
 . Disable deletion protection:
 +
