@@ -16,7 +16,7 @@ spec:
       timeOfDay: "12:00:00"
     service:
       zone: ch-dk-2
-      majorVersion: "14"
+      majorVersion: "16"
     size:
       plan: hobbyist-2
   writeConnectionSecretToRef:
@@ -29,7 +29,7 @@ metadata:
 spec:
   containers:
   - name: postgres
-    image: postgres:14
+    image: postgres:16
     command:
       - /bin/sh
       - -c
