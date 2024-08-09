@@ -47,7 +47,7 @@ spec:
       allowedGroups:  # <1>
         - my-dev-engineers
         - my-support-engineers
-      allowedGroups:  # <2>
+      allowedUsers:  # <2>
         - my-special-user
   writeConnectionSecretToRef:
     name: postgres-creds-connection
