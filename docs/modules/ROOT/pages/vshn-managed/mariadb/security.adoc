@@ -24,3 +24,34 @@ spec:
 
 <1> List of namespaces to be allowed to access MariaDB
 <2> Allows access to MariaDB from any namespace in the cluster. Supersedes `allowedNamespaces` if true.
+
+== Namespace RBAC
+
+On APPUiO Cloud, every member of the same organization to which the claim namespace belongs to has limited access to the namespace for debugging and port-fowarding.
+
+On APPUiO Managed, we don't have this construct and no RBAC rules are deployed by default.
+
+However, it is possible to specify a list of `Groups` or `Users`that should have that limited access to the namespace.
+This can be done using the two fields `allowedGroups` and `allowedUsers`:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNMariaDB
+metadata:
+  name: mariadb-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    security:
+      allowedGroups:  # <1>
+        - my-dev-engineers
+        - my-support-engineers
+      allowedGroups:  # <2>
+        - my-special-user
+  writeConnectionSecretToRef:
+    name: mariadb-creds-connection
+----
+
+<1> List of groups to be allowed limited access to the MariaDB namespace
+<2> List of users to be allowed limited access to the MariaDB namespace
