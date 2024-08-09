@@ -31,7 +31,7 @@ On APPUiO Cloud, every member of the same organization to which the claim namesp
 
 On APPUiO Managed, we don't have this construct and no RBAC rules are deployed by default.
 
-However, it is possible to specify a list of `Groups` or `Users`that should have that limited access to the namespace.
+However, it is possible to specify a list of `Groups` or `Users` that should have that limited access to the namespace.
 This can be done using the two fields `allowedGroups` and `allowedUsers`:
 
 [source,yaml]
