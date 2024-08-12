@@ -4,7 +4,7 @@
 
 To get started with the VSHN Application Catalog:
 
-. Login to an APPUiO Cloud zone or an APPUiO Managed cluster
+. Login to an https://docs.appuio.cloud/user/tutorials/getting-started.html#_step_2_login[APPUiO Cloud zone] or an APPUiO Managed cluster
 
 . Query the available services with:
 +
@@ -46,7 +46,7 @@ There is also a link to the documentation of that specific service.
 image::pgdetails.png[]
 
 . `Instantiate Template` brings up a wizard, where some variables for the AppCat service can be customized.
-For more options please consult the AppCat service's https://docs.appcat.ch/[documentatio].
+For more options please consult the AppCat service's https://docs.appcat.ch/[documentation].
 +
 image::create.png[]
 
