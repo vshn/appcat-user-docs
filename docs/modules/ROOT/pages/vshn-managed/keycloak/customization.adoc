@@ -84,7 +84,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: keycloak-app1-prod-config
-  namespace: bigli-test
+  namespace: prod-app
 data:
   keycloak-config.json: |
     {
