@@ -26,3 +26,5 @@ After applying the change, AppCat will ensure that the extension is available af
 
 WARNING: Some extension like `timescaldb` or `postgis` will require a restart of the instance to be available.
 Depending on your https://docs.appcat.ch/vshn-managed/postgresql/update-strategy.html[Instance Update Strategy], it's possible that the instance will restart immediately.
+
+WARNING: Some extensions like `timescaledb` or `postgis` require PostgreSQL version lower or equal to 14. If you are using a higher version, the extension will not be available and will result in an error. We're actively working to mitigate this issue. Always check the compatibility of the extension with the PostgreSQL version you are using. You can set the PostgreSQL version in the `spec.parameters.service.majorVersion` field.
