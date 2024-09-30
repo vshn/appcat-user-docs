@@ -14,23 +14,26 @@ spec:
   parameters:
     service:
       majorVersion: "15" # <3>
+      pgBouncerSettings: # <4>
+        admin_users: postgres
       pgSettings:
-        timezone: Europe/Zurich # <4>
-    size: # <5>
+        timezone: Europe/Zurich # <5>
+    size: # <6>
       plan: plus-4
-    backup: # <6>
+    backup: # <7>
       schedule: "30 23 * * *"
       retention: 12
   writeConnectionSecretToRef:
-    name: postgres-creds # <7>
+    name: postgres-creds # <8>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
 <3> PostgreSQL version
-<4> Specify custom PostgreSQL settings [optional]
-<5> Size of the PostgreSQL instance. See xref:vshn-managed/postgresql/plans.adoc[Plans and Sizing] for more information.
-<6> Backup configuration, `schedule` standard cron: https://en.wikipedia.org/wiki/Cron, `retention` field specify how many backups should be kept
-<7> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
+<4> Specify additional configuration to the pgBouncer instance [optional]. See https://www.pgbouncer.org/config.html[documentation]
+<5> Specify custom PostgreSQL settings [optional]
+<6> Size of the PostgreSQL instance. See xref:vshn-managed/postgresql/plans.adoc[Plans and Sizing] for more information.
+<7> Backup configuration, `schedule` standard cron: https://en.wikipedia.org/wiki/Cron, `retention` field specify how many backups should be kept
+<8> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[API Reference]
 
