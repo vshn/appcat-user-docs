@@ -1,7 +1,7 @@
 = Backups
 
 Backups are enabled by default. The PostgreSQL instance will be backed up daily at a randomly chosen time between 22:00 and 4:00.
-The backup is done using https://www.postgresql.org/docs/current/app-pgbasebackup.html[`pg_basebackup`^] tool which supports _Point-in-Time Recovery_.
+The backup is done using https://pgbackrest.org/[`https://pgbackrest.org/`^] tool which supports _Point-in-Time Recovery_.
 This approach allows to make a backup of an online database with minimum performance hit.
 It also guarantees that the changes made to the data during the backup process will also end up in the backup files.
 
@@ -22,6 +22,31 @@ spec:
     ...
 ----
 <1> The schedules for your backups.
+
+== Point in Time interval
+
+By default, the _WALs_ (Write Ahead Logs) will be shipped every time a _WAL_ file has been completed. They grow to 16Mbs before being considered completed and be archived to the backup object store. This will result in variable RPO times.
+
+If fixed RPO time is required, the `archive_timeout` setting can be set. It will force an archive of the _WAL_ files every given interval.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    ...
+    service:
+      pgSettings:
+        archive_timeout: "300" <1>
+    ...
+----
+<1> Amount of time between _WAL_ archives
+
+However, the _WAL_ files will always be 16Mb, even if it's not completed. So using this setting will most likely increase the data usage on the backup object store.
 
 == Listing Backups
 
