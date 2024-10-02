@@ -25,7 +25,7 @@ spec:
 
 == Point in Time interval
 
-By default, the _WALs_ (Write Ahead Logs) will be shipped every time a _WAL_ file has been completed. They grow to 16Mbs before being considered completed and be archived to the backup object store. This will result in variable RPO times.
+By default, the _WALs_ (Write Ahead Logs) will be shipped every time a _WAL_ file has been completed. They grow to 16Mb before being considered completed and be archived to the backup object store. This will result in variable https://en.wikipedia.org/wiki/IT_disaster_recovery#Recovery_Point_Objective[RPO] times.
 
 If fixed RPO time is required, the `archive_timeout` setting can be set. It will force an archive of the _WAL_ files every given interval.
 
@@ -44,7 +44,7 @@ spec:
         archive_timeout: "300" <1>
     ...
 ----
-<1> Amount of time between _WAL_ archives
+<1> Amount of time between _WAL_ archives in seconds
 
 However, the _WAL_ files will always be 16Mb, even if it's not completed. So using this setting will most likely increase the data usage on the backup object store.
 
