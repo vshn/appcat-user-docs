@@ -50,7 +50,7 @@ DESCRIPTION:
 
      standard-2 - CPU: 400m; Memory: 1936Mi; Disk: 20Gi
 
-     standard-4 - CPU: 900m; Memory: 33984Mi; Disk: 40Gi
+     standard-4 - CPU: 900m; Memory: 3984Mi; Disk: 40Gi
 
      standard-8 - CPU: 1900m; Memory: 8080Mi; Disk: 80Gi
 ----
