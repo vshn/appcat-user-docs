@@ -48,12 +48,14 @@ When you see `True` in the READY column, it means the instance is provisioned an
 
 == Find the connection details
 
-The connection details are stored in a secret. Kubernetes secrets are base64 encoded. You can retrieve them with the following command:
+The connection details are stored in a secret. You can retrieve them with the following command:
 
 [source,bash]
 ----
 $ oc get secrets postgres-creds -o yaml
 ----
+
+TIP: Kubernetes secrets are base64 encoded. See https://kubernetes.io/docs/concepts/configuration/secret/#working-with-secrets[Working with kubernetes secrets^]. 
 
 The output of the command above is a secret specification with the following structure:
 
