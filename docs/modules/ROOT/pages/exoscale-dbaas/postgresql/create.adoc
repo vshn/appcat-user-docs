@@ -55,6 +55,8 @@ The connection details are stored in a secret. You can retrieve them with the fo
 $ oc get secrets postgres-creds -o yaml
 ----
 
+TIP: Kubernetes secrets are base64 encoded. See https://kubernetes.io/docs/concepts/configuration/secret/#working-with-secrets[Working with kubernetes secrets^]. 
+
 The output of the command above is a secret specification with the following structure:
 
 include::page$references/secrets.adoc[tag=postgres]
