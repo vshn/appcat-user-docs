@@ -1,0 +1,76 @@
+= Manage Users and Databases
+
+== Creating User and Databases
+
+It's possible to create additional databases and users right in the specification for the MariaDB instance.
+
+If only a username is provided, a database with the same name will be
+provisioned automatically.
+If a user needs access to another user's database, it can be specified by the `database` field.
+
+.Example MariaDB instance with users
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNMariaDB
+metadata:
+  name: pgsql-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      access:
+        - user: app1 # <1>
+        - user: app2
+          database: app1 # <2>
+        - user: app3
+          database: app1
+          privileges:
+            - SELECT # <3>
+        - user: app4
+          writeConnectionSecretToRef: <4>
+            name: my-secret
+            namespace: app4
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> Create a user and a database called app1, the user gets all privileges for the database
+<2> Create a user app2 and giving it all privileges to database app1
+<3> Create a user app3 and giving it select privileges on database app1
+<4> Write the connection secret to another namespace. If you want to connect from another namespace, please make sure that you configure the xref:vshn-managed/mariadb/security.adoc[allowed namespaces] accordingly.
+
+Please see the official https://mariadb.com/kb/en/grant/[MariaDB docs] for all available privileges. Only Grants applicable to databases are supported.
+
+== Deleting User and Databases
+To remove a user and its database, you need to remove it from the `access` array in the instance.
+
+A user or database will be removed from the instance, if there are no more references in the `access` array.
+
+.Example Deleting users and databases
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNMariaDB
+metadata:
+  name: pgsql-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      access:
+        - user: app1 # <1>
+        - user: app2
+          database: app1 # <2>
+        - user: app3 #<3>
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> Removing this entry would remove the `app1` user and the grant giving it access to the app1 database. It will not remove the database, as it's still referenced by user app2.
+<2> Removing this entry would remove the user `app2` and the grants giving access to database app1. It will not remove the database app1, as it's still referenced by user `app1`
+<3> Removing this entry will remove the user `app3` and its database.
+
+[IMPORTANT]
+.Non-reversible operation
+====
+If you remove a user completely from the array, the user and the database will be removed from the instance!
+====
