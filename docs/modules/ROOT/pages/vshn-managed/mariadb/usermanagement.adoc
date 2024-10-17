@@ -1,6 +1,6 @@
 = Manage Users and Databases
 
-== Creating User and Databases
+== Creating Users and Databases
 
 It's possible to create additional databases and users right in the specification for the MariaDB instance.
 
