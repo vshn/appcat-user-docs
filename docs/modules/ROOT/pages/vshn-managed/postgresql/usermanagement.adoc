@@ -74,3 +74,74 @@ spec:
 ====
 If you remove a user completely from the array, the user and the database will be removed from the instance!
 ====
+
+== Create a database with a specific locale
+
+The default locale when databases are created is `C.UTF-8`.
+If an application needs a specific locale that is different, then you can do the following:
+
+.Create a user and database in the instance
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      access:
+        - user: myapp <1>
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> This will create a user and a database `myapp`
+
+After that, we create a pod that will re-create the database with the desired settings.
+
+.Run a pod with SQL commands to create custom database
+[source,yaml]
+----
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres-client
+  namespace: prod-app
+spec:
+  containers:
+  - name: postgres
+    image: postgres:15
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    command:
+      - /bin/sh
+      - -c
+    args:
+      - PGPASSWORD=$POSTGRESQL_PASSWORD psql "sslmode=verify-ca sslrootcert=/etc/secret-volume/ca.crt host=$POSTGRESQL_HOST port=$POSTGRESQL_PORT dbname=$POSTGRESQL_DB" -U $POSTGRESQL_USER -c "drop database if exists $DBNAME with (force)"
+        -c "create database $DBNAME LC_COLLATE='C' LC_CTYPE='C' ENCODING='UTF-8' TEMPLATE='template0'"
+    envFrom:
+      - secretRef:
+          name: postgres-creds # <1>
+    env:
+      - name: DBNAME
+        value: myapp # <2>
+    volumeMounts:
+    - name: secret-volume
+      readOnly: true
+      mountPath: "/etc/secret-volume"
+  volumes:
+  - name: secret-volume
+    secret:
+      defaultMode: 0600
+      secretName: postgres-creds # <1>
+  restartPolicy: OnFailure
+
+----
+<1> The pod will use the secret to connect to the instance. Has to match the `writeConnectionSecretToRef` field of the instance.
+<2> Change the name to the database name you want
+
+You can use this `postgres-client` pod as a template for any SQL commands you want to run against your AppCat VSHNPostgreSQL instance.
