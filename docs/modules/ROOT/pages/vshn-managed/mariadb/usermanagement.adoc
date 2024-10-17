@@ -46,7 +46,7 @@ To remove a user and its database, you need to remove it from the `access` array
 
 A user or database will be removed from the instance, if there are no more references in the `access` array.
 
-.Example Deleting users and databases
+.Example Deleting Users and Databases
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
