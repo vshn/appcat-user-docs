@@ -73,4 +73,5 @@ spec:
 .Non-reversible operation
 ====
 If you remove a user completely from the array, the user and the database will be removed from the instance!
+Also, renaming is not possible. If you rename a user it will effectively be deleted!
 ====
