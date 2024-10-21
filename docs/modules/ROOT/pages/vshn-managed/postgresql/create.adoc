@@ -28,7 +28,7 @@ spec:
 ----
 <1> Instance name
 <2> The namespace where the object will be created
-<3> PostgreSQL version. For supported versions, see our https://products.vshn.ch/appcat/postgresql.html#_supported_versions[product docs]
+<3> PostgreSQL version. For supported versions, see our https://products.vshn.ch/appcat/postgresql.html#_supported_versions[product docs^]
 <4> Specify additional configuration to the pgBouncer instance [optional]. See https://www.pgbouncer.org/config.html[documentation]
 <5> Specify custom PostgreSQL settings [optional]
 <6> Size of the PostgreSQL instance. See xref:vshn-managed/postgresql/plans.adoc[Plans and Sizing] for more information.
