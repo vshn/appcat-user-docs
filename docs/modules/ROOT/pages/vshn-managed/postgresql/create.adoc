@@ -15,7 +15,8 @@ spec:
     service:
       majorVersion: "15" # <3>
       pgBouncerSettings: # <4>
-        admin_users: postgres
+        pgbouncer:
+          admin_users: postgres
       pgSettings:
         timezone: Europe/Zurich # <5>
     size: # <6>
