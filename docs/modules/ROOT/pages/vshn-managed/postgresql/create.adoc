@@ -13,7 +13,7 @@ metadata:
 spec:
   parameters:
     service:
-      majorVersion: "15" # <3>
+      majorVersion: "16" # <3>
       pgBouncerSettings: # <4>
         admin_users: postgres
       pgSettings:
