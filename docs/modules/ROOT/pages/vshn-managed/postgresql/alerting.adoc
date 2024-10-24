@@ -32,7 +32,7 @@ spec:
           groupBy: [alertname, instance]
           receiver: default
     service:
-      majorVersion: "15"
+      majorVersion: "16"
   writeConnectionSecretToRef:
     name: postgres-creds
 ----
@@ -58,7 +58,7 @@ spec:
       alertmanagerConfigSecretRef: alert-secret # <1>
       alertmanagerConfigRef: my-alert # <2>
     service:
-      majorVersion: "15"
+      majorVersion: "16"
   writeConnectionSecretToRef:
     name: postgres-creds
 ----
@@ -84,7 +84,7 @@ spec:
     monitoring:
       email: foo@example.com # <1>
     service:
-      majorVersion: "15"
+      majorVersion: "16"
   writeConnectionSecretToRef:
     name: postgres-creds
 ----

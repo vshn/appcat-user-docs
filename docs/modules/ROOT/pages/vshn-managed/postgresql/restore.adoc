@@ -40,7 +40,7 @@ spec:
     backup:
       schedule: '0 22 * * *'
     service:
-      majorVersion: "15"
+      majorVersion: "16"
       pgSettings:
         timezone: Europe/Zurich
     size:
