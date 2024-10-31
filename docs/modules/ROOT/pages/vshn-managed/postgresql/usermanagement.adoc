@@ -101,6 +101,11 @@ spec:
 
 After that, we create a pod that will re-create the database with the desired settings.
 
+[WARNING]
+====
+This will drop the database and recreate it. Make sure you have a backup of the data before running this pod.
+====
+
 .Run a pod with SQL commands to create custom database
 [source,yaml]
 ----
