@@ -47,6 +47,7 @@
 ** xref:vshn-managed/mariadb/restore.adoc[Restore]
 ** xref:vshn-managed/mariadb/security.adoc[Security]
 ** xref:vshn-managed/mariadb/usermanagement.adoc[]
+** xref:vshn-managed/mariadb/replicas.adoc[]
 
 .Redis
 * xref:exoscale-dbaas/redis/index.adoc[On Exoscale]
