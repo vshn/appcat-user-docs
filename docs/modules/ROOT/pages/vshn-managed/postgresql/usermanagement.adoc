@@ -101,6 +101,11 @@ spec:
 
 After that, we create a pod that will re-create the database with the desired settings.
 
+[WARNING]
+====
+This will drop the database and recreate it. Make sure you have a backup of the data before running this pod.
+====
+
 .Run a pod with SQL commands to create custom database
 [source,yaml]
 ----
@@ -122,8 +127,7 @@ spec:
       - /bin/sh
       - -c
     args:
-      - PGPASSWORD=$POSTGRESQL_PASSWORD psql "sslmode=verify-ca sslrootcert=/etc/secret-volume/ca.crt host=$POSTGRESQL_HOST port=$POSTGRESQL_PORT dbname=$POSTGRESQL_DB" -U $POSTGRESQL_USER -c "drop database if exists $DBNAME with (force)"
-        -c "create database $DBNAME LC_COLLATE='C' LC_CTYPE='C' ENCODING='UTF-8' TEMPLATE='template0'"
+        - PGPASSWORD=$POSTGRESQL_PASSWORD psql "sslmode=verify-ca sslrootcert=/etc/secret-volume/ca.crt host=$POSTGRESQL_HOST port=$POSTGRESQL_PORT dbname=template1" -U $POSTGRESQL_USER -c "drop database if exists $DBNAME with (force);" -c "create database $DBNAME LC_COLLATE='C' LC_CTYPE='C' ENCODING='UTF-8' TEMPLATE='template0';"
     envFrom:
       - secretRef:
           name: postgres-creds # <1>
