@@ -1,0 +1,55 @@
+= Replication and High Availability
+
+MariaDB by VSHN comes with support for multiple instances and High Availability using https://mariadb.com/kb/en/galera-cluster/[Galera].
+You have the option to configure up to two additional replicas.
+Please be aware of its https://mariadb.com/kb/en/mariadb-galera-cluster-known-limitations/[limitations] before using it.
+
+== Enable High Availability
+
+To enable high availability you need to set the number of instances to `3`, which will provision two replicas.
+
+The following example configuration will start a MariaDB service with three replicas.
+
+NOTE: When HA is enabled, changing users via the VSHNMariaDB claim will result in a quick restart of ProxySQL. This will interrupt the connection for a few seconds. Also be aware that connections will only work via users that are specified in the claim.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNMariaDB
+metadata:
+  name: mariadb-app1-prod
+spec:
+  parameters:
+    instances: 3
+----
+
+NOTE: Please be aware that enabling high availability will use significantly more resources and will cost three times more.
+
+IMPORTANT: On APPUiO Cloud, it's currently not possible to deploy more than two instances, or more than a single instance that is larger than `standard-2`.
+Please contact https://docs.appuio.cloud/user/contact.html[APPUiO Cloud support], if this blocks you from running your application.
+
+
+== ProxySQL
+
+In order to optimize the connections to the Galera Cluster, a separate two node ProxySQL cluster is deployed as well.
+The ProxySQL cluster will manage reconnections in case of failovers.
+ProxySQL will identify itself as a MySQL server version 8, which is the expected behavior.
+
+This ProxySQL will also consume certain resources in addition to Galera itself.
+Please consult the following table for more details.
+
+[cols="1s,1,1", options="header", stripes="even"]
+
+|===
+|
+|Requests
+|Limits
+
+|CPU
+|50m
+|500m
+
+|Memory
+|64Mi
+|256Mi
+
