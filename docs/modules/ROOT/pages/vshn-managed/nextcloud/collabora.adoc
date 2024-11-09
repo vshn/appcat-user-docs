@@ -1,0 +1,22 @@
+== Nextcloud Collabora
+
+Collabora Online is a powerful LibreOffice-based online office suite with collaborative editing, which supports all major document, spreadsheet and presentation file formats and works in all modern browsers. It allows you to view and edit office documents directly in your Nextcloud.
+
+== Create a Collabora service
+
+Extend Your Nextcloud instance with Collabora Online. Apply the following object on your namespace, as specified by its YAML description.
+
+[source,yaml]
+-----
+(...)
+spec:
+  parameters:
+    service:
+      collabora:
+        enabled: true
+        fqdn: my-collabora.example.com
+-----
+
+This will create a Collabora service with the specified FQDN. The Collabora service will be available at `https://my-collabora.example.com` and autoconfigured in your Nextcloud instance. 
+
+NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnnextcloud[API Reference]                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
