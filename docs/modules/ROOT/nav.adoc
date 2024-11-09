@@ -94,6 +94,7 @@
 ** xref:vshn-managed/nextcloud/delete.adoc[Deletion]
 ** xref:vshn-managed/nextcloud/deletion-protection.adoc[]
 ** xref:vshn-managed/nextcloud/plans.adoc[]
+** xref:vshn-managed/nextcloud/collabora.adoc[Collabora]
 
 
 .OpenSearch
