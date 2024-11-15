@@ -14,8 +14,10 @@ spec:
     service:
       collabora:
         enabled: true
-        fqdn: my-collabora.example.com
+        fqdn: my-collabora.example.com # <1>
 -----
+
+<1> Your full qualified domain name. For our Appuio Cloud offering, You can learn more how to configure your DNS settings https://docs.appuio.cloud/user/how-to/getting-a-certificate.html[here].
 
 This will create a Collabora service with the specified FQDN. The Collabora service will be available at `https://my-collabora.example.com` and autoconfigured in your Nextcloud instance. 
 
