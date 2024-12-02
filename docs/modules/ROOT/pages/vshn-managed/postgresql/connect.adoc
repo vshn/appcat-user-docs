@@ -49,3 +49,16 @@ You can port-forward to your PostgreSQL cluster using the kubectl port-forward c
 kubectl -n $instanceNamespace port-forward services/primary-service 5432
 ```
 link:../how-tos/logging.html[Check how to find instanceNamespace]
+
+
+=== Disable TLS
+
+It is possible to disable TLS for the PostgreSQL cluster. This is not recommended for production use, but can be useful for development and testing. Change is applied immediately and does not require a restart of the PostgreSQL cluster.
+
+```
+  spec:
+    parameters:
+      service:
+        tls:
+          enabled: true
+```
