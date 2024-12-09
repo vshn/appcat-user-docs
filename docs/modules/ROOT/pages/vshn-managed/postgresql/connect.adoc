@@ -60,5 +60,5 @@ It is possible to disable TLS for the PostgreSQL cluster. This is not recommende
     parameters:
       service:
         tls:
-          enabled: true
+          enabled: false
 ```
