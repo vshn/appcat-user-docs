@@ -16,7 +16,7 @@ spec:
       timeOfDay: "12:00:00" # <3>
     service:
       zone: ch-dk-2 # <4>
-      majorVersion: "14" # <5>
+      majorVersion: "16" # <5>
       pgSettings:
         timezone: Europe/Zurich # <6>
     size:
