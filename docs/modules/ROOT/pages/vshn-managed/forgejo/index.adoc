@@ -1,0 +1,38 @@
+= VSHNForgejo (Forgejo)
+:toc: left
+:toclevels: 2
+
+[WARNING]
+====
+VSHNForgejo is currently in alpha. This means that the software is still under active development and may undergo significant changes. Users should be aware that there may be bugs, incomplete features, and potential instability. We appreciate your feedback and encourage you to report any issues you encounter.
+====
+
+Welcome to the documentation for VSHNForgejo, also known as Forgejo. This page provides an overview of the software, its purpose, and how it differs from Gitea.
+
+== Introduction
+
+Forgejo, branded as VSHNForgejo by VSHN, is a lightweight, managed Git service. It is designed to provide a simple, yet powerful platform for managing Git repositories, code review, and collaboration. Forgejo is built on the foundation of Gitea, an open-source Git service, but includes additional features and enhancements tailored to the needs of VSHN customers.
+
+== Purpose
+
+The primary purpose of VSHNForgejo is to offer a reliable and efficient Git hosting solution that can be easily deployed and managed. It aims to provide a seamless experience for developers and teams, enabling them to focus on their code and projects without worrying about the underlying infrastructure.
+
+Key features of VSHNForgejo include:
+
+* **Repository Management**: Create, manage, and organize Git repositories with ease.
+
+
+== Differences from Gitea
+
+While Forgejo shares its core with Gitea, we would like to take a look how it compares to other popular Git hosting solutions: https://forgejo.org/compare[Forgejo vs. Gitea vs. GitHub vs. Gitlab^].
+
+
+== Getting Started
+
+To get started with VSHNForgejo, please refer to the following sections of the documentation:
+
+* xref:vshn-managed/forgejo/create.adoc[create a Forgejo instance]
+
+We hope you find VSHNForgejo to be a valuable tool for your development needs. If you have any questions or need assistance, please do not hesitate to contact our support team.
+
+Thank you for choosing VSHNForgejo!
