@@ -14,7 +14,8 @@ spec:
   parameters:
     service:
       version: "29"
-      fqdn: my-nextcloud.example.com # <1>
+      fqdn:
+      - my-nextcloud.example.com # <1>
     size:
       plan: standard-2
   writeConnectionSecretToRef:
