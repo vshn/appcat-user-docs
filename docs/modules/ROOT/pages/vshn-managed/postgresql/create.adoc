@@ -20,7 +20,7 @@ spec:
       pgSettings:
         timezone: Europe/Zurich # <5>
     size: # <6>
-      plan: plus-4
+      plan: standard-4
     backup: # <7>
       schedule: "30 23 * * *"
       retention: 12
