@@ -11,7 +11,7 @@ Welcome to the documentation for VSHNForgejo, also known as Forgejo. This page p
 
 == Introduction
 
-Forgejo, branded as VSHNForgejo by VSHN, is a lightweight, managed Git service. It is designed to provide a simple, yet powerful platform for managing Git repositories, code review, and collaboration. Forgejo is built on the foundation of Gitea, an open-source Git service, but includes additional features and enhancements tailored to the needs of VSHN customers.
+Forgejo by VSHN, is a lightweight, managed Git service. It is designed to provide a simple, yet powerful platform for managing Git repositories, code review, and collaboration. Forgejo is built on the foundation of Gitea, an open-source Git service, but includes additional features and enhancements tailored to the needs of VSHN customers.
 
 == Purpose
 
