@@ -29,6 +29,7 @@
 ** xref:vshn-managed/postgresql/extensions.adoc[]
 ** xref:vshn-managed/postgresql/replicas.adoc[]
 ** xref:vshn-managed/postgresql/usermanagement.adoc[]
+** xref:vshn-managed/postgresql/major-upgrade.adoc[]
 
 .MySQL
 * xref:exoscale-dbaas/mysql/index.adoc[On Exoscale]
