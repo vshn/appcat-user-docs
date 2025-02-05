@@ -22,8 +22,6 @@ spec:
       fqdn:
         - "forgejo.mydomain.com" <3>
       version: "10.0.0" <4>
-    security:
-      deletionProtection: false
   writeConnectionSecretToRef:
     name: forgejo-creds <5>
 ----
