@@ -2,7 +2,7 @@
 
 [WARNING]
 ====
-VSHNForgejo is currently in alpha. This means that the software is still under active development and may undergo significant changes. Users should be aware that there may be bugs, incomplete features, and potential instability. We appreciate your feedback and encourage you to report any issues you encounter.
+VSHNForgejo is currently in alpha. This means that the service is still under active development and may undergo significant changes. Users should be aware that there may be bugs, incomplete features, and potential instability. We appreciate your feedback and encourage you to report any issues you encounter.
 ====
 
 Apply the following object on your namespace, as specified by its YAML description.
