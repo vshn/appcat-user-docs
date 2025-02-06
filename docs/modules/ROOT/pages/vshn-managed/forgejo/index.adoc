@@ -29,7 +29,7 @@ While Forgejo shares its core with Gitea, we would like to take a look how it co
 
 == Getting Started
 
-To get started with VSHNForgejo, please refer to the following sections of the documentation:
+To get started with Forgejo by VSHN, please refer to the following sections of the documentation:
 
 * xref:vshn-managed/forgejo/create.adoc[create a Forgejo instance]
 
