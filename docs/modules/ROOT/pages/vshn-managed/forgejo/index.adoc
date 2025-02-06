@@ -15,7 +15,7 @@ Forgejo by VSHN, is a lightweight, managed Git service. It is designed to provid
 
 == Purpose
 
-The primary purpose of VSHNForgejo is to offer a reliable and efficient Git hosting solution that can be easily deployed and managed. It aims to provide a seamless experience for developers and teams, enabling them to focus on their code and projects without worrying about the underlying infrastructure.
+The primary purpose of Forgejo by VSHN is to offer a reliable and efficient Git hosting solution that can be easily deployed and managed. It aims to provide a seamless experience for developers and teams, enabling them to focus on their code and projects without worrying about the underlying infrastructure.
 
 Key features of VSHNForgejo include:
 
