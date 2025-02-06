@@ -4,7 +4,7 @@
 
 [WARNING]
 ====
-VSHNForgejo is currently in alpha. This means that the software is still under active development and may undergo significant changes. Users should be aware that there may be bugs, incomplete features, and potential instability. We appreciate your feedback and encourage you to report any issues you encounter.
+VSHNForgejo is currently in alpha. This means that the service is still under active development and may undergo significant changes. Users should be aware that there may be bugs, incomplete features, and potential instability. We appreciate your feedback and encourage you to report any issues you encounter.
 ====
 
 Welcome to the documentation for VSHNForgejo, also known as Forgejo. This page provides an overview of the software, its purpose, and how it differs from Gitea.
