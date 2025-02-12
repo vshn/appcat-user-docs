@@ -1,0 +1,59 @@
+= Create a Forgejo service
+
+[WARNING]
+====
+VSHNForgejo is currently in alpha. This means that the service is still under active development and may undergo significant changes. Users should be aware that there may be bugs, incomplete features, and potential instability. We appreciate your feedback and encourage you to report any issues you encounter.
+====
+
+Apply the following object on your namespace, as specified by its YAML description.
+
+.Example to create a Forgejo instance
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNForgejo
+metadata:
+  name: forgejo-app1-prod <1>
+  namespace: mynamespace <2>
+spec:
+  parameters:
+    service:
+      adminEmail: "admin@mydomain.com" <3>
+      fqdn:
+        - "forgejo.mydomain.com" <3>
+      version: "10.0.0" <4>
+  writeConnectionSecretToRef:
+    name: forgejo-creds <5>
+----
+<1> Instance name
+<2> The namespace where the object will be created
+<3> Your full qualified domain name
+<4> Forgejo version - link:https://products.vshn.ch/appcat/forgejo.html#_supported_versions[Supported Versions]
+<5> The name of the secret where the connection details will be stored, it must be unique per namespace
+
+NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnForgejo[API Reference]
+
+== Inspect your new Forgejo service
+
+[source,bash]
+----
+$  oc get vshnforgejo.vshn.appcat.vshn.io
+NAME                SYNCED   READY   CONNECTION-SECRET   AGE
+forgejo-app1-prod   True     True    forgejo-creds       4m23s
+----
+
+When you see `True` in the READY column, it means the instance is provisioned but the pods might still be starting.
+It may take some time for the instance to be available especially during the provisioning phase.
+
+== Find the connection details
+
+The connection details are stored in a secret. You can retrieve them with the following command:
+
+[source,bash]
+----
+$ oc get secrets forgejo-creds -o yaml
+----
+
+The output of the command above is a secret specification with the following structure:
+
+include::page$references/secrets.adoc[tag=forgejo]
