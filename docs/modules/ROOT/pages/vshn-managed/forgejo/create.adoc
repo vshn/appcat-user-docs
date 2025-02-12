@@ -28,7 +28,7 @@ spec:
 <1> Instance name
 <2> The namespace where the object will be created
 <3> Your full qualified domain name
-<4> Forgejo version
+<4> Forgejo version - link:https://products.vshn.ch/appcat/forgejo.html#_supported_versions[Supported Versions]
 <5> The name of the secret where the connection details will be stored, it must be unique per namespace
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnForgejo[API Reference]

@@ -17,18 +17,8 @@ Forgejo by VSHN, is a lightweight, managed Git service. It is designed to provid
 
 The primary purpose of Forgejo by VSHN is to offer a reliable and efficient Git hosting solution that can be easily deployed and managed. It aims to provide a seamless experience for developers and teams, enabling them to focus on their code and projects without worrying about the underlying infrastructure.
 
-Key features of VSHNForgejo include:
-
-* **Repository Management**: Create, manage, and organize Git repositories with ease.
-
-
-== Differences from Gitea
-
-While Forgejo shares its core with Gitea, we would like to take a look how it compares to other popular Git hosting solutions: https://forgejo.org/compare[Forgejo vs. Gitea vs. GitHub vs. Gitlab^].
-
-
 == Getting Started
 
 To get started with Forgejo by VSHN, please refer to the following sections of the documentation:
 
-* xref:vshn-managed/forgejo/create.adoc[create a Forgejo instance]
+* xref:vshn-managed/forgejo/create.adoc[Create a Forgejo instance]
