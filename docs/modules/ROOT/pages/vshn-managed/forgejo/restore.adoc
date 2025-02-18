@@ -1,0 +1,7 @@
+= Restores
+
+Restoring Forgejo is, at present, a manual process.  
+
+== Step-by-step guide
+
+1. Obtain backed up data 

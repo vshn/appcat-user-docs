@@ -1,0 +1,22 @@
+= Scheduled Maintenance
+
+By default, there will be a security maintenance on Tuesday night (Central Europe Time).
+
+The day and time can be adjusted as described below. Times are in the CET time zone.
+
+.Nexcloud instance with custom maintenance
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNForgejo
+metadata:
+  name: forgejo-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    maintenance:
+      dayOfWeek: wednesday # <1>
+      timeOfDay: '23:30:00' # <2>
+----
+<1> The day when the maintenance should take place
+<2> The time when the maintenance should be started

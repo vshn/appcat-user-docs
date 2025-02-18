@@ -1,0 +1,25 @@
+= Backups
+
+Backups are enabled by default. The Forgejo instance will be backed up daily at a randomly chosen time between 22:00 and 4:00.
+
+You can specify a different backup time and interval using the following backup configuration:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNForgejo
+metadata:
+  name: forgejo-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    ...
+    backup:
+      schedule: 0 22 * * * <1>
+    ...
+----
+<1> The schedules for your backups.
+
+== Contents
+
+The backup relies on `forgejo dump` which collects all the data, including the database, into a single archive.
