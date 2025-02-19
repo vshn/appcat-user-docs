@@ -55,3 +55,30 @@ spec:
 
 <1> List of groups to be allowed limited access to the PostgreSQL namespace
 <2> List of users to be allowed limited access to the PostgreSQL namespace
+
+
+== Network Policies
+
+By default, PostgreSQL is not accessible from outside the cluster.
+To allow access from outside the cluster, a .spec.parameters.security.network must be configured, for example:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: postgres-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    network:
+      ipFilter: <1>
+      - 0.0.0.0/0
+      serviceType: LoadBalancer <2>
+  writeConnectionSecretToRef:
+    name: postgres-creds-connection
+----
+
+<1> List of IP addresses to be allowed to access PostgreSQL, defaults to `0.0.0.0/0`
+<2> Type of service to be created, defaults to `ClusterIP`
+
