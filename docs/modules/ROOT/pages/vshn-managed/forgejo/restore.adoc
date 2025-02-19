@@ -6,8 +6,9 @@ Data needs to be manually restored.
 == Step-by-step guide
 
 The https://docs.k8up.io/k8up/how-tos/restore.html#_manual_restore_via_restic[k8up restore guide] can be used as a reference.  +
-Your system must have `yq` and the `k8up` CLI installed.
+Your system must have `yq` installed
 
+=== Download backed up data
 [source,bash]
 ----
 NAMESPACE=<forgejo-namespace>
@@ -18,18 +19,62 @@ BUCKET_NAME=$(echo "$YAML" | yq .s3.bucket -r)
 BUCKET_CREDS_SECRET=$(echo "$YAML" | yq .s3.accessKeyIDSecretRef.name -r)
 REPO_CREDS_SECRET=$(echo "$YAML" | yq .repoPasswordSecretRef.name -r)
 
-# The k8up command below will use the latest snapshot available.
-# To use a different one, append '--snapshot $SNAPSHOT_ID' to the command. 
-kubectl -n $NAMESPACE get snapshot
-SNAPSHOT_ID=""
+RESTIC_REPOSITORY="s3:$ENDPOINT/$BUCKET_NAME"
+RESTIC_PASSWORD=$(kubectl -n $NAMESPACE get secret $REPO_CREDS_SECRET -o yaml | yq .data.password -r | base64 -d)
+AWS_ACCESS_KEY_ID=$(kubectl -n $NAMESPACE get secret $BUCKET_CREDS_SECRET -o yaml | yq .data.AWS_ACCESS_KEY_ID -r | base64 -d)
+AWS_SECRET_ACCESS_KEY=$(kubectl -n $NAMESPACE get secret $BUCKET_CREDS_SECRET -o yaml | yq .data.AWS_SECRET_ACCESS_KEY -r | base64 -d)
 
-k8up cli restore \
-    --restoreMethod pvc \
-    --secretRef $REPO_CREDS_SECRET \
-    --s3endpoint $ENDPOINT \
-    --s3bucket $BUCKET_NAME \
-    --s3secretRef $BUCKET_CREDS_SECRET \
-    --claimName gitea-shared-storage \
-    --namespace $NAMESPACE \
-    --runAsUser 0
+# Take note of the ID of a snapshot you wish to restore
+kubectl -n $NAMESPACE get snapshot
+SNAPSHOT_ID=<SNAPSHOT_ID>
+
+kubectl -n $NAMESPACE run restic-client \
+    --image restic/restic:latest \
+    --env "RESTIC_REPOSITORY=$RESTIC_REPOSITORY" \
+    --env "RESTIC_PASSWORD=$RESTIC_PASSWORD" \
+    --env "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" \
+    --env "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" \
+    --command -- /bin/sh -c "restic restore $SNAPSHOT_ID --target /var/tmp/restore; sleep 5m"
+
+BACKUP_FILE=$(kubectl -n $NAMESPACE exec restic-client -- /bin/sh -c "ls /var/tmp/restore/*.zip | head -n1")
+kubectl -n $NAMESPACE cp restic-client:$BACKUP_FILE ./backup.zip
+kubectl -n $NAMESPACE delete po restic-client
+----
+
+
+=== Upload backed up data into pod and restore it  
+
+WARNING: This will cause downtime as the instance needs to be scaled down briefly.
+
+[source,bash]
+----
+DEPLOY=$(kubectl -n $NAMESPACE get deploy -l app=forgejo -o name)
+kubectl -n $NAMESPACE scale $DEPLOY --replicas=0
+
+POD_NAME=busybox-pod
+cat <<EOF | kubectl -n $NAMESPACE apply -f-
+apiVersion: v1
+kind: Pod
+metadata:
+  name: $POD_NAME
+spec:
+  containers:
+    - name: busybox
+      image: busybox
+      command: ["sleep", "infinity"]
+      volumeMounts:
+        - name: gitlab-storage
+          mountPath: /opt
+  volumes:
+    - name: gitlab-storage
+      persistentVolumeClaim:
+        claimName: gitea-shared-storage
+EOF
+kubectl -n $NAMESPACE wait --for=condition=ready pod/$POD_NAME --timeout=60s
+
+kubectl -n $NAMESPACE cp ./backup.zip $POD_NAME:/tmp/backup.zip
+kubectl -n $NAMESPACE exec $POD_NAME -- /bin/sh -c "unzip /tmp/backup.zip -o -d /tmp/restore && cp -rf /tmp/restore/data/* /opt && chown -R 1000:1000 /opt"
+kubectl -n $NAMESPACE delete pod/$POD_NAME --force
+
+kubectl -n $NAMESPACE scale $DEPLOY --replicas=1
 ----
