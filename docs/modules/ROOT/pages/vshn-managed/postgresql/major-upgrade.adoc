@@ -1,0 +1,73 @@
+= PostgreSQL Major Version Upgrade
+
+== Overview
+VSHNPostgreSQL supports major version upgrades up to the latest available version.
+
+[WARNING]
+====
+Carefully follow the steps below to avoid prolonged downtime or data loss.
+====
+
+== Preparing for the Upgrade
+Major version upgrades carry risks, so before proceeding, ensure the following:
+
+. **Check Disk Space**: Although the upgrade process uses hard links for data migration, we recommend having at least double the free storage as a precaution. Check xref:vshn-managed/postgresql/major-upgrade.adoc#_available_disk_space[Available Disk Space].
+. **Verify Extensions**: If your instance uses extensions, confirm they are available and compatible with the target PostgreSQL version. Check the https://stackgres.io/extensions/[StackGres Extensions] repository for compatibility.
+. **Review Configuration Changes**: If your current PostgreSQL configuration cannot be used with the new version, contact us before proceeding.
+. **Test the Upgrade**: Perform the upgrade in a VSHNPostgreSQL test environment to validate the process before applying it to VSHNPostgreSQL production. Check the  xref:vshn-managed/postgresql/major-upgrade.adoc#_example_updating_an_existing_postgresql_instance[example].
+. **No Upgrade Progress**: The upgrade process cannot be followed at this time.
+
+== Limitations
+The following configurations are not supported for major version upgrades:
+
+* **HA Instances**: High availability (HA) instances must be scaled down to **1 replica** before proceeding.
+* **Unsupported Extensions**: Instances using `postgis` or `timescaledb` extensions cannot be upgraded at this time.
+* **One Version at a Time**: Upgrades must be performed sequentially, moving only **one major version forward per upgrade cycle**.
+
+== Upgrade Procedure
+
+=== Example: Updating an Existing PostgreSQL Instance
+To upgrade a PostgreSQL instance from version **15** to **16**, modify your Kubernetes resource definition:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      majorVersion: "16"  # Upgrade from 15 to 16 <1>
+  writeConnectionSecretToRef:
+    name: postgres-creds
+status:
+  currentVersion: "15"  # Current PostgreSQL version <2>
+----
+<1> Specify the target major version.
+<2> Ensure that the current version is correctly listed before applying the upgrade.
+
+NOTE: The process is finished once `currentVersion` equals the `majorVersion` value.
+
+== Available Disk Space
+To check the available disk space for a VSHNPostgreSQL instance, follow these steps:
+
+. _Check the Total Disk Space Allocated_
++
+Run the following command to retrieve the total disk space assigned to your VSHNPostgreSQL instance:
++
+[source,bash]
+----
+kubectl -n <namespace> get VSHNPostgreSQL <name-of-instance> -o=jsonpath='{.spec.parameters.size}'
+----
+NOTE: If the disk storage size is not available, refer to the xref:vshn-managed/postgresql/plans.adoc[plan documentation] for details.
+
+. _Check Database Sizes from Within the PostgreSQL Instance_
++
+Connect to your VSHNPostgreSQL instance using admin credentials and list the sizes of all databases:
++
+[source,bash]
+----
+\l+
+----
