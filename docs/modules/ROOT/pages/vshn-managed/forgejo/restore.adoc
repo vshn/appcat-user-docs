@@ -1,7 +1,35 @@
 = Restores
 
-Restoring Forgejo is, at present, a manual process.  
+Forgejo, at present, doesn't provide an automatic restoration process.  
+Data needs to be manually restored.
 
 == Step-by-step guide
 
-1. Obtain backed up data 
+The https://docs.k8up.io/k8up/how-tos/restore.html#_manual_restore_via_restic[k8up restore guide] can be used as a reference.  +
+Your system must have `yq` and the `k8up` CLI installed.
+
+[source,bash]
+----
+NAMESPACE=<forgejo-namespace>
+
+YAML=$(kubectl -n $NAMESPACE get schedule forgejo-schedule -o yaml | yq .spec.backend)
+ENDPOINT=$(echo "$YAML" | yq .s3.endpoint -r)
+BUCKET_NAME=$(echo "$YAML" | yq .s3.bucket -r)
+BUCKET_CREDS_SECRET=$(echo "$YAML" | yq .s3.accessKeyIDSecretRef.name -r)
+REPO_CREDS_SECRET=$(echo "$YAML" | yq .repoPasswordSecretRef.name -r)
+
+# The k8up command below will use the latest snapshot available.
+# To use a different one, append '--snapshot $SNAPSHOT_ID' to the command. 
+kubectl -n $NAMESPACE get snapshot
+SNAPSHOT_ID=""
+
+k8up cli restore \
+    --restoreMethod pvc \
+    --secretRef $REPO_CREDS_SECRET \
+    --s3endpoint $ENDPOINT \
+    --s3bucket $BUCKET_NAME \
+    --s3secretRef $BUCKET_CREDS_SECRET \
+    --claimName gitea-shared-storage \
+    --namespace $NAMESPACE \
+    --runAsUser 0
+----
