@@ -22,4 +22,5 @@ spec:
 
 == Contents
 
-The backup relies on `forgejo dump` which collects all the data, including the database, into a single archive.
+The backup relies on `forgejo dump` which collects all the data, including the database, into a single archive.  
+Eseentially, it's a copy of the `/data` directory.
