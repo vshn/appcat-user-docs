@@ -6,13 +6,22 @@ Data needs to be manually restored.
 == Step-by-step guide
 
 The https://docs.k8up.io/k8up/how-tos/restore.html#_manual_restore_via_restic[k8up restore guide] can be used as a reference.  +
-Your system must have `yq` installed
+Your system must have `yq` installed.
 
 === Download backed up data
+
+Use the following commands to download the forgejo dump to your host.  +
+Once completed, you should find a file `backup.tar` in your current working directory.
+
 [source,bash]
 ----
 NAMESPACE=<forgejo-namespace>
 
+# First, take note of the ID of a snapshot you wish to restore
+kubectl -n $NAMESPACE get snapshot
+SNAPSHOT_ID=<SNAPSHOT_ID>
+
+echo "Preparing backup download..."
 YAML=$(kubectl -n $NAMESPACE get schedule forgejo-schedule -o yaml | yq .spec.backend)
 ENDPOINT=$(echo "$YAML" | yq .s3.endpoint -r)
 BUCKET_NAME=$(echo "$YAML" | yq .s3.bucket -r)
@@ -24,10 +33,7 @@ RESTIC_PASSWORD=$(kubectl -n $NAMESPACE get secret $REPO_CREDS_SECRET -o yaml | 
 AWS_ACCESS_KEY_ID=$(kubectl -n $NAMESPACE get secret $BUCKET_CREDS_SECRET -o yaml | yq .data.AWS_ACCESS_KEY_ID -r | base64 -d)
 AWS_SECRET_ACCESS_KEY=$(kubectl -n $NAMESPACE get secret $BUCKET_CREDS_SECRET -o yaml | yq .data.AWS_SECRET_ACCESS_KEY -r | base64 -d)
 
-# Take note of the ID of a snapshot you wish to restore
-kubectl -n $NAMESPACE get snapshot
-SNAPSHOT_ID=<SNAPSHOT_ID>
-
+echo "Downloading backup..."
 kubectl -n $NAMESPACE run restic-client \
     --image restic/restic:latest \
     --env "RESTIC_REPOSITORY=$RESTIC_REPOSITORY" \
@@ -35,14 +41,17 @@ kubectl -n $NAMESPACE run restic-client \
     --env "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID" \
     --env "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY" \
     --command -- /bin/sh -c "restic restore $SNAPSHOT_ID --target /var/tmp/restore; sleep 5m"
+kubectl -n $NAMESPACE wait --for=condition=ready pod/restic-client --timeout=60s
 
-BACKUP_FILE=$(kubectl -n $NAMESPACE exec restic-client -- /bin/sh -c "ls /var/tmp/restore/*.zip | head -n1")
-kubectl -n $NAMESPACE cp restic-client:$BACKUP_FILE ./backup.zip
-kubectl -n $NAMESPACE delete po restic-client
+sleep 5
+BACKUP_FILE=/var/tmp/restore/$(kubectl -n $NAMESPACE get snapshot $SNAPSHOT_ID -o jsonpath='{.spec.paths[0]}' | sed 's/\///')
+kubectl -n $NAMESPACE cp restic-client:$BACKUP_FILE ./backup.tar
+kubectl -n $NAMESPACE delete po restic-client --force
 ----
 
+=== Restore forgejo dump
 
-=== Upload backed up data into pod and restore it  
+Once you've acquired `backup.tar`, it's time to restore its contents back to your forgejo instance.
 
 WARNING: This will cause downtime as the instance needs to be scaled down briefly.
 
@@ -51,7 +60,7 @@ WARNING: This will cause downtime as the instance needs to be scaled down briefl
 DEPLOY=$(kubectl -n $NAMESPACE get deploy -l app=forgejo -o name)
 kubectl -n $NAMESPACE scale $DEPLOY --replicas=0
 
-POD_NAME=busybox-pod
+POD_NAME=restore
 cat <<EOF | kubectl -n $NAMESPACE apply -f-
 apiVersion: v1
 kind: Pod
@@ -59,9 +68,9 @@ metadata:
   name: $POD_NAME
 spec:
   containers:
-    - name: busybox
+    - name: restore
       image: busybox
-      command: ["sleep", "infinity"]
+      command: ["sleep", "5m"]
       volumeMounts:
         - name: gitlab-storage
           mountPath: /opt
@@ -72,8 +81,8 @@ spec:
 EOF
 kubectl -n $NAMESPACE wait --for=condition=ready pod/$POD_NAME --timeout=60s
 
-kubectl -n $NAMESPACE cp ./backup.zip $POD_NAME:/tmp/backup.zip
-kubectl -n $NAMESPACE exec $POD_NAME -- /bin/sh -c "unzip /tmp/backup.zip -o -d /tmp/restore && cp -rf /tmp/restore/data/* /opt && chown -R 1000:1000 /opt"
+kubectl -n $NAMESPACE cp ./backup.tar $POD_NAME:/tmp/backup.tar
+kubectl -n $NAMESPACE exec $POD_NAME -- /bin/sh -c 'O_GID=$(stat -c %g /opt); mkdir -p /tmp/restore; tar -xvpf /tmp/backup.tar -C /tmp/restore && cp -rf /tmp/restore/data/* /opt && chown -R $O_GID:$O_GID /opt'
 kubectl -n $NAMESPACE delete pod/$POD_NAME --force
 
 kubectl -n $NAMESPACE scale $DEPLOY --replicas=1
