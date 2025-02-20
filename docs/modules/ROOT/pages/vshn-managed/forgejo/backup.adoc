@@ -20,7 +20,4 @@ spec:
 ----
 <1> The schedules for your backups.
 
-== Contents
-
-The backup relies on `forgejo dump` which collects all the data, including the database, into a single archive.  
-Eseentially, it's a copy of the `/data` directory.
+NOTE: The backup relies on `forgejo dump` which collects all the data into a single archive, including the database.
