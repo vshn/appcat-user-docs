@@ -13,7 +13,10 @@
 
 .Forgejo
 * xref:vshn-managed/forgejo/index.adoc[On cloudscale.ch]
+** xref:vshn-managed/forgejo/backup.adoc[Backup]
 ** xref:vshn-managed/forgejo/create.adoc[Creation]
+** xref:vshn-managed/forgejo/maintenance.adoc[]
+** xref:vshn-managed/forgejo/restore.adoc[Restore]
 
 .Kafka
 * xref:exoscale-dbaas/kafka/index.adoc[On Exoscale]
