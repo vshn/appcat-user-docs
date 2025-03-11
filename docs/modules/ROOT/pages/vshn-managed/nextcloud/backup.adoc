@@ -21,3 +21,27 @@ spec:
 <1> The schedules for your backups.
 
 NOTE: Self service restores are currently not available. Please open a ticket if you need to restore the data of your Nextcloud instance.
+
+== Disabling Maintenance mode during backup
+
+By default, Nextcloud will be put in Maintenance Mode during the backup. This ensures that the backups are in a consistent state.
+You can disable Maintenance Mode with the `skipMaintenance` parameter.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNNextcloud
+metadata:
+  name: nextcloud-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    ...
+    backup:
+      skipMaintenance: true <1>
+      schedule: 0 22 * * *
+    ...
+----
+<1> Skip maintenance mode during backups  
+
+WARNING: It's not recommended by Nextcloud and VSHN to disable the maintenance mode during backups. Use this at your own risk.
