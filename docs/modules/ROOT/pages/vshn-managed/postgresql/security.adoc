@@ -60,7 +60,7 @@ spec:
 == Network Policies
 
 By default, PostgreSQL is not accessible from outside the cluster.
-To allow access from outside the cluster, a .spec.parameters.security.network must be configured, for example:
+To allow access from outside the cluster, a .spec.parameters.network must be configured, for example:
 
 [source,yaml]
 ----
