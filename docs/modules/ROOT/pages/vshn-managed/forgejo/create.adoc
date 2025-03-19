@@ -21,15 +21,27 @@ spec:
       adminEmail: "admin@mydomain.com" <3>
       fqdn:
         - "forgejo.mydomain.com" <3>
-      version: "10.0.0" <4>
+      forgejoSettings: <4>
+        APP_NAME: ""
+        config:
+          actions: {}
+          openid: {}
+          service: {}
+          service.explore: {}
+          mailer: {}
+      majorVersion: "10.0.0" <5>
   writeConnectionSecretToRef:
-    name: forgejo-creds <5>
+    name: forgejo-creds <6>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
 <3> Your full qualified domain name
-<4> Forgejo version - link:https://products.vshn.ch/appcat/forgejo.html#_supported_versions[Supported Versions]
-<5> The name of the secret where the connection details will be stored, it must be unique per namespace
+<4> Define select `app.ini` settings, refer to the link:https://forgejo.org/docs/latest/admin/config-cheat-sheet/[config cheat sheet] to see available fields
+<5> Forgejo major version - link:https://products.vshn.ch/appcat/forgejo.html#_supported_versions[Supported Versions]
+<6> The name of the secret where the connection details will be stored, it must be unique per namespace
+
+WARNING: The **first** domain you define in `.spec.parameters.service.fqdn` will also be set as `server.DOMAIN` in Forgejos `app.ini` and therefore influences Forgejos root URL.  +
+This is applicable to things like webhook notifications, OAuth, and similar functionalities.
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnForgejo[API Reference]
 
