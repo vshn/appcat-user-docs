@@ -13,7 +13,7 @@ metadata:
 spec:
   parameters:
     service:
-      version: "25" # <3>
+      version: "26" # <3>
       postgreSQLParameters: {} # <4>
     size: # <5>
       plan: standard-2
