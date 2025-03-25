@@ -18,7 +18,7 @@ metadata:
 spec:
   parameters:
     service:
-      version: "25"
+      version: "26"
       customizationImage:
         image: https://registry/user/image:tag # <1>
         imagePullSecretRef:
