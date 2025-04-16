@@ -25,9 +25,10 @@
 ** xref:exoscale-dbaas/kafka/delete.adoc[Deletion]
 
 .Keycloak
-* xref:vshn-managed/keycloak/index.adoc[On cloudscale.ch]
+* xref:vshn-managed/keycloak/index.adoc[]
 ** xref:vshn-managed/keycloak/create.adoc[Creation]
 ** xref:vshn-managed/keycloak/customization.adoc[]
+*** xref:vshn-managed/how-tos/custom-image-keycloak.adoc[]
 ** xref:vshn-managed/keycloak/delete.adoc[Deletion]
 ** xref:vshn-managed/keycloak/deletion-protection.adoc[]
 ** xref:vshn-managed/keycloak/maintenance.adoc[]
