@@ -13,7 +13,7 @@ metadata:
 spec:
   parameters:
     service:
-      version: "8.0"
+      version: "7.2"
   writeConnectionSecretToRef:
     name: redis-creds-connection # <1>
 ---
