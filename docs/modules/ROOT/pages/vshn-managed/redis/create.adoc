@@ -13,7 +13,7 @@ metadata:
 spec:
   parameters:
     service:
-      version: "7.0" # <3>
+      version: "7.2" # <3>
       redisSettings: | # <4>
         activedefrag yes
     size: <5>
