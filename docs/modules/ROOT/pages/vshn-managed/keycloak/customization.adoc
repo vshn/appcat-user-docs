@@ -193,3 +193,4 @@ By default, mounts follow this folder structure:
 * ConfigMaps (`type: configMap`) are mounted under `/custom/configs/{name}/...`
 
 For example, a Secret named `custom-secret1` will be available under `/custom/secrets/custom-secret1/`, and a ConfigMap named `custom-configmap` under `/custom/configs/custom-configmap/`.
+Mount names must be unique within the customMounts list to avoid folder name collisions inside the container.
