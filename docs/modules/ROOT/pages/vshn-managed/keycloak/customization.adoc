@@ -162,3 +162,35 @@ spec:
 ----
 <1> The name of the `ConfigMap`. Must be in the same namespace as the Keycloak claim.
 <2> The name of the `Secret` that contains the environment variables. Must be in the same namespace as the Keycloak claim.
+
+== Custom Mounts
+
+You can mount additional Kubernetes Secrets and ConfigMaps directly into the Keycloak container's filesystem by using the `customMounts` parameter under `spec.parameters.service`.
+
+.Specifying custom mounts in your Keycloak instance
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: keycloak-app3-prod
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      customMounts:
+        - name: custom-secret1
+          type: secret
+        - name: custom-secret2
+          type: secret
+        - name: custom-configmap
+          type: configMap
+----
+
+By default, mounts follow this folder structure:
+[%unordered]
+* Secrets (`type: secret`) are mounted under `/custom/secrets/{name}/...`
+* ConfigMaps (`type: configMap`) are mounted under `/custom/configs/{name}/...`
+
+For example, a Secret named `custom-secret1` will be available under `/custom/secrets/custom-secret1/`, and a ConfigMap named `custom-configmap` under `/custom/configs/custom-configmap/`.
+Mount names must be unique within the customMounts list to avoid folder name collisions inside the container.
