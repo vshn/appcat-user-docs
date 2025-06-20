@@ -194,3 +194,16 @@ By default, mounts follow this folder structure:
 
 For example, a Secret named `custom-secret1` will be available under `/custom/secrets/custom-secret1/`, and a ConfigMap named `custom-configmap` under `/custom/configs/custom-configmap/`.
 Mount names must be unique within the customMounts list to avoid folder name collisions inside the container.
+
+== Propagating Changes to Referenced Resources
+
+When you make changes to a `ConfigMap` or `Secret` that is referenced by your `VSHNKeycloak` instance (e.g., via `customConfigurationRef`, `customEnvVariablesRef` or `customMounts`), these changes are not immediately propagated to the running Keycloak instance.
+
+To force a reconciliation and apply the updated configuration or environment variables, you need to annotate the `VSHNKeycloak` resource. This tells Crossplane to re-evaluate the resource and apply any changes from its external references.
+
+.Manually triggering a reconciliation
+[source,bash]
+----
+kubectl annotate vshnkeycloak [NAME] -n [NAMESPACE] crossplane.io/touch="$(date +%s)" --overwrite
+----
+Replace `[NAME]` with the name of your `VSHNKeycloak` instance (e.g., `keycloak-app1-prod` or `keycloak-app2-prod`), and `[NAMESPACE]` with the namespace where the claim was created.
