@@ -1,6 +1,6 @@
 = How to create a customization container image for Keycloak
 
-This page describes how to create a container image with custom https://www.keycloak.org/docs/latest/server_development/#_themes[themes^] and https://www.keycloak.org/docs/latest/server_development/#_providers[providers^] to use along with `VSHNKeycloak` service.
+This page describes how to create a container image with custom https://www.keycloak.org/docs/latest/server_development/#_themes[themes^], https://www.keycloak.org/docs/latest/server_development/#_providers[providers^] and other custom files to use along with `VSHNKeycloak` service.
 
 . Open a command line and create two directories.
 +
@@ -11,6 +11,13 @@ mkdir themes && mkdir providers
 
 . Place your themes and providers in respective directories.
 
+. For other custom files and folders, create them as necessary:
++
+[source,bash]
+----
+mkdir my-folder && touch pw-blacklist.txt
+----
+
 . Create the following docker file.
 +
 [source,bash]
@@ -20,6 +27,10 @@ FROM alpine
 
 COPY themes /themes
 COPY providers /providers
+
+# Custom files
+COPY pw-blacklist.txt /pw-blacklist.txt
+COPY my-folder /my-folder
 EOF
 ----
 
