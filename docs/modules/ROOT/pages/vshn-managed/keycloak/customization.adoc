@@ -2,9 +2,9 @@
 
 This page will describe how you can customize your Keycloak instance.
 
-== Themes and providers
+== Themes, providers and custom files
 
-`VSHNKeycloak` allows to use custom providers and themes.
+`VSHNKeycloak` allows you to use custom providers, themes and files.
 xref:vshn-managed/how-tos/custom-image-keycloak.adoc[Create] a custom container image and use it to customize your Keycloak instance as described below.
 
 .Example to create a Keycloak instance an image containing custom themes and providers
@@ -24,15 +24,22 @@ spec:
         imagePullSecretRef:
           name: secret-name # <2>
           namespace: secret-namespace # <3>
+      customFiles:
+        - source: path/in/customization/image # <4>
+          destination: path/in/keycloak/instance # <5>
     size:
       plan: standard-2
   writeConnectionSecretToRef:
     name: keycloak-creds
 ----
-<1> Container image url.
-<2> Secret name containing credentials for the registry.
+<1> Container image url
+<2> Secret name containing credentials for the registry
 <3> Secret namespace
+<4> File in your customization image (can also be a folder)
+<5> Destination path in Keycloak instance, relative to `/opt/keycloak`
 
+NOTE: Themes and providers will be implicitly copied if found in your image.
+You do not need to add them separately in `customFiles`.
 
 == Configuration
 
