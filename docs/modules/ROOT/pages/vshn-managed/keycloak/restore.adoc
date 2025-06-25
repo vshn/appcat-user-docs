@@ -1,4 +1,67 @@
-= Restores
+= Restore a Backup
 
-Self-service restores aren't implemented yet. If you need to restore keycloak
-please contact our mailto:support@vshn.ch[Support].
+IMPORTANT: *Restore operation will create a new Keycloak instance with the same credentials*
+
+[IMPORTANT]
+.Backups are tied to instances
+====
+Restorations can only be triggered from an instance in the same namespace.
+If the old instance has already been deleted the backups are deleted as well.
+====
+
+. Get the ID of the backup you want to restore by listing all available backups.
++
+[source,bash]
+----
+kubectl -n <your-namespace> get vshnkeycloakbackups.api.appcat.vshn.io
+get vshnkeycloakbackups.api.appcat.vshn.io
+BACKUP ID                                         DATABASE INSTANCE             STARTED                FINISHED               DATABASEBACKUP   STATUS      AGE
+keycloak-app1-prod-7kjf7-pg-2025-06-25-15-35-01   keycloak-app1-prod-7kjf7-pg   2025-06-25T15:35:06Z   2025-06-25T15:35:06Z   true             Completed   5m25s
+keycloak-app1-prod-7kjf7-pg-2025-06-25-15-40-01   keycloak-app1-prod-7kjf7-pg   2025-06-25T15:40:06Z   2025-06-25T15:40:06Z   true             Completed   25s
+----
++
+This list will show all backups from all instances in this namespace. In the example above there is one keycloak instances with two backups.
+
+. Apply the following object on your namespace, as specified by its YAML description.
++
+.Example to restore a Keycloak instance. Update the namespace!
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: keycloak-app1-restore
+  namespace: <your-namespace>
+spec:
+  parameters:
+    restore:
+      claimName: keycloak-app1-prod # <1>
+      backupName: keycloak-app1-prod-7kjf7-pg-2025-06-25-15-35-01 # <2>
+    backup:
+      schedule: '0 22 * * *'
+    service:
+      version: "26"
+      fqdn: my-keycloak-restore.example.com # <3>
+    size:
+      plan: standard-2
+  writeConnectionSecretToRef:
+    name: keycloak-restore-creds
+
+----
+<1> The name of the instance you want to restore from
+<2> The backup name you want to restore
+<3> The FQDN to use for the restored keycloak. Needs to be different than the original keycloak.
+
+[NOTE]
+====
+The restore process is the same as ordering a new instance.
+The only difference is the backup information in `spec.parameters.restore`.
+
+The FQDN can be changed later, when the restore process is complete and the original instance has been deleted.
+This allows for testing the restored instance first under a different FQDN before switching the restored instance to the original FQDN.
+====
+
+== Deleting a restored instance
+
+The deletion process of a restored instance is the same as for normal instance.
+Check out xref:vshn-managed/keycloak/delete.adoc[this guide] how to delete a Keycloak instance.
