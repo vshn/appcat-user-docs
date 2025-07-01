@@ -1,0 +1,76 @@
+= Managed Database
+
+There are two ways to configure a managed database for the VSHNNextcloud service.
+
+== Dedicated VSHNPostgreSQL Service
+
+In this setup, each VSHNNextcloud instance is provisioned with its own dedicated VSHNPostgreSQL service.
+This is the default configuration.
+It enhances reliability and ensures full isolation, preventing other services from consuming resources from the same database instance.
+
+.Example: Dedicated VSHNPostgreSQL
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNNextcloud
+metadata:
+  name: nextcloud-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      fqdn:
+        - my-nextcloud.example.com
+      version: "30"
+      useExternalPostgreSQL: true # <1>
+      postgreSQLParameters: {}    # <2>
+    size:
+      plan: standard-2
+  writeConnectionSecretToRef:
+    name: nextcloud-creds
+----
+
+<1> Enables the use of a managed VSHNPostgreSQL database instead of the built-in SQLite database.
+(Defaults to `true`)
+<2> Optional parameters to customize the PostgreSQL instance.
+Only used if `useExternalPostgreSQL` is set to `true`.
+
+== Shared VSHNPostgreSQL Service
+
+Alternatively, multiple `VSHNNextcloud` instances can share a single `VSHNPostgreSQL` service.
+This approach helps to significantly reduce overall resource consumption.
+
+.Example: Shared VSHNPostgreSQL
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNNextcloud
+metadata:
+  name: nextcloud-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      fqdn:
+        - my-nextcloud.example.com
+      version: "30"
+      useExternalPostgreSQL: true                      # <1>
+      existingPGConnectionSecret: user-alfa-connection-secret # <2>
+      postgreSQLParameters: {}                         # <3>
+    size:
+      plan: standard-2
+  writeConnectionSecretToRef:
+    name: nextcloud-creds
+----
+
+<1> Enables the use of a managed VSHNPostgreSQL database instead of the built-in SQLite database.
+(Defaults to `true`)
+<2> References a Kubernetes secret that contains the connection details for an existing VSHNPostgreSQL instance.
+<3> These parameters are ignored when `existingPGConnectionSecret` is defined.
+
+[NOTE]
+====
+The shared `VSHNPostgreSQL` instance must already be provisioned.
+It must also include a xref:vshn-managed/postgresql/usermanagement.adoc[custom database user]
+that has its connection details access in the namespace where the `VSHNNextcloud` instance is issued.
+====
