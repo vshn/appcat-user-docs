@@ -65,6 +65,7 @@
 ** xref:vshn-managed/nextcloud/backup.adoc[Backup]
 ** xref:vshn-managed/nextcloud/collabora.adoc[Collabora]
 ** xref:vshn-managed/nextcloud/create.adoc[Creation]
+** xref:vshn-managed/nextcloud/database.adoc[Managed Database]
 ** xref:vshn-managed/nextcloud/delete.adoc[Deletion]
 ** xref:vshn-managed/nextcloud/deletion-protection.adoc[]
 ** xref:vshn-managed/nextcloud/maintenance.adoc[]
