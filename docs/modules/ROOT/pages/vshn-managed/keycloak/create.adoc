@@ -14,18 +14,20 @@ spec:
   parameters:
     service:
       version: "26" # <3>
-      postgreSQLParameters: {} # <4>
-    size: # <5>
+      fqdn: my-keycloak.example.com # <4>
+      postgreSQLParameters: {} # <5>
+    size: # <6>
       plan: standard-2
   writeConnectionSecretToRef:
-    name: keycloak-creds # <6>
+    name: keycloak-creds # <7>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
 <3> Keycloak version
-<4> PostgreSQL database parameters. See xref:vshn-managed/postgresql/index.adoc[PostgreSQL by VSHN]
-<5> Size of the Keycloak instance. See xref:vshn-managed/keycloak/plans.adoc[Plans and Sizing] for more information.
-<6> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
+<4> Your full qualified domain name
+<5> PostgreSQL database parameters. See xref:vshn-managed/postgresql/index.adoc[PostgreSQL by VSHN]
+<6> Size of the Keycloak instance. See xref:vshn-managed/keycloak/plans.adoc[Plans and Sizing] for more information.
+<7> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnkeycloak[API Reference]
 
