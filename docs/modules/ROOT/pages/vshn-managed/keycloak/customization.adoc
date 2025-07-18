@@ -48,6 +48,7 @@ The content of the `ConfigMap` is a JSON file based on the Keycloak export files
 You can logically separate different configurations inside the `ConfigMap` by using different keys. However, each key *must* end in `.json`.
 
 Changes in the underlying `ConfigMap` or `Secret` referenced by `customConfigurationRef` or `customEnvVariablesRef` will trigger an external Job to configure the Keycloak instance via its API. The configuration will be applied dynamically and loaded into the database without requiring a restart of the Keycloak instance.
+To speed up the propagation of changes, refer to the section xref:vshn-managed/keycloak/customization.adoc#_propagating_changes_to_referenced_resources[Propagating Changes to Referenced Resources].
 
 An extensive set of configuration examples can be found https://github.com/inventage/keycloak-config-cli/tree/main/src/test/resources/import-files[here^].
 
