@@ -118,11 +118,40 @@ spec:
 
 == Environment variables
 
-You can pass custom environment variables to your Keycloak instance. Those can then either be used by your custom providers or by your custom configuration.
+You can pass custom environment variables to your Keycloak instance. These variables can be used by your custom providers or custom configuration.
 
-=== Example
+NOTE: The `customEnvVariablesRef` parameter has been **deprecated** in favor of the new `envFrom` parameter. While `customEnvVariablesRef` is still supported for backward compatibility, it is recommended to use `envFrom` for defining environment variables, as it allows specifying multiple sources, including both `ConfigMap` and `Secret`.
 
-The following example demonstrates how a custom configuration that creates a new realm and uses environment variables looks like:
+=== Using `envFrom`
+
+The `envFrom` parameter allows you to define multiple sources for environment variables. Each source can be a `ConfigMap` or a `Secret`. Below is an example of how to use `envFrom`:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: keycloak-app-envfrom
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      envFrom:
+        - configMapRef:
+            name: env-from-cm # <1>
+        - secretRef:
+            name: env-from-secret # <2>
+----
+<1> Reference to a `ConfigMap` containing environment variables.
+<2> Reference to a `Secret` containing environment variables.
+
+Each referenced `ConfigMap` or `Secret` must be in the same namespace as the Keycloak claim.
+
+=== Using `customEnvVariablesRef`
+
+The `customEnvVariablesRef` parameter allows you to reference a single `Secret` containing environment variables. While this method is deprecated, it is still supported for backward compatibility.
+
+==== Example
 
 .Secret containing a custom environment variable
 [source,yaml]
@@ -137,23 +166,7 @@ stringData:
 type: Opaque
 ----
 
-.Configmap definition referencing an environmental variable
-[source,yaml]
-----
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: keycloak-app2-prod-config
-  namespace: prod-app
-data:
-  keycloak-config.json: |
-    {
-      "enabled": true,
-      "$(env:REALM_NAME)"
-    }
-----
-
-.Keycloak instance with custom configuration and environment variables
+.Keycloak instance with custom environment variables
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
@@ -164,11 +177,9 @@ metadata:
 spec:
   parameters:
     service:
-      customConfigurationRef: keycloak-app2-prod-config <1>
-      customEnvVariablesRef: keycloak-app2-prod-env <2>
+      customEnvVariablesRef: keycloak-app2-prod-env <1>
 ----
-<1> The name of the `ConfigMap`. Must be in the same namespace as the Keycloak claim.
-<2> The name of the `Secret` that contains the environment variables. Must be in the same namespace as the Keycloak claim.
+<1> The name of the `Secret` that contains the environment variables. Must be in the same namespace as the Keycloak claim.
 
 == Custom Mounts
 
