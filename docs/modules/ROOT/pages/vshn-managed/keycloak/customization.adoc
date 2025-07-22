@@ -125,8 +125,11 @@ NOTE: The `customEnvVariablesRef` parameter has been **deprecated** in favor of 
 
 === Using `envFrom`
 
-The `envFrom` parameter allows you to define multiple sources for environment variables. Each source can be a `ConfigMap` or a `Secret`. Below is an example of how to use `envFrom`:
+The `envFrom` parameter allows you to define multiple sources for environment variables. Each source can be a `ConfigMap` or a `Secret`.
 
+==== Example
+
+.Keycloak instance with envFrom using multiple sources
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
@@ -148,7 +151,7 @@ spec:
 
 Each referenced `ConfigMap` or `Secret` must be in the same namespace as the Keycloak claim.
 
-=== Using `customEnvVariablesRef`
+=== Using `customEnvVariablesRef` (Deprecated)
 
 The `customEnvVariablesRef` parameter allows you to reference a single `Secret` containing environment variables. While this method is deprecated, it is still supported for backward compatibility.
 
@@ -167,7 +170,23 @@ stringData:
 type: Opaque
 ----
 
-.Keycloak instance with custom environment variables
+.Configmap definition referencing an environmental variable
+[source,yaml]
+----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-app2-prod-config
+  namespace: prod-app
+data:
+  keycloak-config.json: |
+    {
+      "enabled": true,
+      "$(env:REALM_NAME)"
+    }
+----
+
+.Keycloak instance with custom configuration and environment variables
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
@@ -178,9 +197,11 @@ metadata:
 spec:
   parameters:
     service:
-      customEnvVariablesRef: keycloak-app2-prod-env <1>
+      customConfigurationRef: keycloak-app2-prod-config <1>
+      customEnvVariablesRef: keycloak-app2-prod-env <2>
 ----
-<1> The name of the `Secret` that contains the environment variables. Must be in the same namespace as the Keycloak claim.
+<1> The name of the `ConfigMap`. Must be in the same namespace as the Keycloak claim.
+<2> The name of the `Secret` that contains the environment variables. Must be in the same namespace as the Keycloak claim.
 
 == Custom Mounts
 
