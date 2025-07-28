@@ -47,7 +47,8 @@ You can provide a custom configuration to Keycloak using a `ConfigMap`.
 The content of the `ConfigMap` is a JSON file based on the Keycloak export files.
 You can logically separate different configurations inside the `ConfigMap` by using different keys. However, each key *must* end in `.json`.
 
-The configuration will be read during the startup of Keycloak and loaded into the database.
+Changes in the underlying `ConfigMap` or `Secret` referenced by `customConfigurationRef` or `customEnvVariablesRef` will trigger an external Job to configure the Keycloak instance via its API. The configuration will be applied dynamically and loaded into the database without requiring a restart of the Keycloak instance.
+To speed up the propagation of changes, refer to the section xref:vshn-managed/keycloak/customization.adoc#_propagating_changes_to_referenced_resources[Propagating Changes to Referenced Resources].
 
 An extensive set of configuration examples can be found https://github.com/inventage/keycloak-config-cli/tree/main/src/test/resources/import-files[here^].
 
@@ -118,11 +119,43 @@ spec:
 
 == Environment variables
 
-You can pass custom environment variables to your Keycloak instance. Those can then either be used by your custom providers or by your custom configuration.
+You can pass custom environment variables to your Keycloak instance. These variables can be used by your custom providers or custom configuration.
 
-=== Example
+NOTE: The `customEnvVariablesRef` parameter has been **deprecated** in favor of the new `envFrom` parameter. While `customEnvVariablesRef` is still supported for backward compatibility, it is recommended to use `envFrom` for defining environment variables, as it allows specifying multiple sources, including both `ConfigMap` and `Secret`.
 
-The following example demonstrates how a custom configuration that creates a new realm and uses environment variables looks like:
+=== Using `envFrom`
+
+The `envFrom` parameter allows you to define multiple sources for environment variables. Each source can be a `ConfigMap` or a `Secret`.
+
+==== Example
+
+.Keycloak instance with envFrom using multiple sources
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: keycloak-app-envfrom
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      envFrom:
+        - configMapRef:
+            name: env-from-cm # <1>
+        - secretRef:
+            name: env-from-secret # <2>
+----
+<1> Reference to a `ConfigMap` containing environment variables.
+<2> Reference to a `Secret` containing environment variables.
+
+Each referenced `ConfigMap` or `Secret` must be in the same namespace as the Keycloak claim.
+
+=== Using `customEnvVariablesRef` (Deprecated)
+
+The `customEnvVariablesRef` parameter allows you to reference a single `Secret` containing environment variables. While this method is deprecated, it is still supported for backward compatibility.
+
+==== Example
 
 .Secret containing a custom environment variable
 [source,yaml]
