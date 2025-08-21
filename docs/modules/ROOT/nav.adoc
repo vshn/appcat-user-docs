@@ -121,6 +121,8 @@
 ** xref:vshn-managed/redis/deletion-protection.adoc[]
 ** xref:vshn-managed/redis/maintenance.adoc[]
 ** xref:vshn-managed/redis/plans.adoc[]
+** xref:vshn-managed/redis/replicas.adoc[]
 ** xref:vshn-managed/redis/restore.adoc[Restore]
 ** xref:vshn-managed/redis/security.adoc[Security]
+** xref:vshn-managed/redis/sla.adoc[]
 ** xref:vshn-managed/redis/usage.adoc[Usage]
