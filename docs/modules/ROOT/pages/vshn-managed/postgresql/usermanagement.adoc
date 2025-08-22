@@ -42,11 +42,15 @@ spec:
 Please see the official https://www.postgresql.org/docs/current/ddl-priv.html[PostgreSQL docs] for all available privileges. Only Grants applicable to databases are supported.
 
 == Deleting User and Databases
-To remove a user and its database, you need to remove it from the `access` array in the instance.
+To stop managing a user in the PostgreSQL instance, you need to remove it from the `access` array in the instance.
 
-A user or database will be removed from the instance, if there are no more references in the `access` array.
+[IMPORTANT]
+.Manual cleanup required
+====
+Removing users from the `access` array does NOT automatically delete the user, database, or grants from the PostgreSQL instance. These resources will remain in the database and must be manually deleted if no longer needed.
+====
 
-.Example Deleting users and databases
+.Example Removing users from management
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
@@ -65,15 +69,21 @@ spec:
   writeConnectionSecretToRef:
     name: postgres-creds
 ----
-<1> Removing this entry would remove the `app1` user and the grant giving it access to the app1 database. It will not remove the database, as it's still referenced by user app2.
-<2> Removing this entry would remove the user `app2` and the grants giving access to database app1. It will not remove the database app1, as it's still referenced by user `app1`
-<3> Removing this entry will remove the user `app3` and its database.
+<1> Removing this entry will stop managing the `app1` user, but the user and database will remain in PostgreSQL
+<2> Removing this entry will stop managing the user `app2`, but the user and its grants will remain in PostgreSQL
+<3> Removing this entry will stop managing the user `app3`, but the user and database will remain in PostgreSQL
 
-[IMPORTANT]
-.Non-reversible operation
+To manually clean up users, databases, and grants that are no longer managed:
+
+1. Connect to your PostgreSQL instance using the connection details
+2. Revoke grants: `REVOKE ALL PRIVILEGES ON DATABASE databasename FROM username;`
+3. Drop the user: `DROP USER username;`
+4. Drop the database (if no longer needed): `DROP DATABASE databasename;`
+
+[WARNING]
+.Manual deletion is irreversible
 ====
-If you remove a user completely from the array, the user and the database will be removed from the instance!
-Also, renaming is not possible. If you rename a user it will effectively be deleted!
+Manual deletion of users and databases is permanent and cannot be undone. Ensure you have backups and that the resources are truly no longer needed before deleting them. Renaming is also not possible. If a user is renamed, it will be treated as a new user, and the old user will remain in the database.
 ====
 
 == Create a database with a specific locale
