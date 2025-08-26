@@ -21,7 +21,7 @@ spec:
     service:
       fqdn:
         - my-nextcloud.example.com
-      version: "30"
+      version: "31"
       useExternalPostgreSQL: true # <1>
       postgreSQLParameters: {}    # <2>
     size:
@@ -53,7 +53,7 @@ spec:
     service:
       fqdn:
         - my-nextcloud.example.com
-      version: "30"
+      version: "31"
       useExternalPostgreSQL: true                      # <1>
       existingPGConnectionSecret: user-alfa-connection-secret # <2>
       postgreSQLParameters: {}                         # <3>

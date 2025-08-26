@@ -13,7 +13,7 @@ metadata:
 spec:
   parameters:
     service:
-      version: "11.2" # <3>
+      version: "11.8" # <3>
     size: <4>
       plan: standard-2
   writeConnectionSecretToRef:

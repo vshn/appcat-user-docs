@@ -13,7 +13,7 @@ metadata:
 spec:
   parameters:
     service:
-      version: "30"
+      version: "31"
       fqdn:
       - my-nextcloud.example.com # <1>
     size:
