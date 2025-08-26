@@ -1,6 +1,6 @@
 = Scheduled Maintenance
 
-By default, there will be a security maintenance on Tuesday night (Central Europe Time).
+By default, security maintenance runs Sunday to Friday between 21:00 and 05:00 (Central Europe Time).
 
 NOTE: For more information about maintenance procedures, please visit https://products.docs.vshn.ch/products/appcat/postgresql.html#_recurring_maintenance[the product description].
 

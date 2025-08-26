@@ -1,6 +1,6 @@
 = Scheduled Maintenance
 
-By default, there will be a security maintenance on Tuesday night (Central Europe Time).
+By default, security maintenance runs Sunday to Friday between 21:00 and 05:00 (Central Europe Time).
 
 The day and time can be adjusted as described below. Times are in the CET time zone.
 
