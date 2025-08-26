@@ -1,0 +1,73 @@
+= Replication and High Availability
+
+Redis by VSHN comes with support for multiple instances and High Availability using https://redis.io/docs/latest/operate/oss_and_stack/management/sentinel/[Sentinel].
+You have the option to configure two additional replicas.
+Redis Sentinel runs alongside the Redis containers and is responsible for monitoring the master and electing a new master if the current master fails.
+
+== Enable High Availability
+
+To enable high availability you need to set the number of instances to `3`, which will provision two replicas alongside the master.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNRedis
+metadata:
+  name: redis-app1-prod
+spec:
+  parameters:
+    instances: 3
+  writeConnectionSecretToRef:
+    name: redis-creds
+----
+
+NOTE: Please be aware that enabling high availability will use significantly more resources and will cost three times more.
+
+=== Endpoint changes and application restart
+
+When switching from a single-instance deployment to HA `instances: 3` the service endpoint used by your application changes. That endpoint is stored in the Kubernetes Secret defined in `writeConnectionSecretToRef`. Enabling HA updates that Secret. Because Kubernetes Secrets are typically read on startup, your application must be restarted to pick up the new endpoint value.
+
+If your application configures `REDIS_HOST` manually (not via the `Secret`), update the configuration and redeploy the application.  
+
+The old (non-HA) endpoint may still resolve and can be used for reads, but it routes to all Redis pods (master + replicas). Writes through that endpoint can fail because it is not restricted to the active master. 
+
+.Example of connection secret change:
+
+* Before enabling HA, the connection Secret `redis-creds` contains:
++
+[source,shell]
+----
+REDIS_HOST=redis-headless.vshn-redis-multi-redis-4dfpq.svc.cluster.local
+----
++
+This hostname resolves to all Redis pods.
+
+* After enabling HA, the connection Secret `redis-creds` is updated to:
++
+[source,shell]
+----
+REDIS_HOST=redis-master.vshn-redis-multi-redis-4dfpq.svc.cluster.local
+----
++
+This hostname always points to the active master.
+
+== Architecture & Failover
+
+=== How it's set up
+* Always one Redis master pod.
+* 2 Replica pods.
+* Each pod also runs a Sentinel sidecar container.
+* Sentinels form a quorum to:
+** Monitor the master.
+** Detect failures.
+** Elect and promote a replica as the new master.
+
+=== What happens during failover
+* If the master pod goes down (graceful shutdown or crash), the Sentinels detect the failure.
+* A replica is promoted to become the new master.
+* The chart automatically updates the `isMaster: "true"` label on the master pod.
+* Clients can always use the provided Redis service to connect and the service will point to the current master.
+
+=== Notes on availability
+* During failover, reads may briefly be stale until clients reconnect to the new master.
+* The system minimizes downtime by waiting for failover to complete before fully shutting down the old master pod.
