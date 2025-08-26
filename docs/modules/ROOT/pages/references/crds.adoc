@@ -1222,7 +1222,7 @@ If it's not set, no ingress will be deployed.
 This also enables strict hostname checking for this FQDN.
 | *`serviceLevel`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasservicelevel[$$VSHNDBaaSServiceLevel$$]__ | ServiceLevel defines the service level of this service. Either Best Effort or Guaranteed Availability is allowed.
 | *`majorVersion`* __string__ | Version contains supported version of Forgejo.
-Multiple versions are supported. Defaults to 11.0.0 if not set.
+Multiple versions are supported. Defaults to 12.0.0 if not set.
 |===
 
 
@@ -1585,7 +1585,7 @@ VSHNMariaDBServiceSpec contains MariaDB DBaaS specific properties
 |===
 | Field | Description
 | *`version`* __string__ | Version contains supported version of MariaDB.
-Multiple versions are supported. The latest version "11.5" is the default version.
+Multiple versions are supported. The latest version "11.8" is the default version.
 | *`mariadbSettings`* __string__ | MariadbSettings contains additional MariaDB settings.
 | *`serviceLevel`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasservicelevel[$$VSHNDBaaSServiceLevel$$]__ | ServiceLevel defines the service level of this service. Either Best Effort or Guaranteed Availability is allowed.
 | *`access`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnaccess[$$VSHNAccess$$] array__ | Access defines additional users and databases for this instance.
@@ -1920,7 +1920,7 @@ If it's not set, no ingress will be deployed.
 This also enables strict hostname checking for this FQDN.
 | *`relativePath`* __string__ | RelativePath on which Nextcloud will listen.
 | *`version`* __string__ | Version contains supported version of nextcloud.
-Multiple versions are supported. The latest version 30 is the default version.
+Multiple versions are supported. The latest version 31 is the default version.
 | *`serviceLevel`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasservicelevel[$$VSHNDBaaSServiceLevel$$]__ | ServiceLevel defines the service level of this service. Either Best Effort or Guaranteed Availability is allowed.
 | *`useExternalPostgreSQL`* __boolean__ | UseExternalPostgreSQL defines if the VSHNPostgreSQL database backend should be used. Defaults to true. If set to false,
 the build-in SQLite database is being used.
@@ -2366,6 +2366,7 @@ VSHNRedisParameters are the configurable fields of a VSHNRedis.
 | *`maintenance`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasmaintenanceschedulespec[$$VSHNDBaaSMaintenanceScheduleSpec$$]__ | Maintenance contains settings to control the maintenance of an instance.
 | *`monitoring`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshnmonitoring[$$VSHNMonitoring$$]__ | Monitoring contains settings to control monitoring.
 | *`security`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-security[$$Security$$]__ | Security defines the security of a service
+| *`instances`* __integer__ | Instances configures the number of Redis instances for the cluster.
 |===
 
 
@@ -2383,7 +2384,7 @@ VSHNRedisServiceSpec contains Redis DBaaS specific properties
 |===
 | Field | Description
 | *`version`* __string__ | Version contains supported version of Redis.
-Multiple versions are supported. The latest version "7.0" is the default version.
+Multiple versions are supported. The latest version "7.2" is the default version.
 | *`redisSettings`* __string__ | RedisSettings contains additional Redis settings.
 | *`serviceLevel`* __xref:{anchor_prefix}-github-com-vshn-appcat-v4-apis-vshn-v1-vshndbaasservicelevel[$$VSHNDBaaSServiceLevel$$]__ | ServiceLevel defines the service level of this service. Either Best Effort or Guaranteed Availability is allowed.
 |===

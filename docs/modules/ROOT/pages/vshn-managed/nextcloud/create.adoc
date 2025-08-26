@@ -15,7 +15,7 @@ spec:
     service:
       fqdn:
       - my-nextcloud.example.com <3>
-      version: "30" # <4>
+      version: "31" # <4>
       useExternalPostgreSQL: true # <5>
       postgreSQLParameters: {} # <6>
     size: # <7>

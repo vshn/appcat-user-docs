@@ -29,7 +29,7 @@ spec:
           service: {}
           service.explore: {}
           mailer: {}
-      majorVersion: "11.0.0" <5>
+      majorVersion: "12.0.0" <5>
   writeConnectionSecretToRef:
     name: forgejo-creds <6>
 ----
