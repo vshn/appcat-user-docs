@@ -29,7 +29,11 @@ By default, the following plans are available on every cluster:
 | standard-8 | 2 | 8Gi | 16Gi
 |===
 
-Depending on which cluster you're working with, there might be some slight differences in available plans.
+These are the resources for Keycloak, for each Keycloak instance, a xref:vshn-managed/postgresql/plans.html[PostgreSQL Service] of the same plan name and the same number of replicas is also instantiated. This can be customized using the `postgreSQLParameters` xref:vshn-managed/keycloak/create.html[configuration field of the Keycloak service].
+
+See https://www.keycloak.org/high-availability/concepts-memory-and-cpu-sizing#_performance_recommendations[Keycloak performance recommendations^] to map logins, client credential grants, and refresh token grants to vCPU/RAM for Keycloak and PostgreSQL.
+
+Depending on the cluster you're working with, there may be slight differences in available plans.
 You can see all available plans running:
 
 [source,bash]
