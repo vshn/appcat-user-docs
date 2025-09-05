@@ -12,6 +12,9 @@ The following example configuration will start a MariaDB service with three repl
 
 NOTE: When HA is enabled, changing users via the VSHNMariaDB claim will result in a quick restart of ProxySQL. This will interrupt the connection for a few seconds. Also be aware that connections will only work via users that are specified in the claim.
 
+NOTE: ProxySQL changes the behaviour of the connection. See
+ xref:./troubleshooting.adoc#Connections.are.suddenly.closed[Connections are suddenly closed], xref:./troubleshooting.adoc#MariaDB.Server.advertises.version.8.0[MariaDB Server advertises version 8.0].
+
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1

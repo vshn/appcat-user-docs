@@ -50,6 +50,7 @@
 ** xref:vshn-managed/mariadb/security.adoc[Security]
 ** xref:vshn-managed/mariadb/usage.adoc[Usage]
 ** xref:vshn-managed/mariadb/usermanagement.adoc[]
+** xref:vshn-managed/mariadb/troubleshooting.adoc[]
 
 .MinIO
 * xref:vshn-managed/minio.adoc[On Private Cloud]
