@@ -1,0 +1,22 @@
+= Troubleshooting
+
+== Unsupported startup parameter
+
+https://www.pgbouncer.org/[PgBouncer] does not support all startup parameters. It can be configured to let these
+parameters pass through to the upstream.
+For that you need to set the following parameters for VSHNPostgreSQL:
+
+.PgBouncer ignore_startup_parameters
+[source,yaml]
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: vshn-postgres-dev
+  namespace: my-namespace
+spec:
+  parameters:
+    service:
+      majorVersion: "17"
+      pgBouncerSettings:
+        pgbouncer:
+          ignore_startup_parameters: search_path,extra_float_digits

@@ -109,6 +109,7 @@
 ** xref:vshn-managed/postgresql/update-strategy.adoc[]
 ** xref:vshn-managed/postgresql/usage.adoc[Usage]
 ** xref:vshn-managed/postgresql/usermanagement.adoc[]
+** xref:vshn-managed/postgresql/troubleshooting.adoc[]
 
 .Redis
 * xref:exoscale-dbaas/redis/index.adoc[On Exoscale]
