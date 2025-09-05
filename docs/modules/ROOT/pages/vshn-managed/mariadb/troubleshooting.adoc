@@ -1,0 +1,62 @@
+= Troubleshooting
+
+== Collation of table is uf8mb3_general_ci or character set is utf8mb3
+
+If you provision a VSHNMariaDB instance, the default collation is currently
+`utf8mb3_general_ci`.
+If you don't specify the collation of your tables in the DDL statements, you
+need to change the default collation in the server if you want a specific collation.
+To change the default collation of the database, login into your instance and execute the following:
+
+.change collation and character set
+[source,mysql]
+ALTER DATABASE my_database CHARACTER SET = 'utf8mb4';
+ALTER DATABASE my_database COLLATE = 'utf8mb4_bin';
+
+== Connections are suddenly closed
+
+If your connections are suddenly closed by the server and the ProxySQL logs:
+
+.ProxySQL error
+[source,text]
+MySQL_Session.cpp:4028:handler___status_NONE_or_default(): [ERROR] Unexpected packet from client xx.xx.xx.xx . Session_status: 6 , client_status: 0 Disconnecting it
+MySQL_Session.cpp:318:kill_query_thread(): [WARNING] KILL CONNECTION 156092 on mariadb-service.svc:3306
+
+This might be because ProxySQL does not support the connection parameter https://mariadb.com/docs/connectors/mariadb-connector-j/option-batchmultisend-description[useBatchMultiSend] set to true.
+This is a known https://github.com/sysown/proxysql/issues/3880#issuecomment-1141799971[issue] of ProxySQL.
+
+
+== MariaDB Server advertises version 8.0
+
+If you use a High Availability setup, a https://proxysql.com/[ProxySQL] is provisioned in front of the
+MariaDB instances.
+The ProxySQL advertises itself as MySQL with an older version, e.g. 8.0 (ProxySQL). The upstream MariaDB
+instances are in the version you specified, but ProxySQL reports another value.
+It is currently not possible to change this.
+If you have logic that depends on the MySQL/MariaDB version, the best fix is to disable
+the version detection and hard code your specified MariaDB version.
+
+== SQL_MODE contains ONLY_FULL_GROUP_BY
+
+To change the https://mariadb.com/docs/server/server-management/variables-and-modes/sql-mode[SQL_MODE] in VSHNMariaDB, you can do the following:
+
+.set SQL_MODE
+[source,yaml]
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNMariaDB
+metadata:
+  name: mariadb-development
+  namespace: my-namespace
+spec:
+  parameters:
+    service:
+      version: "11.8"
+      mariadbSettings: |
+        sql_mode=NO_AUTO_VALUE_ON_ZERO,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+
+It is possible that changing this later fails.
+In this case, you can execute the following statement on the server:
+
+.change SQL_MODE via mariadb shell
+[source,mysql]
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
