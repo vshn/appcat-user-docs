@@ -54,7 +54,7 @@ An extensive set of configuration examples can be found https://github.com/inven
 
 The configuration also supports variable substitution.
 
-Variables exposed by Spring Boot (through https://docs.spring.io/spring-boot/reference/features/external-config.html[configtree or external configuration^]) can be accessed by `$(property.name)`
+Variables exposed by Quarkus (through <https://quarkus.io/guides/config-reference>) can be accessed by `$(property.name)`
 
 In additional, the string substitution support multiple prefixes for different approaches:
 
