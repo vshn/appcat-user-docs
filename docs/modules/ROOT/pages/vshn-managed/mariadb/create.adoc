@@ -14,16 +14,19 @@ spec:
   parameters:
     service:
       version: "11.8" # <3>
-    size: <4>
+      mariadbSettings: | # <4>
+        slow_query_log=1
+    size: # <5>
       plan: standard-2
   writeConnectionSecretToRef:
-    name: mariadb-creds # <5>
+    name: mariadb-creds # <6>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
 <3> MariaDB version
-<4> Size of the MariaDB instance. See xref:vshn-managed/mariadb/plans.adoc[Plans and Sizing] for more information.
-<5> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
+<4> MariaDB configuration options defined in the [mysqld] section (optional)
+<5> Size of the MariaDB instance. See xref:vshn-managed/mariadb/plans.adoc[Plans and Sizing] for more information
+<6> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnmariadb[API Reference]
 
