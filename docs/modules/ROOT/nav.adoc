@@ -128,3 +128,6 @@
 ** xref:vshn-managed/redis/security.adoc[Security]
 ** xref:vshn-managed/redis/sla.adoc[]
 ** xref:vshn-managed/redis/usage.adoc[Usage]
+
+.Changelog
+* xref:changelog/2025-09-09.adoc[2025-09-09]

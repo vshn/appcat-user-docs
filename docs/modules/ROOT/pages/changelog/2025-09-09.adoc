@@ -1,0 +1,39 @@
+= Changelog 2025-09-09
+
+Are you wondering what’s new in AppCat?
+Not much, besides everything!
+
+== Production-ready Redis by VSHN
+
+With release https://github.com/vshn/appcat/releases[v4.169.0], you can use https://products.vshn.ch/appcat/redis.html#_service_maturity[fully mature] and https://docs.appcat.ch/vshn-managed/redis/replicas.html[highly available] Redis by VSHN.
+You can sleep soundly knowing that the monitoring and alerting will take care of the fuzz at night, if you have https://docs.appcat.ch/vshn-managed/redis/sla.html[updated your service level] to guaranteed availability.
+
+== AppCat OpenShift templates
+
+Have you already tried out the AppCat service templates on OpenShift marketplace?
+You should. It is an easy way to https://docs.appcat.ch/getting-started.html#_via_openshift_console[get started] with the service.
+Give it a try with our PostgreSQL by VSHN or MariaDB by VSHN.
+
+== PostgreSQL by VSHN with CNPG
+
+The latest addition to our offering is PostgreSQL by VSHN with CloudNativePG (CNPG).
+It is very fresh from development and can already be provisioned. More features to come in the next sprints.
+If you would like to learn more about why we decided to go with CNPG, https://kb.vshn.ch/app-catalog/adr/0036-revisiting-postgresql-operators.html[here] are the insights into our operator evaluation.
+
+== Nextcloud by VSHN
+
+There was a minor error in backup schedules during maintenance, which is now fixed. We also added an SCC that works with restricted-v2.
+
+== MariaDB by VSHN
+
+https://docs.appcat.ch/vshn-managed/mariadb/troubleshooting.html#_sql_mode_contains_only_full_group_by[`SQL_MODE` settings] were sub-optimal and got well-deserved improvements.
+
+== AppCat framework beyond Bitnami
+
+Now that the storm has calmed and we have had the time to evaluate the tech landscape,
+we have decided how to move forward with https://kb.vshn.ch/app-catalog/adr/0038-appcat-redis-alternative.html[Redis by VSHN] and
+https://kb.vshn.ch/app-catalog/adr/0037-mariadb-bitnami-replacement.html[MariaDB by VSHN] without Bitnami and with the Open Source community.
+
+For MariaDB, the official MariaDB operator ticks all the boxes, as for Redis DandyDeveloper redis-ha chart has the most promising potential.
+
+Looks like we will be busy.
