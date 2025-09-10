@@ -22,7 +22,8 @@ If you would like to learn more about why we decided to go with CNPG, https://kb
 
 == Nextcloud by VSHN
 
-There was a minor error in backup schedules during maintenance, which is now fixed. We also added an SCC that works with restricted-v2.
+We found an error in an edge case for backup schedules during maintenance. The backups for all current instances were running. The edge case is now fixed. 
+We also added a Security Context Constraint (SCC) that works with restricted-v2. 
 
 == MariaDB by VSHN
 
