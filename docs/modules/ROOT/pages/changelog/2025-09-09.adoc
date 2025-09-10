@@ -14,7 +14,6 @@ Have you already tried out the AppCat service templates on OpenShift marketplace
 You should. It is an easy way to https://docs.appcat.ch/getting-started.html#_via_openshift_console[get started] with the service.
 Give it a try with our PostgreSQL by VSHN or MariaDB by VSHN.
 
-
 == Nextcloud by VSHN
 
 We found an error in an edge case for backup schedules during maintenance. The backups for all current instances were running. The edge case is now fixed. 
