@@ -14,11 +14,6 @@ Have you already tried out the AppCat service templates on OpenShift marketplace
 You should. It is an easy way to https://docs.appcat.ch/getting-started.html#_via_openshift_console[get started] with the service.
 Give it a try with our PostgreSQL by VSHN or MariaDB by VSHN.
 
-== PostgreSQL by VSHN with CNPG
-
-The latest addition to our offering is PostgreSQL by VSHN with CloudNativePG (CNPG).
-It is very fresh from development and can already be provisioned. More features to come in the next sprints.
-If you would like to learn more about why we decided to go with CNPG, https://kb.vshn.ch/app-catalog/adr/0036-revisiting-postgresql-operators.html[here] are the insights into our operator evaluation.
 
 == Nextcloud by VSHN
 
