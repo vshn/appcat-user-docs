@@ -26,6 +26,7 @@
 
 .Keycloak
 * xref:vshn-managed/keycloak/index.adoc[]
+** xref:vshn-managed/keycloak/backup.adoc[Backup]
 ** xref:vshn-managed/keycloak/create.adoc[Creation]
 ** xref:vshn-managed/keycloak/customization.adoc[]
 *** xref:vshn-managed/how-tos/custom-image-keycloak.adoc[]
@@ -40,6 +41,7 @@
 
 .MariaDB
 * xref:vshn-managed/mariadb/index.adoc[On cloudscale.ch]
+** xref:vshn-managed/mariadb/backup.adoc[Backup]
 ** xref:vshn-managed/mariadb/create.adoc[Creation]
 ** xref:vshn-managed/mariadb/delete.adoc[Deletion]
 ** xref:vshn-managed/mariadb/deletion-protection.adoc[]

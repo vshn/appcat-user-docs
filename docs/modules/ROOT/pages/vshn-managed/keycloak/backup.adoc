@@ -1,15 +1,15 @@
 = Backups
 
-Backups are enabled by default. The Forgejo instance will be backed up daily at a randomly chosen time between 22:00 and 4:00.
+Backups are enabled by default. The keycloak instance will be backed up daily at a randomly chosen time between 22:00 and 4:00.
 
 You can specify a different backup time and interval using the following backup configuration:
 
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
-kind: VSHNForgejo
+kind: VSHNKeycloak
 metadata:
-  name: forgejo-app1-prod
+  name: keycloak-app1-prod
   namespace: <your-namespace>
 spec:
   parameters:
@@ -20,25 +20,27 @@ spec:
 ----
 <1> The schedules for your backups.
 
-NOTE: The backup relies on `forgejo dump` which collects all the data into a single archive, including the database.
-
 == Disable Backups
 
-To disable backups, set the `backup.enabled` field to `false`:
+To disable backups, set the `backup.enabled` field to `false` for both the Keycloak instance and the PostgreSQL database:
 
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
-kind: VSHNForgejo
+kind: VSHNKeycloak
 metadata:
-  name: forgejo-app1-prod
+  name: keycloak-app1-prod
   namespace: <your-namespace>
 spec:
   parameters:
     ...
     backup:
       enabled: false
+    postgreSQLParameters:
+      backup:
+        enabled: false
     ...
 ----
 
 include::partial$backup-disable-warning.adoc[]
+
