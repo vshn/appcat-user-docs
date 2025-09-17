@@ -53,10 +53,3 @@ spec:
       version: "11.8"
       mariadbSettings: |
         sql_mode=NO_AUTO_VALUE_ON_ZERO,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
-
-It is possible that changing this later fails.
-In this case, you can execute the following statement on the server:
-
-.change SQL_MODE via mariadb shell
-[source,mysql]
-SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
