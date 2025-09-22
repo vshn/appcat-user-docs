@@ -20,6 +20,27 @@ spec:
 ----
 <1> The schedules for your backups.
 
+== Disable Backups
+
+To disable backups, set the `backup.enabled` field to `false`:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNRedis
+metadata:
+  name: redis-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    ...
+    backup:
+      enabled: false
+    ...
+----
+
+include::partial$backup-disable-warning.adoc[]
+
 == Listing Backups
 
 Get an overview of all backups performed of your database instance:

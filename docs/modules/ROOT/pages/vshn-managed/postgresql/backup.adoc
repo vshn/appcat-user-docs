@@ -48,6 +48,27 @@ spec:
 
 However, the _WAL_ files will always be 16Mb, even if it's not completed. So using this setting will most likely increase the data usage on the backup object store.
 
+== Disable Backups
+
+To disable backups, set the `backup.enabled` field to `false`. This will also disable _WAL_ archiving:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    ...
+    backup:
+      enabled: false
+    ...
+----
+
+include::partial$backup-disable-warning.adoc[]
+
 == Listing Backups
 
 Get an overview of all backups performed of your database instance:
