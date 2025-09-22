@@ -38,6 +38,31 @@ spec:
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[API Reference]
 
+== CloudNativePG
+
+As an alternative to StackGres, the way PSQL is currently deployed, you can choose to deploy your service using CloudNativePG (CNPG for short) instead.  
+Deployments based on CNPG are currently only meant for evaluation purposes and therefore only support a limited amount of features compared to the StackGres based offering.
+
+Unavailable features (at the moment) are:
+- Scaling
+- Backups
+- DB management
+
+To deploy your instance using CNPG, simply set `spec.compositionRef.name`:  
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: prod-app
+spec:
+  compositionRef:
+    name: vshnpostgrescnpg.vshn.appcat.vshn.io
+----
+
+NOTE: Once set, the method of deployment cannot be changed afterwards.  
+Similarly, existing instances cannot be switched over to CNPG.
 
 == Inspect your new PostgreSQL service
 
