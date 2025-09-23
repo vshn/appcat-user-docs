@@ -62,7 +62,7 @@ spec:
 ----
 
 NOTE: Once set, the method of deployment cannot be changed afterwards.  
-Similarly, existing instances cannot be switched over to CNPG.
+Similarly, existing instances cannot be switched over to CNPG without migrating to a new instance.
 
 == Inspect your new PostgreSQL service
 
