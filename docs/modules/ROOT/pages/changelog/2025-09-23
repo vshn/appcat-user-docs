@@ -25,4 +25,7 @@ We work in 2-week sprints. At the end of each sprint, we release a new AppCat ve
 For Nextcloud the expectation is that the Cron jobs execute under the container’s configured runtime user or group. It should not be hard-coded to www-data.
 Under a least-privilege SCC like restricted-v2, the cron process should not require additional capabilities.
 
+== Bucket Names
 
+The bucket names have been a bit of a topic recently, when they really should not be.
+If you prefer, you can set your own bucket name. Otherwise, the bucket will be assigned a unique name. Either way, you can move on to the more fun part.
