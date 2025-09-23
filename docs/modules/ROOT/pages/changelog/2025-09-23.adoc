@@ -1,0 +1,31 @@
+= Changelog 2025-09-23
+
+Are costs important to you? If so, the release https://github.com/vshn/appcat/releases/tag/v4.170.0[v4.170.0] might be one that you want to pay attention to.
+
+== Disable backups
+
+To help keep the costs down, you can deactivate backups for your test environments. As an example, https://docs.appcat.ch/vshn-managed/postgresql/backup.html#_disable_backups[here] you can see how to deactivate backups for your PostgreSQL instances.
+Yes, also for your production instances, but that is not something that we would advise. EVER.
+
+
+== PostgreSQL by VSHN with CNPG
+
+The latest addition to our offering is PostgreSQL by VSHN with CloudNativePG (CNPG).
+It is very fresh from development and can already be provisioned if you follow the guide https://docs.appcat.ch/vshn-managed/postgresql/create.html#_cloudnativepg[here].
+More features like backups to follow in the next sprints.
+If you would like to learn more about why we decided to go with CNPG, https://kb.vshn.ch/app-catalog/adr/0036-revisiting-postgresql-operators.html[here] are the insights into our operator evaluation.
+
+== AppCat Release Process
+
+This one is more for us than you. Though useful for planning your updates.
+We work in 2-week sprints. At the end of each sprint, we release a new AppCat version. The entire process is documented https://kb.vshn.ch/app-catalog/framework/runbooks/AppCatRelease.html[here].
+
+== Nextcloud by VSHN removed hard-coded www-data
+
+For Nextcloud the expectation is that the Cron jobs execute under the container’s configured runtime user or group. It should not be hard-coded to www-data.
+Under a least-privilege SCC like restricted-v2, the cron process should not require additional capabilities.
+
+== Bucket Names
+
+The bucket names have been a bit of a topic recently, when they really should not be.
+If you prefer, you can set your own bucket name. Otherwise, the bucket will be assigned a unique name. Either way, you can move on to the more fun part.
