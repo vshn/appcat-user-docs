@@ -20,7 +20,7 @@ spec:
     name: objectbucket-creds # <4>
 ----
 <1> The namespace where the object will be created.
-<2> The bucket name for this ObjectBucket.
+<2> The bucket name for this ObjectBucket. If not specified, a random name will be generated based on the claim name. So in this case the bucket name would look something like: `my-cool-bucket-xyz`
 <3> The bucket's region depends on the selected Provider, see xref:references/cloud-zones.adoc#_regions[here] for more details
 <4> Secret where the connection details are provisioned. This secret shouldn't exist at this time.
 +
