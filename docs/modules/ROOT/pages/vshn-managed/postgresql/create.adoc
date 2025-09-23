@@ -40,7 +40,7 @@ NOTE: To get more information about all available configuration options, please 
 
 == CloudNativePG
 
-As an alternative to StackGres, the way PSQL is currently deployed, you can choose to deploy your service using CloudNativePG (CNPG for short) instead.  
+As an alternative to StackGres, the way PostgreSQL is currently deployed, you can choose to deploy your service using CloudNativePG (CNPG for short) instead.  
 Deployments based on CNPG are currently only meant for evaluation purposes and therefore only support a limited amount of features compared to the StackGres based offering.
 
 Unavailable features (at the moment) are:
