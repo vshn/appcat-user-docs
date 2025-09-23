@@ -13,5 +13,14 @@ The latest addition to our offering is PostgreSQL by VSHN with CloudNativePG (CN
 It is very fresh from development and can already be provisioned. More features to come in the next sprints.
 If you would like to learn more about why we decided to go with CNPG, https://kb.vshn.ch/app-catalog/adr/0036-revisiting-postgresql-operators.html[here] are the insights into our operator evaluation.
 
-== 
+== AppCat Release Process
+
+This one is more for us than you. Though useful for planning your updates.
+We work in 2-week sprints. At the end of each sprint, we release a new AppCat version. The entire process is documented https://kb.vshn.ch/app-catalog/framework/runbooks/AppCatRelease.html[here].
+
+== Nextcloud by VSHN removed hard-coded www-data
+
+For Nextcloud the expectation is that the Cron jobs execute under the container’s configured runtime user or group. It should not be hard-coded to www-data.
+Under a least-privilege SCC like restricted-v2, the cron process should not require additional capabilities.
+
 
