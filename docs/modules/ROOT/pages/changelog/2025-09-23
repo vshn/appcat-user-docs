@@ -3,7 +3,7 @@
 Are costs important to you? If so, the release https://github.com/vshn/appcat/releases[v4.170.0] might be one that you want to pay attention to.
 
 == Disable backups
-To help keep the costs down, you can deactivate backups for your test and dev environments. 
+To help keep the costs down, you can deactivate backups for your test environments. As an example, https://docs.appcat.ch/vshn-managed/postgresql/backup.html#_disable_backups[here] you can see how to deactivate backups for your PostgreSQL instances.
 Yes, also for your production instances, but that is not something that we would advise. EVER.
 
 
