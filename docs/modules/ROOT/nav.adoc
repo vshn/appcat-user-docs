@@ -103,6 +103,7 @@
 ** xref:vshn-managed/postgresql/encrypted-pvc.adoc[]
 ** xref:vshn-managed/postgresql/extensions.adoc[]
 ** xref:vshn-managed/postgresql/maintenance.adoc[]
+** xref:vshn-managed/postgresql/major-upgrade.adoc[]
 ** xref:vshn-managed/postgresql/plans.adoc[]
 ** xref:vshn-managed/postgresql/replicas.adoc[]
 ** xref:vshn-managed/postgresql/restore.adoc[Restore]
