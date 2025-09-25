@@ -1,0 +1,1 @@
+IMPORTANT: Disk size can only be increased, never decreased. Once you increase the disk size, you cannot reduce it to a smaller value.
