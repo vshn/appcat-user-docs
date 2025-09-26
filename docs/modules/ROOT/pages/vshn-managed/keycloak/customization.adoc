@@ -33,7 +33,7 @@ spec:
     name: keycloak-creds
 ----
 <1> Container image url
-<2> Secret name containing credentials for the registry
+<2> Secret name containing credentials for the registry with key `.dockerconfigjson`
 <3> Secret namespace
 <4> File in your customization image (can also be a folder)
 <5> Destination path in Keycloak instance, relative to `/opt/keycloak`
