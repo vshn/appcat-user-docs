@@ -73,6 +73,8 @@ If you need a larger instance, please contact https://docs.appuio.cloud/user/con
 While we provide some pre-configured plans, you are free to choose custom values for CPU, memory, and disk size.
 To do that simply set `spec.parameters.size.disk`, `spec.parameters.size.cpu`, `spec.parameters.size.memory`, `spec.parameters.size.requests.cpu` or `spec.parameters.size.requests.memory`.
 
+include::partial$disk-size-increase-only.adoc[]
+
 The following example would keep the memory requests from the `standard-2` plan while increasing the CPU request to `1` and the CPU limits to `9`.
 
 [source,yaml]
