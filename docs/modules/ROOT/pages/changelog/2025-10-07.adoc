@@ -4,7 +4,7 @@ This sprint has been anything but lazy. AppCat release https://github.com/vshn/a
 
 == PostgreSQL CNPG Backups
 
-We know that a service can not really be used unless it has a backups. So here you go, PostgreSQL can now be backed up.
+We know that a service can not really be used unless it has backups. So here you go, PostgreSQL can now be backed up.
 
 == Keycloak
 
