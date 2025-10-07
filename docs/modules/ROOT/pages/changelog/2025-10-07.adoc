@@ -1,0 +1,24 @@
+= Changelog 2025-10-07
+
+This sprint has been anything but lazy. AppCat release https://github.com/vshn/appcat/releases/tag/v4.171.0[v4.171.0] brings you plenty of major and minor fixes, along with some new features (hello PostgreSQL CNPG backup) and some important decisions in the making. Let's get into it one by one.
+
+== PostgreSQL CNPG Backups
+
+We know that a service can not really be used unless it has backups. So here you go, PostgreSQL can now be backed up.
+
+== Keycloak
+
+There was a small bug where Keycloak was not working well with encrypted databases. That is now fixed and should not bother you anymore.
+
+== MariaDB server version 
+
+Knowing the exact version makes a difference. ProxySQL can now report the MariaDB server version, so that you can use the features available in that version.
+
+== Downsizing PVC is NOT allowed
+
+We strongly advised against downsizing a PVC. Now we explicitly block any downsizing attempts, just to be on the safe side. 
+
+== Servala Update
+
+The BIG news this sprint is that https://portal.servala.com[Servala] is available for alpha testing on Cloudscale and Exoscale! In just a little while, you will be able to get your hands on it.
+
