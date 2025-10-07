@@ -20,5 +20,5 @@ We strongly advised against downsizing a PVC. Now we explicitly block any downsi
 
 == Servala Update
 
-The BIG news this sprint is that https://portal.servala.com[Servala] is available for alpha testing on Cloudscale and Exoscale! In just a little while also you will be able to get your hands on it.
+The BIG news this sprint is that https://portal.servala.com[Servala] is available for alpha testing on Cloudscale and Exoscale! In just a little while, you will be able to get your hands on it.
 
