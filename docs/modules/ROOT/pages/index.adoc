@@ -6,25 +6,28 @@ TIP: To get more information about the product, please consult our https://produ
 
 To get started, click xref:getting-started.adoc[here].
 
-[cols="1s,1,1,1", options="header", stripes="even"]
+[cols="1s,1", stripes="even"]
 |===
-|Service
-|Options
 
 |PostgreSQL
 |xref:vshn-managed/postgresql/create.adoc[Create] and xref:vshn-managed/postgresql/usage.adoc[use]
 
+
 |MariaDB
 |xref:vshn-managed/mariadb/create.adoc[Create] and xref:vshn-managed/mariadb/usage.adoc[use]
+
 
 |Redis
 |xref:vshn-managed/redis/create.adoc[Create] and xref:vshn-managed/redis/usage.adoc[use]
 
+
 |Object Storage (S3)
 |xref:object-storage/create.adoc[Create] and xref:object-storage/usage.adoc[use]
 
+
 |MinIO
 |xref:vshn-managed/minio.adoc[On request]
+
 
 |Keycloak
 |xref:vshn-managed/keycloak/create.adoc[Create] and xref:vshn-managed/keycloak/usage.adoc[use]
@@ -32,6 +35,7 @@ To get started, click xref:getting-started.adoc[here].
 
 |Nextcloud
 |xref:vshn-managed/nextcloud/create.adoc[Create] and xref:vshn-managed/nextcloud/usage.adoc[use]
+
 
 |Forgejo
 |xref:vshn-managed/forgejo/create.adoc[Create]
