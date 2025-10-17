@@ -6,69 +6,39 @@ TIP: To get more information about the product, please consult our https://produ
 
 To get started, click xref:getting-started.adoc[here].
 
-[cols="1s,1,1,1", options="header", stripes="even"]
+[cols="1s,1", stripes="even"]
 |===
-|Service
-|Exoscale
-|cloudscale.ch
-|Private Cloud
 
 |PostgreSQL
-|xref:exoscale-dbaas/postgresql/create.adoc[Create] and xref:exoscale-dbaas/postgresql/usage.adoc[use]
-|xref:vshn-managed/postgresql/create.adoc[Create] and xref:vshn-managed/postgresql/usage.adoc[use]
 |xref:vshn-managed/postgresql/create.adoc[Create] and xref:vshn-managed/postgresql/usage.adoc[use]
 
-|MySQL
-|xref:exoscale-dbaas/mysql/create.adoc[Create] and xref:exoscale-dbaas/mysql/usage.adoc[use]
-|
-|
 
 |MariaDB
-|
-|xref:vshn-managed/mariadb/create.adoc[Create] and xref:vshn-managed/mariadb/usage.adoc[use]
 |xref:vshn-managed/mariadb/create.adoc[Create] and xref:vshn-managed/mariadb/usage.adoc[use]
 
 
 |Redis
-|xref:exoscale-dbaas/redis/create.adoc[Create] and xref:exoscale-dbaas/redis/usage.adoc[use]
-|xref:vshn-managed/redis/create.adoc[Create] and xref:vshn-managed/redis/usage.adoc[use]
 |xref:vshn-managed/redis/create.adoc[Create] and xref:vshn-managed/redis/usage.adoc[use]
 
-|Kafka
-|xref:exoscale-dbaas/kafka/create.adoc[Create] and xref:exoscale-dbaas/kafka/usage.adoc[use]
-|
-|
-
-|OpenSearch
-|xref:exoscale-dbaas/opensearch/create.adoc[Create] and xref:exoscale-dbaas/opensearch/usage.adoc[use]
-|
-|
 
 |Object Storage (S3)
 |xref:object-storage/create.adoc[Create] and xref:object-storage/usage.adoc[use]
-|xref:object-storage/create.adoc[Create] and xref:object-storage/usage.adoc[use]
-|xref:object-storage/create.adoc[Create] and xref:object-storage/usage.adoc[use]
+
 
 |MinIO
 |xref:vshn-managed/minio.adoc[On request]
-|xref:vshn-managed/minio.adoc[On request]
-|xref:vshn-managed/minio.adoc[On request]
+
 
 |Keycloak
-|
-|xref:vshn-managed/keycloak/create.adoc[Create] and xref:vshn-managed/keycloak/usage.adoc[use]
 |xref:vshn-managed/keycloak/create.adoc[Create] and xref:vshn-managed/keycloak/usage.adoc[use]
 
 
 |Nextcloud
-|
-|xref:vshn-managed/nextcloud/create.adoc[Create] and xref:vshn-managed/nextcloud/usage.adoc[use]
 |xref:vshn-managed/nextcloud/create.adoc[Create] and xref:vshn-managed/nextcloud/usage.adoc[use]
 
+
 |Forgejo
-|
 |xref:vshn-managed/forgejo/create.adoc[Create]
-|
 
 
 |===
