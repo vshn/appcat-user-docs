@@ -29,6 +29,8 @@ By default, the following plans are available on every cluster:
 | standard-8 | 2 | 8Gi | 16Gi
 |===
 
+These are the resources for NextCloud. For each NextCloud instance, a PostgreSQL Service with the same plan name and number of replicas is also instantiated. This can be customized using the postgreSQLParameters configuration field of the NextCloud service.
+
 Depending on which cluster you're working with, there might be some slight differences in available plans.
 You can see all available plans running:
 
