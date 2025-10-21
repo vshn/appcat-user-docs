@@ -1,0 +1,34 @@
+= Auto-Update
+
+By default, production clusters recieve the latest version of AppCat one week after the test clusters. The auto-update label allows the instance to update to the latest version of AppCat as soon as it is released. This feature is available for all AppCat services. 
+
+== Enable Auto-Update
+
+To enable automatic updates for a service instance, add the `metadata.appcat.vshn.io/autoUpdate` label to your claim:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-test-instance
+  namespace: test-app
+  labels:
+    metadata.appcat.vshn.io/autoUpdate: "true"  # <1>
+spec:
+  parameters:
+    service:
+      majorVersion: "16"
+    size:
+      plan: standard-4
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> Enable automatic updates for this instance
+
+[IMPORTANT]
+====
+The auto-update feature is primarily intended for **test instances on production clusters** where you want to validate new versions immediately without waiting for the regular update schedule.
+
+*Do not use this label on production instances* unless you fully understand the implications and accept the risk of unscheduled updates.
+====
