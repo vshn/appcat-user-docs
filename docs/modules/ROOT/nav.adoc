@@ -8,6 +8,7 @@
 
 .Advanced
 * xref:references/argocd.adoc[Usage with ArgoCD]
+* xref:references/auto-update.adoc[Auto-Update]
 * xref:references/permissions.adoc[Namespace Permissions]
 * xref:references/quotas.adoc[]
 
