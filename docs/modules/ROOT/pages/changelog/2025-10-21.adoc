@@ -1,0 +1,17 @@
+= Changelog 2025-10-21
+
+AppCat release https://github.com/vshn/appcat/releases/tag/v4.172.0[v4.172.0] 
+
+== Redis Security Advisory
+
+In response to the https://redis.io/blog/security-advisory-cve-2025-49844/[Redis Security Advisory: CVE-2025-49844] we have rebuilt all the Redis images. The new images mitigate the risk of "Lua use-after-free may lead to remote code execution". 
+
+== Automatic AppCat version update
+
+By default, production clusters receive the latest version of AppCat one week after the test clusters. We have introduced the https://docs.appcat.ch/references/auto-update.html[auto-update label] that allows the instance to update to the latest version of AppCat as soon as it is released. 
+The auto-update feature is primarily intended for test instances on production clusters where you want to validate new versions immediately without waiting for the regular update schedule.
+Do not use this label on production instances unless you fully understand the implications and accept the risk of unscheduled updates.
+
+== AppCat End User Docs
+
+The https://docs.appcat.ch/index.html[AppCat documentation] that is your go-to for help finally got some long-overdue cleanup. Do not worry, all the information is still there, just less confusion and more structure.
