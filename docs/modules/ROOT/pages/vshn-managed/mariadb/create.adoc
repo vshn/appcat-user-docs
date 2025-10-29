@@ -30,6 +30,8 @@ spec:
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnmariadb[API Reference]
 
+NOTE: Default database collation is _utf8mb4_unicode_ci_
+
 == Inspect your new MariaDB service
 
 [source,bash]

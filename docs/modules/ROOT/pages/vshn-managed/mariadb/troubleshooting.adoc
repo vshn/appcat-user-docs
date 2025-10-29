@@ -1,17 +1,43 @@
 = Troubleshooting
 
-== Collation of table is uf8mb3_general_ci or character set is utf8mb3
+== Collation Issues
 
-If you provision a VSHNMariaDB instance, the default collation is currently
-`utf8mb3_general_ci`.
-If you don't specify the collation of your tables in the DDL statements, you
-need to change the default collation in the server if you want a specific collation.
-To change the default collation of the database, login into your instance and execute the following:
+=== My database shows utf8mb3_unicode_ci instead of utf8mb4_unicode_ci
 
-.change collation and character set
-[source,mysql]
-ALTER DATABASE my_database CHARACTER SET = 'utf8mb4';
-ALTER DATABASE my_database COLLATE = 'utf8mb4_bin';
+This can occur if:
+
+1. Your database was created before the collation defaults were updated
+2. Custom MariaDB settings were specified that override the defaults
+
+==== Resolution
+
+New databases created after the collation defaults update automatically use `utf8mb4_unicode_ci`.
+
+For existing databases, you can migrate to utf8mb4:
+
+[source,sql]
+----
+-- Check current collation
+SELECT
+  SCHEMA_NAME,
+  DEFAULT_COLLATION_NAME
+FROM
+  INFORMATION_SCHEMA.SCHEMATA
+WHERE
+  SCHEMA_NAME = 'your_database_name';
+
+-- Migrate to utf8mb4
+ALTER DATABASE your_database_name
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+-- For each table in the database
+ALTER TABLE your_table_name
+  CONVERT TO CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+----
+
+WARNING: Migration can take significant time and cause downtime. Test in non-production first. Consider using https://docs.percona.com/percona-toolkit/pt-online-schema-change.html#pt-online-schema-change--page-root[pt-online-schema-change] for large tables.
 
 == Connections are suddenly closed
 
