@@ -10,3 +10,4 @@ TIP: Get started and xref:vshn-managed/nextcloud/create.adoc[create a Nextcloud 
 
 * https://nextcloud.com/[Keycloak^]
 * xref:references/crds.adoc#k8s-api-github-com-vshn-appcat-v4-apis-vshn-v1-vshnnextcloud[VSHN Application Catalog API reference]
+* https://github.com/vshn/appcat-demo-nextcloud-appuio-simple[Tutorial: Deploy Nextcloud to APPUiO]
