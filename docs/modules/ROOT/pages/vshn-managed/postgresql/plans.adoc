@@ -118,6 +118,36 @@ These containers handle connection pooling, metrics and other internal functiona
 
 This overhead is already accounted for in the provided plans.
 
+=== Dedicated Patroni Resources
+
+By default, StackGres automatically distributes the specified resources across all containers (including Patroni and sidecars).
+However, you can enable dedicated resource allocation for Patroni by setting `spec.parameters.service.dedicatedPatroniResources` to `true`.
+
+When this option is enabled:
+
+* The specified CPU and memory values are reserved exclusively for the Patroni container
+* Sidecar containers receive separate resource allocations on top of the Patroni resources
+* This increases the total sidecar overhead beyond the default 390m CPU and 408Mi memory
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: example
+spec:
+  parameters:
+    size:
+      plan: standard-4
+    service:
+      dedicatedPatroniResources: true # <1>
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> Enable dedicated resource allocation for Patroni, increasing the sidecar overhead.
+
+IMPORTANT: Enabling `dedicatedPatroniResources` will increase the total resource consumption and cost of your PostgreSQL instance, as sidecar containers will receive additional resources on top of your configured values.
+
 == Configuring resource requests
 
 By default, the resource requests and limits are set to the values defined in `spec.parameters.size.cpu` and `spec.parameters.size.memory`.
