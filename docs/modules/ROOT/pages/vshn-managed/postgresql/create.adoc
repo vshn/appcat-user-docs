@@ -38,6 +38,34 @@ spec:
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[API Reference]
 
+== Envoy Sidecar Proxy
+
+By default, Envoy sidecar proxy is disabled on PostgreSQL instances.
+You can enable it by setting `spec.parameters.service.enableEnvoy` to `true`.
+
+When enabled, Envoy provides an additional proxy layer that can be used for advanced monitoring and observability purposes.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      majorVersion: "16"
+      enableEnvoy: true # <1>
+    size:
+      plan: standard-4
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> Enable Envoy sidecar proxy for advanced monitoring capabilities.
+
+For more information about Envoy in StackGres, see the https://stackgres.io/doc/latest/administration/monitoring/envoy/[StackGres Envoy documentation].
+
 == CloudNativePG
 
 As an alternative to StackGres, the way PostgreSQL is currently deployed, you can choose to deploy your service using CloudNativePG (CNPG for short) instead.  
