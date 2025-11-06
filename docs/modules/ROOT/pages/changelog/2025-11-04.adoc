@@ -22,7 +22,7 @@ We have updated MariaDB collation defaults from `utf8mb3_unicode_ci` to `utf8mb4
 All new MariaDB instances will be created with default collation `utf8mb4_unicode_ci`, see https://docs.appcat.ch/vshn-managed/mariadb/create.html[Create MariaDB].
 For troubleshooting collation settings refer to https://docs.appcat.ch/vshn-managed/mariadb/troubleshooting.html#_collation_issues[Collation issues].
 
-== Changes affecting istance sizing
+== Changes affecting instance sizing
 
 We have identified and resolved a bug in AppCat where custom instance sizes were not correctly aligning requests with the configured limits.
 After the update, your instances will have slightly higher resource reservations, but this ensures guaranteed Quality of Service (QoS) for your applications. See https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/#guaranteed[Pod Quality of Service Classes] for more information.
