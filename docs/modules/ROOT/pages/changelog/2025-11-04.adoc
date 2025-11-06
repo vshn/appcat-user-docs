@@ -4,7 +4,7 @@ AppCat release https://github.com/vshn/appcat/releases/tag/v4.173.0[v4.173.0] in
 
 == PostgreSQL with CloudNativePG Scaling
 
-PostgreSQL with CNPG can be replicated. You can try it out by setting the number of instances to 2 or 3. For more details, refer to https://docs.appcat.ch/vshn-managed/postgresql/replicas.html[PostgreSQL replication].
+PostgreSQL with CloudNativePG (CNPG) can be replicated. You can try it out by setting the number of instances to 2 or 3. For more details, refer to https://docs.appcat.ch/vshn-managed/postgresql/replicas.html[PostgreSQL replication].
 
 == PostgreSQL Envoy Sidecar Proxy
 
