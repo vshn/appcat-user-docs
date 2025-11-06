@@ -13,7 +13,7 @@ When enabled, Envoy provides an additional proxy layer that can be used for adva
 
 == PostgreSQL dedicated resource allocation for Patroni
 
-By default, StackGres automatically distributes the specified resources across all containers (including Patroni and sidecars). However, you can enable dedicated resource allocation for Patroni by setting spec.parameters.service.dedicatedPatroniResources to true.
+By default, StackGres automatically distributes the specified resources across all containers (including Patroni and sidecars). However, you can enable dedicated resource allocation for Patroni by setting `spec.parameters.service.dedicatedPatroniResources` to `true`.
 More details in the https://docs.appcat.ch/vshn-managed/postgresql/plans.html#_dedicated_patroni_resources[Dedicated patroni resources].
 
 == MariaDB collation defaults update
