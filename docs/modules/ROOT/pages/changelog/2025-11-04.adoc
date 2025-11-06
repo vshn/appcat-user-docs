@@ -1,0 +1,29 @@
+= Changelog 2025-11-04
+
+AppCat release https://github.com/vshn/appcat/releases/tag/v4.173.0[v4.173.0] includes a few important fixes and anticipated features.
+
+== PostgreSQL CNPG Scaling
+
+PostgreSQL with CNPG can be replicated. You can try it out by setting the number of instances to 2 or 3. For more details, refer to https://docs.appcat.ch/vshn-managed/postgresql/replicas.html[PostgreSQL replication].
+
+== PostgreSQL Envoy Sidecar Proxy
+
+By default, Envoy sidecar proxy is disabled on PostgreSQL instances. You can enable it by setting spec.parameters.service.enableEnvoy to true.
+When enabled, Envoy provides an additional proxy layer that can be used for advanced monitoring and observability purposes. More details in the https://docs.appcat.ch/vshn-managed/postgresql/create.html#_envoy_sidecar_proxy[Envoy sidecar proxy] .
+
+== PostgreSQL dedicated resource allocation for Patroni
+
+By default, StackGres automatically distributes the specified resources across all containers (including Patroni and sidecars). However, you can enable dedicated resource allocation for Patroni by setting spec.parameters.service.dedicatedPatroniResources to true.
+More details in the https://docs.appcat.ch/vshn-managed/postgresql/plans.html#_dedicated_patroni_resources[Dedicated patroni resources].
+
+== MariaDB collation defaults update
+
+We have updated MariaDB collation defaults from utf8mb3_unicode_ci to utf8mb4_unicode_ci. The current defaults were outdated.
+All new MariaDB instances will be created with default collation utf8mb4_unicode_ci https://docs.appcat.ch/vshn-managed/mariadb/create.html[Create MariaDB].
+For troubleshooting collation settings refer to https://docs.appcat.ch/vshn-managed/mariadb/troubleshooting.html#_collation_issues[Collation issues].
+
+== Changes affecting istance sizing
+
+We have identified and resolved a bug in AppCat where custom instance sizes were not correctly aligning requests with the configured limits.
+After the update, your instances will have slightly higher resource reservations, but this ensures guaranteed Quality of Service (QoS) for your applications. See https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/#guaranteed[Pod Quality of Service Classes] for more information.
+If you prefer to maintain lower request values than your limits, you can easily adjust this by following our custom sizing documentation https://docs.appcat.ch/vshn-managed/postgresql/plans.html#_custom_sizing[Plans and Sizing]. This only affects instances which have custom CPU and memory limits without specific request specified.
