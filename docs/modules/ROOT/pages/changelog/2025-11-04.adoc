@@ -19,7 +19,7 @@ More details in the https://docs.appcat.ch/vshn-managed/postgresql/plans.html#_d
 == MariaDB collation defaults update
 
 We have updated MariaDB collation defaults from `utf8mb3_unicode_ci` to `utf8mb4_unicode_ci`. The current defaults were outdated.
-All new MariaDB instances will be created with default collation utf8mb4_unicode_ci https://docs.appcat.ch/vshn-managed/mariadb/create.html[Create MariaDB].
+All new MariaDB instances will be created with default collation `utf8mb4_unicode_ci`, see https://docs.appcat.ch/vshn-managed/mariadb/create.html[Create MariaDB].
 For troubleshooting collation settings refer to https://docs.appcat.ch/vshn-managed/mariadb/troubleshooting.html#_collation_issues[Collation issues].
 
 == Changes affecting istance sizing
