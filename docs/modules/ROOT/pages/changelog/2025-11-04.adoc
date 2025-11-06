@@ -8,7 +8,7 @@ PostgreSQL with CloudNativePG (CNPG) can be replicated. You can try it out by se
 
 == PostgreSQL Envoy Sidecar Proxy
 
-By default, Envoy sidecar proxy is disabled on PostgreSQL instances. You can enable it by setting spec.parameters.service.enableEnvoy to true.
+By default, Envoy sidecar proxy is disabled on PostgreSQL instances. You can enable it by setting `spec.parameters.service.enableEnvoy` to `true`.
 When enabled, Envoy provides an additional proxy layer that can be used for advanced monitoring and observability purposes. More details in the https://docs.appcat.ch/vshn-managed/postgresql/create.html#_envoy_sidecar_proxy[Envoy sidecar proxy] .
 
 == PostgreSQL dedicated resource allocation for Patroni
