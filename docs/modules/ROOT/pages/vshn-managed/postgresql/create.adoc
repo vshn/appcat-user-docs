@@ -67,7 +67,7 @@ spec:
 For more information about Envoy in StackGres, see the https://stackgres.io/doc/latest/administration/monitoring/envoy/[StackGres Envoy documentation].
 
 == CloudNativePG
-CAUTION: Integration of this provider is under active development, it is not yet intended to use in production.
+CAUTION: Integration of this provider is under active development, it is not yet intended for use in production.
 
 As an alternative to StackGres, the way PostgreSQL is currently deployed, you can choose to deploy your service using CloudNativePG (CNPG for short) instead.  
 Deployments based on CNPG are currently only meant for evaluation purposes and therefore only support a limited amount of features compared to the StackGres based offering.
