@@ -132,7 +132,7 @@ spec:
     backup:
       schedule: '0 22 * * *'
     service:
-      version: "7.0"
+      version: "7.2"
       redisSettings: |
         activedefrag yes
     size:
