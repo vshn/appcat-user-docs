@@ -1,0 +1,15 @@
+= Changelog 2025-11-18
+
+AppCat release https://github.com/vshn/appcat/releases/tag/v4.174.0[v4.174.0^] includes various bug fixes and performance improvements. 
+Yes, every release includes those, but this one is exclusively about improvements. The most prominent ones are mentioned below. 
+
+== Nextcloud certificate and patch version
+
+Nextcloud wrongly used the server certificate as the client certificate, causing PostgreSQL to reject the request. 
+
+The user was able to specify a patch version for Nextcloud in their claim. When maintenance encountered such an instance, it updated to the latest patch version. The next reconcile of the instance would downgrade to what was defined in the claim, resulting in a broken instance.
+From now on, just smooth sailing.
+
+== User management sequencing for MariaDB and PostgreSQL
+
+The user management for MariaDB and PostgreSQL creates resources for Crossplane `provider-sql` in sequence. The sequencing is in the order of role → db → grant.
