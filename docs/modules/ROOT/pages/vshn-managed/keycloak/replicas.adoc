@@ -22,6 +22,19 @@ spec:
 
 NOTE: When enabling HA for Keycloak, the underlying PostgreSQL database will also be switched to HA and will use the same amount of replicas as defined for Keycloak.
 
+IMPORTANT: If you configure high availability, you might also want to configure the service level guaranteed. This is only available on clusters with the service level guaranteed.
+[serviceLevel,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: keycloak-app1-prod
+spec:
+  parameters:
+    service:
+      serviceLevel: guaranteed
+----
+
 NOTE: Please be aware that enabling high availability will use significantly more resources and will cost two to three times more.
 
 IMPORTANT: On APPUiO Cloud, it's currently not possible to deploy more than two instances, or more than a single instance that is larger than `standard-2`.
