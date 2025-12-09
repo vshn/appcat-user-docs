@@ -32,3 +32,8 @@ The auto-update feature is primarily intended for **test instances on production
 
 *Do not use this label on production instances* unless you fully understand the implications and accept the risk of unscheduled updates.
 ====
+
+[NOTE]
+====
+The auto-update feature is enabled once the next maintenance window is finished. If the feature is required asap, the maintenance can be manually triggered. 
+====
