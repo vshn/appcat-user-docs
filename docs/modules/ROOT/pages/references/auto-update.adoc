@@ -35,5 +35,5 @@ The auto-update feature is primarily intended for **test instances on production
 
 [NOTE]
 ====
-The auto-update feature is enabled once the next maintenance window is finished. If the feature is required asap, the maintenance can be manually triggered. 
+The auto-update feature is enabled once the next maintenance window is finished.
 ====
