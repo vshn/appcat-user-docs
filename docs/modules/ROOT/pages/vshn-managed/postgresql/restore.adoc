@@ -37,6 +37,7 @@ spec:
     restore:
       claimName: pgsql-app1-prod # <1>
       backupName: pgsql-app1-prod-pk8k4-2023-03-01-16-52-02 # <2>
+      recoveryTimeStamp: "2023-03-01T17:30:00+00:00" # <3>
     backup:
       schedule: '0 22 * * *'
     service:
@@ -53,6 +54,7 @@ spec:
 ----
 <1> The name of the instance you want to restore from
 <2> The backup name you want to restore
+<3> Optional: Point-in-time recovery timestamp. Must be *after* the backup time (in this example, after `2023-03-01 16:52:02`). If omitted, restores to the latest available state.
 
 [NOTE]
 ====
