@@ -1,0 +1,12 @@
+= Changelog 2025-12-02
+
+This AppCat release is a surprise of 2 releases https://github.com/vshn/appcat/releases/tag/v4.175.0[v4.175.0^], and https://github.com/vshn/appcat/releases/tag/v4.176.0[v4.176.0^]. Alongside PostgreSQL CloudNativePG maintenance and Keycloak improvements, we also fixed a webhook for Codey.
+
+== PostgreSQL CloudNativePG Maintenance
+
+Yes, now maintenance works also for your new and shiny PostgreSQL CloudNativePG instance. https://docs.appcat.ch/vshn-managed/postgresql/maintenance.html[This] documentation will help you to configure the maintenance.
+Since we are talking about maintenance, remember to set up a staged release process for your infrastructure. We advise updating your test instances first, and the production instances one week later. You can configure this process that we call Auto-Update as described https://docs.appcat.ch/references/auto-update.html[here].
+
+== Keycloak minor bugs
+
+We found a minor bug in Keycloak customization, now all should work as described in https://docs.appcat.ch/vshn-managed/keycloak/customization.html[Customization], including the https://docs.appcat.ch/vshn-managed/keycloak/usage.html[FQDN configuration].
