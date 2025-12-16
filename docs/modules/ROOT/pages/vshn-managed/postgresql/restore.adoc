@@ -37,6 +37,7 @@ spec:
     restore:
       claimName: pgsql-app1-prod # <1>
       backupName: pgsql-app1-prod-pk8k4-2023-03-01-16-52-02 # <2>
+      recoveryTimeStamp: "2023-03-01T17:30:00+00:00" # <3>
     backup:
       schedule: '0 22 * * *'
     service:
@@ -53,6 +54,7 @@ spec:
 ----
 <1> The name of the instance you want to restore from
 <2> The backup name you want to restore
+<3> Optional: Point-in-time recovery timestamp. Must be *after* the backup time (in this example, after `2023-03-01 16:52:02`). If omitted, restores to the latest available state.
 
 [NOTE]
 ====
@@ -64,3 +66,183 @@ The only difference is the backup information in `spec.parameters.restore`.
 
 The deletion process of a restored instance is the same as for normal instance.
 Check out xref:vshn-managed/postgresql/delete.adoc[this guide] how to delete a PostgreSQL instance.
+
+== Restore a single database
+
+This procedure allows you to restore a specific database from a backup to a running VSHNPostgreSQL instance. This is useful when you only need to recover one database instead of restoring an entire instance.
+
+=== Overview
+
+The restore process involves the following steps:
+
+1. Create a temporary VSHNPostgreSQL instance for the restore
+2. Restore the full backup into this temporary instance using the standard restore procedure above
+3. Copy the specific database from the temporary instance to your target instance
+4. Clean up by deleting the temporary instance
+
+=== Prerequisites
+
+* A running VSHNPostgreSQL instance (the target where you want to restore the database)
+* Access to the backup you want to restore from
+
+=== Procedure
+
+First, create a new temporary VSHNPostgreSQL instance and restore the full backup into it using the steps documented above in "Restore a Backup".
+
+Next, use the following script to copy the specific database from the temporary instance to your target instance.
+
+The script performs the following actions:
+
+* Creates a temporary pod with the PostgreSQL client tools
+* Connects the pod to both the temporary instance (source) and target instance (destination)
+* Uses `pg_dump` to export the database from the temporary instance
+* Pipes the dump directly into the target instance
+* Displays table statistics before and after to verify the migration
+* Cleans up the temporary pod when finished
+
+Run the script with the following parameters:
+
+[source,bash]
+----
+./restore-single-db.sh <SECRET_NAME_FROM> <SECRET_NAME_TO> <NAMESPACE>
+----
+
+Where:
+
+* `SECRET_NAME_FROM`: The secret name of the temporary instance containing the restored backup
+* `SECRET_NAME_TO`: The secret name of the target instance where you want to restore the database
+* `NAMESPACE`: The claim namespace where both instances are provisioned
+
+[source,bash]
+----
+#!/bin/bash
+
+set -e
+
+SECRET_NAME_FROM=$1
+if [[ -z "$SECRET_NAME_FROM" ]]; then
+  read -rp "Enter the secret name to copy the database from: " SECRET_NAME_FROM
+fi
+if [[ -z "$SECRET_NAME_FROM" ]]; then
+  echo "Error: secret name cannot be empty."
+  exit 1
+fi
+
+SECRET_NAME_TO=$2
+if [[ -z "$SECRET_NAME_TO" ]]; then
+  read -rp "Enter the secret name to copy the database to: " SECRET_NAME_TO
+fi
+if [[ -z "$SECRET_NAME_TO" ]]; then
+  echo "Error: secret name cannot be empty."
+  exit 1
+fi
+
+NAMESPACE=$3
+if [[ -z "$NAMESPACE" ]]; then
+    read -rp "Enter the namespace to perform the action in: " NAMESPACE
+fi
+if [[ -z "$NAMESPACE" ]]; then
+  echo "Error: Namespace cannot be empty."
+  exit 1
+fi
+
+DB_NAME=$(kubectl --namespace "$NAMESPACE" get secret "$SECRET_NAME_FROM" -ojson | jq -r '.data.POSTGRESQL_DB' | base64 -d)
+if [[ -z "$DB_NAME" ]]; then
+  echo "Error: DB_NAME not found."
+  exit 1
+fi
+
+POD_NAME="postgresql-dump-pod-${RANDOM}"
+
+echo "Creating PostgreSQL dump pod '$POD_NAME' in namespace '$NAMESPACE'..."
+
+cat <<EOF | kubectl --namespace "$NAMESPACE"  apply -f -
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  name: $POD_NAME
+spec:
+  containers:
+  - name: postgres
+    image: postgres:17.6
+    command:
+    - tail
+    - "-f"
+    - /dev/null
+    envFrom:
+    - secretRef:
+        name: $SECRET_NAME_FROM
+    env:
+    - name: TO_POSTGRESQL_HOST
+      valueFrom:
+        secretKeyRef:
+          name: $SECRET_NAME_TO
+          key: POSTGRESQL_HOST
+    - name: TO_POSTGRESQL_DB
+      valueFrom:
+        secretKeyRef:
+          name: $SECRET_NAME_TO
+          key: POSTGRESQL_DB
+    - name: TO_POSTGRESQL_USER
+      valueFrom:
+        secretKeyRef:
+          name: $SECRET_NAME_TO
+          key: POSTGRESQL_USER
+    - name: TO_POSTGRESQL_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: $SECRET_NAME_TO
+          key: POSTGRESQL_PASSWORD
+  restartPolicy: Never
+EOF
+
+echo "Waiting for pod '$POD_NAME' to be ready..."
+kubectl wait --for=condition=ready pod/"$POD_NAME" --namespace="$NAMESPACE" --timeout=300s
+
+if [[ $? -ne 0 ]]; then
+  echo "Error: Pod '$POD_NAME' did not become ready in time. Exiting."
+  kubectl delete pod "$POD_NAME" --namespace="$NAMESPACE"
+  exit 1
+fi
+
+echo "Pod '$POD_NAME' is ready. Running pg_dump..."
+
+
+echo "Running pg_dump from pod '$POD_NAME' for database '$DB_NAME'..."
+
+echo "Tables and their stats in old db"
+kubectl exec "$POD_NAME" --namespace="$NAMESPACE" -- \
+  sh -c "PGPASSWORD=\${POSTGRESQL_PASSWORD} PGSSLMODE=disable psql -h \${POSTGRESQL_HOST} -U \${POSTGRESQL_USER} -d \${POSTGRESQL_DB} --tuples-only --command \
+  \"SELECT relname AS table_name, n_live_tup AS row_estimate FROM pg_stat_user_tables ORDER BY n_live_tup DESC;\""
+
+kubectl exec "$POD_NAME" --namespace="$NAMESPACE" -- \
+    sh -xc "PGPASSWORD=\${POSTGRESQL_PASSWORD} PGSSLMODE=disable pg_dump -h \${POSTGRESQL_HOST} -U \${POSTGRESQL_USER} -d \${POSTGRESQL_DB} --clean --if-exists --no-owner 2>/dev/null \
+       | PGPASSWORD=\${TO_POSTGRESQL_PASSWORD} PGSSLMODE=disable psql -h \${TO_POSTGRESQL_HOST} -U \${TO_POSTGRESQL_USER} -d \${TO_POSTGRESQL_DB}"
+
+echo "Tables and their stats in new db"
+kubectl exec "$POD_NAME" --namespace="$NAMESPACE" -- \
+  sh -c "PGPASSWORD=\${TO_POSTGRESQL_PASSWORD} PGSSLMODE=disable psql -h \${TO_POSTGRESQL_HOST} -U \${TO_POSTGRESQL_USER} -d \${TO_POSTGRESQL_DB} --tuples-only --command \
+    \"ANALYZE;SELECT relname AS table_name, n_live_tup AS row_estimate FROM pg_stat_user_tables ORDER BY n_live_tup DESC;\""
+
+
+if [[ $? -ne 0 ]]; then
+  echo "Error: pg_dump failed. Check pod logs for details."
+  kubectl logs "$POD_NAME" --namespace="$NAMESPACE"
+  echo "Pod '$POD_NAME' retained for debugging. Delete manually when done."
+  exit 1
+fi
+
+echo "Database '$DB_NAME' successfully migrated"
+
+echo "Deleting pod '$POD_NAME'..."
+kubectl delete pod "$POD_NAME" --namespace="$NAMESPACE" --grace-period=0 --force
+
+if [[ $? -eq 0 ]]; then
+  echo "Pod '$POD_NAME' deleted successfully."
+else
+  echo "Warning: Failed to delete pod '$POD_NAME'. You may need to delete it manually."
+fi
+----
+
+After the script completes successfully, the database has been copied from the temporary instance to your target instance. You can now deprovision the temporary restore instance as it is no longer needed.
