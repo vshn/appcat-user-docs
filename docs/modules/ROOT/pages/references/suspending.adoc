@@ -1,0 +1,41 @@
+= Suspending an instance
+
+Suspending an instance can be useful when the service is not needed temporarily, such as for testing environments, development instances, or services that are only used during specific time periods.
+
+By suspending an instance, no replicas of that specific service are deployed, which reduces resource consumption and cost.
+
+== How to suspend an instance
+
+To suspend an instance, set the number of instances to `0` in the service specification.
+
+.Example: Suspending a PostgreSQL instance
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: my-postgres-instance
+  namespace: my-namespace
+spec:
+  parameters:
+    instances: 0
+----
+
+After applying this configuration, the instance will be suspended and no pods will be running.
+
+[IMPORTANT]
+====
+You will still be billed for the persistent storage even when an instance is suspended.
+====
+
+== Resuming a suspended instance
+
+To resume a suspended instance, change the `instances` value back to your desired number.
+
+.Example: Resuming an instance
+[source,yaml]
+----
+spec:
+  parameters:
+    instances: 1  # Resume with a single instance
+----
