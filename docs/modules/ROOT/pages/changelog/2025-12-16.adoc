@@ -1,0 +1,21 @@
+= Changelog 2025-12-16
+
+AppCat release https://github.com/vshn/appcat/releases/tag/v4.177.0[v4.177.0^] is the pre-holiday edition. The next one is expected only in 4 weeks. You will have plenty of time to enjoy this one.
+
+== Suspending test instances
+
+Assuming you are as aware of resource usage as we are. You can scale your test or development instances down to 0, so that they do not consume resources when not in use. 
+Once needed, simply scale the instances back up to the desired number. A how-to guide is available https://docs.appcat.ch/references/suspending.html[here].
+
+== Update Nextcloud Helmchart to 8.6.0
+
+This is self-explanatory, but to mention it again, we have updated Nextcloud Helmchart to 8.6.0.
+
+== Exoscale specific annotations for quotas
+
+As a part of the housekeeping effort, we have added the necessary storage class annotations for APPUiO on Exoscale.
+
+== Make sure names are escaped during ready check
+
+K8s doesn't allow any _ in object names. However, _ is allowed for user names in database systems. These differences have to be escaped when applying the objects to the API.
+All the objects are set to be applied with the policy to only create and update the data. Never to delete it. Deletion will have to be a manual and deliberate operation from now on. This also ensures feature parity with the PostgreSQL implementation.
