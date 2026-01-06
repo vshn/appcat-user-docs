@@ -14,7 +14,7 @@ If a user needs access to another user's database, it can be specified by the `d
 apiVersion: vshn.appcat.vshn.io/v1
 kind: VSHNMariaDB
 metadata:
-  name: pgsql-app1-prod
+  name: mariadb-app1-prod
   namespace: prod-app
 spec:
   parameters:
@@ -32,7 +32,7 @@ spec:
             name: my-secret
             namespace: app4
   writeConnectionSecretToRef:
-    name: postgres-creds
+    name: mariadb-creds
 ----
 <1> Create a user and a database called app1, the user gets all privileges for the database
 <2> Create a user app2 and giving it all privileges to database app1
@@ -46,13 +46,19 @@ To remove a user and its database, you need to remove it from the `access` array
 
 A user or database will be removed from the instance, if there are no more references in the `access` array.
 
+[IMPORTANT]
+.Manual cleanup required
+====
+Removing users from the `access` array does NOT automatically delete the user, database, or grants from the MariaDB instance. These resources will remain in the database and must be manually deleted if no longer needed.
+====
+
 .Example Deleting Users and Databases
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
 kind: VSHNMariaDB
 metadata:
-  name: pgsql-app1-prod
+  name: mariadb-app1-prod
   namespace: prod-app
 spec:
   parameters:
@@ -63,14 +69,22 @@ spec:
           database: app1 # <2>
         - user: app3 #<3>
   writeConnectionSecretToRef:
-    name: postgres-creds
+    name: mariadb-creds
 ----
 <1> Removing this entry would remove the `app1` user and the grant giving it access to the app1 database. It will not remove the database, as it's still referenced by user app2.
 <2> Removing this entry would remove the user `app2` and the grants giving access to database app1. It will not remove the database app1, as it's still referenced by user `app1`
 <3> Removing this entry will remove the user `app3` and its database.
 
-[IMPORTANT]
-.Non-reversible operation
+To manually clean up users, databases, and grants that are no longer managed:
+
+. Remove the user and database from the claim
+. Connect to your MariaDB instance using the connection details
+. Revoke grants: `REVOKE ALL PRIVILEGES ON DATABASE databasename FROM username;`
+. Drop the user: `DROP USER username;`
+. Drop the database (if no longer needed): `DROP DATABASE databasename;`
+
+[WARNING]
+.Manual deletion is irreversible
 ====
-If you remove a user completely from the array, the user and the database will be removed from the instance!
+Manual deletion of users and databases is permanent and cannot be undone. Ensure you have backups and that the resources are truly no longer needed before deleting them. Renaming is also not possible. If a user is renamed, it will be treated as a new user, and the old user will remain in the database.
 ====

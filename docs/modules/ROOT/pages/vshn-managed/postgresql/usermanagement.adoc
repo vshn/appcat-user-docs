@@ -75,10 +75,11 @@ spec:
 
 To manually clean up users, databases, and grants that are no longer managed:
 
-1. Connect to your PostgreSQL instance using the connection details
-2. Revoke grants: `REVOKE ALL PRIVILEGES ON DATABASE databasename FROM username;`
-3. Drop the user: `DROP USER username;`
-4. Drop the database (if no longer needed): `DROP DATABASE databasename;`
+. Remove the user and database from the claim
+. Connect to your PostgreSQL instance using the connection details
+. Revoke grants: `REVOKE ALL PRIVILEGES ON DATABASE databasename FROM username;`
+. Drop the user: `DROP USER username;`
+. Drop the database (if no longer needed): `DROP DATABASE databasename;`
 
 [WARNING]
 .Manual deletion is irreversible
