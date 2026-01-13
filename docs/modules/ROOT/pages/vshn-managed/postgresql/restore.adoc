@@ -273,20 +273,6 @@ Where:
 
 set -e
 
-
-is_openshift=false
-if kubectl get project &> /dev/null; then # 'project' resource is OpenShift specific
-    is_openshift=true
-fi
-
-function ka() {
-    if [ "$is_openshift" = "true" ]; then
-        kubectl --as "system:admin" "$@"
-    else
-        kubectl "$@"
-    fi
-}
-
 SECRET_NAME_FROM=$1
 if [[ -z "$SECRET_NAME_FROM" ]]; then
   read -rp "Enter the secret name to copy the database from: " SECRET_NAME_FROM
