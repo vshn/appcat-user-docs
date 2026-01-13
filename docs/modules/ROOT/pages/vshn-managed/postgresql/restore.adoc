@@ -111,7 +111,7 @@ Where:
 
 * `SECRET_NAME_FROM`: The secret name of the temporary instance containing the restored backup
 * `SECRET_NAME_TO`: The secret name of the target instance where you want to restore the database
-* `NAMESPACE`: The claim namespace where both instances are provisioned
+* `NAMESPACE`: The namespace where both secrets are
 
 [source,bash]
 ----
