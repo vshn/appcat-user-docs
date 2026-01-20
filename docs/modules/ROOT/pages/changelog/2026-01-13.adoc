@@ -1,0 +1,21 @@
+= Changelog 2026-01-13
+
+AppCat is back with the first release of 2026 https://github.com/vshn/appcat/releases/tag/v4.178.0[v4.178.0^]. Over the holidays, we have been busy with housekeeping.
+
+== Generic deletion protection handler
+
+The deletion protection handler is made completely generic. It handles the protection for any given object by adding a webhook to the object.
+
+== Add crossplane metrics exporter to appcat controller
+
+We expose a new metric type called crossplane_resource_info that contains metrics about the status of each composite as well as managed resources from every provider.
+It is implemented as a new crossplane-metrics flag within the controller.
+
+== Backup before Maintenance
+
+As of AppCat version https://github.com/vshn/appcat/releases/tag/v4.178.0[v4.178.0^], a backup is created before the maintenance runs. We know that some of you want to live "on the edge". When it comes to backups and data safety, we prefer safe and boring. We want to have the backup available every single time. No exceptions.
+
+== PostgreSQL with Quality of Service Level Guaranteed
+
+Auto-detect QoS Guaranteed for PostgreSQL instances when equal CPU and memory limits and requests are set.
+If the requests=limits is not specified or a plan is in use, the behavior will remain the same. This ensures that existing instances do not consume more resources.
