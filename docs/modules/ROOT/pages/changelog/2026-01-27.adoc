@@ -1,0 +1,31 @@
+= Changelog 2026-01-27
+
+AppCat Release https://github.com/vshn/appcat/releases/tag/v4.179.0[v4.179.0^] is packed with improvements that make your infrastructure better. After a short break, we have picked up PostgreSQL with CloudNativePG again.
+
+== AppCat Framework 2.0
+
+Before we get into the details of this release, we want you to be aware that we will be refactoring AppCat framework. We call it AppCat Framework 2.0, not an extremely catchy name, we know. The main point is that we want to clean up and consolidate legacy code so that our partners can contribute their Helm services to the AppCat framework. 
+For more details of how we intend to do that, see https://kb.vshn.ch/app-catalog/framework/framework-2-0/index.html[Framework 2.0 Overview].
+
+== PostgreSQL CloudNativePG Barman Cloud Plugin Backup
+
+PostgreSQL CloudNativePG now uses the Barman cloud plugin by adjusting the helm values passed.
+Pre maintenance backup uses a typed API and utilizes the Barman cloud plugin.
+The prior implementation of native support for Barman cloud backups is depricated and will be completely removed in CloudNativePG 1.28.0.
+
+== Vector Databases on AppCat
+
+Do you need a vector database? PostgreSQL with pgvector is already available as a viable option; just reach out to us. If you are curious, https://kb.vshn.ch/app-catalog/adr/0048-evaluating-vector-databases-as-appcat-services.html[here] is our evaluation of vector databases.
+
+== Limit metadata.name length for all services
+
+Naming can be tricky, especially in a restricted world. We added length checks to help you.
+This change does not have any impact on existing instances, as the metadata.name length check only triggers during creation of an k8s object.
+
+== Allow deletion of copy-job for PostgreSQL
+
+This fixes the problem where the composite turned unsynced when removing spec.parameters.restore from the claim by making the job deleteable.
+
+== Adjust grant logic for PostgreSQL for db and schema level grants
+
+Not all grants apply to the schema and the database and we therefore need to parse the grants and apply them correctly to the database, the schema or both.
