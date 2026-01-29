@@ -17,11 +17,6 @@ The prior implementation of native support for Barman cloud backups is deprecate
 
 Do you need a vector database? PostgreSQL with pgvector is already available as a viable option; just reach out to us. If you are curious, https://kb.vshn.ch/app-catalog/adr/0048-evaluating-vector-databases-as-appcat-services.html[here] is our evaluation of vector databases.
 
-== Limit metadata.name length for all services
-
-Naming can be tricky, especially in a restricted world. We added length checks to help you.
-This change does not have any impact on existing instances, as the metadata.name length check only triggers during creation of an k8s object.
-
 == Allow deletion of copy-job for PostgreSQL
 
 This fixes the problem where the composite turned unsynced when removing `spec.parameters.restore` from the claim by making the job deleteable.
