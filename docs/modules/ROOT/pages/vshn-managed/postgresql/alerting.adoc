@@ -96,13 +96,17 @@ include::page$references/alerts.adoc[tag=common]
 
 === PostgreSQLConnectionsCritical
 
-The connections have been over 90% of the configured `max_connections` setting.
+The connections have been over 90% of the configured `max_connections` setting for 2 hours.
 
-* Either reduce the amount of connections to the database
-* Or increase the `max_connections` setting in your instance
+The default `max_connections` for PostgreSQL is `100`. Once this limit is reached, any additional clients must wait until a connection is released.
+
+To resolve this alert:
+
+* Reduce the number of connections to the database (for example implement connection pooling in your application or reduce idle connections)
+* Increase the `max_connections` setting in your instance
 
 [NOTE]
 ====
-Please be aware that changing the `max_connection` setting can have an impact on the memory usage of PostgreSQL.
+Increasing the `max_connections` setting has an impact on PostgreSQL memory usage. Ensure your instance has sufficient memory allocated before increasing this value.
 ====
 
