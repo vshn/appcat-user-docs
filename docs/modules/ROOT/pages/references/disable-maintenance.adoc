@@ -1,0 +1,91 @@
+= Disabling Maintenance
+
+AppCat services automatically receive two types of updates during maintenance windows:
+
+* *Service maintenance*: Updates to the underlying service version (for example, PostgreSQL 16.1 to 16.2)
+* *AppCat releases*: Updates to the AppCat composition revision containing bug fixes, security patches, and new features
+
+Both can be disabled if you need full control over your instance updates.
+
+[CAUTION]
+====
+Disabling maintenance means you take full responsibility for keeping your service up-to-date. This can leave your instance vulnerable to security issues if not managed properly.
+====
+
+== Configuration Options
+
+[cols="1,2",options="header"]
+|===
+|Field |Description
+
+|`disableServiceMaintenance`
+|Disables automatic service version updates. The version in `spec.parameters.service.version` becomes the target version.
+
+|`disableAppcatRelease`
+|Disables automatic AppCat composition revision rollouts. Strongly discouraged as it may leave instances without security patches.
+|===
+
+== Example
+
+.PostgreSQL instance with maintenance disabled
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      majorVersion: "16"
+    maintenance:
+      dayOfWeek: wednesday
+      timeOfDay: '23:30:00'
+      disableServiceMaintenance: true  # <1>
+      disableAppcatRelease: false      # <2>
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> Disables automatic service version updates
+<2> Keeps AppCat release updates enabled (recommended)
+
+== Behavior
+
+=== Service Maintenance Disabled
+
+When `disableServiceMaintenance: true`:
+
+* The existing version is locked
+* Downgrades are prevented: if the deployed version is higher than the specified version, the current version is kept
+
+=== AppCat Release Disabled
+
+When `disableAppcatRelease: true`:
+
+* The instance won't receive new AppCat composition revisions
+* Bug fixes, security patches, and new features won't be applied automatically
+* Both flags enabled together: maintenance jobs are skipped entirely
+
+== Warnings
+
+When creating or updating an instance with these flags enabled, you'll see admission warnings:
+
+[source]
+----
+WARNING: Service maintenance disabled at spec.parameters.maintenance.disableServiceMaintenance. You are responsible for managing service versions.
+
+WARNING: AppCat release updates disabled at spec.parameters.maintenance.disableAppcatRelease. This is strongly discouraged and may leave your instance without security patches.
+----
+
+== Supported Services
+
+This feature is available for all VSHN managed services:
+
+* VSHNPostgreSQL
+* VSHNMariaDB
+* VSHNRedis
+* VSHNNextcloud
+* VSHNKeycloak
+* VSHNForgejo
+* VSHNMinIO
