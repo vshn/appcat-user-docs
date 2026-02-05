@@ -1,0 +1,101 @@
+= Disabling Maintenance
+
+AppCat services automatically receive two types of updates during maintenance windows:
+
+* *Service maintenance*: Updates to the underlying service version (for example, PostgreSQL 16.1 to 16.2) containing bug fixes and security patches
+* *AppCat releases*: Updates to the AppCat composition revision containing bug fixes, security patches and new features
+
+Both can be disabled if you need full control over your instance updates.
+
+[CAUTION]
+====
+Disabling maintenance means you take full responsibility for keeping your service up-to-date.
+This can leave your instance vulnerable to security issues if not managed properly.
+====
+
+== Configuration Options
+
+[cols="1,2",options="header"]
+|===
+|Field |Description
+
+|`pinImageTag`
+|Pins the service to a specific version. When set, this exact version is used instead of the latest available version.
+
+|`disableAppcatRelease`
+|Disables automatic AppCat composition revision rollouts.
+|===
+
+== Example
+
+.PostgreSQL instance with version pinning
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    maintenance:
+      dayOfWeek: wednesday
+      timeOfDay: '23:30:00'
+      pinImageTag: "16.4"           # <1>
+      disableAppcatRelease: false   # <2>
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+<1> Pins the service to PostgreSQL 16.4 specifically
+<2> Keeps AppCat release updates enabled
+
+[IMPORTANT]
+====
+For PostgreSQL CNPG service, the major version in `pinImageTag` must match the `majorVersion` field.
+For example, if `majorVersion: "16"`, then `pinImageTag` must start with `16.` (such as `16.4`, `16.9`).
+Setting `pinImageTag: "15.13"` with `majorVersion: "16"` will be rejected by the webhook validation.
+====
+
+== Behavior
+
+=== Version Pinning with pinImageTag
+
+When `pinImageTag` is set:
+
+* The service runs the exact specified version
+* Automatic version updates are disabled
+* You can pin to older versions (downgrades are allowed when pinning on your own risk)
+* You take full responsibility for security updates and bug fixes
+
+[WARNING]
+====
+Pinning to an older version means you won't receive security patches automatically.
+Only use this when you have a specific requirement for a particular version.
+====
+
+[NOTE]
+====
+All services get minor version upgrades during maintenance except Keycloak and PostgreSQL that get minor version upgrades. 
+====
+
+=== AppCat Release Disabled
+
+When `disableAppcatRelease: true`:
+
+* The instance won't receive new AppCat composition revisions
+* Bug fixes, security patches, and new features won't be applied automatically
+* When combined with `pinImageTag`: maintenance jobs are skipped entirely
+
+== Supported Services
+
+Version pinning with `pinImageTag` and `disableAppcatRelease` option is currently available for:
+
+* VSHNPostgreSQL (CNPG-based instances)
+* VSHNMariaDB
+* VSHNRedis
+* VSHNNextcloud
+* VSHNKeycloak
+* VSHNForgejo
+* VSHNMinIO
+
+NOTE: For StackGres-based PostgreSQL instances, `pinImageTag` is currently a no-op and will be implemented in a future release.
