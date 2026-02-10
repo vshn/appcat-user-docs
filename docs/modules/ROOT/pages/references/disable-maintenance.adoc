@@ -75,7 +75,7 @@ Only use this when you have a specific requirement for a particular version.
 
 [NOTE]
 ====
-All services get minor version upgrades during maintenance except Keycloak and PostgreSQL that get minor version upgrades. 
+All services get patch version upgrades during maintenance except Keycloak and PostgreSQL that get minor version upgrades.
 ====
 
 === AppCat Release Disabled
