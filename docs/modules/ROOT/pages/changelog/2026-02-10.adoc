@@ -1,0 +1,15 @@
+= Changelog 2026-02-10
+
+AppCat release https://github.com/vshn/appcat/releases/tag/v4.180.0[v4.180.0^] goes right to the point. 2 important new features - allow disabling maintenance and pin image tag.
+
+== Disable Maintenance and Pin Image Tag
+
+After many requests, we have implemented the option to disable maintenance. Bugs happen, and sometimes you need to do exactly that: disable maintenance to protect your environment. 
+This goes along with pinning an image tag to a specific version. This might be the case for some Keycloak versions.
+That being said, we advise great caution in using these new features. Regular maintenance is important for security reasons, and pinned images can get outdated very fast. Please be very careful in using them, and remember to activate maintenance and remove the pin once you are done. We have also introduced alerting to remind you about the status of your environment.
+https://docs.appcat.ch/references/disable-maintenance.html[Disable Maintenance] documentation describes how to use these new features.
+
+== Alternatives for S3 compatible Object Storage
+
+We did research to find a good alternative for S3 compatible object storage. Looks like there are a few, and we found the one that fits our use case. 
+You can take a look at our findings https://kb.vshn.ch/app-catalog/adr/0050-alternatives-to-minio-for-s3-compatible-object-storage.html[here]. Let us know if you have found something equally interesting or if we overlooked a tool.
