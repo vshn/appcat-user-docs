@@ -82,13 +82,13 @@ metadata:
 spec:
   parameters:
     monitoring:
-      email: foo@example.com # <1>
+      email: "foo@example.com,bar@example.com" # <1>
     service:
       majorVersion: "16"
   writeConnectionSecretToRef:
     name: postgres-creds
 ----
-<1> E-Mail address to be used to receive alerts.
+<1> E-Mail address(es) to be used to receive alerts. Multiple addresses can be specified as a comma-separated list.
 
 == Alert Specifications
 
