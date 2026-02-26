@@ -1,4 +1,4 @@
- Changelog 2026-02-24
+= Changelog 2026-02-24
 
 AppCat release https://github.com/vshn/appcat/releases/tag/v4.181.0[v4.181.0^] includes various bug fixes and performance improvements. 
 Yes, every release includes those, but this one is exclusively about improvements. The most prominent ones are mentioned below. 
