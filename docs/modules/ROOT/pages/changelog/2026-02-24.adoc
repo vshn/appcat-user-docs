@@ -1,0 +1,33 @@
+ Changelog 2026-02-24
+
+AppCat release https://github.com/vshn/appcat/releases/tag/v4.181.0[v4.181.0^] includes various bug fixes and performance improvements. 
+Yes, every release includes those, but this one is exclusively about improvements. The most prominent ones are mentioned below. 
+
+== Set Nextcloud cronjob securityContext to run as www-data
+
+The cronjob was failing because it runs as root (uid 0), but config.php is owned by www-data (uid 33).
+On vanilla Kubernetes explicitly set runAsUser/runAsGroup to 33.
+On OpenShift leave empty to let SCC handle UID assignment.
+
+== Bump forgejo and Codey versions
+
+According to https://forgejo.org/releases/[forgejo releases], only v11.x and v14.x are supported. 
+
+== PostgreSQL CloudNativePG for Keycloak
+
+We have switched the PostgreSQL database used for VSHN AppCat Keycloak service from Stackgress to CloudNativePG. It does not affect the existing Keycloak instances. 
+From the next AppCat release, when you create a new Keycloak instance, it will use PostgreSQL CloudNativePG in the background. Why next, you ask? We still want to finish up the implementation of alerting.
+
+== Race condition for PostgreSQL user management 
+
+The issue occurred when multiple databases were created concurrently or during instance initialization. 
+Since template0 is immutable and does not accept connections by default, using it as the bootstrap template eliminates this race condition.
+
+== End user alerting
+
+We made improvements for user alerting, including reducing alert flapping. PersistentVolumeFillingUp would send an alert every 1 minute. Even though this is important, the 1 minute interval was not optimal. The new interval is 15 minutes.
+If you have not yet, we highly advise configuring user alerting for your instances. You can do that easily as described https://docs.appcat.ch/vshn-managed/postgresql/alerting.html[here].
+
+== Maintenance schedule mutation with nested PostgreSQL
+
+We identified two bugs in maintenance schedule handling for services with PostgreSQL dependencies: Keycloak and Nextcloud. In some edge cases the maintenance time was slightly different than set.
