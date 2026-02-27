@@ -5,6 +5,10 @@ In order for AppCat to work properly in conjecture with ArgoCD there are two req
 * ArgoCD has to be at least v2.4.8
 * The `ResourceTrackingMethod` needs to be set to `annotation`
 
+NOTE: As of 3.x ArgoCD will use `ResourceTrackingMethod=annotation` by default.
+A fresh installation of ArgoCD will not require any additional configuration or workaround.
+If upgrading ArgoCD from 2.x please check the https://argo-cd.readthedocs.io/en/stable/operator-manual/upgrading/2.14-3.0/#use-annotation-based-tracking-by-default[official notes.]
+
 == Workaround
 
 If the requirements can't be satisfied, following workaround will help.
