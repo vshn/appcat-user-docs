@@ -2,6 +2,8 @@
 
 This page will describe how you can customize your Keycloak instance.
 
+NOTE: Updating an existing keycloak configuration can take up to 60 minutes to be applied.
+
 == Themes, providers and custom files
 
 `VSHNKeycloak` allows you to use custom providers, themes and files.
@@ -115,7 +117,6 @@ spec:
       customConfigurationRef: keycloak-app1-prod-config <1>
 ----
 <1> The name of the `ConfigMap`. Must be in the same namespace as the Keycloak claim.
-
 
 == Environment variables
 
