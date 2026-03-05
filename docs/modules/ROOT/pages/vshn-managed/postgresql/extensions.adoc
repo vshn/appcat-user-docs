@@ -26,3 +26,37 @@ After applying the change, AppCat will ensure that the extension is available af
 
 WARNING: Some extension like `timescaldb` or `postgis` will require a restart of the instance to be available.
 Depending on your https://docs.appcat.ch/vshn-managed/postgresql/update-strategy.html[Instance Update Strategy], it's possible that the instance will restart immediately.
+
+== Using Extensions with CloudNativePG
+
+NOTE: Extensions are only supported for PostgreSQL version 18 or greater.
+
+Installing extensions on xref:vshn-managed/postgresql/create.adoc#_cloudnativepg[CloudNativePG]-backed instances differs slightly from StackGres. Each extension is packaged as an OCI image and referenced directly in the instance configuration.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+spec:
+  compositionRef:
+    name: vshnpostgrescnpg.vshn.appcat.vshn.io
+  parameters:
+    service:
+      majorVersion: "18"
+      extensions:
+        - name: pgvector <1>
+          image: ghcr.io/cloudnative-pg/pgvector:0.8.2-18-bookworm <2>
+          imagePullPolicy: IfNotPresent <3>
+----
+
+<1> Name of the extension to be installed.
+<2> OCI image containing the extension. For a list of available images, consult the https://github.com/cloudnative-pg/postgres-extensions-containers[official CloudNativePG extensions^] and the https://github.com/vshn/cnpg_extensions[extensions maintained by VSHN^].
+<3> Optional image pull policy for the extension image.
+
+=== Bring your own extensions
+
+You can also bring your own extension image following the https://cloudnative-pg.io/docs/1.28/imagevolume_extensions[official documentation^].
+
+WARNING: We do not provide support for images not officially maintained by CloudNativePG or VSHN.
