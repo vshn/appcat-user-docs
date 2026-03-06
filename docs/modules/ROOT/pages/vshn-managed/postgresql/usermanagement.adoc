@@ -26,7 +26,7 @@ spec:
         - user: app3
           database: app1
           privileges:
-            - SELECT # <3>
+            - CONNECT # <3>
         - user: app4
           writeConnectionSecretToRef: <4>
             name: my-secret
@@ -36,7 +36,7 @@ spec:
 ----
 <1> Create a user and a database called app1, the user gets all privileges for the database
 <2> Create a user app2 and giving it all privileges to database app1
-<3> Create a user app3 and giving it select privileges on database app1
+<3> Create a user app3 and giving it connect privileges on database app1
 <4> Write the connection secret to another namespace. If you want to connect from another namespace, please make sure that you configure the xref:vshn-managed/postgresql/security.adoc[allowed namespaces] accordingly.
 
 Please see the official https://www.postgresql.org/docs/current/ddl-priv.html[PostgreSQL docs] for all available privileges. Only Grants applicable to databases are supported.
