@@ -20,7 +20,7 @@ spec:
       pgSettings:
         timezone: Europe/Zurich # <5>
     size: # <6>
-      plan: standard-4
+      plan: standard-2
     backup: # <7>
       schedule: "30 23 * * *"
       retention: 12
@@ -58,7 +58,7 @@ spec:
       majorVersion: "16"
       enableEnvoy: true # <1>
     size:
-      plan: standard-4
+      plan: standard-2
   writeConnectionSecretToRef:
     name: postgres-creds
 ----
