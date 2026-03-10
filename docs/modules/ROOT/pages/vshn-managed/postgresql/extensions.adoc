@@ -2,9 +2,12 @@
 
 PostgreSQL supports many different extensions, such as https://postgis.net/[PostGIS^] or https://www.timescale.com/[TimescaleDB^].
 These extensions can be used in PostgreSQL by VSHN as well.
-For a list of all available extensions please https://stackgres.io/doc/latest/intro/extensions/[consult this page^].
 
-== Enable PostgreSQL Extensions
+== StackGres
+
+For a list of all available extensions, please https://stackgres.io/doc/latest/intro/extensions/[consult the official StackGres listing^].
+
+=== Enable Extensions
 
 To enable an extension, add the following configuration to your instance:
 
@@ -22,7 +25,115 @@ spec:
 ----
 
 <1> Name of the extension as found on the "Name" column at https://stackgres.io/doc/latest/intro/extensions/[the official listing^]. Add more extensions to the list as needed.
+
 After applying the change, AppCat will ensure that the extension is available after a short while.
 
-WARNING: Some extension like `timescaldb` or `postgis` will require a restart of the instance to be available.
+WARNING: Some extensions like `timescaledb` or `postgis` will require a restart of the instance to be available.
 Depending on your https://docs.appcat.ch/vshn-managed/postgresql/update-strategy.html[Instance Update Strategy], it's possible that the instance will restart immediately.
+
+== CloudNativePG
+
+=== Built-in Extensions
+
+CloudNativePG instances already ship with a set of extensions that are ready to use without any additional configuration.
+You can check which extensions are available on your instance by running the following SQL query:
+
+[source,sql]
+----
+SELECT name, default_version, comment FROM pg_available_extensions ORDER BY name;
+----
+
+The default image currently includes the following extensions:
+
+[%collapsible]
+====
+[cols="1,1,3", options="header"]
+|===
+| Name | Default Version | Description
+
+| amcheck | 1.5 | functions for verifying relation integrity
+| autoinc | 1.0 | functions for autoincrementing fields
+| bloom | 1.0 | bloom access method - signature file based index
+| btree_gin | 1.3 | support for indexing common datatypes in GIN
+| btree_gist | 1.8 | support for indexing common datatypes in GiST
+| citext | 1.8 | data type for case-insensitive character strings
+| cube | 1.5 | data type for multidimensional cubes
+| dblink | 1.2 | connect to other PostgreSQL databases from within a database
+| dict_int | 1.0 | text search dictionary template for integers
+| dict_xsyn | 1.0 | text search dictionary template for extended synonym processing
+| earthdistance | 1.2 | calculate great-circle distances on the surface of the Earth
+| file_fdw | 1.0 | foreign-data wrapper for flat file access
+| fuzzystrmatch | 1.2 | determine similarities and distance between strings
+| hstore | 1.8 | data type for storing sets of (key, value) pairs
+| insert_username | 1.0 | functions for tracking who changed a table
+| intagg | 1.1 | integer aggregator and enumerator (obsolete)
+| intarray | 1.5 | functions, operators, and index support for 1-D arrays of integers
+| isn | 1.3 | data types for international product numbering standards
+| lo | 1.2 | Large Object maintenance
+| ltree | 1.3 | data type for hierarchical tree-like structures
+| moddatetime | 1.0 | functions for tracking last modification time
+| pageinspect | 1.13 | inspect the contents of database pages at a low level
+| pg_buffercache | 1.6 | examine the shared buffer cache
+| pg_freespacemap | 1.3 | examine the free space map (FSM)
+| pg_logicalinspect | 1.0 | functions to inspect logical decoding components
+| pg_prewarm | 1.2 | prewarm relation data
+| pg_stat_statements | 1.12 | track planning and execution statistics of all SQL statements executed
+| pg_surgery | 1.0 | extension to perform surgery on a damaged relation
+| pg_trgm | 1.6 | text similarity measurement and index searching based on trigrams
+| pg_visibility | 1.2 | examine the visibility map (VM) and page-level visibility info
+| pg_walinspect | 1.1 | functions to inspect contents of PostgreSQL Write-Ahead Log
+| pgaudit | 18.0 | provides auditing functionality
+| pgcrypto | 1.4 | cryptographic functions
+| pgrowlocks | 1.2 | show row-level locking information
+| pgstattuple | 1.5 | show tuple-level statistics
+| plpgsql | 1.0 | PL/pgSQL procedural language
+| postgres_fdw | 1.2 | foreign-data wrapper for remote PostgreSQL servers
+| refint | 1.0 | functions for implementing referential integrity (obsolete)
+| seg | 1.4 | data type for representing line segments or floating-point intervals
+| sslinfo | 1.2 | information about SSL certificates
+| tablefunc | 1.0 | functions that manipulate whole tables, including crosstab
+| tcn | 1.0 | Triggered change notifications
+| tsm_system_rows | 1.0 | TABLESAMPLE method which accepts number of rows as a limit
+| tsm_system_time | 1.0 | TABLESAMPLE method which accepts time in milliseconds as a limit
+| unaccent | 1.1 | text search dictionary that removes accents
+| uuid-ossp | 1.1 | generate universally unique identifiers (UUIDs)
+| vector | 0.8.2 | vector data type and ivfflat and hnsw access methods
+| xml2 | 1.2 | XPath querying and XSLT
+|===
+====
+
+=== Installing Additional Extensions
+
+NOTE: Installing additional extensions is only supported for PostgreSQL version 18 or greater.
+
+The following configuration is only needed if the extension you require is *not* available in the default image (see table above).
+
+Each extension is packaged as an OCI image and referenced directly in the instance configuration:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+spec:
+  compositionRef:
+    name: vshnpostgrescnpg.vshn.appcat.vshn.io
+  parameters:
+    service:
+      majorVersion: "18"
+      extensions:
+        - name: pgvector <1>
+          image: ghcr.io/cloudnative-pg/pgvector:0.8.2-18-bookworm <2>
+          imagePullPolicy: IfNotPresent <3>
+----
+
+<1> Name of the extension to be installed.
+<2> OCI image containing the extension. For a list of available images, consult the https://github.com/cloudnative-pg/postgres-extensions-containers[official CloudNativePG extensions^] and the https://github.com/vshn/cnpg_extensions[extensions maintained by VSHN^].
+<3> Optional image pull policy for the extension image.
+
+=== Bring Your Own Extensions
+
+You can also bring your own extension image following the https://cloudnative-pg.io/docs/1.28/imagevolume_extensions[official documentation^].
+
+WARNING: We do not provide support for images not officially maintained by CloudNativePG or VSHN.
