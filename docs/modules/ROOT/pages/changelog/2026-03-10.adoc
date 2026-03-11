@@ -10,7 +10,7 @@ Be mindful that you are responsible for the extensions that you use on your data
 
 == Garage S3
 
-Since MinIO has been https://github.com/minio/minio/issues/21714[archived], we are busy looking forward. For us that means Garage S3. Still very fresh and barely out of the owen, but we are excited for you to get your hands on this new service as soon as possible
+Since MinIO has been https://github.com/minio/minio/issues/21714[archived], we are busy looking forward. For us that means Garage S3. Still very fresh and barely out of the oven, but we are excited for you to get your hands on this new service as soon as possible
 
 == Abort maintenance and release if backup fails
 
