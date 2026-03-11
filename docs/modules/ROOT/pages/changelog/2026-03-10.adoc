@@ -1,4 +1,4 @@
-Changelog 2026-03-10
+= Changelog 2026-03-10
 
 AppCat release https://github.com/vshn/appcat/releases/tag/v4.182.0[v4.182.0^] puts the spotlight on CloudNativePG and Garage S3, alongside some improvements.
 
