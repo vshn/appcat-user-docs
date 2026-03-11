@@ -58,6 +58,7 @@
 * xref:vshn-managed/nextcloud/delete.adoc[Deletion]
 * xref:vshn-managed/nextcloud/deletion-protection.adoc[]
 * xref:vshn-managed/nextcloud/maintenance.adoc[]
+* xref:vshn-managed/nextcloud/major-upgrade.adoc[Major Version Upgrade]
 * xref:vshn-managed/nextcloud/plans.adoc[]
 * xref:vshn-managed/nextcloud/usage.adoc[Usage]
 
