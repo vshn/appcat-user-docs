@@ -21,19 +21,23 @@ spec:
         config:
           actions: {}
           openid: {}
+          oauth2: {} <5>
+          oauth2_client: {} <6>
           service: {}
           service.explore: {}
           mailer: {}
-      majorVersion: "12.0.0" <5>
+      majorVersion: "12.0.0" <7>
   writeConnectionSecretToRef:
-    name: forgejo-creds <6>
+    name: forgejo-creds <8>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
 <3> Your full qualified domain name
 <4> Define select `app.ini` settings, refer to the link:https://forgejo.org/docs/latest/admin/config-cheat-sheet/[config cheat sheet] to see available fields
-<5> Forgejo major version - link:https://products.vshn.ch/appcat/forgejo.html#_supported_versions[Supported Versions]
-<6> The name of the secret where the connection details will be stored, it must be unique per namespace
+<5> Settings for Forgejo acting as an OAuth2 *provider*, see link:https://forgejo.org/docs/latest/admin/config-cheat-sheet/#oauth2-oauth2[OAuth2 config reference]
+<6> Settings for Forgejo acting as an OAuth2 *client* (logging in via an external identity provider such as Keycloak), see link:https://forgejo.org/docs/latest/admin/config-cheat-sheet/#oauth2-client-oauth2_client[OAuth2 client config reference]
+<7> Forgejo major version - link:https://products.vshn.ch/appcat/forgejo.html#_supported_versions[Supported Versions]
+<8> The name of the secret where the connection details will be stored, it must be unique per namespace
 
 WARNING: The **first** domain you define in `.spec.parameters.service.fqdn` will also be set as `server.DOMAIN` in Forgejos `app.ini` and therefore influences Forgejos root URL.  +
 This is applicable to things like webhook notifications, OAuth, and similar functionalities.
