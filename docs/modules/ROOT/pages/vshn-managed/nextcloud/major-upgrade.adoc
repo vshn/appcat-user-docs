@@ -1,0 +1,81 @@
+= Nextcloud Major Version Upgrade
+
+== Overview
+
+VSHNNextcloud supports major version upgrades by updating `spec.parameters.service.version`.
+VSHN handles automatic patch and minor updates during the xref:vshn-managed/nextcloud/maintenance.adoc[maintenance window].
+Major version upgrades must be triggered manually.
+
+[WARNING]
+====
+Major version upgrades may introduce breaking changes. Review the https://nextcloud.com/changelog/[Nextcloud changelog^] before upgrading.
+====
+
+[WARNING]
+====
+**App compatibility is the user's responsibility.** Third-party Nextcloud apps may not be compatible with the new major version. If any apps break after an upgrade, the user is responsible for resolving compatibility issues or disabling incompatible apps.
+====
+
+[WARNING]
+====
+**Downgrades are not supported.** Once a major version upgrade is applied, rolling back to a previous version is not possible unless `spec.parameters.maintenance.pinImageTag` is used to pin a specific image.
+====
+
+NOTE: For more information about the upgrade policy, please visit https://products.docs.vshn.ch/products/appcat/nextcloud.html#_supported_versions[the product description^].
+
+== Version Format
+
+The `spec.parameters.service.version` field accepts:
+
+* Major version only: `"31"`
+* Major and minor version: `"31.0"`
+
+NOTE: Do not specify a patch version (e.g., `"31.0.1"` is not supported).
+We recommend setting only the major version when doing a major version upgrade (e.g., `"31"`)
+
+== Upgrade Procedure
+
+=== Example: Upgrading from Nextcloud 30 to 31
+
+Modify the `version` field in your Kubernetes resource definition:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNNextcloud
+metadata:
+  name: nextcloud-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      version: "31"  # <1>
+----
+<1> Set the target major version. The upgrade is triggered automatically after applying this change.
+
+Alternatively, patch an existing instance:
+
+[source,bash]
+----
+kubectl patch vshnnextcloud nextcloud-app1-prod --type=merge \
+  -p '{"spec":{"parameters":{"service":{"version":"31"}}}}'
+----
+
+== What Happens During a Major Upgrade
+
+. The Nextcloud container image is updated to the new major version.
+. On first start, Nextcloud runs its built-in database migration.
+. All installed apps are updated via `occ app:update --all`.
+. The instance restarts and becomes available again.
+
+[NOTE]
+====
+App updates are run automatically, but apps that are incompatible with the new Nextcloud version may be disabled automatically by Nextcloud. Review your apps after the upgrade.
+====
+
+== User Responsibilities
+
+* Review https://nextcloud.com/changelog/[Nextcloud release notes^] for breaking changes before upgrading.
+* Verify that third-party apps are compatible with the target version.
+* Test the upgrade in a non-production environment before applying it to production.
+* Resolve any app compatibility issues after the upgrade.
