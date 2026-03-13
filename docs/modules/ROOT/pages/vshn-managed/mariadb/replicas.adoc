@@ -69,3 +69,29 @@ Please consult the following table for more details.
 |64Mi
 |256Mi
 
+|===
+
+=== Custom ProxySQL Resources
+
+You can override the default CPU and memory resources for ProxySQL in your claim.
+Any unset field falls back to the defaults shown above.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNMariaDB
+metadata:
+  name: mariadb-app1-prod
+spec:
+  parameters:
+    instances: 3
+    service:
+      proxySQL:
+        resources:
+          limits:
+            cpu: "1"
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 128Mi
+----
