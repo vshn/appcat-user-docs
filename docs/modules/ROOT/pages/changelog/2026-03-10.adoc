@@ -1,0 +1,23 @@
+= Changelog 2026-03-10
+
+AppCat release https://github.com/vshn/appcat/releases/tag/v4.182.0[v4.182.0^] puts the spotlight on CloudNativePG and Garage S3, alongside some improvements.
+
+== PostgreSQL CloudNativePG Extensions and Alerting
+
+We have implemented alerting for CloudNativePG. What that means for you is that now you can use PostgreSQL CloudNativePG with the service level guaranteed availability. You can change the service level for your instances very easily as documented https://docs.appcat.ch/vshn-managed/postgresql/sla.html[here].
+Extensions are a big topic for PostgreSQL. We have bootstrapped extensions from PostgreSQL CloudNativePG v18. The list of supported extensions is available under https://docs.appcat.ch/vshn-managed/postgresql/extensions.html#_cloudnativepg[CloudNativePG Extensions].
+Be mindful that you are responsible for the extensions that you use on your database.
+
+== Garage S3
+
+Since MinIO has been https://github.com/minio/minio/issues/21714[archived], we are busy looking forward. For us that means https://garagehq.deuxfleurs.fr[Garage S3]. Still very fresh and barely out of the oven, but we are excited for you to get your hands on this new service as soon as possible
+
+== Abort maintenance and release if backup fails
+
+We found out that the maintenance would continue even if the initial backup failed. This has been fixed. If the backup fails, the entire maintenance is aborted.
+
+== Keycloak improvements
+
+
+There was a bug that prevented a specified customization image to be applied, which is now resolved.
+
