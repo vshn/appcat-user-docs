@@ -1,0 +1,348 @@
+= Migrate a PostgreSQL instance to another PostgreSQL instance
+
+== Overview
+
+This guide explains how to migrate from one VSHNPostgreSQL instance to another using `pg_dump` and `pg_restore` via
+`kubectl exec` directly inside the database pods.
+This approach supports migrations between instances on different clusters as well as within the same cluster.
+
+The script detects the PostgreSQL type of the source instance (StackGres or CNPG) automatically.
+The destination is always assumed to be a CNPG-based instance.
+
+[WARNING]
+====
+This migration method does not support zero-downtime migrations.
+The dump is taken from a live instance, but any writes that occur during the migration will not be captured.
+Stop all write traffic to the source instance before running the script, or accept the risk of data loss for writes done
+after the script ran.
+====
+
+== Prerequisites
+
+Ensure the following tools are installed and available in your `PATH`:
+
+* `kubectl` and the required `kubeconfig` for the source (and optionally for the destination cluster).
+
+Both VSHNPostgreSQL claims (source and destination) must already exist and be in a ready state before running the script.
+
+* The destination instance must run PostgreSQL **18** or later.
+* All other extensions used in the source instance must also be present in the destination instance if they are not
+already build-in (see https://docs.appcat.ch/vshn-managed/postgresql/extensions.html#_built_in_extensions[PostgreSQL Extensions]).
+
+=== Migrating from a StackGres instance
+
+When the source instance is a StackGres-based VSHNPostgreSQL, the destination CNPG instance requires additional configuration before running the migration:
+
+* The `plpython3u` extension must be configured on the destination instance.
+
+Configure the destination instance as follows:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: psql-cnpg
+  namespace: default
+spec:
+  compositionRef:
+    name: vshnpostgrescnpg.vshn.appcat.vshn.io
+  parameters:
+    service:
+      majorVersion: "18"
+      extensions:
+        - name: plpython3u
+          image: ghcr.io/vshn/plpython3u:18.3-18-bookworm
+          imagePullPolicy: IfNotPresent
+          ld_library_path:
+            - system
+  writeConnectionSecretToRef:
+    name: postgres-cnpg-creds
+----
+
+Add any additional extensions from the source instance to the `extensions` list before running the migration script.
+
+== Procedure
+
+. Save the following script as `pg-migrate.sh` and make it executable:
++
+[source,bash]
+----
+#!/usr/bin/env bash
+# pg-migrate.sh — Migrate a VSHNPostgreSQL claim from one cluster to another
+# via kubectl exec + pg_dump | pg_restore (custom format).
+#
+# pg_dump and pg_restore run inside the database pods, so no local PostgreSQL
+# installation is required. The postgres superuser connects via Unix socket
+# (peer authentication) — no secrets or passwords are needed.
+#
+# The type of the source instance is detected (StackGres or CNPG) automatically. The destination
+# is always assumed to be CNPG.
+#
+# Usage:
+#   ./pg-migrate.sh \
+#     --src-kubeconfig /path/to/src.kubeconfig \
+#     --src-namespace  <claim-namespace> \
+#     --src-claim      <claim-name> \
+#     --dst-kubeconfig /path/to/dst.kubeconfig \   # omit if same cluster
+#     --dst-namespace  <claim-namespace> \
+#     --dst-claim      <claim-name> \
+#     --cleanup-stackgres                          # optional: drop StackGres extensions after restore
+
+set -euo pipefail
+
+# ----- Helper functions -----
+
+log() { echo "[$(date +%T)] $*"; }
+die() { echo "[ERROR] $*" >&2; exit 1; }
+
+get_claim_field() {
+  local kubeconfig=$1 namespace=$2 claim=$3 field=$4
+  KUBECONFIG="$kubeconfig" kubectl get vshnpostgresql "$claim" \
+    -n "$namespace" -o jsonpath="{$field}"
+}
+
+get_primary_pod() {
+  local kubeconfig=$1 namespace=$2 label_selector=$3
+  KUBECONFIG="$kubeconfig" kubectl get pod \
+    -n "$namespace" -l "$label_selector" \
+    -o jsonpath='{.items[0].metadata.name}'
+}
+
+cleanup_stackgres() {
+  local kubeconfig=$1 namespace=$2 pod=$3 db=$4
+  log "  Removing StackGres extensions and functions from database: $db"
+  KUBECONFIG="$kubeconfig" kubectl exec -i -n "$namespace" "$pod" -- \
+    psql -U postgres -d "$db" -q <<'EOSQL'
+DO $$
+DECLARE
+  r RECORD;
+BEGIN
+  FOR r IN
+    SELECT n.nspname AS schema,
+           p.proname AS name,
+           pg_get_function_identity_arguments(p.oid) AS args
+    FROM pg_proc p
+    JOIN pg_namespace n ON n.oid = p.pronamespace
+    WHERE p.prolang = (SELECT oid FROM pg_language WHERE lanname = 'plpython3u')
+  LOOP
+    EXECUTE format('DROP FUNCTION IF EXISTS %I.%I(%s)', r.schema, r.name, r.args);
+  END LOOP;
+END;
+$$;
+DROP EXTENSION IF EXISTS plpython3u;
+EOSQL
+}
+
+# ----- Argument parsing -----
+
+SRC_KUBECONFIG=""
+SRC_NAMESPACE=""
+SRC_CLAIM=""
+DST_KUBECONFIG=""
+DST_NAMESPACE=""
+DST_CLAIM=""
+CLEANUP_STACKGRES=false
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --src-kubeconfig)    SRC_KUBECONFIG=$2;    shift 2 ;;
+    --src-namespace)     SRC_NAMESPACE=$2;     shift 2 ;;
+    --src-claim)         SRC_CLAIM=$2;         shift 2 ;;
+    --dst-kubeconfig)    DST_KUBECONFIG=$2;    shift 2 ;;
+    --dst-namespace)     DST_NAMESPACE=$2;     shift 2 ;;
+    --dst-claim)         DST_CLAIM=$2;         shift 2 ;;
+    --cleanup-stackgres) CLEANUP_STACKGRES=true; shift ;;
+    *) die "Unknown argument: $1" ;;
+  esac
+done
+
+[[ -n "$SRC_KUBECONFIG" ]] || die "--src-kubeconfig is required"
+[[ -n "$SRC_NAMESPACE" ]]  || die "--src-namespace is required"
+[[ -n "$SRC_CLAIM" ]]      || die "--src-claim is required"
+[[ -n "$DST_NAMESPACE" ]]  || die "--dst-namespace is required"
+[[ -n "$DST_CLAIM" ]]      || die "--dst-claim is required"
+
+# If no destination kubeconfig is provided, assume the same cluster
+DST_KUBECONFIG="${DST_KUBECONFIG:-$SRC_KUBECONFIG}"
+
+command -v kubectl &>/dev/null || die "'kubectl' not found in PATH."
+
+# ----- Get instance namespaces -----
+
+log "Resolving source claim ($SRC_NAMESPACE/$SRC_CLAIM)..."
+SRC_INSTANCE_NS=$(get_claim_field "$SRC_KUBECONFIG" "$SRC_NAMESPACE" "$SRC_CLAIM" \
+               '.status.instanceNamespace')
+[[ -n "$SRC_INSTANCE_NS" ]] || die "Could not read .status.instanceNamespace from source claim"
+
+log "Resolving destination claim ($DST_NAMESPACE/$DST_CLAIM)..."
+DST_INSTANCE_NS=$(get_claim_field "$DST_KUBECONFIG" "$DST_NAMESPACE" "$DST_CLAIM" \
+               '.status.instanceNamespace')
+[[ -n "$DST_INSTANCE_NS" ]] || die "Could not read .status.instanceNamespace from destination claim"
+
+# ----- Detect source instance type and find primary pods -----
+
+log "Detecting source instance type in $SRC_INSTANCE_NS..."
+if KUBECONFIG="$SRC_KUBECONFIG" kubectl get svc primary-service \
+    -n "$SRC_INSTANCE_NS" &>/dev/null; then
+  log "  detected: StackGres -- looking for pod with role=primary"
+  SRC_POD=$(get_primary_pod "$SRC_KUBECONFIG" "$SRC_INSTANCE_NS" "role=primary")
+else
+  log "  detected: CNPG -- looking for pod with cnpg.io/instanceRole=primary"
+  SRC_POD=$(get_primary_pod "$SRC_KUBECONFIG" "$SRC_INSTANCE_NS" "cnpg.io/instanceRole=primary")
+fi
+[[ -n "$SRC_POD" ]] || die "Could not find primary pod in $SRC_INSTANCE_NS"
+log "  source pod: $SRC_POD"
+
+log "Finding destination primary pod in $DST_INSTANCE_NS..."
+DST_POD=$(get_primary_pod "$DST_KUBECONFIG" "$DST_INSTANCE_NS" "cnpg.io/instanceRole=primary")
+[[ -n "$DST_POD" ]] || die "Could not find primary pod in $DST_INSTANCE_NS"
+log "  destination pod: $DST_POD"
+
+# ----- List source databases -----
+
+log "Listing databases on source ($SRC_POD)..."
+DATABASES=$(KUBECONFIG="$SRC_KUBECONFIG" kubectl exec -n "$SRC_INSTANCE_NS" "$SRC_POD" -- \
+  psql -U postgres -t -A -q -c \
+  "SELECT datname FROM pg_database WHERE datistemplate = false")
+[[ -n "$DATABASES" ]] || die "No databases found on source"
+log "  databases: $(echo "$DATABASES" | tr '\n' ' ')"
+
+log "  source      : postgres@$SRC_POD  (instance ns: $SRC_INSTANCE_NS)"
+log "  destination : postgres@$DST_POD  (instance ns: $DST_INSTANCE_NS)"
+
+# ----- Dump + Restore -----
+# pg_dump runs inside the source pod and streams via kubectl exec to pg_restore
+# in the destination pod. 
+
+RESTORE_LOG=/tmp/pg-restore.log
+> "$RESTORE_LOG"
+
+while IFS= read -r db; do
+  [[ -z "$db" ]] && continue
+  log "Migrating database: $db"
+  KUBECONFIG="$SRC_KUBECONFIG" kubectl exec -n "$SRC_INSTANCE_NS" "$SRC_POD" -- \
+    pg_dump \
+      --username=postgres \
+      --dbname="$db" \
+      --no-password \
+      --format=custom \
+      --compress=0 \
+      --lock-wait-timeout=120s \
+  | KUBECONFIG="$DST_KUBECONFIG" kubectl exec -i -n "$DST_INSTANCE_NS" "$DST_POD" -- \
+    pg_restore \
+      --username=postgres \
+      --dbname=postgres \
+      --no-password \
+      --clean \
+      --if-exists \
+      --verbose 2>&1 | tee -a "$RESTORE_LOG"
+done <<< "$DATABASES"
+
+if [[ "$CLEANUP_STACKGRES" == "true" ]]; then
+  log "Cleaning up StackGres extensions and functions on destination..."
+  while IFS= read -r db; do
+    [[ -z "$db" ]] && continue
+    cleanup_stackgres "$DST_KUBECONFIG" "$DST_INSTANCE_NS" "$DST_POD" "$db"
+  done <<< "$DATABASES"
+
+  log "Removing plpython3u from destination claim ($DST_NAMESPACE/$DST_CLAIM)..."
+  # grep -n returns 1-based line numbers; JSON patch paths are 0-based.
+  PLPYTHON3U_LINE=$(KUBECONFIG="$DST_KUBECONFIG" kubectl get vshnpostgresql "$DST_CLAIM" \
+    -n "$DST_NAMESPACE" \
+    -o jsonpath='{range .spec.parameters.service.extensions[*]}{.name}{"\n"}{end}' \
+    | grep -n 'plpython3u' | cut -d: -f1)
+  if [[ -n "$PLPYTHON3U_LINE" ]]; then
+    PLPYTHON3U_INDEX=$(( PLPYTHON3U_LINE - 1 ))
+    KUBECONFIG="$DST_KUBECONFIG" kubectl patch vshnpostgresql "$DST_CLAIM" \
+      -n "$DST_NAMESPACE" \
+      --type=json \
+      -p="[{\"op\": \"remove\", \"path\": \"/spec/parameters/service/extensions/$PLPYTHON3U_INDEX\"}]"
+    log "  Done."
+  else
+    log "  plpython3u not found in destination claim extensions, skipping."
+  fi
+fi
+
+log "Checking for errors..."
+# pg_restore emits "error:" lines for pre-existing missing objects even with
+# `--if-exists`. We therefore filter those errors out.
+if grep -E '^pg_restore: error:' "$RESTORE_LOG" \
+   | grep -qv 'does not exist'; then
+  log "WARNING: errors detected -- review $RESTORE_LOG"
+else
+  log "Restore finished successfully."
+fi
+
+log "Done: $SRC_NAMESPACE/$SRC_CLAIM -> $DST_NAMESPACE/$DST_CLAIM"
+----
+
+. Run the script with the required arguments:
++
+[source,bash]
+----
+chmod +x pg-migrate.sh
+
+./pg-migrate.sh \
+  --src-kubeconfig /path/to/src.kubeconfig <1>\
+  --src-namespace  <source-claim-namespace> <2>\
+  --src-claim      <source-claim-name> <3>\
+  --dst-kubeconfig /path/to/dst.kubeconfig \ <4>
+  --dst-namespace  <destination-claim-namespace> <5> \
+  --dst-claim      <destination-claim-name> <6> \
+  --cleanup-stackgres <7>
+----
+<1> Path to the kubeconfig for the source cluster.
+<2> Namespace of the source VSHNPostgreSQL claim.
+<3> Name of the source VSHNPostgreSQL claim.
+<4> (Optional) Path to the kubeconfig for the destination cluster.
+<5> Namespace of the destination VSHNPostgreSQL claim.
+<6> Name of the destination VSHNPostgreSQL claim.
+<7> (Optional) Drop all `plpython3u`-dependent functions and the extension from every restored database, and remove `plpython3u` from the destination claim's extension list.
+
+. Verify the migration by connecting to the destination instance and checking that the expected data is present.
++
+See xref:vshn-managed/postgresql/connect.adoc[Connect to a PostgreSQL instance] for instructions on how to connect.
+
+. Once the migration is verified, update your application's connection secret reference to point to the destination
+claim and remove or deprovision the source instance if it is no longer needed.
+
+[NOTE]
+====
+The script writes `pg_restore` output to `/tmp/pg-restore.log` on the machine running the script.
+Review this file if the script reports warnings at the end.
+Errors about objects that "do not exist" are expected and harmless when `--if-exists` is used.
+====
+
+== Post-migration cleanup
+
+=== Removing the plpython3u extension
+
+After the migration is complete, you can remove the `plpython3u` extension from the destination instance if it is no longer needed.
+PostgreSQL requires that all functions depending on the extension are dropped before the extension itself can be removed.
+
+. Connect to the destination instance and identify all functions that use `plpython3u`:
++
+[source,sql]
+----
+SELECT n.nspname AS schema, p.proname AS function_name, pg_get_function_identity_arguments(p.oid) AS arguments
+FROM pg_proc p
+JOIN pg_namespace n ON n.oid = p.pronamespace
+WHERE p.prolang = (SELECT oid FROM pg_language WHERE lanname = 'plpython3u');
+----
+
+. Drop each function returned by the query above:
++
+[source,sql]
+----
+DROP FUNCTION <schema>.<function_name>(<arguments>);
+----
+
+. Once all dependent functions are removed, drop the extension:
++
+[source,sql]
+----
+DROP EXTENSION plpython3u;
+----
+
+. Remove the extension from the `VSHNPostgreSQL` claim by deleting the `plpython3u` entry from the `spec.parameters.service.extensions` list and applying the updated manifest.
