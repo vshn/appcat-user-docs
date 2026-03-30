@@ -41,6 +41,8 @@ spec:
 
 Please see the official https://www.postgresql.org/docs/current/ddl-priv.html[PostgreSQL docs] for all available privileges. Only Grants applicable to databases are supported.
 
+NOTE: User privileges field in CNPG based VSHNPostgreSQL is not available. 
+
 == Deleting User and Databases
 To stop managing a user in the PostgreSQL instance, you need to remove it from the `access` array in the instance.
 
