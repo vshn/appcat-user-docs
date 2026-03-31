@@ -1,33 +1,34 @@
 = PostgreSQL Major Version Upgrade
 
 == Overview
-VSHNPostgreSQL supports major version upgrades up to the latest available version.
+VSHNPostgreSQL instances running on CloudNativePG (CNPG) support offline in-place major version upgrades.
+The upgrade is triggered by setting a higher `majorVersion` in your instance spec.
+CNPG then shuts down the entire cluster and runs `pg_upgrade --link` to migrate the data in place.
+
+NOTE: Major version upgrades are only available for CloudNativePG-based instances. StackGres-based instances do not support this feature. See xref:vshn-managed/postgresql/create.adoc#_cloudnativepg[how to deploy an instance using CloudNativePG].
 
 [WARNING]
 ====
-Carefully follow the steps below to avoid prolonged downtime or data loss.
+A major version upgrade causes downtime for the entire PostgreSQL cluster, including all replicas.
+Plan a maintenance window accordingly.
 ====
 
 == Preparing for the Upgrade
-Major version upgrades carry risks, so before proceeding, ensure the following:
+Before proceeding, ensure the following:
 
-. **Check Disk Space**: Although the upgrade process uses hard links for data migration, we recommend having at least double the free storage as a precaution. Check xref:vshn-managed/postgresql/major-upgrade.adoc#_available_disk_space[Available Disk Space].
-. **Verify Extensions**: If your instance uses extensions, confirm they are available and compatible with the target PostgreSQL version. Check the https://stackgres.io/extensions/[StackGres Extensions] repository for compatibility.
-. **Review Configuration Changes**: If your current PostgreSQL configuration cannot be used with the new version, contact us before proceeding.
-. **Test the Upgrade**: Perform the upgrade in a VSHNPostgreSQL test environment to validate the process before applying it to VSHNPostgreSQL production. Check the  xref:vshn-managed/postgresql/major-upgrade.adoc#_example_updating_an_existing_postgresql_instance[example].
-. **No Upgrade Progress**: The upgrade process cannot be followed at this time.
+. **Verify Backup**: Ensure a recent backup exists before upgrading. Point-in-time recovery (PITR) across a major version boundary is not supported, so the pre-upgrade backup is your only recovery option if something goes wrong. Check the xref:vshn-managed/postgresql/backup.adoc[backup documentation] for details.
+. **Check Disk Space**: The upgrade uses hard links (`pg_upgrade --link`), which avoids copying data, but we still recommend having sufficient free space available. Check xref:vshn-managed/postgresql/major-upgrade.adoc#_available_disk_space[Available Disk Space].
+. **Verify Extension Compatibility**: You are responsible for ensuring that all extensions used by your instance are available and compatible with the target PostgreSQL major version. Check the xref:vshn-managed/postgresql/extensions.adoc[supported extensions list] before upgrading.
+. **Review Configuration**: Ensure your current PostgreSQL configuration is compatible with the target version.
+. **Test First**: Perform the upgrade in a test environment before applying it to production.
 
 == Limitations
-The following configurations are not supported for major version upgrades:
 
-* **HA Instances**: High availability (HA) instances must be scaled down to **1 replica** before proceeding.
-* **Unsupported Extensions**: Instances using `postgis` or `timescaledb` extensions cannot be upgraded at this time.
-* **One Version at a Time**: Upgrades must be performed sequentially, moving only **one major version forward per upgrade cycle**.
+* **PITR Not Available Across Major Versions**: After an upgrade, the cluster receives a new system identifier and the WAL timeline resets to 1. You cannot use pre-upgrade backups to recover to a point in time after the upgrade.
 
 == Upgrade Procedure
 
-=== Example: Updating an Existing PostgreSQL Instance
-To upgrade a PostgreSQL instance from version **15** to **16**, modify your Kubernetes resource definition:
+Set `majorVersion` to the target version in your instance spec:
 
 [source,yaml]
 ----
@@ -39,33 +40,46 @@ metadata:
 spec:
   parameters:
     service:
-      majorVersion: "16"  # Upgrade from 15 to 16 <1>
+      majorVersion: "17" # <1>
   writeConnectionSecretToRef:
     name: postgres-creds
-status:
-  currentVersion: "15"  # Current PostgreSQL version <2>
 ----
-<1> Specify the target major version.
-<2> Ensure that the current version is correctly listed before applying the upgrade.
+<1> Set this to the desired target major version.
 
-NOTE: The process is finished once `currentVersion` equals the `majorVersion` value.
+After applying the change, CNPG will:
+
+. Shut down all cluster pods
+. Run an upgrade job (`<pod-name>-major-upgrade`) that executes `pg_upgrade --link`
+. Restart the primary and re-clone all replicas from scratch
+
+The upgrade is complete once `status.currentVersion` matches the requested `majorVersion`.
+
+== Post-Upgrade Steps
+
+After the upgrade completes:
+
+. **Update table statistics**: The upgrade does not transfer statistics. Run `ANALYZE` on all databases to rebuild them:
++
+[source,sql]
+----
+ANALYZE;
+----
 
 == Available Disk Space
-To check the available disk space for a VSHNPostgreSQL instance, follow these steps:
+To check the available disk space for a VSHNPostgreSQL instance:
 
-. _Check the Total Disk Space Allocated_
-+
-Run the following command to retrieve the total disk space assigned to your VSHNPostgreSQL instance:
+. _Check the total disk space allocated_
 +
 [source,bash]
 ----
 kubectl -n <namespace> get VSHNPostgreSQL <name-of-instance> -o=jsonpath='{.spec.parameters.size}'
 ----
-NOTE: If the disk storage size is not available, refer to the xref:vshn-managed/postgresql/plans.adoc[plan documentation] for details.
-
-. _Check Database Sizes from Within the PostgreSQL Instance_
 +
-Connect to your VSHNPostgreSQL instance using admin credentials and list the sizes of all databases:
+NOTE: If no size is set, refer to the xref:vshn-managed/postgresql/plans.adoc[plan documentation] for the default allocation.
+
+. _Check database sizes from within the PostgreSQL instance_
++
+Connect to your instance using admin credentials and list all database sizes:
 +
 [source,bash]
 ----
