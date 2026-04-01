@@ -68,3 +68,8 @@ $ oc get secrets forgejo-creds -o yaml
 The output of the command above is a secret specification with the following structure:
 
 include::page$references/secrets.adoc[tag=forgejo]
+
+WARNING: Do not rename or change the password of the initial admin user (`forgejo_admin`) through the Forgejo web UI or admin CLI.
+The admin credentials are managed internally and stored in the connection secret defined in `writeConnectionSecretToRef`.
+Changes made outside of this mechanism will not be reflected in the secret, causing a mismatch between the stored credentials and the actual Forgejo account.
+If you need to change the admin password, please contact mailto:support@vshn.ch[Support].
