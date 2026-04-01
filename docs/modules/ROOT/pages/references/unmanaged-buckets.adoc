@@ -31,7 +31,7 @@ spec:
         bucket: my-bucket-change-name <6>
 ----
 
-<1> Unamanged buckets are available for all services, this exmaple just uses VSHNPostgreSQL.
+<1> Unmanaged buckets are available for all services, this exmaple just uses VSHNPostgreSQL.
 <2> Secret containing the access key id for the bucket.
 <3>  Secret containing the secret key for the bucket.
 <4> Some S3 implementations don't care about the regions (e.g. Minio), others do (e.g. Garage). So please be sure to always specify the correct one.
