@@ -1,0 +1,45 @@
+= Bring your own bucket
+
+It's possible to bring your own bucket.
+These buckets are not managed by AppCat itself, thus they are referenced as unmanged buckets.
+
+The service has to be compatible with S3.
+
+[IMPORTANT]
+====
+Because the buckets are not managed by AppCat, it's not possible to check for valid connections during creation time.
+The correctness of the credentials for the bucket are entirely in the user's responsibility.
+====
+
+.Example: how to use an unmanaged bucket in a service
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL <1>
+spec:
+  parameters:
+    backup:
+      unmanagedBucket:
+        accessKey: <2>
+          name: objectbucket-creds
+          key: AWS_ACCESS_KEY_ID
+        secretKey: <3>
+          name: objectbucket-creds
+          key: AWS_SECRET_ACCESS_KEY
+        region: garage <4>
+        endpoint: http://garage.vshn-garage-garage-g4vgx.svc.cluster.local:3900 <5>
+        bucket: my-bucket-change-name <6>
+----
+
+<1> Unmanaged buckets are available for all services, this exmaple just uses VSHNPostgreSQL.
+<2> Secret containing the access key id for the bucket.
+<3>  Secret containing the secret key for the bucket.
+<4> Some S3 implementations don't care about the regions (e.g. Minio), others do (e.g. Garage). So please be sure to always specify the correct one.
+<5> Endpoint for the S3 compatible service.
+<6> Name for the bucket to be used.
+
+[NOTE]
+====
+It's not recommended to have backups for multiple services in the same bucket.
+The backup tooling assumes full control of every given bucket.
+====

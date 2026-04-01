@@ -13,6 +13,7 @@
 * xref:references/permissions.adoc[Namespace Permissions]
 * xref:references/quotas.adoc[]
 * xref:references/suspending.adoc[]
+* xref:references/unmanaged-buckets.adoc[]
 
 .xref:vshn-managed/forgejo/index.adoc[Forgejo]
 * xref:vshn-managed/forgejo/backup.adoc[Backup]
