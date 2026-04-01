@@ -1,0 +1,17 @@
+= Changelog 2026-03-24
+
+AppCat release https://github.com/vshn/appcat/releases/tag/v4.183.0[v4.183.0^] focuses on bug fixes additional fields for CLoudNativePG extensions.
+
+== PostgreSQL CloudNativePG Extension
+
+We have added additional fields to extensions that allow configuring various libraries if the extension requires them.
+We have also added VACUUM as that is one of the favourtite PostgreSQL extensions. A list of available CloudNativePG extensions for VSHN managed PostgreSQL is available https://docs.appcat.ch/vshn-managed/postgresql/extensions.html#_cloudnativepg[here].
+
+== Forgejo oauth2 client configuration
+
+This exposes the necessary parameters to configure oauth2 client configurations for vshnforgejo.
+
+== Block Nextcloud downgrade
+
+This one is obvious, so we made it obvious in the code. Nextcloud does not support major version downgrade, so neither do we. Stay up to date, stay safe.
+In case you are wondering how to upgrade the major verison of your Nextcloud https://docs.appcat.ch/vshn-managed/nextcloud/major-upgrade.html[Major Version Upgrade] will guide you through the process.
