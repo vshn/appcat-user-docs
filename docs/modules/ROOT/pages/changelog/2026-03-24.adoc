@@ -5,7 +5,8 @@ AppCat release https://github.com/vshn/appcat/releases/tag/v4.183.0[v4.183.0^] f
 == PostgreSQL CloudNativePG Extension
 
 We have added additional fields to extensions that allow configuring various libraries if the extension requires them.
-We have also added VACUUM as that is one of the favourtite PostgreSQL extensions. A list of available CloudNativePG extensions for VSHN managed PostgreSQL is available https://docs.appcat.ch/vshn-managed/postgresql/extensions.html#_cloudnativepg[here].
+We have also added VACUUM as that is one of the favourite PostgreSQL extensions. It is a part of scheduled maintenance. You can read more about it https://docs.appcat.ch/vshn-managed/postgresql/maintenance.html[here].
+A list of available CloudNativePG extensions for VSHN managed PostgreSQL is available https://docs.appcat.ch/vshn-managed/postgresql/extensions.html#_cloudnativepg[here].
 
 == Forgejo oauth2 client configuration
 
