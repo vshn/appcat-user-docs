@@ -94,6 +94,7 @@ chmod +x pg-migrate.sh
   --dst-claim      <destination-claim-name> \ <6>
   --cleanup-stackgres \ <7>
   --use-port-forward <8>
+  --as-admin <9>
 ----
 <1> Path to the kubeconfig for the source cluster.
 <2> Namespace of the source VSHNPostgreSQL claim.
@@ -103,6 +104,7 @@ chmod +x pg-migrate.sh
 <6> Name of the destination VSHNPostgreSQL claim.
 <7> (Optional) Drop all `plpython3u`-dependent functions and the extension from every restored database, and remove `plpython3u` from the destination claim's extension list. This will need exec permissions on the target instance.
 <8> (Optional) Use port-fordward to do the migration. Required if the kubernetes user does not have `exec` permissions on both namespaces. If portforward is required, then `--cleanup-stackgres` must be omitted as well.
+<9> (Optional) Use `--as system:admin` to fetch the secrets, patch the claim (if `--cleanup-stackgres` is set) and exec into the pods
 
 
 . Verify the migration by connecting to the destination instance and checking that the expected data is present.
