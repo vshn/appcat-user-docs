@@ -19,6 +19,7 @@
 #     --dst-claim      <claim-name> \
 #     --cleanup-stackgres                          # optional: drop StackGres extensions after restore
 #     --use-port-forward                          # optional: use port-forwarding instead of exec
+#     --as-admin                                  # optional: impersonate system:admin for all kubectl calls
 
 set -euo pipefail
 
@@ -43,7 +44,7 @@ get_primary_pod() {
 cleanup_stackgres() {
   local kubeconfig=$1 namespace=$2 pod=$3 db=$4
   log "  Removing StackGres extensions and functions from database: $db"
-  KUBECONFIG="$kubeconfig" kubectl exec -i -n "$namespace" "$pod" -- \
+  KUBECONFIG="$kubeconfig" kubectl "${KUBECTL_AS[@]}" exec -i -n "$namespace" "$pod" -- \
     psql -U postgres -d "$db" -q <<'EOSQL'
 DO $$
 DECLARE
@@ -66,10 +67,17 @@ EOSQL
 }
 
 exec_restore() {
+  log "Listing databases on source ($SRC_POD)..."
+  DATABASES=$(KUBECONFIG="$SRC_KUBECONFIG" kubectl "${KUBECTL_AS[@]}" exec -n "$SRC_INSTANCE_NS" "$SRC_POD" -- \
+    psql -U postgres -t -A -q -c \
+    "SELECT datname FROM pg_database WHERE datistemplate = false")
+  [[ -n "$DATABASES" ]] || die "No databases found on source"
+  log "  databases: $(echo "$DATABASES" | tr '\n' ' ')"
+
   while IFS= read -r db; do
     [[ -z "$db" ]] && continue
     log "Migrating database: $db"
-    KUBECONFIG="$SRC_KUBECONFIG" kubectl exec -n "$SRC_INSTANCE_NS" "$SRC_POD" -- \
+    KUBECONFIG="$SRC_KUBECONFIG" kubectl "${KUBECTL_AS[@]}" exec -n "$SRC_INSTANCE_NS" "$SRC_POD" -- \
       pg_dump \
         --username=postgres \
         --dbname="$db" \
@@ -77,7 +85,7 @@ exec_restore() {
         --format=custom \
         --compress=0 \
         --lock-wait-timeout=120s \
-    | KUBECONFIG="$DST_KUBECONFIG" kubectl exec -i -n "$DST_INSTANCE_NS" "$DST_POD" -- \
+    | KUBECONFIG="$DST_KUBECONFIG" kubectl "${KUBECTL_AS[@]}" exec -i -n "$DST_INSTANCE_NS" "$DST_POD" -- \
       pg_restore \
         --username=postgres \
         --dbname=postgres \
@@ -98,7 +106,7 @@ wait_for_port() {
 
 read_secret_field() {
   local kubeconfig=$1 namespace=$2 secret=$3 key=$4
-  KUBECONFIG="$kubeconfig" kubectl get secret "$secret" \
+  KUBECONFIG="$kubeconfig" kubectl "${KUBECTL_AS[@]}" get secret "$secret" \
     -n "$namespace" -o jsonpath="{.data.$key}" | base64 -d
 }
 
@@ -179,6 +187,17 @@ port_forward_restore() {
   wait_for_port "$DST_LOCAL_PORT"
   log "Port-forwards ready."
 
+  # ----- List source databases -----
+  log "Listing databases on source (via port-forward)..."
+  DATABASES=$(PGPASSWORD="$SRC_PASS" PGSSLMODE=disable psql \
+    --host=127.0.0.1 \
+    --port="$SRC_LOCAL_PORT" \
+    --username="$SRC_USER" \
+    -t -A -q -c \
+    "SELECT datname FROM pg_database WHERE datistemplate = false")
+  [[ -n "$DATABASES" ]] || die "No databases found on source"
+  log "  databases: $(echo "$DATABASES" | tr '\n' ' ')"
+
   # ----- Dump + Restore -----
   # sslmode=disable: kubectl port-forward wraps traffic in a plain TCP tunnel;
   # PostgreSQL's TLS handshake is unreliable through it.
@@ -217,6 +236,7 @@ DST_NAMESPACE=""
 DST_CLAIM=""
 CLEANUP_STACKGRES=false
 USE_PORT_FORWARD=false
+KUBECTL_AS=()
 
 while [[ $# -gt 0 ]]; do
   case $1 in
@@ -228,6 +248,7 @@ while [[ $# -gt 0 ]]; do
     --dst-claim)         DST_CLAIM=$2;         shift 2 ;;
     --use-port-forward)  USE_PORT_FORWARD=true; shift ;;
     --cleanup-stackgres) CLEANUP_STACKGRES=true; shift ;;
+    --as-admin)          KUBECTL_AS=(--as system:admin); shift ;;
     *) die "Unknown argument: $1" ;;
   esac
 done
@@ -276,15 +297,6 @@ DST_POD=$(get_primary_pod "$DST_KUBECONFIG" "$DST_INSTANCE_NS" "cnpg.io/instance
 [[ -n "$DST_POD" ]] || die "Could not find primary pod in $DST_INSTANCE_NS"
 log "  destination pod: $DST_POD"
 
-# ----- List source databases -----
-
-log "Listing databases on source ($SRC_POD)..."
-DATABASES=$(KUBECONFIG="$SRC_KUBECONFIG" kubectl exec -n "$SRC_INSTANCE_NS" "$SRC_POD" -- \
-  psql -U postgres -t -A -q -c \
-  "SELECT datname FROM pg_database WHERE datistemplate = false")
-[[ -n "$DATABASES" ]] || die "No databases found on source"
-log "  databases: $(echo "$DATABASES" | tr '\n' ' ')"
-
 log "  source      : postgres@$SRC_POD  (instance ns: $SRC_INSTANCE_NS)"
 log "  destination : postgres@$DST_POD  (instance ns: $DST_INSTANCE_NS)"
 
@@ -317,7 +329,7 @@ if [[ "$CLEANUP_STACKGRES" == "true" ]]; then
     | grep -n 'plpython3u' | cut -d: -f1)
   if [[ -n "$PLPYTHON3U_LINE" ]]; then
     PLPYTHON3U_INDEX=$(( PLPYTHON3U_LINE - 1 ))
-    KUBECONFIG="$DST_KUBECONFIG" kubectl patch vshnpostgresql "$DST_CLAIM" \
+    KUBECONFIG="$DST_KUBECONFIG" kubectl "${KUBECTL_AS[@]}" patch vshnpostgresql "$DST_CLAIM" \
       -n "$DST_NAMESPACE" \
       --type=json \
       -p="[{\"op\": \"remove\", \"path\": \"/spec/parameters/service/extensions/$PLPYTHON3U_INDEX\"}]"
