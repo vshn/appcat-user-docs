@@ -1,0 +1,18 @@
+= Changelog 2026-04-07
+
+AppCat release https://github.com/vshn/appcat/releases/tag/v4.184.0[v4.184.0^] brings user management and major version upgrade to PostgreSQL with CLoudNativePG.
+
+== PostgreSQL CloudNativePG Major Version Upgrade
+
+This one is HUGE. Not just because the major version can be changed, but because this is the first time we can bring this feature to you for PostgreSQL.
+https://docs.appcat.ch/vshn-managed/postgresql/major-upgrade.html[This] is how you can upgrade the major version of your PostgreSQL.
+
+== PostgreSQL CloudNativePG User Management
+
+User management is not new for PostgreSQL, but new for our CloudNativePG offering. 
+Test it out and let us know what you think. The user documentation is available https://docs.appcat.ch/vshn-managed/postgresql/usermanagement.html[here].
+
+== "Bring your own bucket" Feature
+
+Yes, we bring up costs quite often and will do so at least 42 times more. We have added the ability to specify an unmanaged bucket to be used for backups, since that might result in savings for you.
+If specified, all internal bucket creation logic will be skipped, and the credentials provided will be used instead. Check out the feature documentation https://docs.appcat.ch/references/unmanaged-buckets.html[here].
