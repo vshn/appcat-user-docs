@@ -35,6 +35,9 @@ spec:
       serviceLevel: guaranteed
 ----
 
+NOTE: The underlying PostgreSQL sub-service is always provisioned with `besteffort` SLA, regardless of the `serviceLevel` configured on the Keycloak service itself.
+This is intentional: if PostgreSQL becomes unavailable, the Keycloak service will also be unavailable, and any SLA breach will be captured and reported through the main Keycloak service's SLA monitoring.
+
 NOTE: Please be aware that enabling high availability will use significantly more resources and will cost two to three times more.
 
 IMPORTANT: On APPUiO Cloud, it's currently not possible to deploy more than two instances, or more than a single instance that is larger than `standard-2`.
