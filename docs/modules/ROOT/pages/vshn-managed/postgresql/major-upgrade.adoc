@@ -54,6 +54,10 @@ After applying the change, CNPG will:
 
 The upgrade is complete once `status.currentVersion` matches the requested `majorVersion`.
 
+== Rolling Back a Failed Upgrade
+
+If the upgrade fails, you can restore your instance to the previous major version by following the xref:vshn-managed/postgresql/restore.adoc#_cloudnativepg[restore procedure] and setting the `majorVersion` to the version you had before the upgrade.
+
 == Post-Upgrade Steps
 
 After the upgrade completes:
