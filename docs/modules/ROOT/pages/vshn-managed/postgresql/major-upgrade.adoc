@@ -52,7 +52,18 @@ After applying the change, CNPG will:
 . Run an upgrade job (`<pod-name>-major-upgrade`) that executes `pg_upgrade --link`
 . Restart the primary and re-clone all replicas from scratch
 
-The upgrade is complete once `status.currentVersion` matches the requested `majorVersion`.
+You can monitor the upgrade progress by watching the pods in the instance namespace:
+
+[source,bash]
+----
+kubectl -n <instance-namespace> get pods -w
+----
+
+The upgrade is complete once all cluster pods are `Running` and all containers are ready.
+
+== Rolling Back a Failed Upgrade
+
+If the upgrade fails, you can restore your instance to the previous major version by following the xref:vshn-managed/postgresql/restore.adoc#_cloudnativepg[restore procedure] and setting the `majorVersion` to the version you had before the upgrade.
 
 == Post-Upgrade Steps
 
