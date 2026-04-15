@@ -2,20 +2,11 @@
 
 == Overview
 
-This guide explains how to migrate from one VSHNPostgreSQL instance to another.
+This guide explains how to migrate from one VSHNPostgreSQL instance to another within the same namespace and cluster.
 
-The script supports two different methods for the migration:
-
- - Using `pg_dump` and `pg_restore` via `kubectl exec` directly inside the database pods.
- This method only works if the kubernetes user has `exec` permissions on both instances.
- If possible, this method should be preffered, as it skips additional network complexities introduced by `port-forward`.
- - Using port-forwarding and locally installed `pg_dump` and `pg_restore` tools.
- This method works with default AppCat namespace permissions. This method requires `pg_dump`, `pg_restore` and `netcat` to be installed on the workstation running the script.
-
-Both approaches supports migrations between instances on different clusters as well as within the same cluster.
-
-The script detects the PostgreSQL type of the source instance (StackGres or CNPG) automatically.
-The destination is always assumed to be a CNPG-based instance.
+The script creates a temporary migration pod in the claim namespace.
+The pod mounts the connection secrets from both claims and streams `pg_dump` directly into `pg_restore` inside the cluster, without any port-forwarding.
+This makes it reliable for large databases.
 
 [WARNING]
 ====
@@ -27,15 +18,12 @@ after the script ran.
 
 == Prerequisites
 
-Ensure the following tools are installed and available in your `PATH`:
-
-* `kubectl` and the required `kubeconfig` for the source (and optionally for the destination cluster).
-
-Both VSHNPostgreSQL claims (source and destination) must already exist and be in a ready state before running the script.
-
+* `kubectl` with a valid kubeconfig for the cluster.
+* Both VSHNPostgreSQL claims (source and destination) must already exist and be in a ready state.
+* Both claims must be in the **same namespace** on the **same cluster**.
 * The destination instance must run PostgreSQL **18** or later.
-* All other extensions used in the source instance must also be present in the destination instance if they are not
-already build-in (see https://docs.appcat.ch/vshn-managed/postgresql/extensions.html#_built_in_extensions[PostgreSQL Extensions]).
+* All extensions used in the source instance must also be present in the destination instance if they are not
+already built-in (see https://docs.appcat.ch/vshn-managed/postgresql/extensions.html#_built_in_extensions[PostgreSQL Extensions]).
 
 === Migrating from a StackGres instance
 
@@ -86,26 +74,21 @@ include::example$migration.sh[]
 chmod +x pg-migrate.sh
 
 ./pg-migrate.sh \
-  --src-kubeconfig /path/to/src.kubeconfig \ <1>
-  --src-namespace  <source-claim-namespace> \ <2>
-  --src-claim      <source-claim-name> \ <3>
-  --dst-kubeconfig /path/to/dst.kubeconfig \ <4>
-  --dst-namespace  <destination-claim-namespace> \ <5>
-  --dst-claim      <destination-claim-name> \ <6>
-  --cleanup-stackgres \ <7>
-  --use-port-forward <8>
-  --as-admin <9>
+  --namespace  <claim-namespace> \ <1>
+  --src-claim  <source-claim-name> \ <2>
+  --dst-claim  <destination-claim-name> \ <3>
+  --kubeconfig /path/to/kubeconfig \ <4>
+  --image      ghcr.io/cloudnative-pg/postgresql:18 \ <5>
+  --cleanup-stackgres \ <6>
+  --as-admin <7>
 ----
-<1> Path to the kubeconfig for the source cluster.
-<2> Namespace of the source VSHNPostgreSQL claim.
-<3> Name of the source VSHNPostgreSQL claim.
-<4> (Optional) Path to the kubeconfig for the destination cluster.
-<5> Namespace of the destination VSHNPostgreSQL claim.
-<6> Name of the destination VSHNPostgreSQL claim.
-<7> (Optional) Drop all `plpython3u`-dependent functions and the extension from every restored database, and remove `plpython3u` from the destination claim's extension list. This will need exec permissions on the target instance.
-<8> (Optional) Use port-fordward to do the migration. Required if the kubernetes user does not have `exec` permissions on both namespaces. If portforward is required, then `--cleanup-stackgres` must be omitted as well.
-<9> (Optional) Use `--as system:admin` to fetch the secrets, patch the claim (if `--cleanup-stackgres` is set) and exec into the pods
-
+<1> Namespace of both VSHNPostgreSQL claims.
+<2> Name of the source VSHNPostgreSQL claim.
+<3> Name of the destination VSHNPostgreSQL claim.
+<4> (Optional) Path to the kubeconfig. Defaults to the `KUBECONFIG` environment variable or `~/.kube/config`.
+<5> (Optional) Container image used for the migration pod. Must be allowed by the cluster image policy. Defaults to `ghcr.io/cloudnative-pg/postgresql:18`.
+<6> (Optional) Drop all `plpython3u`-dependent functions and the extension from every restored database, then remove `plpython3u` from the destination claim's extension list. Requires `exec` permissions on the destination instance namespace.
+<7> (Optional) Use `--as system:admin` for all `kubectl` calls.
 
 . Verify the migration by connecting to the destination instance and checking that the expected data is present.
 +
@@ -116,7 +99,7 @@ claim and remove or deprovision the source instance if it is no longer needed.
 
 [NOTE]
 ====
-The script writes `pg_restore` output to `/tmp/pg-restore.log` on the machine running the script.
+The script writes `pg_restore` output to `/tmp/pg-restore.log` on the local machine.
 Review this file if the script reports warnings at the end.
 Errors about objects that "do not exist" are expected and harmless when `--if-exists` is used.
 ====
@@ -128,12 +111,10 @@ Errors about objects that "do not exist" are expected and harmless when `--if-ex
 [NOTE]
 ====
 `plpython3u` is used for StackGres internal functionality.
-However, if your database uses the `plpython3u` extension these steps can be skipped.
+If your database intentionally uses the `plpython3u` extension, these steps can be skipped.
 ====
 
-If `--cleanup-stackgres` can't be used, you need to do these steps manually.
-
-After the migration is complete, you can remove the `plpython3u` extension from the destination instance if it is no longer needed.
+After migrating from a StackGres instance, remove the `plpython3u` extension from the destination instance if it is no longer needed.
 PostgreSQL requires that all functions depending on the extension are dropped before the extension itself can be removed.
 
 . Connect to the destination instance and identify all functions that use `plpython3u`:
