@@ -1,0 +1,21 @@
+= Changelog 2026-04-21
+
+With AppCat https://github.com/vshn/appcat/releases/tag/v4.185.0[v4.185.0^] we proudly present a fully matured https://products.vshn.ch/appcat/postgresql_cnpg.html[PostgreSQL with CLoudNativePG].
+
+== PostgreSQL CloudNativePG Self Service Restore
+
+The last missing feature on our list was self service restore for PostgreSQL. It is finally here and with it a fully matured PostgreSQL with CloudNativePG service. Test the restore yourself by following the https://docs.appcat.ch/vshn-managed/postgresql/restore.html#_cloudnativepg[CloudNativePG Restore] guide.
+
+Now is also a good time to start planning your migration from Stackgress to CloudNativePG. Just reach out to us and we will help you. 
+
+== PostgreSQL CloudNativePG for Nextcloud
+
+Since we are already on the CloudNativePG topic, we have set CloudNativePG PosgreSQL as the default database for Nextcloud.
+This does not affect existing instances. When provisioning a new Nextcloud instance, you can still point to an already existing PostgreSQL. 
+Let us know when you are ready and we will help you migrate everythging.
+
+== Garage Bucket Cleanup
+
+We identified that the Garage Operator refuses to delete buckets that are flagged for deletion, but still contain data. This is not ideal, since the object buckets keep consuming disk space.
+Therefore, we have introduced garage cleanup, that will delete all objects within a bucket if the bucket has been in a deleting state for 6 days. 
+Lets be honest, we all need this to keep the garage clean. 
