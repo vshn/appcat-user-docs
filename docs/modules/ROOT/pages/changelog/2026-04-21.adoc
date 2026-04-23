@@ -17,5 +17,5 @@ Let us know when you are ready and we will help you migrate everythging.
 == Garage Bucket Cleanup
 
 We identified that the Garage Operator refuses to delete buckets that are flagged for deletion, but still contain data. This is not ideal, since the object buckets keep consuming disk space.
-Therefore, we have introduced garage cleanup, that will delete all objects within a bucket if the bucket has been in a deleting state for 6 days. 
+Therefore, we have introduced garage cleanup, that will delete all objects within a bucket if the bucket has been in a deleting state. 
 Lets be honest, we all need this to keep the garage clean. 
