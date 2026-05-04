@@ -9,7 +9,9 @@ You either want to connect to your PostgreSQL cluster from outside of the cluste
 
 === LoadBalancer
 
-WARNING: While using LoadBalancer, additional charges may apply for additional IPv4 addresses. https://products.vshn.ch/appuio/cloud/pricing.html#_service_type_loadbalancer[Check pricing]
+WARNING: While using LoadBalancer, additional charges may apply for additional IPv4 addresses. https://products.vshn.ch/appuio/cloud/pricing.html#_service_type_loadbalancer[Check pricing].
+LoadBalancer is not available on all clusters.
+Please check with us if you need it for your APPUiO Managed cluster.
 
 LoadBalancer service type is supported on LPG-2 Appuio Cluster, and You can use it by setting:
 ```
@@ -36,18 +38,64 @@ link:../how-tos/logging.html[Check how to find instanceNamespace]
 
 Or access it directly from the connection secret:
 ```
-kubectl -n app1-dev get secrets my-postgresql-dev-connection -o yaml | yq .data.LOADBALANCER_IP  | base64 -d
+kubectl -n app1-dev get secrets my-postgresql-dev-connection -o yaml | yq .data.LOADBALANCER_IP | base64 -d
 ```
+
+=== TCPGateway
+
+WARNING: TCPGateway will go through a shared proxy, to minimize costs.
+Be aware that this can have a negative impact on performance.
+If you experience performance issues, please consider using LoadBalancer instead.
+TCPGateway is only supported for CNPG backed VSHNPostgreSQL instances.
+TCPGateway is not available on all clusters.
+Please check with us if you need it for your APPUiO Managed cluster.
+
+You can use it by setting:
+```
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: my-postgresql
+  namespace: app1-dev
+spec:
+  parameters:
+    network:
+      serviceType: TCPGateway
+    backup:
+      deletionProtection: false
+  writeConnectionSecretToRef:
+    name: my-postgresql-dev-connection
+  compositionRef:
+    name: vshnpostgrescnpg.vshn.appcat.vshn.io
+```
+
+This YAML snippet would create a PostgreSQL cluster and Service of type TCPGateway. The Service would be accessible from outside of the cluster. You can get IP address of the service using:
+```
+kubectl -n app1-dev get secrets my-postgresql-dev-connection -o yaml | yq .data.POSTGRESQL_GATEWAY_HOST | base64 -d
+kubectl -n app1-dev get secrets my-postgresql-dev-connection -o yaml | yq .data.POSTGRESQL_GATEWAY_PORT | base64 -d
+```
+
 
 === Port-forward
 
 TIP: This is the default serviceType
 
+NOTE: Kubectl's port-forward currently has a bug concerning PostgreSQL.
+You will need to disable to set `sslmode=disable` on the client side to ensure stable connection.
+Read the https://github.com/kubernetes/kubernetes/issues/111825[Github issue] for more information.
+
 You can port-forward to your PostgreSQL cluster using the kubectl port-forward command. This command always works, no matter what is set as serviceType.
 
+.StackGres based instances
 ```
 kubectl -n $instanceNamespace port-forward services/primary-service 5432
 ```
+
+.CNPG based instances
+```
+kubectl -n $instanceNamespace port-forward services/postgresql-rw 5432
+```
+
 link:../how-tos/logging.html[Check how to find instanceNamespace]
 
 
