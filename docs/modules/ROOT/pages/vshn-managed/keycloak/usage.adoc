@@ -64,7 +64,7 @@ spec:
       fqdn: my-keycloak.example.com # <1>
       adminConsole:
         fqdn: my-admin.example.com # <2>
-        disabled: true # <3>
+        private: true # <3>
   writeConnectionSecretToRef:
     name: keycloak-creds-connection
 ----
@@ -77,11 +77,11 @@ spec:
 
 * **`adminConsole` not set (default):** Admin interface accessible at the same domain as Keycloak (`fqdn`).
 * **`adminConsole.fqdn` set:** Admin interface moves to that domain. No redirect from `fqdn`; navigate to `adminConsole.fqdn` directly.
-* **`adminConsole.disabled: true`, no `adminConsole.fqdn`:** Admin interface removed from public access. Accessible only via port-forward.
+* **`adminConsole.private: true`, no `adminConsole.fqdn`:** Admin interface removed from public access. Accessible only via port-forward.
 
 ==== Accessing the Admin Interface via Port-Forward
 
-When `adminConsole.disabled: true` is set without an `adminConsole.fqdn`, the admin interface is only reachable through a local port-forward into the instance namespace.
+When `adminConsole.private: true` is set without an `adminConsole.fqdn`, the admin interface is only reachable through a local port-forward into the instance namespace.
 
 Find the instance namespace in the service status, then run:
 
