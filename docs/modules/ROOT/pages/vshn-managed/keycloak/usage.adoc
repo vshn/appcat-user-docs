@@ -45,6 +45,53 @@ Our keycloak service uses an internal administrator account named `internaladmin
 It's used by VSHN for various scripts and configurations.
 Changing the user credentials of `internaladmin` account may break your instance!
 
+
+=== Restrict Admin Interface Access
+
+By default, the Keycloak admin interface is accessible on the same domain as Keycloak itself.
+You can move it to a dedicated domain and optionally disable public access entirely using `adminConsole`.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: keycloak-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      fqdn: my-keycloak.example.com # <1>
+      adminConsole:
+        fqdn: my-admin.example.com # <2>
+        private: true # <3>
+  writeConnectionSecretToRef:
+    name: keycloak-creds-connection
+----
+
+<1> Primary Keycloak domain for end users
+<2> Dedicated domain for the admin interface
+<3> Removes the admin interface from public access entirely (port-forward only)
+
+==== Behavior
+
+* **`adminConsole` not set (default):** Admin interface accessible at the same domain as Keycloak (`fqdn`).
+* **`adminConsole.fqdn` set:** Admin interface moves to that domain. No redirect from `fqdn`; navigate to `adminConsole.fqdn` directly.
+* **`adminConsole.private: true`, no `adminConsole.fqdn`:** Admin interface removed from public access. Accessible only via port-forward.
+
+==== Accessing the Admin Interface via Port-Forward
+
+When `adminConsole.private: true` is set without an `adminConsole.fqdn`, the admin interface is only reachable through a local port-forward into the instance namespace.
+
+Find the instance namespace in the service status, then run:
+
+[source,bash]
+----
+kubectl port-forward -n <instance-ns> svc/keycloak-prod-app-85lf9-keycloakx-http 8080:80
+----
+
+The admin interface is then available at `http://localhost:8080`.
+
 == Debug the service
 
 To check the status and potential issues or errors in the service, check the `status` field of the new object:
