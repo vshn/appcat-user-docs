@@ -1,0 +1,29 @@
+= Changelog 2026-05-05
+
+AppCat https://github.com/vshn/appcat/releases/tag/v4.186.0[v4.186.0^] is quite heavy on features for https://servala.com[Servala]. 
+Nothing very visible for you, but you will thank us later.
+
+== Servala enablement
+
+This has been a while in making, and we are releasing all at once. 
+Not to get into the details of each separate item, but here is a list of what was done: generic objectbucket, HTTPRoute, TCPRout, TCP Gateway.
+All of this and more to provide the best possible solution to you via https://servala.com[Servala].
+
+== Garage monitoring
+
+We have started gathering metrics for https://products.vshn.ch/appcat/garage.html[Garage], so that we can keep an eye on it.
+This also enables us to offer alerting, and for you to stay calm, knowing that all is taken care of. 
+With this, we officially announce that we are starting to migrate MinIO instances to Garage. You will hear from us very soon to plan your migration.
+
+== OpenBao surprise
+
+We snuck a little surprise in this release in the shape of an https://products.vshn.ch/appcat/openbao.html[OpenBao].
+No, you can not use it yet, but soon. Very soon. 
+We are as excited as you are.
+
+== PostgreSQL CloudNativePG is Production Ready
+
+Yes, you read it correctly.
+https://products.vshn.ch/appcat/postgresql_cnpg.html[PostgreSQL by VSHN with CloudNativePG] is production ready.
+We advise all to migrate promptly, so you can benefit from the enhanced features and user experience.
+You can migrate on your own by following the https://docs.appcat.ch/vshn-managed/postgresql/migration.html[migration guide] or simply reach out to us if you need help.
