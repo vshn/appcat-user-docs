@@ -3,34 +3,6 @@
 PostgreSQL supports many different extensions, such as https://postgis.net/[PostGIS^] or https://www.timescale.com/[TimescaleDB^].
 These extensions can be used in PostgreSQL by VSHN as well.
 
-== StackGres
-
-For a list of all available extensions, please https://stackgres.io/doc/latest/intro/extensions/[consult the official StackGres listing^].
-
-=== Enable Extensions
-
-To enable an extension, add the following configuration to your instance:
-
-[source,yaml]
-----
-apiVersion: vshn.appcat.vshn.io/v1
-kind: VSHNPostgreSQL
-metadata:
-  name: pgsql-app1-prod
-spec:
-  parameters:
-    service:
-      extensions:
-        - name: ltree <1>
-----
-
-<1> Name of the extension as found on the "Name" column at https://stackgres.io/doc/latest/intro/extensions/[the official listing^]. Add more extensions to the list as needed.
-
-After applying the change, AppCat will ensure that the extension is available after a short while.
-
-WARNING: Some extensions like `timescaledb` or `postgis` will require a restart of the instance to be available.
-Depending on your https://docs.appcat.ch/vshn-managed/postgresql/update-strategy.html[Instance Update Strategy], it's possible that the instance will restart immediately.
-
 == CloudNativePG
 
 === Built-in Extensions
@@ -117,8 +89,6 @@ kind: VSHNPostgreSQL
 metadata:
   name: pgsql-app1-prod
 spec:
-  compositionRef:
-    name: vshnpostgrescnpg.vshn.appcat.vshn.io
   parameters:
     service:
       majorVersion: "18"
@@ -137,3 +107,35 @@ spec:
 You can also bring your own extension image following the https://cloudnative-pg.io/docs/1.28/imagevolume_extensions[official documentation^].
 
 WARNING: We do not provide support for images not officially maintained by CloudNativePG or VSHN.
+
+== StackGres
+
+NOTE: This section only applies to StackGres-based instances (with `compositionRef: vshnpostgres.vshn.appcat.vshn.io`).
+
+For a list of all available extensions, please https://stackgres.io/doc/latest/intro/extensions/[consult the official StackGres listing^].
+
+=== Enable Extensions
+
+To enable an extension, add the following configuration to your instance:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+spec:
+  compositionRef:
+    name: vshnpostgres.vshn.appcat.vshn.io
+  parameters:
+    service:
+      extensions:
+        - name: ltree <1>
+----
+
+<1> Name of the extension as found on the "Name" column at https://stackgres.io/doc/latest/intro/extensions/[the official listing^]. Add more extensions to the list as needed.
+
+After applying the change, AppCat will ensure that the extension is available after a short while.
+
+WARNING: Some extensions like `timescaledb` or `postgis` will require a restart of the instance to be available.
+Depending on your https://docs.appcat.ch/vshn-managed/postgresql/update-strategy.html[Instance Update Strategy], it's possible that the instance will restart immediately.
