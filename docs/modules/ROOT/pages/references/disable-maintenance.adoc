@@ -51,7 +51,7 @@ spec:
 
 [IMPORTANT]
 ====
-For PostgreSQL CNPG service, the major version in `pinImageTag` must match the `majorVersion` field.
+For PostgreSQL instances, the major version in `pinImageTag` must match the `majorVersion` field.
 For example, if `majorVersion: "16"`, then `pinImageTag` must start with `16.` (such as `16.4`, `16.9`).
 Setting `pinImageTag: "15.13"` with `majorVersion: "16"` will be rejected by the webhook validation.
 ====
@@ -90,7 +90,7 @@ When `disableAppcatRelease: true`:
 
 Version pinning with `pinImageTag` and `disableAppcatRelease` option is currently available for:
 
-* VSHNPostgreSQL (CNPG-based instances)
+* VSHNPostgreSQL
 * VSHNMariaDB
 * VSHNRedis
 * VSHNNextcloud
@@ -98,4 +98,4 @@ Version pinning with `pinImageTag` and `disableAppcatRelease` option is currentl
 * VSHNForgejo
 * VSHNMinIO
 
-NOTE: For StackGres-based PostgreSQL instances, `pinImageTag` is currently a no-op and will be implemented in a future release.
+NOTE: For StackGres-based PostgreSQL instances (with `compositionRef: vshnpostgres.vshn.appcat.vshn.io`), `pinImageTag` is not supported.

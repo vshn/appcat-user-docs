@@ -5,7 +5,7 @@ VSHNPostgreSQL instances running on CloudNativePG (CNPG) support offline in-plac
 The upgrade is triggered by setting a higher `majorVersion` in your instance spec.
 CNPG then shuts down the entire cluster and runs `pg_upgrade --link` to migrate the data in place.
 
-NOTE: Major version upgrades are only available for CloudNativePG-based instances. StackGres-based instances do not support this feature. See xref:vshn-managed/postgresql/create.adoc#_cloudnativepg[how to deploy an instance using CloudNativePG].
+NOTE: Major version upgrades are only available for CloudNativePG-based instances (the default). StackGres-based instances do not support this feature.
 
 [WARNING]
 ====
