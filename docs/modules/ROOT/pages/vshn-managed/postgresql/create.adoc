@@ -1,6 +1,6 @@
 = Create a PostgreSQL service
 
-Apply the following object on your namespace, as specified by its YAML description.
+Apply the following object to your namespace, as specified by its YAML description.
 
 .Example to create a PostgreSQL instance
 [source,yaml]
@@ -38,6 +38,26 @@ spec:
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[API Reference]
 
+== CloudNativePG
+
+Deployments based on CloudNativePG (CNPG for short) are the new default. If you already have any StackGres based instances, we advise you to migrate away immediately. Do so by following the https://docs.appcat.ch/vshn-managed/postgresql/migration.html[migration guide].
+
+To deploy your instance using CNPG, simply set `spec.compositionRef.name`:  
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: prod-app
+spec:
+  compositionRef:
+    name: vshnpostgrescnpg.vshn.appcat.vshn.io
+----
+
+NOTE: Once set, the method of deployment cannot be changed afterwards.  
+Similarly, existing instances cannot be switched over to CNPG without migrating to a new instance.
+
 == Envoy Sidecar Proxy
 
 By default, Envoy sidecar proxy is disabled on PostgreSQL instances.
@@ -65,32 +85,6 @@ spec:
 <1> Enable Envoy sidecar proxy for advanced monitoring capabilities.
 
 For more information about Envoy in StackGres, see the https://stackgres.io/doc/latest/administration/monitoring/envoy/[StackGres Envoy documentation].
-
-== CloudNativePG
-
-As an alternative to StackGres, the way PostgreSQL is currently deployed, you can choose to deploy your service using CloudNativePG (CNPG for short) instead.  
-Deployments based on CNPG are currently only meant for evaluation purposes and therefore only support a limited amount of features compared to the StackGres based offering.
-
-Unavailable features (at the moment) are:
-- Scaling
-- Backups
-- DB management
-
-To deploy your instance using CNPG, simply set `spec.compositionRef.name`:  
-[source,yaml]
-----
-apiVersion: vshn.appcat.vshn.io/v1
-kind: VSHNPostgreSQL
-metadata:
-  name: pgsql-app1-prod
-  namespace: prod-app
-spec:
-  compositionRef:
-    name: vshnpostgrescnpg.vshn.appcat.vshn.io
-----
-
-NOTE: Once set, the method of deployment cannot be changed afterwards.  
-Similarly, existing instances cannot be switched over to CNPG without migrating to a new instance.
 
 == Inspect your new PostgreSQL service
 
