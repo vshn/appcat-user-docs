@@ -1,12 +1,12 @@
 = Changelog 2026-04-21
 
-With AppCat https://github.com/vshn/appcat/releases/tag/v4.185.0[v4.185.0^] we proudly present a fully matured https://products.vshn.ch/appcat/postgresql_cnpg.html[PostgreSQL with CLoudNativePG].
+With AppCat https://github.com/vshn/appcat/releases/tag/v4.185.0[v4.185.0^] we proudly present a fully matured https://products.vshn.ch/appcat/postgresql_cnpg.html[PostgreSQL with CloudNativePG].
 
 == PostgreSQL CloudNativePG Self Service Restore
 
 The last missing feature on our list was self service restore for PostgreSQL. It is finally here and with it a fully matured PostgreSQL with CloudNativePG service. Test the restore yourself by following the https://docs.appcat.ch/vshn-managed/postgresql/restore.html#_cloudnativepg[CloudNativePG Restore] guide.
 
-Now is also a good time to start planning your migration from Stackgress to CloudNativePG. Just reach out to us and we will help you. 
+Now is also a good time to start planning your migration from StackGres to CloudNativePG. Just reach out to us and we will help you. 
 
 == PostgreSQL CloudNativePG for Nextcloud
 

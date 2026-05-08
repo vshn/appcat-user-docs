@@ -15,7 +15,7 @@ According to https://forgejo.org/releases/[forgejo releases], only v11.x and v14
 
 == PostgreSQL CloudNativePG for Keycloak
 
-We have switched the PostgreSQL database used for VSHN AppCat Keycloak service from Stackgress to CloudNativePG. It does not affect the existing Keycloak instances. 
+We have switched the PostgreSQL database used for VSHN AppCat Keycloak service from StackGres to CloudNativePG. It does not affect the existing Keycloak instances. 
 From the next AppCat release, when you create a new Keycloak instance, it will use PostgreSQL CloudNativePG in the background. Why next, you ask? We still want to finish up the implementation of alerting.
 
 == Race condition for PostgreSQL user management 

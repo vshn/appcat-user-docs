@@ -1,6 +1,6 @@
 = Changelog 2026-04-07
 
-AppCat release https://github.com/vshn/appcat/releases/tag/v4.184.0[v4.184.0^] brings user management and major version upgrade to PostgreSQL with CLoudNativePG.
+AppCat release https://github.com/vshn/appcat/releases/tag/v4.184.0[v4.184.0^] brings user management and major version upgrade to PostgreSQL with CloudNativePG.
 
 == PostgreSQL CloudNativePG Major Version Upgrade
 
