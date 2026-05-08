@@ -6,7 +6,7 @@ Nothing very visible for you, but you will thank us later.
 == Servala enablement
 
 This has been a while in making, and we are releasing all at once. 
-Not to get into the details of each separate item, but here is a list of what was done: generic objectbucket, HTTPRoute, TCPRout, TCP Gateway.
+Not to get into the details of each separate item, but here is a list of what was done: generic objectbucket, HTTPRoute, TCPRoute, TCP Gateway.
 All of this and more to provide the best possible solution to you via https://servala.com[Servala].
 
 == Garage monitoring
