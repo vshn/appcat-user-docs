@@ -26,3 +26,4 @@ We are as excited as you are.
 Yes, you read it correctly.
 https://products.vshn.ch/appcat/postgresql_cnpg.html[PostgreSQL by VSHN with CloudNativePG] is production ready.
 We advise all to migrate promptly, so you can benefit from the enhanced features and user experience.
+You can migrate on your own by following the https://docs.appcat.ch/vshn-managed/postgresql/migration.html[migration guide] or simply reach out to us if you need help.
