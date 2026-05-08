@@ -41,8 +41,6 @@ metadata:
   name: psql-cnpg
   namespace: default
 spec:
-  compositionRef:
-    name: vshnpostgrescnpg.vshn.appcat.vshn.io
   parameters:
     service:
       majorVersion: "18"

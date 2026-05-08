@@ -1,6 +1,6 @@
 = Changelog 2026-03-24
 
-AppCat release https://github.com/vshn/appcat/releases/tag/v4.183.0[v4.183.0^] focuses on bug fixes additional fields for CLoudNativePG extensions.
+AppCat release https://github.com/vshn/appcat/releases/tag/v4.183.0[v4.183.0^] focuses on bug fixes additional fields for CloudNativePG extensions.
 
 == PostgreSQL CloudNativePG Extension
 

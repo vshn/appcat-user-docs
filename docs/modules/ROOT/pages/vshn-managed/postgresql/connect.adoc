@@ -46,7 +46,7 @@ kubectl -n app1-dev get secrets my-postgresql-dev-connection -o yaml | yq .data.
 WARNING: TCPGateway will go through a shared proxy, to minimize costs.
 Be aware that this can have a negative impact on performance.
 If you experience performance issues, please consider using LoadBalancer instead.
-TCPGateway is only supported for CNPG backed VSHNPostgreSQL instances.
+TCPGateway is not available for StackGres-based instances.
 TCPGateway is not available on all clusters.
 Please check with us if you need it for your APPUiO Managed cluster.
 
@@ -65,8 +65,6 @@ spec:
       deletionProtection: false
   writeConnectionSecretToRef:
     name: my-postgresql-dev-connection
-  compositionRef:
-    name: vshnpostgrescnpg.vshn.appcat.vshn.io
 ```
 
 This YAML snippet would create a PostgreSQL cluster and Service of type TCPGateway. The Service would be accessible from outside of the cluster. You can get IP address of the service using:
@@ -86,14 +84,14 @@ Read the https://github.com/kubernetes/kubernetes/issues/111825[Github issue] fo
 
 You can port-forward to your PostgreSQL cluster using the kubectl port-forward command. This command always works, no matter what is set as serviceType.
 
+.CNPG based instances (default)
+```
+kubectl -n $instanceNamespace port-forward services/postgresql-rw 5432
+```
+
 .StackGres based instances
 ```
 kubectl -n $instanceNamespace port-forward services/primary-service 5432
-```
-
-.CNPG based instances
-```
-kubectl -n $instanceNamespace port-forward services/postgresql-rw 5432
 ```
 
 link:../how-tos/logging.html[Check how to find instanceNamespace]

@@ -92,10 +92,10 @@ spec:
     name: postgres-creds
 ----
 
-When specifying custom CPU or memory limits you need to be aware that there is an additional resource overhead of `408Mi` of memory and `390m` CPU for each PostgreSQL instance.
+When specifying custom CPU or memory limits you need to be aware that there is an additional resource overhead that depends on the deployment method.
 See section <<_sidecar_overhead>>.
 
-This means, if you for example set the memory request to `2000Mi`, the instance will use, and you will be billed for, `2320Mi` of RAM.
+This means the actual resource consumption will be higher than what you configure. See section <<_sidecar_overhead>> for the specific overhead values.
 
 [WARNING]
 .APPUiO Cloud Fair Use Policy
@@ -108,7 +108,23 @@ The default plans all adhere to the Fair Use Policy.
 
 == Sidecar Overhead
 
-Each PostgreSQL Standalone instance has the following overhead:
+The sidecar overhead depends on the deployment method.
+
+=== CloudNativePG (default)
+
+Each CloudNativePG-based instance has the following overhead:
+
+* CPU: 100m
+* Memory: 100Mi
+
+This overhead is for the CNPG instance manager that runs alongside the PostgreSQL instance.
+This overhead is already accounted for in the provided plans.
+
+=== StackGres
+
+NOTE: This section only applies to StackGres-based instances (with `compositionRef: vshnpostgres.vshn.appcat.vshn.io`).
+
+Each StackGres-based instance has the following overhead:
 
 * CPU: 390m
 * Memory: 408Mi
@@ -118,7 +134,7 @@ These containers handle connection pooling, metrics and other internal functiona
 
 This overhead is already accounted for in the provided plans.
 
-=== Dedicated Patroni Resources
+==== Dedicated Patroni Resources
 
 By default, StackGres automatically distributes the specified resources across all containers (including Patroni and sidecars).
 However, you can enable dedicated resource allocation for Patroni by setting `spec.parameters.service.dedicatedPatroniResources` to `true`.
@@ -136,6 +152,8 @@ kind: VSHNPostgreSQL
 metadata:
   name: example
 spec:
+  compositionRef:
+    name: vshnpostgres.vshn.appcat.vshn.io
   parameters:
     size:
       plan: standard-4
