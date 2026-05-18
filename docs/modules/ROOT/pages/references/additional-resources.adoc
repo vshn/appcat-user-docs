@@ -1,0 +1,77 @@
+= Create Additional Resources
+
+This page describes how to deploy additional Kubernetes resources into the instance namespace of a VSHN managed service by referencing a `ConfigMap` containing the resource manifests.
+
+WARNING: This feature is disabled by default. To request access, or to request specific resource kinds to be allowed, please contact our mailto:support@vshn.ch[Support].
+
+== Overview
+
+Some use cases require extra Kubernetes objects (for example a `ReferenceGrant` or other supporting resources) to live alongside the workloads that make up a managed service.
+The `additionalResources` parameter allows you to point the service at a `ConfigMap` whose entries are applied into the service's instance namespace.
+
+== Prerequisites
+
+* A running VSHN managed service instance.
+* Permission to create `ConfigMap` resources in the namespace where the service claim lives.
+* The feature enabled for your instance by VSHN.
+
+== Create the ConfigMap
+
+Create a `ConfigMap` in the same namespace as the service claim.
+Each key in `data` must contain a single valid Kubernetes YAML manifest.
+
+.Example ConfigMap
+[source,yaml]
+----
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: additional-resource
+data:
+  referencegrant.yaml: |
+    apiVersion: gateway.networking.k8s.io/v1beta1
+    kind: ReferenceGrant
+    metadata:
+      name: allow-gateway-to-backend
+    spec:
+      from:
+        - group: gateway.networking.k8s.io
+          kind: HTTPRoute
+          namespace: gateway
+      to:
+        - group: ""
+          kind: Service
+----
+
+You can include multiple manifests by adding more keys under `data`.
+
+== Reference the ConfigMap from the service
+
+Set `spec.parameters.additionalResources.configMapRef` on the service claim to the name of the `ConfigMap` created above.
+
+.Example service claim snippet
+[source,yaml]
+----
+spec:
+  parameters:
+    additionalResources:
+      configMapRef: "additional-resource"
+----
+
+Once reconciled, the resources defined in the `ConfigMap` are created in the instance namespace of the service.
+
+== Updating resources
+
+To change a managed resource, edit the corresponding key in the `ConfigMap`.
+To remove a resource, delete its key from the `ConfigMap`.
+
+Changes to the referenced `ConfigMap` are not propagated to the instance namespace immediately.
+To force a reconciliation and apply the updated resources, annotate the service claim:
+
+.Manually triggering a reconciliation
+[source,bash]
+----
+kubectl annotate [KIND] [NAME] -n [NAMESPACE] crossplane.io/touch="$(date +%s)" --overwrite
+----
+
+Replace `[KIND]` with the claim kind (for example `vshnkeycloak`, `vshnpostgresql`), `[NAME]` with the name of the claim, and `[NAMESPACE]` with the namespace where the claim was created.
