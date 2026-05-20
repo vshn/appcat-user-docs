@@ -34,6 +34,8 @@ spec:
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnnextcloud[API Reference]
 
+include::partial$claim-changes-immediate.adoc[]
+
 == Inspect your new Nextcloud service
 
 [source,bash]

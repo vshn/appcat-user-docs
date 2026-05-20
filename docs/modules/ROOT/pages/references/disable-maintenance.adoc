@@ -67,6 +67,8 @@ When `pinImageTag` is set:
 * You can pin to older versions (downgrades are allowed when pinning on your own risk)
 * You take full responsibility for security updates and bug fixes
 
+include::partial$claim-changes-immediate.adoc[]
+
 [WARNING]
 ====
 Pinning to an older version means you won't receive security patches automatically.
