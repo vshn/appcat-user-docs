@@ -1,0 +1,9 @@
+[IMPORTANT]
+====
+Changes to the claim `spec` take effect immediately on apply and bypass the maintenance window entirely.
+
+Some changes (such as plan upgrades, replica count changes, resource
+sizing, or `pinImageTag` updates) can trigger pod restarts or short
+connection interruptions.
+Apply disruptive edits at a time that suits your workload.
+====

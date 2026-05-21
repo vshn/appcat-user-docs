@@ -44,6 +44,8 @@ This is applicable to things like webhook notifications, OAuth, and similar func
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnForgejo[API Reference]
 
+include::partial$claim-changes-immediate.adoc[]
+
 == Inspect your new Forgejo service
 
 [source,bash]
