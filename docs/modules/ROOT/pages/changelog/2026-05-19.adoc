@@ -1,0 +1,15 @@
+= Changelog 2026-05-19
+
+AppCat https://github.com/vshn/appcat/releases/tag/v4.187.0[v4.187.0^] might look like nothing much happened. But it did, at least in our minds and on the paper. 
+You will hear soon, but for now, be patient.
+
+== CloudNativePG is the new default
+
+All new PostgreSQL instances will use CloudNativePG. 
+Enjoy your new https://docs.appcat.ch/vshn-managed/postgresql/create.html[PostgreSQL].
+If you have not done it yet, now is the time to migrate your existing PostgreSQL instances to CloudNativePG. You can do it on your own by following this https://docs.appcat.ch/vshn-managed/postgresql/migration.html[migration guide]. Reach out to us if you have questions.
+
+== Bug fixes
+
+We fixed a Garage CRD version, topologyKey for CloudNativePG and return warning on error in enableSSHInRelease. 
+Small things, but making the big picture better.
