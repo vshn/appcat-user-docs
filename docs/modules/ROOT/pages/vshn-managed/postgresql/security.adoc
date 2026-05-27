@@ -72,13 +72,13 @@ metadata:
 spec:
   parameters:
     network:
-      ipFilter: <1>
+      ipFilter: <1> 
       - 0.0.0.0/0
       serviceType: LoadBalancer <2>
   writeConnectionSecretToRef:
     name: postgres-creds-connection
 ----
 
-<1> List of IP addresses to be allowed to access PostgreSQL, defaults to `0.0.0.0/0`
+<1> List of IP addresses to be allowed to access PostgreSQL, defaults to `0.0.0.0/0`. *CURRENTLY NOT ENFORCED*
 <2> Type of service to be created, defaults to `ClusterIP`
 
