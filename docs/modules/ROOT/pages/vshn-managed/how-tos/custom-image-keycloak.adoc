@@ -1,6 +1,74 @@
-= How to create a customization container image for Keycloak
+= How to create a custom Keycloak container image
 
-This page describes how to create a container image with custom https://www.keycloak.org/docs/latest/server_development/#_themes[themes^], https://www.keycloak.org/docs/latest/server_development/#_providers[providers^] and other custom files to use along with `VSHNKeycloak` service.
+This page describes how to build a custom Keycloak image with your own https://www.keycloak.org/docs/latest/server_development/#_themes[themes^] and https://www.keycloak.org/docs/latest/server_development/#_providers[providers^] for use with the `VSHNKeycloak` service.
+
+== Using the Keycloak image template (recommended)
+
+Use the https://github.com/vshn/custom-keycloak-image-template[custom-keycloak-image-template^] Cookiecutter template to generate a project that builds a fully optimized Keycloak image.
+The resulting image is used with the `customImage` field in your `VSHNKeycloak` claim.
+
+=== Prerequisites
+
+* https://cookiecutter.readthedocs.io/en/stable/[cookiecutter^] >= 2.0
+* Docker with https://docs.docker.com/build/builders/[buildx^]
+
+=== Steps
+
+. Generate a new project from the template.
++
+[source,bash]
+----
+cookiecutter gh:vshn/custom-keycloak-image-template
+----
++
+Answer the prompts:
++
+[source]
+----
+project_name [My Custom Keycloak]: Acme Keycloak
+project_slug [acme-keycloak]:
+keycloak_version [26.6.1]: 26.6.1
+----
++
+This creates a directory named after your `project_slug`.
+
+. Add your themes and provider JARs to the generated project.
++
+[source,bash]
+----
+cp -r my-theme/ acme-keycloak/themes/
+cp my-provider.jar acme-keycloak/extensions/
+----
++
+Themes go under `themes/` and provider JARs go under `extensions/`.
+
+. Build the image locally to verify it compiles correctly.
++
+[source,bash]
+----
+cd acme-keycloak
+make build
+----
+
+. Push the image to your container registry.
++
+[source,bash]
+----
+make push IMAGE=ghcr.io/my-org/acme-keycloak
+----
++
+The image is tagged with the Keycloak version by default (e.g. `26.6.1`).
+Override with `TAG=<your-tag>` if needed.
+
+. Reference the image in your `VSHNKeycloak` claim using the `customImage` field.
+See xref:vshn-managed/keycloak/customization.adoc[Customization] for the full example.
+
+== Legacy approach (for use with the deprecated `customizationImage` field)
+
+NOTE: This approach uses the deprecated `customizationImage` field. Use the template-based approach above with the `customImage` field instead.
+
+The legacy approach packages themes and providers into a minimal container image.
+At pod startup, an init container copies the files into the running Keycloak instance.
 
 . Open a command line and create two directories.
 +
@@ -18,7 +86,7 @@ mkdir themes && mkdir providers
 mkdir my-folder && touch pw-blacklist.txt
 ----
 
-. Create the following docker file.
+. Create the following Dockerfile.
 +
 [source,bash]
 ----

@@ -6,10 +6,50 @@ NOTE: Updating an existing keycloak configuration can take up to 60 minutes to b
 
 == Themes, providers and custom files
 
-`VSHNKeycloak` allows you to use custom providers, themes and files.
-xref:vshn-managed/how-tos/custom-image-keycloak.adoc[Create] a custom container image and use it to customize your Keycloak instance as described below.
+`VSHNKeycloak` supports custom themes, providers, and files via custom container images.
+See xref:vshn-managed/how-tos/custom-image-keycloak.adoc[How to create a custom Keycloak container image] for instructions on building the image.
 
-.Example to create a Keycloak instance an image containing custom themes and providers
+=== Custom Keycloak image (recommended)
+
+Use the `customImage` field to specify a full Keycloak image built from the https://github.com/vshn/custom-keycloak-image-template[custom-keycloak-image-template^].
+Themes and providers are baked in at build time via `kc.sh build`, which is required for Keycloak's optimized startup mode.
+The deprecated `customizationImage` approach copies files at runtime via init containers and is incompatible with optimized startup.
+
+.Example: Keycloak instance with a custom image
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: keycloak-app1-prod
+  namespace: prod-app
+spec:
+  parameters:
+    service:
+      version: "26"
+      customImage:
+        image: ghcr.io/my-org/my-keycloak:26.6.1 # <1>
+        imagePullSecretRef:
+          name: ghcr-secret # <2>
+    size:
+      plan: standard-2
+  writeConnectionSecretToRef:
+    name: keycloak-creds
+----
+<1> Full image reference for the custom Keycloak image built from the template.
+<2> Optional: name of a Secret in the same namespace as the claim containing Docker registry credentials (key `.dockerconfigjson`).
+
+NOTE: When `customImage` is set, automatic Keycloak version upgrades are disabled and maintenance windows do not apply.
+The image tag is used as-is; you are responsible for updating the image when upgrading Keycloak.
+
+=== Customization image (deprecated)
+
+WARNING: The `customizationImage` field is deprecated. Use `customImage` instead.
+Setting both fields simultaneously is not allowed.
+
+The legacy approach uses an init container to copy themes and providers into the running Keycloak instance at pod startup.
+
+.Example: Keycloak instance with a customization image (deprecated)
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
@@ -22,23 +62,21 @@ spec:
     service:
       version: "26"
       customizationImage:
-        image: https://registry/user/image:tag # <1>
+        image: registry/user/image:tag # <1>
         imagePullSecretRef:
           name: secret-name # <2>
-          namespace: secret-namespace # <3>
       customFiles:
-        - source: path/in/customization/image # <4>
-          destination: path/in/keycloak/instance # <5>
+        - source: path/in/customization/image # <3>
+          destination: path/in/keycloak/instance # <4>
     size:
       plan: standard-2
   writeConnectionSecretToRef:
     name: keycloak-creds
 ----
-<1> Container image url
-<2> Secret name containing credentials for the registry with key `.dockerconfigjson`
-<3> Secret namespace
-<4> File in your customization image (can also be a folder)
-<5> Destination path in Keycloak instance, relative to `/opt/keycloak`
+<1> Container image URL
+<2> Secret name containing credentials for the registry with key `.dockerconfigjson` (must be in the same namespace as the claim)
+<3> File in your customization image (can also be a folder)
+<4> Destination path in Keycloak instance, relative to `/opt/keycloak`
 
 NOTE: Themes and providers will be implicitly copied if found in your image.
 You do not need to add them separately in `customFiles`.
