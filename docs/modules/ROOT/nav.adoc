@@ -129,6 +129,7 @@
 ** xref:exoscale-dbaas/redis/usage.adoc[Usage]
 
 .Changelog
+* xref:changelog/2026-06-02.adoc[2026-06-02]
 * xref:changelog/2026-05-19.adoc[2026-05-19]
 * xref:changelog/2026-05-05.adoc[2026-05-05]
 * xref:changelog/2026-04-21.adoc[2026-04-21]
