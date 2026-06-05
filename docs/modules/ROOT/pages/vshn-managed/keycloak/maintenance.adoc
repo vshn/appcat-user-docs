@@ -24,3 +24,7 @@ spec:
 <2> The time when the maintenance should be started
 
 NOTE: PostgreSQL database is also configured to have maintenance by default. See xref:vshn-managed/postgresql/maintenance.adoc[PostgreSQL Maintenance].
+
+NOTE: Maintenance does not apply when `spec.parameters.service.customImage.image` is set.
+In that case, automatic version upgrades are disabled and you manage the Keycloak version yourself via the image tag.
+See xref:vshn-managed/keycloak/customization.adoc#_custom_keycloak_image_recommended[Custom Keycloak image] for details.
