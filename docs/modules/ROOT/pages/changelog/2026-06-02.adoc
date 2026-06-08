@@ -1,0 +1,10 @@
+= Changelog 2026-06-02
+
+AppCat https://github.com/vshn/appcat/releases/tag/v4.188.0[v4.188.0^] brings some smaller technical improvements for us. For you it brings the VSHN PostgreSQL with StackGres End of Life announcement. 
+
+== VSHN PostgreSQL with StackGres End of Life as of 31.08.2026 
+
+https://products.vshn.ch/appcat/postgresql.html[VSHN PostgreSQL with StackGres] is End of life as of 31.08.2026.
+All new PostgreSQL instances use CloudNativePG. CloudNativePG is the new default for VSHN PostgreSQL. 
+Here is how you can create your new https://docs.appcat.ch/vshn-managed/postgresql/create.html[PostgreSQL] instance.
+If you have not done it yet, now is the time to migrate your existing PostgreSQL instances to CloudNativePG from StackGres. You can do it on your own by following this https://docs.appcat.ch/vshn-managed/postgresql/migration.html[migration guide]. Reach out to us if you have questions.
