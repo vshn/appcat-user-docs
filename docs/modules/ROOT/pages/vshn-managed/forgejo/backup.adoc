@@ -22,6 +22,29 @@ spec:
 
 NOTE: The backup relies on `forgejo dump` which collects all the data into a single archive, including the database.
 
+== Retention
+
+By default, backups are retained for *6 daily backups*.
+
+To change the retention period, configure the `backup.retention` field:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNForgejo
+metadata:
+  name: forgejo-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    ...
+    backup:
+      retention:
+        keepDaily: 14 <1>
+    ...
+----
+<1> Number of daily backups to retain (default: `6`). Additional retention options are `keepLast`, `keepHourly`, `keepWeekly`, `keepMonthly`, and `keepYearly`.
+
 == Disable Backups
 
 To disable backups, set the `backup.enabled` field to `false`:
