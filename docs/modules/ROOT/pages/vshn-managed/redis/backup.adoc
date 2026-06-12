@@ -20,6 +20,29 @@ spec:
 ----
 <1> The schedules for your backups.
 
+== Retention
+
+By default, backups are retained for *6 daily backups*.
+
+To change the retention period, configure the `backup.retention` field:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNRedis
+metadata:
+  name: redis-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    ...
+    backup:
+      retention:
+        keepDaily: 14 <1>
+    ...
+----
+<1> Number of daily backups to retain (default: `6`). Additional retention options are `keepLast`, `keepHourly`, `keepWeekly`, `keepMonthly`, and `keepYearly`.
+
 == Disable Backups
 
 To disable backups, set the `backup.enabled` field to `false`:

@@ -22,6 +22,50 @@ spec:
 
 NOTE: Self service restores are currently not available. Please open a ticket if you need to restore the data of your Nextcloud instance.
 
+== Retention
+
+A Nextcloud instance has two independent backup components: the Nextcloud application (via K8up) and the backing PostgreSQL database (via Barman Cloud).
+
+*Nextcloud application backup retention* defaults to *6 daily backups*.
+To change it, configure the `backup.retention` field:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNNextcloud
+metadata:
+  name: nextcloud-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    ...
+    backup:
+      retention:
+        keepDaily: 14 <1>
+    ...
+----
+<1> Number of daily backups to retain (default: `6`). Additional retention options are `keepLast`, `keepHourly`, `keepWeekly`, `keepMonthly`, and `keepYearly`.
+
+*PostgreSQL backup retention* defaults to *6 days*.
+To change it, configure the `postgreSQLParameters.backup.retention` field:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNNextcloud
+metadata:
+  name: nextcloud-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    ...
+    postgreSQLParameters:
+      backup:
+        retention: 14 <1>
+    ...
+----
+<1> Number of days to retain PostgreSQL backups (default: `6`).
+
 == Disabling Maintenance mode during backup
 
 By default, Nextcloud will be put in Maintenance Mode during the backup. This ensures that the backups are in a consistent state.

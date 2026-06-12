@@ -27,6 +27,32 @@ spec:
 ----
 <1> The schedules for your backups.
 
+=== Retention
+
+By default, backups are retained for *6 days*.
+
+To change the retention period, configure the `backup.retention` field:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    ...
+    backup:
+      retention: 14 <1>
+    ...
+----
+<1> Number of days to retain backups (default: `6`).
+
+WAL archive retention is tied to the base backup retention window.
+Barman Cloud automatically keeps all WAL segments needed to restore any backup within the retention period.
+WAL retention cannot be configured independently.
+
 === Point in Time interval
 
 By default, the _WALs_ (Write Ahead Logs) are archived once a _WAL_ file is completed (16Mb) or after `archive_timeout` (5 minutes by default), whichever comes first.
@@ -51,6 +77,10 @@ spec:
 ----
 <1> Amount of time between WAL archives in seconds (default: `300`)
 
+NOTE: When `archive_timeout` triggers early WAL rotation, PostgreSQL pads the segment to 16 MB before handing it to barman-cloud.
+Barman Cloud then compresses it with gzip before uploading to the object store.
+On low-activity systems, the compressed archive is typically well under 1 MB, so a short `archive_timeout` has minimal impact on object store usage.
+
 === Disable Backups
 
 To disable backups, set the `backup.enabled` field to `false`. This will also disable WAL archiving:
@@ -71,6 +101,15 @@ spec:
 ----
 
 include::partial$backup-disable-warning.adoc[]
+
+=== Backup in Multi-Instance Setups
+
+When a VSHNPostgreSQL instance is configured with multiple instances, backups are always taken from the *primary* instance.
+
+PostgreSQL's online backup mechanism is used, which means replication to standby instances is *not* interrupted or paused during a backup.
+
+WAL archiving is also handled exclusively by the primary instance.
+Standby instances do not archive WAL independently, which prevents duplicate segments in the object store.
 
 == StackGres
 
@@ -124,7 +163,9 @@ spec:
 ----
 <1> Amount of time between _WAL_ archives in seconds
 
-However, the _WAL_ files will always be 16Mb, even if it's not completed. So using this setting will most likely increase the data usage on the backup object store.
+NOTE: When `archive_timeout` triggers early WAL rotation, PostgreSQL pads the segment to 16 MB before archiving.
+pgBackRest compresses the segment before uploading to the object store, so on low-activity systems the stored archive is typically well under 1 MB.
+A short `archive_timeout` therefore has minimal impact on object store usage.
 
 === Disable Backups
 

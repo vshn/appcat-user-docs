@@ -20,6 +20,50 @@ spec:
 ----
 <1> The schedules for your backups.
 
+== Retention
+
+A Keycloak instance has two independent backup components: the Keycloak application (via K8up) and the backing PostgreSQL database (via Barman Cloud).
+
+*Keycloak application backup retention* defaults to *6 daily backups*.
+To change it, configure the `backup.retention` field:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: keycloak-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    ...
+    backup:
+      retention:
+        keepDaily: 14 <1>
+    ...
+----
+<1> Number of daily backups to retain (default: `6`). Additional retention options are `keepLast`, `keepHourly`, `keepWeekly`, `keepMonthly`, and `keepYearly`.
+
+*PostgreSQL backup retention* defaults to *6 days*.
+To change it, configure the `postgreSQLParameters.backup.retention` field:
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNKeycloak
+metadata:
+  name: keycloak-app1-prod
+  namespace: <your-namespace>
+spec:
+  parameters:
+    ...
+    postgreSQLParameters:
+      backup:
+        retention: 14 <1>
+    ...
+----
+<1> Number of days to retain PostgreSQL backups (default: `6`).
+
 == Disable Backups
 
 To disable backups, set the `backup.enabled` field to `false` for both the Keycloak instance and the PostgreSQL database:
