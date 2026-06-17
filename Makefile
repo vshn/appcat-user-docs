@@ -72,3 +72,9 @@ docs-generate-api: clone-crds
 	cat docs/modules/ROOT/pages/references/crds_vshn.adoc | sed "s/= API Reference/== VSHN Reference/g" >> docs/modules/ROOT/pages/references/crds.adoc
 	rm docs/modules/ROOT/pages/references/crds_*.adoc
 	go run main.go
+
+.PHONY: generate-postgresql-defaults
+generate-postgresql-defaults: clone-crds ## Generates VSHNPostgreSQL parameter reference table from CRD YAML
+	python3 generator/generate-defaults.py \
+		.work/crds/crds/vshn.appcat.vshn.io_vshnpostgresqls.yaml \
+		docs/modules/ROOT/pages/references/vshnpostgresql-params.adoc
