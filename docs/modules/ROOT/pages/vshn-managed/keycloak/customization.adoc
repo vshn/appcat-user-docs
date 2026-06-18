@@ -13,7 +13,7 @@ See xref:vshn-managed/how-tos/custom-image-keycloak.adoc[How to create a custom 
 
 Use the `customImage` field to specify a full Keycloak image built from the https://github.com/vshn/custom-keycloak-image-template[custom-keycloak-image-template^].
 Themes and providers are baked in at build time via `kc.sh build`, which is required for Keycloak's optimized startup mode.
-The deprecated `customizationImage` approach copies files at runtime via init containers and is incompatible with optimized startup.
+The `customizationImage` approach copies files at runtime via init containers and is incompatible with optimized startup, this solution will be deprecated in the near future.
 
 .Example: Keycloak instance with a custom image
 [source,yaml]
@@ -42,12 +42,12 @@ spec:
 NOTE: When `customImage` is set, automatic Keycloak version upgrades are disabled and maintenance windows do not apply.
 The image tag is used as-is; you are responsible for updating the image when upgrading Keycloak.
 
-=== Customization image (deprecated)
+=== Customization image
 
-WARNING: The `customizationImage` field is deprecated. Use `customImage` instead.
+WARNING: The `customizationImage` field will be deprecated. Check `customImage` instead.
 Setting both fields simultaneously is not allowed.
 
-The legacy approach uses an init container to copy themes and providers into the running Keycloak instance at pod startup.
+This approach uses an init container to copy themes and providers into the running Keycloak instance at pod startup.
 
 .Example: Keycloak instance with a customization image (deprecated)
 [source,yaml]
