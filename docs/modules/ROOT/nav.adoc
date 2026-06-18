@@ -23,6 +23,7 @@
 * xref:vshn-managed/forgejo/restore.adoc[Restore]
 
 .xref:vshn-managed/keycloak/index.adoc[Keycloak]
+* xref:vshn-managed/keycloak/alerting.adoc[]
 * xref:vshn-managed/keycloak/backup.adoc[Backup]
 * xref:vshn-managed/keycloak/create.adoc[Creation]
 * xref:vshn-managed/keycloak/customization.adoc[]
@@ -53,6 +54,7 @@
 .xref:vshn-managed/minio.adoc[MinIO]
 
 .xref:vshn-managed/nextcloud/index.adoc[Nextcloud]
+* xref:vshn-managed/nextcloud/alerting.adoc[]
 * xref:vshn-managed/nextcloud/backup.adoc[Backup]
 * xref:vshn-managed/nextcloud/collabora.adoc[Collabora]
 * xref:vshn-managed/nextcloud/create.adoc[Creation]

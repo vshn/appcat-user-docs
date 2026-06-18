@@ -1,7 +1,9 @@
 = User Alerting
 
+IMPORTANT: Configuring and acting upon alerts is the user's responsibility. User alerting is highly recommended.
+
 VSHN Managed PostgreSQL allows to configure https://prometheus.io/docs/alerting/latest/alertmanager[alertmanager] in
-`spec.paremeters.monitoring`. Alertmanager handles alerts sent by client applications. For more details how to configure
+`spec.parameters.monitoring`. Alertmanager handles alerts sent by client applications. For more details how to configure
 Alertmanager to your needs, check out APPUiO Alertmanager configuration
 https://docs.appuio.cloud/user/how-to/configure-alertmanager.html#_configure_alertmanager[page].
 You can enable alerting for your PostgreSQL instance either using an existing `alertmanagerConfig` or an Alertmanager Template.
@@ -70,7 +72,7 @@ The configuration secret contains keys to sensitive information such as password
 
 == Receive monitoring alerts via E-Mail
 
-You can also receive alerts to any e-mail address, by specifing the address in `spec.paremeters.monitoring.email`:
+You can also receive alerts to any e-mail address, by specifying the address in `spec.parameters.monitoring.email`:
 
 [source,yaml]
 ----
@@ -91,6 +93,9 @@ spec:
 <1> E-Mail address(es) to be used to receive alerts. Multiple addresses can be specified as a comma-separated list.
 
 == Alert Specifications
+
+NOTE: When PostgreSQL runs out of disk space, the instance becomes completely unavailable - no connections are accepted, not even read-only ones.
+The `PersistentVolumeFillingUp` and `PersistentVolumeExpectedToFillUp` alerts below are the key early-warning signals for this.
 
 include::page$references/alerts.adoc[tag=common]
 

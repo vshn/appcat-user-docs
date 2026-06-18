@@ -1,0 +1,7 @@
+= User Alerting
+
+If Nextcloud is configured with a managed PostgreSQL database, it is highly recommended to configure alerting for the underlying PostgreSQL instance to be notified early about disk, memory, or connection issues - before they cause a service outage.
+
+IMPORTANT: Configuring and acting upon alerts is the user's responsibility.
+
+For configuration details, see xref:vshn-managed/postgresql/alerting.adoc[PostgreSQL User Alerting].
