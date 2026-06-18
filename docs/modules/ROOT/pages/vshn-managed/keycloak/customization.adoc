@@ -13,7 +13,7 @@ See xref:vshn-managed/how-tos/custom-image-keycloak.adoc[How to create a custom 
 
 Use the `customImage` field to specify a full Keycloak image built from the https://github.com/vshn/custom-keycloak-image-template[custom-keycloak-image-template^].
 Themes and providers are baked in at build time via `kc.sh build`, which is required for Keycloak's optimized startup mode.
-The old `customizationImage` approach copies files at runtime via init containers and is incompatible with optimized startup, this solution will be deprecated in the future.
+The `customizationImage` approach copies files at runtime via init containers and is incompatible with optimized startup, this solution will be deprecated in the near future.
 
 .Example: Keycloak instance with a custom image
 [source,yaml]
