@@ -2,7 +2,40 @@
 
 Apply the following object on your namespace, as specified by its YAML description.
 
-.Example to create a PostgreSQL instance
+== Minimal example
+
+The following is the minimum configuration required to create a PostgreSQL instance.
+All other fields use the default values shown in the <<full-example,full example>> below.
+
+.Minimal PostgreSQL instance
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: pgsql-app1-prod # <1>
+  namespace: prod-app # <2>
+spec:
+  parameters:
+    size:
+      plan: standard-2 # <3>
+  writeConnectionSecretToRef:
+    name: postgres-creds # <4>
+----
+<1> Instance name
+<2> The namespace where the object will be created
+<3> Size plan for the instance. See xref:vshn-managed/postgresql/plans.adoc[Plans and Sizing] for available options.
+<4> Secret where the connection details are provisioned. This secret must not exist before creation.
+
+NOTE: All omitted fields use their default values. See the <<full-example,full example>> below for a reference of all configurable options and their defaults.
+
+[#full-example]
+== Full example with defaults
+
+The following example shows all commonly-configured fields with their default values.
+Copy, paste, and adjust the fields relevant to your use case.
+
+.PostgreSQL instance with all default values
 [source,yaml]
 ----
 apiVersion: vshn.appcat.vshn.io/v1
@@ -13,30 +46,69 @@ metadata:
 spec:
   parameters:
     service:
-      majorVersion: "16" # <3>
-      pgSettings:
-        timezone: Europe/Zurich # <4>
-    size: # <5>
-      plan: standard-2
-    backup: # <6>
-      schedule: "30 23 * * *"
-      retention: 12
+      majorVersion: "15" # <3>
+      serviceLevel: besteffort # <4>
+      tls:
+        enabled: true # <5>
+      vacuumEnabled: false # <6>
+      repackEnabled: true # <7>
+    instances: 1 # <8>
+    updateStrategy:
+      type: Immediate # <9>
+    size:
+      plan: standard-2 # <10>
+    backup:
+      enabled: true # <11>
+      schedule: "0 22 * * *" # <12>
+      retention: 6 # <13>
+      deletionProtection: true # <14>
+      deletionRetention: 7 # <15>
+    network:
+      ipFilter:
+        - 0.0.0.0/0 # <16>
+      serviceType: ClusterIP # <17>
+    security:
+      deletionProtection: true # <18>
+    maintenance:
+      dayOfWeek: tuesday # <19>
+      timeOfDay: "22:30:00" # <20>
+    encryption:
+      enabled: false # <21>
   writeConnectionSecretToRef:
-    name: postgres-creds # <7>
+    name: postgres-creds # <22>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
-<3> PostgreSQL version. For supported versions, see our https://products.vshn.ch/appcat/postgresql.html#_supported_versions[product docs^]
-<4> Specify custom PostgreSQL settings [optional]
-<5> Size of the PostgreSQL instance. See xref:vshn-managed/postgresql/plans.adoc[Plans and Sizing] for more information.
-<6> Backup configuration, `schedule` standard cron: https://en.wikipedia.org/wiki/Cron, `retention` field specify how many backups should be kept
-<7> Secret where the connection details are provisioned. This secret shouldn't exist before creation.
+<3> PostgreSQL major version. Default: `"15"`. Supported versions: `"12"`, `"13"`, `"14"`, `"15"`, `"16"`, `"17"`, `"18"`. See https://products.vshn.ch/appcat/postgresql.html#_supported_versions[product docs^] for supported and end-of-life versions. On CloudNativePG, in-place major version upgrades are supported (no downgrades) — see xref:vshn-managed/postgresql/major-upgrade.adoc[major upgrade]. On StackGres, version changes are not supported on existing instances.
+<4> Service level. `besteffort` (default) or `guaranteed`. See xref:vshn-managed/postgresql/sla.adoc[SLA] for details.
+<5> Enable TLS for all connections. Default: `true`. On CloudNativePG, TLS is always enabled regardless of this setting. On StackGres (deprecated), this field controls SSL at the cluster level.
+<6> Run `VACUUM` during the maintenance window. Default: `false`. Only runs when `instances > 0`.
+<7> Run `pg_repack` during the maintenance window to reclaim bloat without locking. Default: `true`. Only runs when `instances > 0`.
+<8> Number of PostgreSQL instances in the cluster. Default: `1`. Allowed values: `0`–`3`. Setting this to `2` or `3` enables high-availability with read replicas. See xref:vshn-managed/postgresql/replicas.adoc[Replicas] for details.
+<9> When spec changes are applied. Default: `Immediate` (changes applied at once, may cause a brief downtime). Use `OnRestart` to defer changes until the next maintenance window. See xref:vshn-managed/postgresql/update-strategy.adoc[Update Strategy] for details.
+<10> Resource plan. See xref:vshn-managed/postgresql/plans.adoc[Plans and Sizing] for available plans and custom sizing options.
+<11> Enable automatic backups. Default: `true`. When set to `false`, no backup bucket or WAL archiving is configured.
+<12> Backup schedule in https://en.wikipedia.org/wiki/Cron[cron format^]. If omitted, a random schedule is generated and stored in `.status.schedules.backup`.
+<13> Number of daily backups to keep. Default: `6`.
+<14> Protect backups from deletion when the instance is deleted. Default: `true`. See xref:vshn-managed/postgresql/deletion-protection.adoc[Deletion Protection].
+<15> Number of days to retain backups after the instance is deleted. Default: `7`.
+<16> List of allowed IPv4 CIDR ranges. When omitted, all traffic is allowed (equivalent to `0.0.0.0/0`). Restrict this to your application's IP range in production environments.
+<17> How the service is exposed. Default: `ClusterIP` (cluster-internal only). Use `LoadBalancer` for a dedicated public IPv4 address or `TCPGateway` for Gateway API access (CloudNativePG only).
+<18> Prevent accidental deletion of the claim. Default: `true`. See xref:vshn-managed/postgresql/deletion-protection.adoc[Deletion Protection].
+<19> Day of the week for the maintenance window. Allowed values: `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`. If omitted, a random day is generated and stored in `.status.schedules.maintenance`.
+<20> Time of day for the maintenance window in UTC, format `hh:mm:ss`. If omitted, a random time is generated and stored in `.status.schedules.maintenance`.
+<21> Enable encrypted storage for the instance. Default: `false`. See xref:vshn-managed/postgresql/encrypted-pvc.adoc[Encrypted PVC] for details.
+<22> Secret where the connection details are provisioned. This secret must not exist before creation.
 
-NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnpostgresql[API Reference]
+NOTE: For up-to-date documentation of all available fields, see the xref:references/crds.adoc#k8s-api-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresql[API Reference]. This page is generated directly from the API definition.
 
 include::partial$claim-changes-immediate.adoc[]
 
-== StackGres
+== StackGres (Deprecated)
+
+WARNING: VSHN PostgreSQL with StackGres is End of Life as of 31.08.2026.
+All new PostgreSQL instances use CloudNativePG by default.
+If you still have StackGres instances, follow the xref:vshn-managed/postgresql/migration.adoc[migration guide] to move to CloudNativePG.
 
 StackGres-specific features (not available in CNPG) are:
 
@@ -62,8 +134,8 @@ spec:
       pgBouncerSettings:
         pgbouncer:
           admin_users: postgres
-  size:
-    plan: standard-2
+    size:
+      plan: standard-2
   writeConnectionSecretToRef:
     name: postgres-creds
 ----
