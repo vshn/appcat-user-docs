@@ -27,7 +27,7 @@ Answer the prompts:
 ----
 project_name [My Custom Keycloak]: Acme Keycloak
 project_slug [acme-keycloak]:
-keycloak_version [26.6.1]: 26.6.1
+keycloak_version [26.7.0]: 26.7.0
 ----
 +
 This creates a directory named after your `project_slug`.
@@ -41,6 +41,13 @@ cp my-provider.jar acme-keycloak/extensions/
 ----
 +
 Themes go under `themes/` and provider JARs go under `extensions/`.
++
+[WARNING]
+====
+Keycloak 26.7.0 changed the user self-registration flow: the password is no longer collected on the registration form, but on a separate page after the email address has been verified.
+If your login theme overrides the registration templates, check it against the new flow before rolling out the image.
+See xref:vshn-managed/keycloak/customization.adoc#_user_self_registration_and_required_actions[User self-registration and required actions].
+====
 
 . Build the image locally to verify it compiles correctly.
 +
@@ -57,7 +64,7 @@ make build
 make push IMAGE=ghcr.io/my-org/acme-keycloak
 ----
 +
-The image is tagged with the Keycloak version by default (e.g. `26.6.1`).
+The image is tagged with the Keycloak version by default (for example `26.7.0`).
 Override with `TAG=<your-tag>` if needed.
 
 . Reference the image in your `VSHNKeycloak` claim using the `customImage` field.

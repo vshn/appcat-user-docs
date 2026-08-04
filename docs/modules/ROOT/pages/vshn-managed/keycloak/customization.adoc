@@ -28,7 +28,7 @@ spec:
     service:
       version: "26"
       customImage:
-        image: ghcr.io/my-org/my-keycloak:26.6.1 # <1>
+        image: ghcr.io/my-org/my-keycloak:26.7.0 # <1>
         imagePullSecretRef:
           name: ghcr-secret # <2>
     size:
@@ -156,6 +156,33 @@ spec:
 ----
 <1> The name of the `ConfigMap`. Must be in the same namespace as the Keycloak claim.
 
+=== User self-registration and required actions
+
+This section only concerns you if your realm has *both* user self-registration and email verification enabled.
+If it does not, nothing changes for you.
+
+As of Keycloak 26.7.0, such a realm no longer asks for the password on the registration form.
+Instead, the password is set after the email address has been verified.
+Keycloak achieves this by moving the *Configure OTP* and *Update Password* required actions after *Verify Email*, and it reorders them automatically when the server is updated.
+
+See the https://www.keycloak.org/docs/26.7.0/upgrading/#verify-email-required-before-credentials-setup-during-user-self-registration[Keycloak upgrading guide^] for the upstream description.
+
+The reordering is applied to your instance during the upgrade, so in a default setup you get the new flow without doing anything.
+
+[WARNING]
+====
+Realm configuration that pins the priorities of *Verify Email*, *Update Password* or *Configure OTP* takes precedence over the reordering.
+If you set those priorities in the configuration you supply through `customConfigurationRef`, your realm keeps the old behavior after the upgrade.
+Remove them to get the new flow, or set them yourself so that *Verify Email* comes first.
+====
+
+Two further points to be aware of:
+
+* *Theming*: the password input fields are removed from the registration form and a new page is added, so custom login themes that override the registration templates may need to be adapted.
+See xref:vshn-managed/how-tos/custom-image-keycloak.adoc[How to create a custom Keycloak container image].
+* *Reverting*: the *Password validation* authenticator in the registration flow has an *Always set password on register form* option that restores the previous behavior.
+It is deprecated and expected to be removed in a future Keycloak release, so use it only to buy time for adapting your theme and configuration.
+
 == Environment variables
 
 You can pass custom environment variables to your Keycloak instance. These variables can be used by your custom providers or custom configuration.
@@ -276,7 +303,7 @@ Mount names must be unique within the customMounts list to avoid folder name col
 
 == Propagating Changes to Referenced Resources
 
-When you make changes to a `ConfigMap` or `Secret` that is referenced by your `VSHNKeycloak` instance (e.g., via `customConfigurationRef`, `customEnvVariablesRef` or `customMounts`), these changes are not immediately propagated to the running Keycloak instance.
+When you make changes to a `ConfigMap` or `Secret` that is referenced by your `VSHNKeycloak` instance (for example via `customConfigurationRef`, `customEnvVariablesRef` or `customMounts`), these changes are not immediately propagated to the running Keycloak instance.
 
 To force a reconciliation and apply the updated configuration or environment variables, you need to annotate the `VSHNKeycloak` resource. This tells Crossplane to re-evaluate the resource and apply any changes from its external references.
 
@@ -285,4 +312,4 @@ To force a reconciliation and apply the updated configuration or environment var
 ----
 kubectl annotate vshnkeycloak [NAME] -n [NAMESPACE] crossplane.io/touch="$(date +%s)" --overwrite
 ----
-Replace `[NAME]` with the name of your `VSHNKeycloak` instance (e.g., `keycloak-app1-prod` or `keycloak-app2-prod`), and `[NAMESPACE]` with the namespace where the claim was created.
+Replace `[NAME]` with the name of your `VSHNKeycloak` instance (for example `keycloak-app1-prod` or `keycloak-app2-prod`), and `[NAMESPACE]` with the namespace where the claim was created.

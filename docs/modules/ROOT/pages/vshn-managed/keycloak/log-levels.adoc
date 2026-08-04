@@ -1,0 +1,35 @@
+= Log levels
+
+As of Keycloak 26.7.0, your instance ships with the https://github.com/keycloak-competence-center/keycloak-log-level/blob/main/extensions/keycloak-log-level/README.md[Keycloak Dynamic Log Level extension^].
+It lets you raise or lower log levels while the instance is running, so debugging no longer requires a pod restart.
+
+NOTE: For reading the logs themselves, see xref:vshn-managed/how-tos/logging.adoc[How-To Access Service Logs].
+
+In short:
+
+* Log levels are managed on the `master` realm only, because the logger configuration is JVM-global.
+* You can change them through a REST endpoint under `/realms/master/logging`, or through a *Log levels* entry in the admin console sidebar.
+* Both require a user with the `admin` role in the `master` realm.
+* The admin console entry only appears once the admin theme `keycloak-log-level` is selected on the `master` realm *and* a public OIDC client named `keycloak-log-level-ui` exists. Without the client, only the REST endpoint is available.
+
+The upstream README documents the endpoint operations, the accepted log levels, the OIDC client definition and how to customize or translate the UI.
+The rest of this page covers what is specific to running Keycloak on AppCat.
+
+== Changes are temporary
+
+Log level changes are not persisted. They live in memory and are lost when a pod restarts, for example during xref:vshn-managed/keycloak/maintenance.adoc[scheduled maintenance].
+Use them for short-lived diagnostics, and note that a change is broadcast to the other replicas of your instance if you run xref:vshn-managed/keycloak/replicas.adoc[more than one].
+
+For a log level that has to survive restarts, set `KC_LOG_LEVEL` through xref:vshn-managed/keycloak/customization.adoc#_environment_variables[environment variables] instead.
+
+== Redirect URIs when using `relativePath`
+
+If you set `spec.parameters.service.relativePath` on your instance, the redirect URIs of the `keycloak-log-level-ui` client must include that prefix.
+Keycloak resolves a redirect URI pattern against the host, not against the realm frontend URL, so the prefix is not applied automatically.
+
+For example, with `relativePath: /auth/`, use `/auth/resources/*` instead of `/resources/*`.
+
+== Custom images
+
+Images built from the https://github.com/vshn/custom-keycloak-image-template[custom-keycloak-image-template^] are based on the same Keycloak image and re-run `kc.sh build`, so the extension is included there as well.
+See xref:vshn-managed/how-tos/custom-image-keycloak.adoc[How to create a custom Keycloak container image].
