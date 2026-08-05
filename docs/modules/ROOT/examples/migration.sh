@@ -99,12 +99,12 @@ command -v kubectl &>/dev/null || die "'kubectl' not found in PATH."
 # ----- Resolve connection secrets -----
 
 log "Resolving source claim ($NAMESPACE/$SRC_CLAIM)..."
-SRC_SECRET=$(kubectl "${KUBECTL_AS[@]}" get vshnpostgresql "$SRC_CLAIM" \
+SRC_SECRET=$(kubectl "${KUBECTL_AS[@]}" get vshnpostgresqls.vshn.appcat.vshn.io "$SRC_CLAIM" \
   -n "$NAMESPACE" -o jsonpath='{.spec.writeConnectionSecretToRef.name}')
 [[ -n "$SRC_SECRET" ]] || die "Could not read .spec.writeConnectionSecretToRef.name from source claim"
 
 log "Resolving destination claim ($NAMESPACE/$DST_CLAIM)..."
-DST_SECRET=$(kubectl "${KUBECTL_AS[@]}" get vshnpostgresql "$DST_CLAIM" \
+DST_SECRET=$(kubectl "${KUBECTL_AS[@]}" get vshnpostgresqls.vshn.appcat.vshn.io "$DST_CLAIM" \
   -n "$NAMESPACE" -o jsonpath='{.spec.writeConnectionSecretToRef.name}')
 [[ -n "$DST_SECRET" ]] || die "Could not read .spec.writeConnectionSecretToRef.name from destination claim"
 
@@ -160,8 +160,63 @@ spec:
         -t -A -q -c "SELECT datname FROM pg_database WHERE datistemplate = false")
       [ -n "\$DATABASES" ] || { echo "[ERROR] No databases found on source"; exit 1; }
       echo "[INFO] Databases: \$(echo "\$DATABASES" | tr '\\n' ' ')"
-      for db in \$DATABASES; do
+
+      # Roles are cluster-global and are not part of a per-database dump.
+      # Without them, GRANT statements in the dumps fail with
+      # 'role "..." does not exist'. Errors here (e.g. roles that already
+      # exist on the destination) are non-fatal.
+      #
+      # Role passwords are included so that applications can keep using their
+      # existing credentials. The destination's own superuser is filtered out
+      # of the dump: applying its ALTER ROLE ... PASSWORD would replace the
+      # destination password with the source one and lock the migration out of
+      # the destination instance mid-run.
+      echo "[INFO] Migrating global roles..."
+      set +e
+      PGPASSWORD="\${SRC_POSTGRESQL_PASSWORD}" pg_dumpall \\
+        --host="\${SRC_POSTGRESQL_HOST}" \\
+        --port="\${SRC_POSTGRESQL_PORT}" \\
+        --username="\${SRC_POSTGRESQL_USER}" \\
+        --database="\${SRC_POSTGRESQL_DB}" \\
+        --no-password \\
+        --roles-only \\
+      | grep -vE "^(CREATE|ALTER) ROLE \\"?\${DST_POSTGRESQL_USER}\\"?[ ;]" \\
+      | PGPASSWORD="\${DST_POSTGRESQL_PASSWORD}" psql \\
+        --host="\${DST_POSTGRESQL_HOST}" \\
+        --port="\${DST_POSTGRESQL_PORT}" \\
+        --username="\${DST_POSTGRESQL_USER}" \\
+        --dbname="\${DST_POSTGRESQL_DB}" \\
+        --no-password -q
+      set -e
+
+      FAILED=""
+      while IFS= read -r db; do
+        [ -n "\$db" ] || continue
         echo "[INFO] Migrating database: \$db"
+        # Each source database is restored into a database of the same name on
+        # the destination. Create it first if it does not exist yet.
+        if [ "\$db" != "\${DST_POSTGRESQL_DB}" ]; then
+          EXISTS=\$(PGPASSWORD="\${DST_POSTGRESQL_PASSWORD}" psql \\
+            --host="\${DST_POSTGRESQL_HOST}" \\
+            --port="\${DST_POSTGRESQL_PORT}" \\
+            --username="\${DST_POSTGRESQL_USER}" \\
+            --dbname="\${DST_POSTGRESQL_DB}" \\
+            --no-password -t -A -q \\
+            -c "SELECT 1 FROM pg_database WHERE datname = '\$db'")
+          if [ -z "\$EXISTS" ]; then
+            echo "[INFO] Creating destination database: \$db"
+            PGPASSWORD="\${DST_POSTGRESQL_PASSWORD}" createdb \\
+              --host="\${DST_POSTGRESQL_HOST}" \\
+              --port="\${DST_POSTGRESQL_PORT}" \\
+              --username="\${DST_POSTGRESQL_USER}" \\
+              --maintenance-db="\${DST_POSTGRESQL_DB}" \\
+              --no-password \\
+              "\$db"
+          fi
+        fi
+        # pg_restore exits non-zero on recoverable errors. Keep going with the
+        # remaining databases and report at the end instead of aborting here.
+        set +e
         PGPASSWORD="\${SRC_POSTGRESQL_PASSWORD}" pg_dump \\
           --host="\${SRC_POSTGRESQL_HOST}" \\
           --port="\${SRC_POSTGRESQL_PORT}" \\
@@ -175,12 +230,21 @@ spec:
           --host="\${DST_POSTGRESQL_HOST}" \\
           --port="\${DST_POSTGRESQL_PORT}" \\
           --username="\${DST_POSTGRESQL_USER}" \\
-          --dbname="\${DST_POSTGRESQL_DB}" \\
+          --dbname="\$db" \\
           --no-password \\
           --clean \\
           --if-exists \\
           --verbose
-      done
+        RC=\${PIPESTATUS[1]}
+        set -e
+        if [ "\$RC" != "0" ]; then
+          echo "[WARN] pg_restore reported errors for database: \$db"
+          FAILED="\$FAILED \$db"
+        fi
+      done <<< "\$DATABASES"
+      if [ -n "\$FAILED" ]; then
+        echo "[WARN] Databases with restore errors:\$FAILED"
+      fi
       echo "[INFO] Migration complete."
     envFrom:
     - secretRef:
@@ -234,7 +298,7 @@ fi
 
 if [[ "$CLEANUP_STACKGRES" == "true" ]]; then
   log "Resolving destination instance namespace..."
-  DST_INSTANCE_NS=$(kubectl "${KUBECTL_AS[@]}" get vshnpostgresql "$DST_CLAIM" \
+  DST_INSTANCE_NS=$(kubectl "${KUBECTL_AS[@]}" get vshnpostgresqls.vshn.appcat.vshn.io "$DST_CLAIM" \
     -n "$NAMESPACE" -o jsonpath='{.status.instanceNamespace}')
   [[ -n "$DST_INSTANCE_NS" ]] || die "Could not read .status.instanceNamespace from destination claim"
 
@@ -256,13 +320,13 @@ if [[ "$CLEANUP_STACKGRES" == "true" ]]; then
   done <<< "$DATABASES"
 
   log "Removing plpython3u from destination claim ($NAMESPACE/$DST_CLAIM)..."
-  PLPYTHON3U_LINE=$(kubectl "${KUBECTL_AS[@]}" get vshnpostgresql "$DST_CLAIM" \
+  PLPYTHON3U_LINE=$(kubectl "${KUBECTL_AS[@]}" get vshnpostgresqls.vshn.appcat.vshn.io "$DST_CLAIM" \
     -n "$NAMESPACE" \
     -o jsonpath='{range .spec.parameters.service.extensions[*]}{.name}{"\n"}{end}' \
     | grep -n 'plpython3u' | cut -d: -f1)
   if [[ -n "$PLPYTHON3U_LINE" ]]; then
     PLPYTHON3U_INDEX=$(( PLPYTHON3U_LINE - 1 ))
-    kubectl "${KUBECTL_AS[@]}" patch vshnpostgresql "$DST_CLAIM" \
+    kubectl "${KUBECTL_AS[@]}" patch vshnpostgresqls.vshn.appcat.vshn.io "$DST_CLAIM" \
       -n "$NAMESPACE" \
       --type=json \
       -p="[{\"op\": \"remove\", \"path\": \"/spec/parameters/service/extensions/$PLPYTHON3U_INDEX\"}]"
