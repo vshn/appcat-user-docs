@@ -30,6 +30,7 @@
 ** xref:vshn-managed/how-tos/custom-image-keycloak.adoc[]
 * xref:vshn-managed/keycloak/delete.adoc[Deletion]
 * xref:vshn-managed/keycloak/deletion-protection.adoc[]
+* xref:vshn-managed/keycloak/log-levels.adoc[]
 * xref:vshn-managed/keycloak/maintenance.adoc[]
 * xref:vshn-managed/keycloak/plans.adoc[]
 * xref:vshn-managed/keycloak/replicas.adoc[]
@@ -131,6 +132,7 @@
 ** xref:exoscale-dbaas/redis/usage.adoc[Usage]
 
 .Changelog
+* xref:changelog/2026-08-04.adoc[2026-08-04]
 * xref:changelog/2026-06-02.adoc[2026-06-02]
 * xref:changelog/2026-05-19.adoc[2026-05-19]
 * xref:changelog/2026-05-05.adoc[2026-05-05]

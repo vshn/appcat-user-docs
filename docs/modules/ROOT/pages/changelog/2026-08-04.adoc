@@ -1,0 +1,29 @@
+= Changelog 2026-08-04
+
+This release brings Keycloak 26.7.0, with a change to the user self-registration flow and a new way to change log levels without restarting your instance.
+
+== Keycloak 26.7.0
+
+Your Keycloak instances are updated to 26.7.0 during the next xref:vshn-managed/keycloak/maintenance.adoc[scheduled maintenance].
+If you run a xref:vshn-managed/keycloak/customization.adoc[custom image], you are in charge of the upgrade yourself: rebuild your image on 26.7.0 and update the image tag in your claim.
+
+== User self-registration asks for the password later
+
+If your realm has both user self-registration and email verification enabled, users no longer set their password on the registration form.
+They set it after their email address has been verified. This is a security improvement.
+Realms without self-registration are not affected.
+
+The change is applied to your realms during the upgrade, so you do not have to do anything to get it.
+
+Two things to check if this applies to you:
+
+* If the configuration you supply pins the priorities of the *Verify Email*, *Update Password* or *Configure OTP* required actions, your realm keeps the old behavior. Remove them to get the new flow.
+* If you ship a custom login theme that overrides the registration templates, check it against the new flow.
+
+Details are documented under xref:vshn-managed/keycloak/customization.adoc#_user_self_registration_and_required_actions[User self-registration and required actions].
+
+== Change Keycloak log levels without a restart
+
+Keycloak instances now include an extension that lets you change log levels at runtime, so debugging no longer requires a pod restart.
+You can use it through the admin console of the `master` realm or through its endpoints.
+See xref:vshn-managed/keycloak/log-levels.adoc[Changing log levels at runtime].
