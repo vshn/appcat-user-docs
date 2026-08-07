@@ -8,6 +8,12 @@ The script creates a temporary migration pod in the claim namespace.
 The pod mounts the connection secrets from both claims and streams `pg_dump` directly into `pg_restore` inside the cluster, without any port-forwarding.
 This makes it reliable for large databases.
 
+Every non-template database on the source instance is migrated into a database of the same name on the destination instance.
+Databases that do not yet exist on the destination are created by the script, which requires the destination user to have the `CREATEDB` privilege.
+
+All roles of the source instance are migrated first, including their passwords, so that applications can keep using their existing credentials.
+The only exception is the superuser of the destination instance, whose password is left untouched.
+
 [WARNING]
 ====
 This migration method does not support zero-downtime migrations.
