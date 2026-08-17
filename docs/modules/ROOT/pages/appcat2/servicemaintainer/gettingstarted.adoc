@@ -1,0 +1,267 @@
+= Getting started with AppCat 2.0
+
+The framework behind AppCat 2.0 is called Helmetica.
+It's a framework that helps with deploying multiple instances of the same Helm chart with ease!
+
+== Prepare dev environment (Athanor)
+
+Please check https://github.com/helmetica-framework/athanor[Athanor].
+Once it's running, you can continue with this getting started guide.
+
+== Using an upstream Helm chart (prima materia)
+
+The easiest way to get started is to take an existing chart and deploy it.
+
+An already existing chart is called a prima materia in the Helmetica framework.
+It's the first material, the source of truth.
+
+To make a chart available via the Helmetica framework, it needs three manifests.
+
+[source,yaml]
+----
+cat <<EOF | kubectl apply -f -
+apiVersion: helmetica.io/v1
+kind: CustomResourceDefinitionSource
+metadata:
+  name: v0.1.redis
+  namespace: hel-chrysopoeia
+spec:
+  crdNames:
+    kind: Redis
+    plural: redis
+  reference:
+    apiVersion: source.toolkit.fluxcd.io/v1
+    kind: OCIRepository
+    name: redis-v0-1
+  versionDiscovery:
+    reference:
+      apiVersion: image.toolkit.fluxcd.io/v1
+      kind: ImageRepository
+      name: redis-v0-1
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: redis-v0-1
+  namespace: hel-chrysopoeia
+spec:
+  exclusionList:
+  - ^.*\.sig$
+  - ^sha256-.+$
+  image: ghcr.io/helmetica-framework/redis-ha
+  interval: 12h
+  provider: generic
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: redis-v0-1
+  namespace: hel-chrysopoeia
+spec:
+  interval: 12h
+  provider: generic
+  ref:
+    semver: "4.39.1"
+  timeout: 60s
+  url: oci://ghcr.io/helmetica-framework/redis-ha
+EOF
+----
+
+Then you can deploy an instance.
+
+[source,yaml]
+----
+cat <<EOF | kubectl apply -f -
+apiVersion: v0.1.redis.helmetica-bundles.io/bundle
+kind: Redis
+metadata:
+  name: redis
+  namespace: default
+spec:
+  approval:
+    strategy: Automatic
+  version: 4.39.1
+  values:
+    replicas: 1
+EOF
+----
+
+After a few minutes, the instance should be ready.
+
+[source,bash]
+----
+kubectl get redis -w
+----
+
+== Wrapped chart (reagent)
+
+Deploying already existing charts is nice to get something going quickly.
+However, Helmetica provides a template for a wrapper chart, called ferment, which provides additional features to help with day-2 operations:
+
+* Easy way to add operations
+* Backups via K8up
+* Ingress and network policies
+* And more
+
+Ferment is only the scaffold.
+Wrapping a specific prima materia in it produces a reagent: the actual chart for one service, which is what you build, push and ship.
+
+To turn a prima materia into a reagent, you can use a CLI tool called `transmuter`.
+Once inside the devcontainer cd into `/workspaces/athanor/reagents`.
+
+[source,bash]
+----
+transmuter transmute \
+--name redis \
+--prima-materia-url oci://ghcr.io/helmetica-framework/redis-ha \
+--prima-materia-version 4.39.1
+----
+
+This creates a `redis/` directory in your current working directory, containing the reagent chart.
+All following commands are run from inside it.
+
+[source,bash]
+----
+cd redis
+----
+
+The generated `values.yaml` only contains the backup retention so far.
+Add the following lines to it:
+
+[source,yaml]
+----
+service:
+  replicas: 1
+----
+
+The prima materia is pulled in as a chart dependency with the alias `service`, see `Chart.yaml`.
+That's why its values are nested under the `service` key here, while the upstream chart itself expects them at the top level.
+
+Let's build and push it.
+
+[source,bash]
+----
+helm dependency build .
+helm package .
+helm push redis-0.0.1.tgz oci://localhost:5000 --insecure-skip-tls-verify
+----
+
+And the definitions.
+
+[source,yaml]
+----
+cat <<EOF | kubectl apply -f -
+apiVersion: helmetica.io/v1
+kind: CustomResourceDefinitionSource
+metadata:
+  name: v0.1.newredis
+  namespace: hel-chrysopoeia
+spec:
+  crdNames:
+    kind: NewRedis
+    plural: newredis
+  reference:
+    apiVersion: source.toolkit.fluxcd.io/v1
+    kind: OCIRepository
+    name: newredis-v0-1
+  versionDiscovery:
+    reference:
+      apiVersion: image.toolkit.fluxcd.io/v1
+      kind: ImageRepository
+      name: newredis-v0-1
+---
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: newredis-v0-1
+  namespace: hel-chrysopoeia
+spec:
+  exclusionList:
+  - ^.*\.sig$
+  - ^sha256-.+$
+  image: registry.kube-system:5000/redis
+  interval: 12h
+  provider: generic
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: OCIRepository
+metadata:
+  name: newredis-v0-1
+  namespace: hel-chrysopoeia
+spec:
+  interval: 12h
+  provider: generic
+  ref:
+    semver: "0.0.1"
+  timeout: 60s
+  url: oci://registry.kube-system:5000/redis
+EOF
+----
+
+The path `/redis` comes from the chart name, which `transmuter` took from `--name`.
+The kind and plural below are deliberately different from it, to show that they're your choice and don't have to repeat the chart name.
+
+
+Finally, a claim.
+
+[source,yaml]
+----
+cat <<EOF | kubectl apply -f -
+apiVersion: v0.1.newredis.helmetica-bundles.io/bundle
+kind: NewRedis
+metadata:
+  name: newredis
+  namespace: default
+spec:
+  approval:
+    strategy: Automatic
+  version: 0.0.1
+  values: {}
+EOF
+----
+
+Again, watch the instance until it's ready.
+
+[source,bash]
+----
+kubectl get newredis -w
+----
+
+This takes a few minutes.
+
+Note that the values set in the reagent chart are now applied by default.
+The instance does not have any values defined in the spec, so it will only deploy a single replica.
+
+[source,bash]
+----
+kubectl -n $(kubectl get newredis newredis -o jsonpath='{.status.instanceNamespace}') get statefulset
+----
+
+== Cleaning up
+
+Delete the instances first.
+Their instance namespace, and everything in it, goes away with them.
+
+[source,bash]
+----
+kubectl delete redis redis
+kubectl delete newredis newredis
+----
+
+Then the definitions.
+
+[source,bash]
+----
+kubectl -n hel-chrysopoeia delete customresourcedefinitionsource v0.1.redis v0.1.newredis
+kubectl -n hel-chrysopoeia delete imagerepository.image.toolkit.fluxcd.io redis-v0-1 newredis-v0-1
+kubectl -n hel-chrysopoeia delete ocirepository.source.toolkit.fluxcd.io redis-v0-1 newredis-v0-1
+----
+
+Deleting a `CustomResourceDefinitionSource` leaves its generated CRD in place.
+If you want the kind gone as well, delete it explicitly.
+
+[source,bash]
+----
+kubectl delete crd redis.v0.1.redis.helmetica-bundles.io
+kubectl delete crd newredis.v0.1.newredis.helmetica-bundles.io
+----

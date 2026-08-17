@@ -1,0 +1,121 @@
+= Glossary
+
+Helmetica names most of its parts after alchemy.
+The table below lists every term used across the framework: what it meant to an alchemist, and what it is for here.
+
+[cols="1,2,3", options="header"]
+|===
+| Term | In alchemy | In the Helmetica framework
+
+| [[action]]Action
+| Not alchemical. Suggestion: *Projection*, the single decisive act of casting the stone onto the matter, done once and either it takes or it doesn't.
+| How you ask for a ritual to be run on an instance. You name the ritual you want, the adept runs it once and reports back whether it worked. Running the same ritual again means creating a new one.
+
+| [[adept]]Adept
+| An alchemist who has attained the secret knowledge and performs the rituals.
+| The part of the framework that actually carries out rituals. It picks up your requests and runs them where the instance lives, so you never have to reach into an instance's namespace yourself.
+
+| [[aludel]]Aludel
+| The sealed vessel an alchemist sublimes into: a container you put things in and close.
+| The piece that hands out object storage. A workload asks for a bucket and gets credentials back, with nobody logging into the cloud provider's control panel.
+
+| [[approval]]Approval
+| Not alchemical. Suggestion: *Hallmark*, the mark struck into metal once the assayer has judged it good enough to go out.
+| Your say in when an instance moves to a new version. Either you let it happen automatically, or new revisions wait until someone approves them, which is what lets you review a change before it reaches a running service.
+
+| [[assay]]Assay
+| Testing an ore or alloy to determine its purity and content.
+| The safety check on a reagent before you publish it. It tells you whether the chart is sound and whether your changes would break the API that existing instances already depend on. It touches nothing and needs no cluster.
+
+| [[athanor]]Athanor
+| The alchemist's slow furnace, which holds a steady heat for days.
+| Your development environment. It gives you a throwaway cluster with the whole framework already in it, so you can build and try out a reagent locally.
+
+| [[azoth]]Azoth
+| The universal solvent, the mercury of the philosophers, the active principle in every substance.
+| The shared building blocks reagents draw on, so every service chart does the common things the same way instead of inventing its own. (Reserved for future use)
+
+| [[bundle]]Bundle API group
+| Not alchemical. Suggestion: *Sigil*, the symbol every substance was known by, so no two are confused for each other.
+| The naming scheme for the resource types the framework generates. It keeps each service's kind clearly separated from everything else in the cluster.
+
+| [[chrysopoeia]]Chrysopoeia
+| Gold-making, the transmutation of base metal into gold.
+| The part that turns a published chart into something users can order. It derives a resource type from the chart, and gives every instance somebody creates its own namespace to run in.
+
+| [[claim]]Claim
+| Not alchemical. Suggestion: *Elixir*, the finished preparation the work is done for, asked for by name and quantity.
+| What a user creates to order an instance of your service. It says which version they want and how they want it configured, and points at where the running instance ended up.
+
+| [[crdsource]]CustomResourceDefinitionSource
+| Not alchemical. Suggestion: *Grimoire*, the book that declares which works are known and may be attempted.
+| How you register a service with the framework. It says which chart to offer and where to look for new versions of it. Once it exists, users can order instances of your service.
+
+| [[cupel]]Cupel
+| A shallow, porous vessel used in assaying to separate precious metals and reveal their true content.
+| The tool for seeing what a change would actually do before it happens. It renders two things side by side, so you can compare a chart against a newer one, or against a running instance.
+
+| [[definition]]Definition
+| Not alchemical. Suggestion: *Rubric*, the red-lettered instruction in a ritual book saying exactly what is to be done.
+| The recipe behind a ritual: what should happen when someone asks for that operation. You ship one per operation your service supports.
+
+| [[digest]]Digest
+| Digestion: gentle, prolonged heating of matter in a closed vessel.
+| The step that installs the supporting pieces into your development cluster. Rarely run on its own, since igniting the furnace does it for you.
+
+| [[ferment]]Ferment
+| A small bit of transformed matter added to a base mass to convert the whole, like leaven in dough. The philosopher's stone is often called ferment for this reason.
+| The starting point every reagent is built from. It brings the day-2 features along for free: operations, backups, ingress, network policies, so you don't build them per service.
+
+| [[hearth]]Hearth
+| The floor of the furnace, where the fire is laid.
+| Where the development environment keeps the supporting pieces it installs, one folder each. Edit one and re-ignite to change what your local cluster runs.
+
+| [[helmetica]]Helmetica
+| From Hermetic, after Hermes Trismegistus, the mythical father of alchemy.
+| The framework itself, and the engine behind AppCat 2.0. Its point is to let you offer one Helm chart as a service that users can order many instances of.
+
+| [[ignite]]Ignite
+| Lighting the furnace.
+| Starting your development environment: you get a cluster with everything installed and are ready to work.
+
+| [[instance-namespace]]Instance namespace
+| Not alchemical. Suggestion: *Crucible*, the vessel one working is confined to, so nothing from it touches the next.
+| The namespace one ordered instance lives in, created for it and removed with it. It is what keeps instances of the same service from interfering with each other.
+
+| [[instancerevision]]InstanceRevision
+| Not alchemical. Suggestion: *Ledger entry*, one line in the assayer's book recording how a thing stood at that moment.
+| A record of how an instance was configured at one point in time. The trail of them is what lets you see what changed, and what approval acts on.
+
+| [[ledger]]Ledger
+| Not alchemical, the assayer's bookkeeping.
+| Looking through an instance's history: what it was configured with before, what has changed since, and approving a pending change from there.
+
+| [[prima-materia]]Prima materia
+| The first matter, the formless raw substance every transmutation starts from.
+| The existing upstream chart you want to offer as a service. You don't rewrite it, the framework builds around it.
+
+| [[quench]]Quench
+| Plunging hot metal into liquid to cool it, ending the work.
+| Tearing your development cluster down when you are done with it, or when you want a clean one.
+
+| [[reagent]]Reagent
+| A substance added to bring about a reaction.
+| Your service chart: an upstream chart wrapped so the framework can offer it. This is the thing you maintain, publish and ship.
+
+| [[ritual]]Ritual
+| The prescribed sequence of operations an adept performs on matter.
+| An operation your service offers on a running instance, for example a restart or maintenance. You ship them with the reagent so users can trigger them without knowing how the service works inside.
+
+| [[touchstone]]Touchstone
+| The dark stone an assayer streaks gold across to read its purity.
+| The end-to-end test that proves your reagent works for real: it publishes the chart, orders an instance from it and checks that the instance comes up. The one that ships is generic, so add the checks that matter for your service.
+
+| [[transmuter]]Transmuter
+| To transmute: to change one substance into another.
+| The tool you start with. It turns an upstream chart into a reagent, adds rituals to it, and assays it. After that the reagent is yours to adjust.
+
+| [[weigh]]Weigh
+| Putting two samples on the assayer's balance to see which way they tip.
+| Comparing two things and seeing exactly what differs, typically a running instance against the version you are thinking of moving it to.
+|===
