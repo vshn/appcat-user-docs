@@ -156,4 +156,5 @@
 .AppCat 2.0
 * xref:appcat2/servicemaintainer/index.adoc[]
 ** xref:appcat2/servicemaintainer/gettingstarted.adoc[]
+** xref:appcat2/servicemaintainer/glossary.adoc[]
 * xref:appcat2/user/index.adoc[]
