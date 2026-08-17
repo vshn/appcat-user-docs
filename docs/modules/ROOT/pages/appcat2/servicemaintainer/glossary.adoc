@@ -8,7 +8,7 @@ The table below lists every term used across the framework: what it meant to an 
 | Term | In alchemy | In the Helmetica framework
 
 | [[action]]Action
-| Not alchemical. Suggestion: *Projection*, the single decisive act of casting the stone onto the matter, done once and either it takes or it doesn't.
+| Not alchemical. Suggestion: Projection, the single decisive act of casting the stone onto the matter, done once and either it takes or it doesn't.
 | How you ask for a ritual to be run on an instance. You name the ritual you want, the adept runs it once and reports back whether it worked. Running the same ritual again means creating a new one.
 
 | [[adept]]Adept
@@ -20,7 +20,7 @@ The table below lists every term used across the framework: what it meant to an 
 | The piece that hands out object storage. A workload asks for a bucket and gets credentials back, with nobody logging into the cloud provider's control panel.
 
 | [[approval]]Approval
-| Not alchemical. Suggestion: *Hallmark*, the mark struck into metal once the assayer has judged it good enough to go out.
+| Not alchemical. Suggestion: Hallmark, the mark struck into metal once the assayer has judged it good enough to go out.
 | Your say in when an instance moves to a new version. Either you let it happen automatically, or new revisions wait until someone approves them, which is what lets you review a change before it reaches a running service.
 
 | [[assay]]Assay
@@ -36,7 +36,7 @@ The table below lists every term used across the framework: what it meant to an 
 | The shared building blocks reagents draw on, so every service chart does the common things the same way instead of inventing its own. (Reserved for future use)
 
 | [[bundle]]Bundle API group
-| Not alchemical. Suggestion: *Sigil*, the symbol every substance was known by, so no two are confused for each other.
+| Not alchemical. Suggestion: Sigil, the symbol every substance was known by, so no two are confused for each other.
 | The naming scheme for the resource types the framework generates. It keeps each service's kind clearly separated from everything else in the cluster.
 
 | [[chrysopoeia]]Chrysopoeia
@@ -44,11 +44,11 @@ The table below lists every term used across the framework: what it meant to an 
 | The part that turns a published chart into something users can order. It derives a resource type from the chart, and gives every instance somebody creates its own namespace to run in.
 
 | [[claim]]Claim
-| Not alchemical. Suggestion: *Elixir*, the finished preparation the work is done for, asked for by name and quantity.
+| Not alchemical. Suggestion: Elixir, the finished preparation the work is done for, asked for by name and quantity.
 | What a user creates to order an instance of your service. It says which version they want and how they want it configured, and points at where the running instance ended up.
 
 | [[crdsource]]CustomResourceDefinitionSource
-| Not alchemical. Suggestion: *Grimoire*, the book that declares which works are known and may be attempted.
+| Not alchemical. Suggestion: Grimoire, the book that declares which works are known and may be attempted.
 | How you register a service with the framework. It says which chart to offer and where to look for new versions of it. Once it exists, users can order instances of your service.
 
 | [[cupel]]Cupel
@@ -56,7 +56,7 @@ The table below lists every term used across the framework: what it meant to an 
 | The tool for seeing what a change would actually do before it happens. It renders two things side by side, so you can compare a chart against a newer one, or against a running instance.
 
 | [[definition]]Definition
-| Not alchemical. Suggestion: *Rubric*, the red-lettered instruction in a ritual book saying exactly what is to be done.
+| Not alchemical. Suggestion: Rubric, the red-lettered instruction in a ritual book saying exactly what is to be done.
 | The recipe behind a ritual: what should happen when someone asks for that operation. You ship one per operation your service supports.
 
 | [[digest]]Digest
@@ -80,11 +80,11 @@ The table below lists every term used across the framework: what it meant to an 
 | Starting your development environment: you get a cluster with everything installed and are ready to work.
 
 | [[instance-namespace]]Instance namespace
-| Not alchemical. Suggestion: *Crucible*, the vessel one working is confined to, so nothing from it touches the next.
+| Not alchemical. Suggestion: Crucible, the vessel one working is confined to, so nothing from it touches the next.
 | The namespace one ordered instance lives in, created for it and removed with it. It is what keeps instances of the same service from interfering with each other.
 
 | [[instancerevision]]InstanceRevision
-| Not alchemical. Suggestion: *Ledger entry*, one line in the assayer's book recording how a thing stood at that moment.
+| Not alchemical. Suggestion: Ledger entry, one line in the assayer's book recording how a thing stood at that moment.
 | A record of how an instance was configured at one point in time. The trail of them is what lets you see what changed, and what approval acts on.
 
 | [[ledger]]Ledger
