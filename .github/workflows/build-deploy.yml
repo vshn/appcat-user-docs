@@ -21,7 +21,7 @@ jobs:
 
       - name: Build Antora Site
         id: build_site
-        uses: redhat-actions/buildah-build@v2
+        uses: redhat-actions/buildah-build@v3
         with:
           image: ${{ env.IMAGE_NAME }}-site
           tags: latest
@@ -31,7 +31,7 @@ jobs:
 
       - name: Build Antora Search Index
         id: build_search
-        uses: redhat-actions/buildah-build@v2
+        uses: redhat-actions/buildah-build@v3
         with:
           image: ${{ env.IMAGE_NAME }}-search
           tags: latest
