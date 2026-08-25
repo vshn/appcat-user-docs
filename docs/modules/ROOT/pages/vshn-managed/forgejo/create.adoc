@@ -26,9 +26,15 @@ spec:
           service: {}
           service.explore: {}
           mailer: {}
-      majorVersion: "12.0.0" <7>
+          email.incoming: {}
+          cors: {}
+          git.timeout: {}
+          admin: {}
+          repository: {}
+          server: {} <7>
+      majorVersion: "12.0.0" <8>
   writeConnectionSecretToRef:
-    name: forgejo-creds <8>
+    name: forgejo-creds <9>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
@@ -36,11 +42,32 @@ spec:
 <4> Define select `app.ini` settings, refer to the link:https://forgejo.org/docs/latest/admin/config-cheat-sheet/[config cheat sheet] to see available fields
 <5> Settings for Forgejo acting as an OAuth2 *provider*, see link:https://forgejo.org/docs/latest/admin/config-cheat-sheet/#oauth2-oauth2[OAuth2 config reference]
 <6> Settings for Forgejo acting as an OAuth2 *client* (logging in via an external identity provider such as Keycloak), see link:https://forgejo.org/docs/latest/admin/config-cheat-sheet/#oauth2-client-oauth2_client[OAuth2 client config reference]
-<7> Forgejo major version - link:https://products.vshn.ch/appcat/forgejo.html#_supported_versions[Supported Versions]
-<8> The name of the secret where the connection details will be stored, it must be unique per namespace
+<7> Some `server` keys are managed by AppCat, see <<AppCat-managed settings>> below
+<8> Forgejo major version - link:https://products.vshn.ch/appcat/forgejo.html#_supported_versions[Supported Versions]
+<9> The name of the secret where the connection details will be stored, it must be unique per namespace
 
-WARNING: The **first** domain you define in `.spec.parameters.service.fqdn` will also be set as `server.DOMAIN` in Forgejos `app.ini` and therefore influences Forgejos root URL.  +
-This is applicable to things like webhook notifications, OAuth, and similar functionalities.
+== AppCat-managed settings
+
+Your `forgejoSettings.config` is merged on top of the AppCat defaults, per key.
+The following `[server]` keys are managed by AppCat and *cannot be overridden*. Any value you set for them is ignored:
+
+[cols="1,2",options="header"]
+|===
+| Setting | Managed value
+
+| `server.DOMAIN`
+| First entry of `spec.parameters.service.fqdn`
+
+| `server.ROOT_URL`
+| `https://` + first entry of `spec.parameters.service.fqdn`
+
+| `server.DISABLE_SSH`
+| Controlled by `spec.parameters.service.ssh.enabled`
+|===
+
+The **first** domain in `.spec.parameters.service.fqdn` becomes `server.DOMAIN` and `server.ROOT_URL`, which influences Forgejo's root URL. Applicable to things like webhook notifications, OAuth, and similar functionalities.
+
+When SSH access is enabled, AppCat also sets `server.START_SSH_SERVER`, `server.SSH_DOMAIN`, and `server.SSH_PORT`. Do not set SSH-related `[server]` keys (including `SSH_LISTEN_PORT`), as overriding them can break SSH access to your repositories.
 
 NOTE: To get more information about all available configuration options, please see the xref:references/crds.adoc#k8s-api-github-com-vshn-component-appcat-apis-vshn-v1-vshnForgejo[API Reference]
 
