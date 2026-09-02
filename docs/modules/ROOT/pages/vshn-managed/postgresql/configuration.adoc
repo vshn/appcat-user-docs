@@ -21,7 +21,6 @@ spec:
 Every parameter you set here is passed to the underlying database cluster unchanged, with the exception of the parameters listed under <<_parameters_you_cannot_set>>.
 
 NOTE: Changing a parameter that PostgreSQL only reads at startup will restart your instance.
-Whether that happens immediately or during the next maintenance window depends on your xref:vshn-managed/postgresql/update-strategy.adoc[update strategy].
 
 == Parameters you cannot set
 
@@ -77,8 +76,6 @@ The following parameters are managed for you and are rejected if you set them.
 | Managed by the replication setup.
 |===
 
-This list applies to every PostgreSQL instance, both CloudNativePG-based and StackGres-based.
-
 An instance manifest that sets one of these is rejected by the admission webhook when you apply it, with an error naming the offending key:
 
 [source]
@@ -92,22 +89,25 @@ https://stackgres.io/doc/latest/api/responses/error/#postgres-blocklist
 
 NOTE: The error path reads `postgresqlSettings` while the field in your manifest is called `pgSettings`.
 They are the same field.
-The link in the message points at StackGres documentation for historical reasons and applies to CloudNativePG-based instances too.
+Disregard the URL in the message, it does not describe this list.
 
 The value you set is never silently discarded or overwritten during a later reconcile.
 Either your manifest is accepted and the setting applies, or the apply fails.
 
-The database engine enforces a second, larger set of fixed parameters underneath this one.
-For CloudNativePG-based instances, see the https://cloudnative-pg.io/docs/1.30/postgresql_conf/[CloudNativePG configuration reference^].
+CloudNativePG maintains its own list of fixed parameters, and the two lists overlap without either containing the other.
+Eight of the parameters above are fixed by CloudNativePG as well.
+The other seven (`fsync`, `full_page_writes`, `max_replication_slots`, `max_wal_senders`, `wal_keep_segments`, `wal_level` and `wal_log_hints`) are ours alone.
+See the "Fixed parameters" section of the https://cloudnative-pg.io/docs/1.30/postgresql_conf/[CloudNativePG configuration reference^] for the other side.
 
-If you need a different value for one of the managed parameters, contact us.
+If you need a different value for one of the parameters we block, contact us.
+The ones CloudNativePG fixes cannot be changed at all.
 
 == Logical replication
 
-Logical replication and logical decoding work out of the box on CloudNativePG-based instances, which are the default.
+Logical replication and logical decoding work out of the box.
 You do not need to configure anything for it:
 
-* `wal_level` is already set to `logical`. This is CloudNativePG's default, which is why the parameter is on the list above rather than something you set yourself.
+* `wal_level` is already `logical`, which is CloudNativePG's default. You cannot change it, because we block the parameter, but for logical replication you do not need to.
 * `max_replication_slots` is `32`. The operator uses some of these for replicas and backups, so the number available to you depends on how many instances you run.
 * The role in your xref:references/secrets.adoc[connection secret] is the `postgres` superuser, so it can run `pg_create_logical_replication_slot`, hold slots, and create publications without further grants. To give your application a separate, less privileged role instead, see xref:vshn-managed/postgresql/usermanagement.adoc[Manage Users and Databases].
 
