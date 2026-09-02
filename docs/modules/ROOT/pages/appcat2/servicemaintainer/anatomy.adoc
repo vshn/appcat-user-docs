@@ -1,0 +1,162 @@
+= Anatomy of a service
+
+A service is made up of several parts:
+
+* <<provisioning,Provisioning>>
+* <<backups,Backups>>
+* <<network,Network>>
+* <<credentials,Credentials>>
+* <<service,The service's own values>>
+* <<operations,Operations>>, including scheduled maintenance
+
+This page gives an overview of all of them and links to the more detailed documentation for each topic.
+
+[#provisioning]
+== Provisioning
+
+Provisioning is handled by the upstream Helm chart, the xref:glossary.adoc#prima-materia[prima materia].
+It sits outside the framework and remains the service maintainer's responsibility.
+
+Everything around provisioning is where the framework comes in.
+It provides helper controllers that let you declare platform-agnostic supporting manifests, covering backups, networking, TLS, ingress and more.
+Service maintainers don't need to worry about whether a Kubernetes cluster uses Ingress or the Gateway API, for example.
+They state the intent through the framework's helper custom resources (CRs) and the rest is handled for them.
+
+== Transmuter CLI
+
+xref:glossary.adoc#transmuter[Transmuter] is the core tool a service maintainer works with.
+It helps you bootstrap, validate and extend services.
+
+.Bootstrapping a service
+[source,shell]
+----
+transmuter transmute \
+--name my-service \ <1>
+--prima-materia-url oci://... \ <2>
+--prima-materia-version x.x.x <3>
+----
+<1> The name of the new service. The command creates a folder with this name.
+<2> OCI URL to the upstream Helm chart. Only charts hosted via OCI are supported at the moment.
+<3> Version of the upstream chart. There is no floating tag, so an exact version is required.
+
+This creates a new xref:glossary.adoc#reagent[reagent], the chart for your service.
+The specified upstream chart is added to the dependency list in `Chart.yaml`.
+The new chart also ships a pre-seeded `values.yaml` that wires up the framework's helper controllers.
+
+== The values.yaml file
+
+Each service is just a Helm chart.
+The framework builds around Helm and adds revisions and pre-wired helpers that turn a plain chart into a proper managed service.
+
+.Example values.yaml
+[source,yaml]
+----
+# Abridged for brevity
+backup:
+  # Whether the service is backed up at all.
+  enabled: false
+
+network:
+  # Allow access from all namespaces.
+  allowAllNamespaces: false
+
+credentials:
+  # Secret name which will contain the service's connection details.
+  # Defaults to releaseName-credentials.
+  targetSecret: ""
+
+# The service's values go here
+service: {}
+----
+
+`values.yaml` defines the service's CRD.
+Every value in the file becomes a field in that CRD, so it pays to understand the structure and the default values.
+These are only defaults.
+A user will be able to change these values per instance.
+
+// TODO: document the hint system.
+
+[#backups]
+=== Backups
+
+This section configures the service's backup.
+The default backup is based on https://k8up.io[K8up] and creates two things:
+
+* A bucket through COSI (Container Object Storage Interface), so the backup has a target
+* A K8up `Schedule` that runs the actual backup
+
+By default, every PVC in the xref:glossary.adoc#instance-namespace[instance namespace] is backed up.
+That is a good starting point, but copying files off a running application can result in a corrupted backup.
+Most applications ship a backup command that produces a consistent dump instead.
+
+For application-aware backups, the service pods need annotations:
+
+.K8up backup annotations
+[source,yaml]
+----
+template:
+  metadata:
+    labels:
+      app: mariadb
+    annotations:
+      k8up.io/backupcommand: mysqldump -uroot -psecure --all-databases
+----
+
+The command's output is streamed to the backup target and stored on S3.
+Set `k8up.io/backup: "false"` on a PVC to skip it, so data the backup command already covers isn't backed up a second time through its PVC.
+
+The annotations should be fed into the service via available values for the upstream chart.
+Since it's not desired that the users changes them, please hide them via the hint system.
+
+For more advanced setups, see the https://docs.k8up.io[K8up docs].
+
+// TODO: link to the advanced backup documentation once it exists.
+
+[#network]
+=== Network
+
+This section makes sure the service is reachable from the namespace where the xref:glossary.adoc#claim[claim] was created.
+
+The default values expose fields that let additional namespaces reach the service.
+The defaults are usually fine as they are.
+
+// TODO: extend as we add functionality.
+
+[#credentials]
+=== Credentials
+
+A service is only usable if the end user gets credentials for it.
+The `credentials` section lets them pick the name of the secret those credentials are written to.
+If left empty, the name defaults to the release name with a `-credentials` suffix.
+
+To configure the fields and sources of the secret, adjust `templates/credentials.yaml`.
+The file contains examples to start from.
+
+// TODO: link to the credentials reference once it exists.
+
+[#service]
+=== Service
+
+The `service` key holds the values for the upstream chart itself.
+The prima materia is pulled in as a chart dependency under the alias `service`, so everything the upstream chart expects at the top level is nested under this key.
+Whatever you set here becomes the default configuration for every instance, and users can override it in their claim.
+
+// TODO: expand once the value merging is documented.
+
+[#operations]
+== Operations
+
+Some services need operations that can be triggered on demand, for example:
+
+* Restart the service
+* Trigger a backup
+* Run a command in a pod
+
+The framework calls these xref:glossary.adoc#ritual[rituals].
+They are not configured through `values.yaml`, they live in `templates/rituals`.
+The template ships a few no-op rituals there.
+They are placeholders: adapt each one to your service.
+
+`maintenance.yaml` defines a special ritual that runs during the service's scheduled maintenance.
+It can carry any housekeeping a service needs.
+It can also bump the version of the service image, which is useful when the service version isn't tied to the chart version.
