@@ -1,0 +1,137 @@
+= Configuration
+
+You can set PostgreSQL configuration parameters through `spec.parameters.service.pgSettings`.
+
+[source,yaml]
+----
+apiVersion: vshn.appcat.vshn.io/v1
+kind: VSHNPostgreSQL
+metadata:
+  name: example
+spec:
+  parameters:
+    service:
+      pgSettings:
+        timezone: Europe/Zurich
+        work_mem: 8MB
+  writeConnectionSecretToRef:
+    name: postgres-creds
+----
+
+Every parameter you set here is passed to the underlying database cluster unchanged, with the exception of the parameters listed under <<_parameters_you_cannot_set>>.
+
+NOTE: Changing a parameter that PostgreSQL only reads at startup will restart your instance.
+
+== Parameters you cannot set
+
+The following parameters are managed for you and are rejected if you set them.
+
+[cols="35,65", options="header"]
+|===
+| Parameter | Why
+
+| `archive_command`
+| Managed by the backup implementation. See xref:vshn-managed/postgresql/backup.adoc[Backup].
+
+| `archive_mode`
+| Managed by the backup implementation. See xref:vshn-managed/postgresql/backup.adoc[Backup].
+
+| `cluster_name`
+| Derived from the name of your instance.
+
+| `fsync`
+| Disabling it would put your data at risk.
+
+| `full_page_writes`
+| Disabling it would put your data at risk.
+
+| `hot_standby`
+| Managed by the replication setup. See xref:vshn-managed/postgresql/replicas.adoc[Replication and High Availability].
+
+| `listen_addresses`
+| Managed by the operator.
+
+| `log_destination`
+| Managed so that xref:vshn-managed/how-tos/logging.adoc[Service Logs] keep working.
+
+| `logging_collector`
+| Managed so that xref:vshn-managed/how-tos/logging.adoc[Service Logs] keep working.
+
+| `max_replication_slots`
+| Managed by the replication setup. The effective value is `32`.
+
+| `max_wal_senders`
+| Managed by the replication setup.
+
+| `port`
+| Managed by the operator.
+
+| `wal_keep_segments`
+| Managed by the replication setup.
+
+| `wal_level`
+| Managed by the replication setup. The effective value is `logical`.
+
+| `wal_log_hints`
+| Managed by the replication setup.
+|===
+
+An instance manifest that sets one of these is rejected by the admission webhook when you apply it, with an error naming the offending key:
+
+[source]
+----
+$ kubectl apply -f instance.yaml
+Error from server: error when creating "instance.yaml": admission webhook
+"postgresql.vshn.appcat.vshn.io" denied the request: VSHNPostgreSQL.vshn.appcat.vshn.io
+"example" is invalid: spec.parameters.service.postgresqlSettings[wal_level]: Forbidden:
+https://stackgres.io/doc/latest/api/responses/error/#postgres-blocklist
+----
+
+NOTE: The error path reads `postgresqlSettings` while the field in your manifest is called `pgSettings`.
+They are the same field.
+Disregard the URL in the message, it does not describe this list.
+
+The value you set is never silently discarded or overwritten during a later reconcile.
+Either your manifest is accepted and the setting applies, or the apply fails.
+
+CloudNativePG maintains its own list of fixed parameters, and the two lists overlap without either containing the other.
+Eight of the parameters above are fixed by CloudNativePG as well.
+The other seven (`fsync`, `full_page_writes`, `max_replication_slots`, `max_wal_senders`, `wal_keep_segments`, `wal_level` and `wal_log_hints`) are ours alone.
+See the "Fixed parameters" section of the https://cloudnative-pg.io/docs/1.30/postgresql_conf/[CloudNativePG configuration reference^] for the other side.
+
+If you need a different value for one of the parameters we block, contact us.
+The ones CloudNativePG fixes cannot be changed at all.
+
+== Logical replication
+
+Logical replication and logical decoding work out of the box.
+You do not need to configure anything for it:
+
+* `wal_level` is already `logical`, which is CloudNativePG's default. You cannot change it, because we block the parameter, but for logical replication you do not need to.
+* `max_replication_slots` is `32`. The operator uses some of these for replicas and backups, so the number available to you depends on how many instances you run.
+* The role in your xref:references/secrets.adoc[connection secret] is the `postgres` superuser, so it can run `pg_create_logical_replication_slot`, hold slots, and create publications without further grants. To give your application a separate, less privileged role instead, see xref:vshn-managed/postgresql/usermanagement.adoc[Manage Users and Databases].
+
+Replication slots are stored in the data directory, on the instance's persistent volume.
+They survive restarts, minor version updates and maintenance.
+
+Two cases are worth planning for:
+
+Failover and switchover::
+On a single-instance service there is neither, so this does not apply.
+If you run xref:vshn-managed/postgresql/replicas.adoc[two or three instances], choose `majorVersion: "17"` or later.
+PostgreSQL 17 added synchronization of logical slots to replicas, so a slot survives a failover.
+On older major versions a failover invalidates your logical slots and the client has to recreate them.
+
+Major version upgrades::
+A xref:vshn-managed/postgresql/major-upgrade.adoc[major version upgrade] drops logical replication slots, because `pg_upgrade` does not carry them across.
+This only happens when you change `majorVersion` yourself, never during regular maintenance.
+Recreate the slots and re-seed the subscriber afterwards.
+
+[IMPORTANT]
+====
+Our built-in xref:vshn-managed/postgresql/alerting.adoc[alerting] does not cover the state of your replication slots.
+If a stalled or dropped slot would be a problem for your application, monitor `pg_replication_slots` yourself, in particular the `active`, `wal_status` and `safe_wal_size` columns.
+
+Note the opposite failure too: `max_slot_wal_keep_size` is at the PostgreSQL default of `-1`, so an inactive slot retains WAL indefinitely and will eventually fill your disk.
+The `PersistentVolumeFillingUp` alert catches this, but only once the volume is already close to full.
+====
