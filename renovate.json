@@ -6,16 +6,40 @@
   "packageRules": [
     {
       "description": "Auto-merge GitHub Actions updates",
-      "matchManagers": ["github-actions"],
+      "matchManagers": [
+        "github-actions"
+      ],
       "automerge": true,
       "automergeType": "pr",
-      "matchUpdateTypes": ["major", "minor", "patch", "digest"]
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch",
+        "digest"
+      ]
     },
     {
       "description": "Auto-merge all minor and patch updates",
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true,
       "automergeType": "pr"
+    }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Track the Antora UI bundle release pinned in playbook.yml. Without this the URL is invisible to Renovate: an audit of 37 repositories pinning these bundles found none with a manager for it, which is why pins here and elsewhere sat years behind. versioning is set explicitly because vshn/antora-ui-default changed tag format mid-stream (2.3.1, then v2.3.2, v2.3.3) and semver has to normalise the v prefix for the comparison to work.",
+      "fileMatch": [
+        "^playbook\\.yml$"
+      ],
+      "matchStrings": [
+        "https://github\\.com/(?<depName>[^/]+/[^/]+)/releases/download/(?<currentValue>[^/]+)/ui-bundle\\.zip"
+      ],
+      "datasourceTemplate": "github-releases",
+      "versioningTemplate": "semver"
     }
   ]
 }
