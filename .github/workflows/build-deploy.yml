@@ -46,7 +46,7 @@ jobs:
       # there. Nothing is published or deployed from a PR.
       - name: Push Antora Site Image
         if: github.event_name == 'push'
-        uses: redhat-actions/push-to-registry@v2
+        uses: redhat-actions/push-to-registry@v3
         with:
           image: ${{ steps.build_site.outputs.image }}
           tags: ${{ steps.build_site.outputs.tags }}
@@ -56,7 +56,7 @@ jobs:
 
       - name: Push Search Image
         if: github.event_name == 'push'
-        uses: redhat-actions/push-to-registry@v2
+        uses: redhat-actions/push-to-registry@v3
         with:
           image: ${{ steps.build_search.outputs.image }}
           tags: ${{ steps.build_search.outputs.tags }}
