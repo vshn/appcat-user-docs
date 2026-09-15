@@ -5,8 +5,8 @@ IMPORTANT: *Restore operation will create a new Keycloak instance with the same 
 [IMPORTANT]
 .Backups are tied to instances
 ====
-Restorations can only be triggered from an instance in the same namespace.
-If the old instance has already been deleted the backups are deleted as well.
+Restorations can be initiated only from an instance in the same namespace.
+Make sure to restore before deleting the old instance. If an instance is deleted, the backups are deleted as well.
 ====
 
 . Get the ID of the backup you want to restore by listing all available backups.
