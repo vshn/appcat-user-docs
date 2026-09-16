@@ -158,6 +158,15 @@ Allowed types are `boolean`, `integer`, `number` and `string`.
 logLevel:
 ----
 
+.Value without a corresponding key
+[source,yaml]
+----
+'#logLevel':
+  type: int
+  description: |
+    The log level of the service. Higher levels suppress more logs.
+----
+
 ==== Restricting values
 
 `enum` limits a field to a fixed set of values.
