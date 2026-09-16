@@ -85,6 +85,11 @@ Hints are how you correct that.
 A hint is a key that sits next to the value it describes, with the same name and a `+#+` in front.
 `+#+` starts a comment in YAML, so the key has to be quoted.
 
+Pure schema hints without a corresponding key are supported.
+Descriptions can be passed by using the `description` field of the hint.
+
+Using the `description` field can be useful to have full control over formatting and whitespace.
+
 .A hint next to its value
 [source,yaml]
 ----
