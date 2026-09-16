@@ -162,7 +162,7 @@ logLevel:
 [source,yaml]
 ----
 '#logLevel':
-  type: int
+  type: integer
   description: |
     The log level of the service. Higher levels suppress more logs.
 ----
