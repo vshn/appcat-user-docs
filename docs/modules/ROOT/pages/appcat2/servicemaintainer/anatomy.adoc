@@ -117,7 +117,7 @@ The value still applies, it just stops being something a user can set.
 This is how you pin things that must not be changed per instance, like the backup annotations further down this page.
 
 Hiding is inherited.
-A hint on an object hides everything below it, and an `export: true` deeper down brings a single field back.
+A hint on an object hides everything below it, and an `export: true` deeper down brings the field and all its fields below back.
 
 .Hiding a subtree and exposing one field again
 [source,yaml]
