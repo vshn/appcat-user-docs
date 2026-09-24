@@ -159,3 +159,4 @@
 ** xref:appcat2/servicemaintainer/anatomy.adoc[]
 ** xref:appcat2/servicemaintainer/glossary.adoc[]
 * xref:appcat2/user/index.adoc[]
+* xref:appcat2/frameworkengineer/guidelines.adoc[]

@@ -1,0 +1,225 @@
+= Framework Engineer Guidelines
+
+These are the conventions for the Helmetica controllers and charts.
+
+== Naming
+
+Operators are named after an alchemical term related to their function.
+`sigillum` seals, `custos` guards, `ampulla` stores, `adept` performs, `chrysopoeia` makes gold out of charts.
+
+The Go module is `github.com/helmetica-framework/<name>`.
+The container image is `ghcr.io/helmetica-framework/<name>`.
+
+CRDs have plain and expressive Kind names, for example `NetworkConfig`, `CredentialConfig`, `BackupPolicy`, `Action`.
+
+The group name has the following pattern:
+
+`<operatorName>.helmetica.io`
+
+One operator may own several kinds in its group.
+
+Inside the repository:
+
+* A reconciler file is `<kind>_controller.go`, its test sits next to it.
+* The reconciler type is `<Kind>Manager`, for example `SealManager`.
+* Helper logic for one reconciler goes in its own small file, for example `claim.go`, `gather.go`, `target.go`.
+
+== Controller tooling
+
+The binary is a cobra command.
+
+`config/default` deploys RBAC and the manager but not the CRDs.
+CRDs are installed separately from `config/crd`.
+
+== Status
+
+By default s status contains a phase, the generation it was computed from, and a message:
+
+[source,go]
+----
+type SealStatus struct {
+	// +optional
+	Phase SealPhase `json:"phase,omitempty"`
+	// ObservedGeneration is the spec generation the phase was computed from.
+	// +optional
+	ObservedGeneration int64 `json:"observedGeneration,omitempty"`
+	// Message explains a Failed phase.
+	// +optional
+	Message string `json:"message,omitempty"`
+}
+----
+
+The phase values are `Pending`, `Ready` and `Failed` for anything that settles.
+A one-shot resource uses `Pending`, `Running`, `Succeeded` and `Failed` instead, and its terminal phases are final.
+
+Conditions can be used if necessary.
+
+Add print columns for at least the phase and the message, so `kubectl get` contains important information.
+
+An empty spec must be a complete spec.
+Defaults come from the controller, and each field only overrides one of them.
+
+Where pausing makes sense, add `spec.suspend`.
+A suspended object holds at `Pending` and the controller leaves everything it owns alone.
+This is useful if controllers missbehave on a cluster.
+
+== Use server-side-apply
+
+All write operations should be done via server-side-apply.
+Especially if a given resource can be reconciled by multiple controllers.
+
+Use the generated typed apply configurations, not unstructured patches:
+
+[source,go]
+----
+status := sealsacv1.Seal(seal.GetName(), seal.GetNamespace()).
+	WithStatus(sealsacv1.SealStatus().
+		WithPhase(want.Phase).
+		WithObservedGeneration(seal.Generation).
+		WithMessage(want.Message))
+
+if err := r.Status().Apply(ctx, status, fieldOwner, client.ForceOwnership); err != nil {
+	return ctrl.Result{}, fmt.Errorf("applying seal status: %w", err)
+}
+----
+
+Declare one field owner constant per controller, named `<project>:<controller>`:
+
+[source,go]
+----
+const fieldOwner = client.FieldOwner("ampulla:backuppolicy")
+----
+
+Pass `client.ForceOwnership` on every apply.
+
+Set an owner reference on everything you create, so a deleted parent or namespace takes the lot with it through ordinary garbage collection.
+
+== Reconcile shape
+
+A reconcile reads, decides, and only then writes:
+
+. `Get` the object. A `NotFound` is not an error, it means there is nothing to do.
+. A non-zero `DeletionTimestamp` means there is nothing to do, unless the controller owns a finalizer.
+. Compute the desired state in its own function, for example `desiredPhase`.
+. Return early when phase, observed generation and message already match.
+. Apply.
+
+Wrap errors with a lowercase gerund and `%w`:
+
+[source,go]
+----
+return fmt.Errorf("applying seal status: %w", err)
+----
+
+Put the `+kubebuilder:rbac` markers directly above the reconciler that needs them.
+The role is generated from them, so a permission that is not asked for there does not exist.
+
+A controller must not hold permissions it only needs on behalf of an instance.
+Borrow the instance service account through a Job instead, the way custos does for `objectRef` and `exec` sources.
+
+== Testing
+
+Tests use `testify` with `require` for setup and `assert` for checks.
+
+Controller tests run against the controller-runtime fake client.
+Where more advanced features are required, such as testing `watch` or reconcile behavior envtest may be used.
+Be aware of the envtest overhead when implementing such tests.
+Register the status subresource and the generated type converter, otherwise every apply is rejected:
+
+[source,go]
+----
+fake.NewClientBuilder().
+	WithScheme(scheme).
+	WithStatusSubresource(&sealsv1.Seal{}).
+	WithTypeConverters(
+		sealsac.NewTypeConverter(scheme),
+		managedfields.NewDeducedTypeConverter(),
+	)
+----
+
+Name a test after the subject and the behaviour, separated by an underscore:
+
+[source,go]
+----
+func TestReconcile_ActionGoneIsNoError(t *testing.T)
+func TestVersion_SuspendedDoesNotBumpOnSchedule(t *testing.T)
+----
+
+Tests run with `-race`.
+Generated code is stripped from the coverage profile:
+
+[source,make]
+----
+go test ./... -race -coverprofile cover.tmp.out
+grep -v -e "zz_generated.deepcopy.go" -e "/applyconfiguration/" cover.tmp.out > cover.out
+----
+
+End-to-end tests are chainsaw touchstones in `test/touchstone/`, run against a local athanor cluster.
+
+== Build
+
+Projects are driven by `just`.
+The recipe names are the same everywhere: `build`, `binary`, `test`, `manifests`, `generate`, `fmt`, `vet`, `lint`, `docs`, `build-docker`, `run`, `clean`.
+
+Variables live in `Justfile.vars.just`, one import at the top of the `Justfile`.
+
+Tools are pinned, never taken off `PATH`.
+Go tools come from the `tool` directives in `go.mod`, everything else gets a pinned version with a renovate comment:
+
+[source,just]
+----
+CONTROLLER_GEN := "go tool sigs.k8s.io/controller-tools/cmd/controller-gen"
+
+# renovate: datasource=go depName=github.com/kyverno/chainsaw
+CHAINSAW_VERSION := "v0.2.15"
+CHAINSAW_CMD := "go run github.com/kyverno/chainsaw@" + CHAINSAW_VERSION
+----
+
+`just lint` regenerates everything and then fails on a dirty tree:
+
+[source,just]
+----
+lint: fmt vet generate manifests docs
+    {{ KUSTOMIZE }} build config/crd -o /dev/null
+    {{ KUSTOMIZE }} build config/default -o /dev/null
+    git diff --exit-code
+----
+
+The binary is built with `CGO_ENABLED=0` so the image stays static.
+Tests keep cgo, because `-race` needs it.
+
+The image is distroless nonroot, pinned by digest, and copies in the prebuilt binary:
+
+[source,dockerfile]
+----
+FROM gcr.io/distroless/static:nonroot@sha256:...
+
+ENTRYPOINT ["/usr/bin/sigillum"]
+COPY sigillum /usr/bin/
+----
+
+Every repository has a `renovate.json`.
+
+== CI
+
+Five workflows, same names everywhere: `build`, `lint`, `test`, `govulncheck`, `release`.
+
+Workflows start with `permissions: {}` and grant only what a job needs.
+
+All actions are pinned by commit SHA with the version in a trailing comment:
+
+[source,yaml]
+----
+- uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+----
+
+The Go version comes from `go.mod`, never from a literal in the workflow.
+
+Releases are tag triggered and run goreleaser with cosign keyless signing.
+
+== Documentation
+
+The README opens with what the name means, then what the thing does.
+
+A project with a non-obvious vocabulary contains a glossary table in its README.
+
