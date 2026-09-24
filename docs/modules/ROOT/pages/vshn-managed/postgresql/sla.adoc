@@ -24,7 +24,7 @@ spec:
     instances: 2 <1>
     service:
       serviceLevel: guaranteed <2>
-      majorVersion: "16"
+      majorVersion: "18"
       pgSettings:
         timezone: Europe/Zurich
   writeConnectionSecretToRef:

@@ -31,7 +31,7 @@ spec:
     backup:
       schedule: '0 22 * * *'
     service:
-      majorVersion: "16"
+      majorVersion: "18"
       pgSettings:
         timezone: Europe/Zurich
     size:
@@ -89,7 +89,7 @@ spec:
     backup:
       schedule: '0 22 * * *'
     service:
-      majorVersion: "16"
+      majorVersion: "18"
       pgSettings:
         timezone: Europe/Zurich
     size:
@@ -213,7 +213,7 @@ metadata:
 spec:
   containers:
   - name: postgres
-    image: postgres:17.6
+    image: postgres:18
     command:
     - tail
     - "-f"

@@ -46,7 +46,7 @@ metadata:
 spec:
   parameters:
     service:
-      majorVersion: "15" # <3>
+      majorVersion: "18" # <3>
       serviceLevel: besteffort # <4>
       tls:
         enabled: true # <5>
@@ -130,7 +130,7 @@ spec:
     name: vshnpostgres.vshn.appcat.vshn.io
   parameters:
     service:
-      majorVersion: "16"
+      majorVersion: "18"
       pgBouncerSettings:
         pgbouncer:
           admin_users: postgres
@@ -162,7 +162,7 @@ spec:
     name: vshnpostgres.vshn.appcat.vshn.io
   parameters:
     service:
-      majorVersion: "16"
+      majorVersion: "18"
       enableEnvoy: true # <1>
     size:
       plan: standard-2

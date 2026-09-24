@@ -13,7 +13,7 @@ metadata:
 spec:
   parameters:
     service:
-      version: "11.2"
+      version: "11.8"
   writeConnectionSecretToRef:
     name: mariadb-creds-connection # <1>
 ---
@@ -24,7 +24,7 @@ metadata:
 spec:
   containers:
   - name: mariadb
-    image: mariadb:11.2
+    image: mariadb:11.8
     command:
       - /bin/sh
       - -c
