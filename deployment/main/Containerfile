@@ -1,6 +1,6 @@
 # ---------- STEP 1 ----------
 # Build the documentation in web format
-FROM ghcr.io/vshn/antora:3.1.2.2 AS antora
+FROM ghcr.io/vshn/antora:3.1.14.1 AS antora
 
 WORKDIR /build
 COPY . /build
