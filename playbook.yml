@@ -12,7 +12,7 @@ content:
       edit_url: "https://github.com/vshn/appcat-user-docs/edit/master/{path}"
 ui:
   bundle:
-    url: https://github.com/vshn/antora-ui-default/releases/download/v2.5.0/ui-bundle.zip
+    url: https://github.com/vshn/antora-ui-default/releases/download/v2.7.0/ui-bundle.zip
     snapshot: false
   supplemental_files: ./supplemental-ui
 asciidoc:
