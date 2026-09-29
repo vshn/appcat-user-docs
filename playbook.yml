@@ -3,7 +3,7 @@ site:
   url: https://docs.appcat.ch
   start_page: ROOT::index.adoc
   keys:
-    google_analytics: "G-JCGE2CCELQ"
+    plausible_script: pa-fPuGtS2_qCDwvruA0LwPn.js
 content:
   sources:
     - url: https://github.com/vshn/appcat-user-docs.git
