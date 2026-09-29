@@ -12,3 +12,6 @@ FROM ghcr.io/vshn/nginx:1.31.6.2
 
 # Finally, copy the contents of the documentation to be served
 COPY --from=antora /build/_public /usr/share/nginx/html
+
+# This site's own nginx rules; everything generic comes from the base image
+COPY deployment/main/nginx-appcat.conf /etc/nginx/antora/appcat.conf
