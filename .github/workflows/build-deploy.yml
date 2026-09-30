@@ -32,15 +32,6 @@ jobs:
             ./deployment/main/Containerfile
           oci: true
 
-      - name: Build Antora Search Index
-        id: build_search
-        uses: redhat-actions/buildah-build@v3
-        with:
-          image: ${{ env.IMAGE_NAME }}-search
-          tags: latest
-          containerfiles: |
-            ./deployment/search/Containerfile
-          oci: true
 
       # Pull requests build the images to prove they still build, and stop
       # there. Nothing is published or deployed from a PR.
@@ -54,15 +45,6 @@ jobs:
           username: ${{ env.REGISTRY_USER }}
           password: ${{ env.REGISTRY_PASSWORD }}
 
-      - name: Push Search Image
-        if: github.event_name == 'push'
-        uses: redhat-actions/push-to-registry@v3
-        with:
-          image: ${{ steps.build_search.outputs.image }}
-          tags: ${{ steps.build_search.outputs.tags }}
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.REGISTRY_USER }}
-          password: ${{ env.REGISTRY_PASSWORD }}
 
   deploy:
     name: Deploy Antora Site 🚀
@@ -87,6 +69,5 @@ jobs:
       - name: Apply Manifests
         run: |
           sed -i "s#SITEIMAGE#ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}-site:latest#" deployment/deployment.yaml
-          sed -i "s#SEARCHIMAGE#ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}-search:latest#" deployment/deployment.yaml
           sed -i "s#GITSHAFULL#$GITHUB_SHA#" deployment/deployment.yaml
           oc apply -f deployment/

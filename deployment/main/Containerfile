@@ -4,11 +4,14 @@ FROM ghcr.io/vshn/antora:3.1.14.1 AS antora
 
 WORKDIR /build
 COPY . /build
-RUN make html antora_cmd=antora antora_opts=--fetch
+RUN make html antora_cmd=antora antora_opts=--fetch pagefind_runner=
 
 # ---------- STEP 2 ----------
 # Docker image only containing nginx and the freshly built documentation
-FROM ghcr.io/vshn/nginx:1.31.6
+FROM ghcr.io/vshn/nginx:1.31.6.2
 
 # Finally, copy the contents of the documentation to be served
 COPY --from=antora /build/_public /usr/share/nginx/html
+
+# This site's own nginx rules; everything generic comes from the base image
+COPY deployment/main/nginx-appcat.conf /etc/nginx/antora/appcat.conf

@@ -42,25 +42,3 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-        - name: search
-          image: SEARCHIMAGE
-          imagePullPolicy: Always
-          readinessProbe:
-            httpGet:
-              path: "/search?q=readinessProbe"
-              port: 3000
-            periodSeconds: 60
-          livenessProbe:
-            httpGet:
-              path: "/search?q=livenessProbe"
-              port: 3000
-            periodSeconds: 60
-            initialDelaySeconds: 5
-          resources:
-            limits:
-              memory: 256Mi
-              cpu: 1
-          ports:
-            - name: http
-              containerPort: 3000
-              protocol: TCP

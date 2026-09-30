@@ -20,6 +20,14 @@ orphans_cmd ?= $(engine_cmd) run $(engine_opts) --volume "$${PWD}:/antora" ghcr.
 vale_cmd ?= $(engine_cmd) run $(engine_opts) --volume "$${PWD}"/docs/modules/ROOT/pages:/pages --workdir /pages ghcr.io/vshn/vale:2.15.5 --minAlertLevel=error .
 preview_cmd ?= $(engine_cmd) run --rm --publish 35729:35729 --publish 2020:2020 --volume "${PWD}":/preview/antora ghcr.io/vshn/antora-preview:3.1.4 --antora=docs --style=vshn
 antora_cmd  ?= $(engine_cmd) run $(engine_opts) --volume "$${PWD}":/antora ghcr.io/vshn/antora:3.1.2.2
+
+# The search index is built into the site, so search runs in the reader's browser rather than in
+# a container. pagefind_runner is emptied where npx is already available, such as inside the
+# Antora image the container build runs in.
+# renovate: datasource=npm depName=pagefind
+pagefind_VERSION ?= 1.5.2
+pagefind_runner ?= $(engine_cmd) run $(engine_opts) --volume "$${PWD}":/antora --workdir /antora ghcr.io/vshn/antora:3.1.14.1
+pagefind_cmd ?= $(pagefind_runner) npx --yes pagefind@$(pagefind_VERSION) --site $(web_dir)
 antora_opts ?= --cache-dir=.cache/antora
 
 .PHONY: all
@@ -39,6 +47,7 @@ html:    $(web_dir)/index.html
 
 $(web_dir)/index.html: playbook.yml $(pages)
 	$(antora_cmd) $(antora_opts) $<
+	$(pagefind_cmd)
 
 
 ## CRD API doc generator
