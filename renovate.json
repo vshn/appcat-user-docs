@@ -26,6 +26,17 @@
       ],
       "automerge": true,
       "automergeType": "pr"
+    },
+    {
+      "description": "ghcr.io/vshn/nginx and ghcr.io/vshn/antora release as <upstream-version>.<revision>, so a config-only change gets its own release. Docker versioning keeps the precision of the current pin, so a three-part pin like 1.31.6 never sees 1.31.6.2 and, now that the image publishes four-part tags only, never sees anything again.",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "ghcr.io/vshn/nginx",
+        "ghcr.io/vshn/antora"
+      ],
+      "versioning": "loose"
     }
   ],
   "customManagers": [
