@@ -32,6 +32,16 @@ jobs:
             ./deployment/main/Containerfile
           oci: true
 
+      # A built image proves nothing: run it and ask it for a page. buildah keeps the image in
+      # its own storage, which the docker CLI in the smoke test cannot see, so copy it into the
+      # Docker daemon first. This runs before the push step, so a bad image is never published.
+      - name: Smoke test the built image
+        env:
+          BUILT_IMAGE: ${{ steps.build_site.outputs.image-with-tag }}
+        run: |
+          buildah push "$BUILT_IMAGE" docker-daemon:appcat-user-docs-site:smoke
+          sh tests/smoke.sh appcat-user-docs-site:smoke /index.html "AppCat"
+
 
       # Pull requests build the images to prove they still build, and stop
       # there. Nothing is published or deployed from a PR.
