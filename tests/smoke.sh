@@ -58,24 +58,39 @@ else
   exit 1
 fi
 
-# Browsers read /opensearchdescription.xml to offer this site as a search engine, and its Url
+# Browsers read the OpenSearch descriptor to offer this site as a search engine, and its Url
 # template names the page a search lands on. Two sites in this estate advertised a search page
-# that had been a 404 for years, because nothing ever asked. A site without a descriptor is not
-# broken, so that case is skipped rather than failed.
-desc=$(docker exec "$NAME" wget -q -O- "http://127.0.0.1:8080/opensearchdescription.xml" 2>/dev/null || true)
+# that had been a 404 for years, because nothing ever asked.
+# The start page says whether the site offers one: a <link rel="search"> in its head. If it does,
+# the descriptor it names MUST be served, and a 404 is a failure, because that is exactly what a
+# browser sees. A check that skipped whenever nothing was served let a site whose nginx location
+# had no root advertise a descriptor that was a 404 in production. Only a page that advertises no
+# descriptor at all skips this check.
+link=$(echo "$page" | grep -o '<link[^>]*rel="search"[^>]*>' | head -1 || true)
+descpath=/opensearchdescription.xml
+if [ -n "$link" ]; then
+  href=$(echo "$link" | sed -n 's|.*href="\([^"]*\)".*|\1|p' | sed -e 's|^[a-z]*://[^/]*||' -e 's|?.*||')
+  [ -z "$href" ] || descpath=$href
+  case "$descpath" in /*) ;; *) descpath=/$descpath ;; esac
+fi
+desc=$(docker exec "$NAME" wget -q -O- "http://127.0.0.1:8080$descpath" 2>/dev/null || true)
 if [ -z "$desc" ]; then
-  echo "no search descriptor is served, skipping the OpenSearch check"
+  if [ -n "$link" ]; then
+    echo "ERROR: $PAGE links a search descriptor at $descpath but the image does not serve it"
+    exit 1
+  fi
+  echo "the page advertises no search descriptor, skipping the OpenSearch check"
 else
   # An nginx default page or an HTML error page is not XML and must not pass as a descriptor.
   echo "$desc" | grep -q "<OpenSearchDescription" || {
-    echo "ERROR: /opensearchdescription.xml does not contain <OpenSearchDescription, so it is not a descriptor"
+    echo "ERROR: $descpath does not contain <OpenSearchDescription, so it is not a descriptor"
     exit 1
   }
   # The template is https://host/some/path.html?q={searchTerms}: keep only the path.
   search=$(echo "$desc" | sed -n 's|.*template="\([^"]*\)".*|\1|p' | head -1 |
     sed -e 's|^[a-z]*://[^/]*||' -e 's|?.*||')
   [ -n "$search" ] || {
-    echo "ERROR: /opensearchdescription.xml has no Url template with a path, so browsers cannot search with it"
+    echo "ERROR: $descpath has no Url template with a path, so browsers cannot search with it"
     exit 1
   }
   docker exec "$NAME" wget -q -O /dev/null "http://127.0.0.1:8080$search" || {
