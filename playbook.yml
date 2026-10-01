@@ -4,6 +4,9 @@ site:
   start_page: ROOT::index.adoc
   keys:
     plausible_script: pa-fPuGtS2_qCDwvruA0LwPn.js
+    opensearch: true
+    search_page_path: index.html
+    opensearch_short_name: AppCat Docs
 content:
   sources:
     - url: https://github.com/vshn/appcat-user-docs.git
@@ -12,7 +15,7 @@ content:
       edit_url: "https://github.com/vshn/appcat-user-docs/edit/master/{path}"
 ui:
   bundle:
-    url: https://github.com/vshn/antora-ui/releases/download/v3.0.0/ui-bundle.zip
+    url: https://github.com/vshn/antora-ui/releases/download/v3.2.0/ui-bundle.zip
     snapshot: false
   supplemental_files: ./supplemental-ui
 asciidoc:
