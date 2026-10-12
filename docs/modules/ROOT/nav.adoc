@@ -109,28 +109,6 @@
 * xref:vshn-managed/redis/sla.adoc[]
 * xref:vshn-managed/redis/usage.adoc[Usage]
 
-.Deprecated
-* xref:exoscale-dbaas/kafka/index.adoc[Exoscale DBaaS Kafka]
-** xref:exoscale-dbaas/kafka/create.adoc[Creation]
-** xref:exoscale-dbaas/kafka/usage.adoc[Usage]
-** xref:exoscale-dbaas/kafka/delete.adoc[Deletion]
-* xref:exoscale-dbaas/mysql/index.adoc[Exoscale DBaaS MySQL]
-** xref:exoscale-dbaas/mysql/create.adoc[Creation]
-** xref:exoscale-dbaas/mysql/delete.adoc[Deletion]
-** xref:exoscale-dbaas/mysql/usage.adoc[Usage]
-* xref:exoscale-dbaas/opensearch/index.adoc[Exoscale DBaaS OpenSearch]
-** xref:exoscale-dbaas/opensearch/create.adoc[Creation]
-** xref:exoscale-dbaas/opensearch/delete.adoc[Deletion]
-** xref:exoscale-dbaas/opensearch/usage.adoc[Usage]
-* xref:exoscale-dbaas/postgresql/index.adoc[Exoscale DBaaS PostgreSQL]
-** xref:exoscale-dbaas/postgresql/create.adoc[Creation]
-** xref:exoscale-dbaas/postgresql/delete.adoc[Deletion]
-** xref:exoscale-dbaas/postgresql/usage.adoc[Usage]
-* xref:exoscale-dbaas/redis/index.adoc[Exoscale DBaaS Redis]
-** xref:exoscale-dbaas/redis/create.adoc[Creation]
-** xref:exoscale-dbaas/redis/delete.adoc[Deletion]
-** xref:exoscale-dbaas/redis/usage.adoc[Usage]
-
 .Changelog
 * xref:changelog/2026-08-04.adoc[2026-08-04]
 * xref:changelog/2026-06-02.adoc[2026-06-02]
