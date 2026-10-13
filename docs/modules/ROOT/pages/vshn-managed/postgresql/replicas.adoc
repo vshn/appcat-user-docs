@@ -1,6 +1,6 @@
 = Replication and High Availability
 
-PostgreSQL by VSHN comes with support for multiple instances and High Availability using https://github.com/zalando/patroni[Patroni].
+PostgreSQL by VSHN comes with support for multiple instances and High Availability.
 You have the option to configure up to two additional replicas and also choose between three replication modes.
 
 == Enable High Availability
