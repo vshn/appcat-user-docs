@@ -1,0 +1,36 @@
+= Chart Evaluation Checklist
+
+In order for a Helm chart to provide a stable service, it has to satisfy some quality requirements.
+The service is only as good as the upstream Helm chart.
+
+== Checklist Must
+
+All these points are required to ensure optimal compatibility.
+
+* [ ] available via OCI repository
+* [ ] compatible with FluxCD
+** [ ] test by deploying the chart directly via the helmetica-framework
+* [ ] provides image and registry configurations
+* [ ] annotations and labels can be passed through to pods and PVCs
+* [ ] resource requests and limits are configurable
+* [ ] no cluster-scoped resources, or they allow multiple instances (for example by prefixing them), or they can be disabled
+* [ ] minor upgrades need no manual steps
+
+== Checklist Should
+
+These are nice to have for a better maintainer experience.
+
+* [ ] maps instead of lists in values
+* [ ] low values nesting
+* [ ] fullnameOverride for predictable resource names
+* [ ] options to disable included ingress/gatewayAPI configs
+* [ ] values are documented with comments
+* [ ] few empty values without a type (`null`, `{}`, `[]`)
+* [ ] supports existing secrets for credentials
+* [ ] provides a metrics endpoint or ServiceMonitor
+* [ ] resource requests and limits are configurable
+* [ ] runs as non-root with configurable securityContext
+* [ ] chart is signed (cosign)
+* [ ] upgrade jobs like migrations use Helm hooks
+* [ ] follows semver, breaking value changes only in major versions
+
