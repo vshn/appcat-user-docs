@@ -56,6 +56,8 @@ spec:
 <1> List of groups to be allowed limited access to the PostgreSQL namespace
 <2> List of users to be allowed limited access to the PostgreSQL namespace
 
+include::partial$allowed-users-service-accounts.adoc[]
+
 
 == Network Policies
 
