@@ -55,3 +55,5 @@ spec:
 
 <1> List of groups to be allowed limited access to the MariaDB namespace
 <2> List of users to be allowed limited access to the MariaDB namespace
+
+include::partial$allowed-users-service-accounts.adoc[]
