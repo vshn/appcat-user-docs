@@ -81,3 +81,12 @@ jobs:
           sed -i "s#SITEIMAGE#ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}-site:latest#" deployment/deployment.yaml
           sed -i "s#GITSHAFULL#$GITHUB_SHA#" deployment/deployment.yaml
           oc apply -f deployment/
+
+      # oc apply returns as soon as the API server accepts the manifests, so this job reported
+      # success whether or not the new pod ever started. The pod template carries the commit SHA
+      # in an annotation, so every apply changes it and Kubernetes always starts a rollout, which
+      # means waiting for that rollout is enough and nothing has to be triggered by hand.
+      # The container's readiness probe asks the site for /index.html, so a rollout that
+      # completes is a pod that is actually serving a page, not merely a pod that exists.
+      - name: Wait for the rollout
+        run: oc rollout status deployment/appcat-user --timeout=5m
