@@ -1,0 +1,220 @@
+= Helmetica Overview
+
+Helmetica turns one Helm chart into a service that users can order many instances of.
+Three roles work with it, and each one touches different components.
+Find your role below to see what you interact with.
+
+The names come from alchemy, see the xref:appcat2/servicemaintainer/glossary.adoc[glossary] for every term.
+
+[cols="1,2,3", options="header"]
+|===
+| Role | Job | You work with
+
+| <<operator,Framework operator>>
+| Runs the framework on a cluster and provides the platform it relies on.
+| Chrysopoeia, adept, sigillum, ampulla, custos, libra, aludel, FluxCD
+
+| <<maintainer,Service maintainer>>
+| Wraps an upstream chart and publishes it as a service.
+| Transmuter, ferment, azoth, athanor, reagent, claim definition
+
+| <<user,User>>
+| Orders and operates instances of a service.
+| Claim, action, cupel
+|===
+
+[#how-it-fits]
+== How the pieces fit
+
+A reagent is a Helm chart.
+It renders small, platform-agnostic resources next to the service, and one controller per topic turns each of them into the real thing.
+The service maintainer never talks to these controllers directly.
+Backup, network, maintenance and billing are switched on in the reagent's `values.yaml` and rendered by azoth.
+Credentials are defined in the reagent's own `templates/credentials.yaml`.
+
+[graphviz,format=svg,role=text-center]
+....
+digraph pieces {
+  rankdir=LR;
+  node [shape=box, style="rounded,filled", fillcolor="#f4f4f4", fontname="Helvetica"];
+  edge [fontname="Helvetica", fontsize=10];
+
+  reagent [label="Reagent chart\n(azoth + own templates)", fillcolor="#fff3cd"];
+
+  nc [label="NetworkConfig"];
+  bp [label="BackupPolicy"];
+  cc [label="CredentialConfig"];
+  mt [label="Maintenance"];
+  bd [label="BillingData"];
+
+  sig [label="sigillum", fillcolor="#d9ead3"];
+  amp [label="ampulla", fillcolor="#d9ead3"];
+  cus [label="custos", fillcolor="#d9ead3"];
+  ade [label="adept", fillcolor="#d9ead3"];
+  lib [label="libra", fillcolor="#d9ead3"];
+
+  np [label="NetworkPolicy,\nGateway API routes"];
+  bucket [label="COSI bucket\n+ k8up Schedule"];
+  sec [label="Credentials Secret"];
+  cron [label="CronJob\nrunning a ritual"];
+  s3 [label="Billing records\nin S3"];
+
+  reagent -> nc [label="azoth"]; reagent -> bp [label="azoth"]; reagent -> mt [label="azoth"]; reagent -> bd [label="azoth"];
+  reagent -> cc [label="credentials.yaml"];
+  nc -> sig -> np;
+  bp -> amp -> bucket;
+  cc -> cus -> sec;
+  mt -> ade -> cron;
+  bd -> lib -> s3;
+}
+....
+
+[#operator]
+== Framework operator
+
+The operator keeps the framework and the platform it needs running.
+They don't write charts or order services.
+
+* *Installs the controllers.* Chrysopoeia, sigillum, ampulla, adept, custos and libra each have their own repository.
+  In sigillum, custos and libra the CRDs are installed separately from the controllers.
+* *Provides the platform.* FluxCD deploys the charts, a COSI driver (for example aludel-cloudscale) hands out buckets, K8up runs backups, and Gateways serve network exposures.
+  Sigillum never creates Gateways.
+* *Describes the platform.* Config maps annotated with `chrysopoeia.io/platform-values` end up under `__platform__` in every instance's values, so charts can adapt to the distribution or load balancer capabilities.
+  Adept's `MaintenanceWindow` objects define when maintenance may start for all instances.
+
+[graphviz,format=svg,role=text-center]
+....
+digraph operator {
+  rankdir=LR;
+  node [shape=box, style="rounded,filled", fillcolor="#f4f4f4", fontname="Helvetica"];
+  edge [fontname="Helvetica", fontsize=10];
+
+  subgraph cluster_op {
+    label="Run by the operator"; fontname="Helvetica"; style=dashed;
+    chry [label="chrysopoeia", fillcolor="#d9ead3"];
+    ade [label="adept", fillcolor="#d9ead3"];
+    sig [label="sigillum", fillcolor="#d9ead3"];
+    amp [label="ampulla", fillcolor="#d9ead3"];
+    cus [label="custos", fillcolor="#d9ead3"];
+    lib [label="libra", fillcolor="#d9ead3"];
+  }
+
+  subgraph cluster_plat {
+    label="Platform the operator provides"; fontname="Helvetica"; style=dashed;
+    flux [label="FluxCD"];
+    cosi [label="COSI driver\n(aludel)"];
+    k8up [label="K8up"];
+    gw [label="Gateways"];
+    s3 [label="S3 bucket\nfor billing"];
+    pv [label="Platform values\n(config maps)"];
+    mw [label="MaintenanceWindows"];
+  }
+
+  chry -> flux [label="deploys instances"];
+  pv -> chry [label="__platform__"];
+  mw -> ade;
+  amp -> cosi [label="bucket"];
+  amp -> k8up [label="schedule"];
+  sig -> gw [label="listeners, routes"];
+  lib -> s3 [label="writes"];
+}
+....
+
+[#maintainer]
+== Service maintainer
+
+The maintainer turns an upstream chart into a service and ships it.
+
+. The xref:appcat2/servicemaintainer/glossary.adoc#transmuter[transmuter] scaffolds a reagent from ferment and adds the upstream chart (prima materia) as a dependency.
+. Ferment brings the azoth library chart along, which renders the backup, network, maintenance, alerting, monitoring and billing resources from the reagent's `values.yaml`.
+  Ferment also ships a `templates/credentials.yaml` to fill in with the service's connection details.
+. You adjust the values, rituals and credentials in the reagent, and try it in athanor, a local development cluster.
+. Assay checks the chart and detects breaking CRD changes against the latest published version. Touchstone tests it end to end.
+. You publish the chart to an OCI registry and register it with a `ClaimDefinition`.
+  It points at a FluxCD `OCIRepository` for the chart and an `ImageRepository` to discover new versions.
+  Chrysopoeia then generates the CRD users order from.
+
+[graphviz,format=svg,role=text-center]
+....
+digraph maintainer {
+  rankdir=LR;
+  node [shape=box, style="rounded,filled", fillcolor="#f4f4f4", fontname="Helvetica"];
+  edge [fontname="Helvetica", fontsize=10];
+
+  subgraph cluster_local {
+    label="Your machine"; fontname="Helvetica"; style=dashed;
+    prima [label="Prima materia\n(upstream chart)"];
+    ferment [label="ferment\n(starter chart)"];
+    trans [label="transmuter", fillcolor="#d9ead3"];
+    reagent [label="Reagent\n(your service chart)", fillcolor="#fff3cd"];
+    azoth [label="azoth\n(library chart)"];
+    athanor [label="athanor\n(local cluster)"];
+    assay [label="assay"];
+    touch [label="touchstone"];
+  }
+
+  reg [label="OCI registry"];
+
+  subgraph cluster_cluster {
+    label="Cluster"; fontname="Helvetica"; style=dashed;
+    cd [label="ClaimDefinition"];
+    chry [label="chrysopoeia", fillcolor="#d9ead3"];
+    crd [label="CRD users order from"];
+  }
+
+  prima -> trans;
+  ferment -> trans;
+  trans -> reagent [label="transmute"];
+  azoth -> reagent [label="dependency"];
+  reagent -> athanor [label="try out"];
+  reagent -> assay [label="validate"];
+  reagent -> touch [label="test"];
+  touch -> athanor;
+  reagent -> reg [label="publish"];
+  reg -> cd [label="OCIRepository"];
+  cd -> chry;
+  chry -> crd [label="generates"];
+}
+....
+
+You edit the reagent's `values.yaml` (see xref:appcat2/servicemaintainer/anatomy.adoc[Anatomy of a service]), and add rituals with `transmuter ritual add`.
+
+[#user]
+== User
+
+The user only deals with what the maintainer made available.
+They don't need to know about charts or the controllers behind them.
+
+. The user creates a *claim*, an instance of the CRD generated from the service's chart.
+  It sets the version, the configuration and the approval strategy.
+. Every change to the claim is recorded as a revision, and the latest *approved* one is deployed as a FluxCD `HelmRelease` into the instance's own namespace, which chrysopoeia creates.
+  Unless the claim's approval strategy is `Automatic`, a new revision waits until someone approves it.
+. The service's credentials appear in a secret.
+. To run an operation such as a restart, the user creates an *action*, and adept runs it as a job in the instance namespace.
+. Cupel shows what a change would do before it is approved (`weigh`), and browses an instance's revision history (`ledger`).
+
+[graphviz,format=svg,role=text-center]
+....
+digraph user {
+  rankdir=LR;
+  node [shape=box, style="rounded,filled", fillcolor="#f4f4f4", fontname="Helvetica"];
+  edge [fontname="Helvetica", fontsize=10];
+
+  claim [label="Claim\n(order an instance)", fillcolor="#fff3cd"];
+  action [label="Action\n(run a ritual)", fillcolor="#fff3cd"];
+  cupel [label="cupel\nweigh / ledger", fillcolor="#fff3cd"];
+
+  rev [label="ClaimRevision"];
+  inst [label="Instance\nin its own namespace"];
+  creds [label="Credentials secret"];
+  job [label="Job"];
+
+  claim -> rev [label="every change"];
+  rev -> inst [label="approved revision\nis deployed"];
+  inst -> creds [label="written to"];
+  action -> job [label="adept creates"];
+  job -> inst [label="runs in"];
+  cupel -> rev [label="reads", style=dashed];
+  cupel -> claim [label="compares", style=dashed];
+}
+....
