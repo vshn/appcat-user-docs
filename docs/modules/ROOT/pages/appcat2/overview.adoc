@@ -12,23 +12,23 @@ The names come from alchemy, see the xref:appcat2/servicemaintainer/glossary.ado
 
 | <<operator,Framework operator>>
 | Runs the framework on a cluster and provides the platform it relies on.
-| Chrysopoeia, adept, sigillum, ampulla, custos, libra, aludel, FluxCD
+| `MaintenanceWindow`, platform values, the cluster's storage, gateway and backup setup
 
 | <<maintainer,Service maintainer>>
 | Wraps an upstream chart and publishes it as a service.
-| Transmuter, ferment, azoth, athanor, reagent, claim definition
+| Reagent chart, `ClaimDefinition`, `Definition`, `Arcanum`
 
 | <<user,User>>
 | Orders and operates instances of a service.
-| Claim, action, cupel
+| Claim, `Action`, `ClaimRevision`
 |===
 
 [#how-it-fits]
 == How the pieces fit
 
 A reagent is a Helm chart.
-It renders small, platform-agnostic resources next to the service, and one controller per topic turns each of them into the real thing.
-The service maintainer never talks to these controllers directly.
+It renders small, platform-agnostic resources next to the service, and the framework turns each of them into the real thing.
+The service maintainer never configures the underlying tools directly.
 Backup, network, maintenance and billing are switched on in the reagent's `values.yaml` and rendered by azoth.
 Credentials are defined in the reagent's own `templates/credentials.yaml`.
 
@@ -43,29 +43,27 @@ digraph pieces {
 
   nc [label="NetworkConfig"];
   bp [label="BackupPolicy"];
-  cc [label="CredentialConfig"];
+  ar [label="Arcanum"];
   mt [label="Maintenance"];
   bd [label="BillingData"];
+  df [label="Definition\n(rituals)"];
 
-  sig [label="sigillum", fillcolor="#d9ead3"];
-  amp [label="ampulla", fillcolor="#d9ead3"];
-  cus [label="custos", fillcolor="#d9ead3"];
-  ade [label="adept", fillcolor="#d9ead3"];
-  lib [label="libra", fillcolor="#d9ead3"];
-
-  np [label="NetworkPolicy,\nGateway API routes"];
-  bucket [label="COSI bucket\n+ k8up Schedule"];
+  np [label="Network policies,\nGateway API routes"];
+  bucket [label="Bucket\n+ backup schedule"];
   sec [label="Credentials Secret"];
-  cron [label="CronJob\nrunning a ritual"];
-  s3 [label="Billing records\nin S3"];
+  cron [label="Scheduled maintenance"];
+  s3 [label="Billing records"];
+  job [label="Job per Action"];
 
   reagent -> nc [label="azoth"]; reagent -> bp [label="azoth"]; reagent -> mt [label="azoth"]; reagent -> bd [label="azoth"];
-  reagent -> cc [label="credentials.yaml"];
-  nc -> sig -> np;
-  bp -> amp -> bucket;
-  cc -> cus -> sec;
-  mt -> ade -> cron;
-  bd -> lib -> s3;
+  reagent -> ar [label="credentials.yaml"];
+  reagent -> df [label="templates/rituals"];
+  nc -> np;
+  bp -> bucket;
+  ar -> sec;
+  mt -> cron;
+  bd -> s3;
+  df -> job;
 }
 ....
 
@@ -75,12 +73,12 @@ digraph pieces {
 The operator keeps the framework and the platform it needs running.
 They don't write charts or order services.
 
-* *Installs the controllers.* Chrysopoeia, sigillum, ampulla, adept, custos and libra each have their own repository.
-  In sigillum, custos and libra the CRDs are installed separately from the controllers.
-* *Provides the platform.* FluxCD deploys the charts, a COSI driver (for example aludel-cloudscale) hands out buckets, K8up runs backups, and Gateways serve network exposures.
-  Sigillum never creates Gateways.
+* *Installs the framework.* Its controllers and CRDs have to be installed on the cluster.
+  Which controllers exist and what they own is documented in each project's repository.
+* *Provides the platform.* FluxCD deploys the charts, a COSI driver hands out buckets, K8up runs backups, and Gateways serve network exposures.
+  The framework doesn't create Gateways.
 * *Describes the platform.* Config maps annotated with `chrysopoeia.io/platform-values` end up under `__platform__` in every instance's values, so charts can adapt to the distribution or load balancer capabilities.
-  Adept's `MaintenanceWindow` objects define when maintenance may start for all instances.
+  `MaintenanceWindow` objects define when maintenance may start for all instances.
 
 [graphviz,format=svg,role=text-center]
 ....
@@ -90,33 +88,29 @@ digraph operator {
   edge [fontname="Helvetica", fontsize=10];
 
   subgraph cluster_op {
-    label="Run by the operator"; fontname="Helvetica"; style=dashed;
-    chry [label="chrysopoeia", fillcolor="#d9ead3"];
-    ade [label="adept", fillcolor="#d9ead3"];
-    sig [label="sigillum", fillcolor="#d9ead3"];
-    amp [label="ampulla", fillcolor="#d9ead3"];
-    cus [label="custos", fillcolor="#d9ead3"];
-    lib [label="libra", fillcolor="#d9ead3"];
+    label="Configured by the operator"; fontname="Helvetica"; style=dashed;
+    pv [label="Platform values\n(config maps)", fillcolor="#fff3cd"];
+    mw [label="MaintenanceWindow", fillcolor="#fff3cd"];
   }
 
   subgraph cluster_plat {
     label="Platform the operator provides"; fontname="Helvetica"; style=dashed;
     flux [label="FluxCD"];
-    cosi [label="COSI driver\n(aludel)"];
+    cosi [label="COSI driver"];
     k8up [label="K8up"];
     gw [label="Gateways"];
     s3 [label="S3 bucket\nfor billing"];
-    pv [label="Platform values\n(config maps)"];
-    mw [label="MaintenanceWindows"];
   }
 
-  chry -> flux [label="deploys instances"];
-  pv -> chry [label="__platform__"];
-  mw -> ade;
-  amp -> cosi [label="bucket"];
-  amp -> k8up [label="schedule"];
-  sig -> gw [label="listeners, routes"];
-  lib -> s3 [label="writes"];
+  fw [label="Helmetica framework", fillcolor="#d9ead3"];
+
+  pv -> fw [label="__platform__"];
+  mw -> fw [label="when maintenance starts"];
+  fw -> flux [label="deploys instances"];
+  fw -> cosi [label="BackupPolicy: bucket"];
+  fw -> k8up [label="BackupPolicy: schedule"];
+  fw -> gw [label="NetworkConfig: routes"];
+  fw -> s3 [label="BillingData: records"];
 }
 ....
 
@@ -132,7 +126,7 @@ The maintainer turns an upstream chart into a service and ships it.
 . Assay checks the chart and detects breaking CRD changes against the latest published version. Touchstone tests it end to end.
 . You publish the chart to an OCI registry and register it with a `ClaimDefinition`.
   It points at a FluxCD `OCIRepository` for the chart and an `ImageRepository` to discover new versions.
-  Chrysopoeia then generates the CRD users order from.
+  The framework then generates the CRD users order from.
 
 [graphviz,format=svg,role=text-center]
 ....
@@ -158,7 +152,6 @@ digraph maintainer {
   subgraph cluster_cluster {
     label="Cluster"; fontname="Helvetica"; style=dashed;
     cd [label="ClaimDefinition"];
-    chry [label="chrysopoeia", fillcolor="#d9ead3"];
     crd [label="CRD users order from"];
   }
 
@@ -172,8 +165,7 @@ digraph maintainer {
   touch -> athanor;
   reagent -> reg [label="publish"];
   reg -> cd [label="OCIRepository"];
-  cd -> chry;
-  chry -> crd [label="generates"];
+  cd -> crd [label="framework generates"];
 }
 ....
 
@@ -187,10 +179,10 @@ They don't need to know about charts or the controllers behind them.
 
 . The user creates a *claim*, an instance of the CRD generated from the service's chart.
   It sets the version, the configuration and the approval strategy.
-. Every change to the claim is recorded as a revision, and the latest *approved* one is deployed as a FluxCD `HelmRelease` into the instance's own namespace, which chrysopoeia creates.
+. Every change to the claim is recorded as a revision, and the latest *approved* one is deployed as a FluxCD `HelmRelease` into the instance's own namespace, which the framework creates.
   Unless the claim's approval strategy is `Automatic`, a new revision waits until someone approves it.
 . The service's credentials appear in a secret.
-. To run an operation such as a restart, the user creates an *action*, and adept runs it as a job in the instance namespace.
+. To run an operation such as a restart, the user creates an *action*, and the framework runs it as a job in the instance namespace.
 . Cupel shows what a change would do before it is approved (`weigh`), and browses an instance's revision history (`ledger`).
 
 [graphviz,format=svg,role=text-center]
@@ -206,13 +198,13 @@ digraph user {
 
   rev [label="ClaimRevision"];
   inst [label="Instance\nin its own namespace"];
-  creds [label="Credentials secret"];
+  creds [label="Credentials secret\n(from Arcanum)"];
   job [label="Job"];
 
   claim -> rev [label="every change"];
   rev -> inst [label="approved revision\nis deployed"];
   inst -> creds [label="written to"];
-  action -> job [label="adept creates"];
+  action -> job [label="creates"];
   job -> inst [label="runs in"];
   cupel -> rev [label="reads", style=dashed];
   cupel -> claim [label="compares", style=dashed];
