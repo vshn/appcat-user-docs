@@ -61,21 +61,19 @@ spec:
       enabled: true # <11>
       schedule: "0 22 * * *" # <12>
       retention: 6 # <13>
-      deletionProtection: true # <14>
-      deletionRetention: 7 # <15>
     network:
       ipFilter:
-        - 0.0.0.0/0 # <16>
-      serviceType: ClusterIP # <17>
+        - 0.0.0.0/0 # <14>
+      serviceType: ClusterIP # <15>
     security:
-      deletionProtection: true # <18>
+      deletionProtection: true # <16>
     maintenance:
-      dayOfWeek: tuesday # <19>
-      timeOfDay: "22:30:00" # <20>
+      dayOfWeek: tuesday # <17>
+      timeOfDay: "22:30:00" # <18>
     encryption:
-      enabled: false # <21>
+      enabled: false # <19>
   writeConnectionSecretToRef:
-    name: postgres-creds # <22>
+    name: postgres-creds # <20>
 ----
 <1> Instance name
 <2> The namespace where the object will be created
@@ -89,16 +87,14 @@ spec:
 <10> Resource plan. See xref:vshn-managed/postgresql/plans.adoc[Plans and Sizing] for available plans and custom sizing options.
 <11> Enable automatic backups. Default: `true`. When set to `false`, no backup bucket or WAL archiving is configured.
 <12> Backup schedule in https://en.wikipedia.org/wiki/Cron[cron format^]. If omitted, a random schedule is generated and stored in `.status.schedules.backup`.
-<13> Number of daily backups to keep. Default: `6`.
-<14> Protect backups from deletion when the instance is deleted. Default: `true`. See xref:vshn-managed/postgresql/deletion-protection.adoc[Deletion Protection].
-<15> Number of days to retain backups after the instance is deleted. Default: `7`.
-<16> List of allowed IPv4 CIDR ranges. When omitted, all traffic is allowed (equivalent to `0.0.0.0/0`). Restrict this to your application's IP range in production environments.
-<17> How the service is exposed. Default: `ClusterIP` (cluster-internal only). Use `LoadBalancer` for a dedicated public IPv4 address or `TCPGateway` for Gateway API access (CloudNativePG only).
-<18> Prevent accidental deletion of the claim. Default: `true`. See xref:vshn-managed/postgresql/deletion-protection.adoc[Deletion Protection].
-<19> Day of the week for the maintenance window. Allowed values: `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`. If omitted, a random day is generated and stored in `.status.schedules.maintenance`.
-<20> Time of day for the maintenance window in UTC, format `hh:mm:ss`. If omitted, a random time is generated and stored in `.status.schedules.maintenance`.
-<21> Enable encrypted storage for the instance. Default: `false`. See xref:vshn-managed/postgresql/encrypted-pvc.adoc[Encrypted PVC] for details.
-<22> Secret where the connection details are provisioned. This secret must not exist before creation.
+<13> Number of daily backups to keep. Default: `6`. Backups are deleted together with the instance, so restore or export what you need before deleting it.
+<14> List of allowed IPv4 CIDR ranges. When omitted, all traffic is allowed (equivalent to `0.0.0.0/0`). Restrict this to your application's IP range in production environments.
+<15> How the service is exposed. Default: `ClusterIP` (cluster-internal only). Use `LoadBalancer` for a dedicated public IPv4 address or `TCPGateway` for Gateway API access (CloudNativePG only).
+<16> Prevent accidental deletion of the claim. Default: `true`. See xref:vshn-managed/postgresql/deletion-protection.adoc[Deletion Protection].
+<17> Day of the week for the maintenance window. Allowed values: `monday`, `tuesday`, `wednesday`, `thursday`, `friday`, `saturday`, `sunday`. If omitted, a random day is generated and stored in `.status.schedules.maintenance`.
+<18> Time of day for the maintenance window in UTC, format `hh:mm:ss`. If omitted, a random time is generated and stored in `.status.schedules.maintenance`.
+<19> Enable encrypted storage for the instance. Default: `false`. See xref:vshn-managed/postgresql/encrypted-pvc.adoc[Encrypted PVC] for details.
+<20> Secret where the connection details are provisioned. This secret must not exist before creation.
 
 NOTE: For up-to-date documentation of all available fields, see the xref:references/crds.adoc#k8s-api-github-com-vshn-appcat-v4-apis-vshn-v1-vshnpostgresql[API Reference]. This page is generated directly from the API definition.
 
