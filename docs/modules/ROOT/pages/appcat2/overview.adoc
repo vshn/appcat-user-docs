@@ -130,7 +130,7 @@ digraph helmetica {
 
 A reagent is a Helm chart.
 Besides the service itself it renders small, platform-agnostic resources such as `NetworkConfig` or `BackupPolicy`, and the framework turns each of them into the real thing.
-Backup, network, maintenance and billing are switched on in the reagent's `values.yaml` and rendered by azoth.
+Backup, network, maintenance and billing are switched on in the reagent's `values.yaml` and rendered by the azoth library.
 Credentials are defined in the reagent's own `templates/credentials.yaml`.
 
 [cols="1,2,3", options="header"]
@@ -290,7 +290,7 @@ digraph operator {
 
 The maintainer turns an upstream chart into a service and ships it.
 
-. `transmuter transmute` scaffolds a reagent from ferment and adds the upstream chart (prima materia) as a dependency.
+. `transmuter transmute` scaffolds a reagent from the template (ferment) and adds the upstream chart (prima materia) as a dependency.
 . Ferment brings the azoth library chart along, which renders the backup, network, maintenance, alerting, monitoring and billing resources from the reagent's `values.yaml`.
   Ferment also ships a `templates/credentials.yaml` to fill in with the service's connection details.
 . You adjust the values, rituals and credentials, and try the reagent in athanor, a local development cluster.
