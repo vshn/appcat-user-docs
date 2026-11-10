@@ -33,4 +33,4 @@ These are nice to have for a better maintainer experience.
 * [ ] chart is signed (cosign)
 * [ ] upgrade jobs like migrations use Helm hooks
 * [ ] follows semver, breaking value changes only in major versions
-
+* [ ] updates don't break existing instances (deployment: maxUnavailable: 0, pre-install hook to test image pull....)
