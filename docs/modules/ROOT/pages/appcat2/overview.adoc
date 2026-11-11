@@ -129,7 +129,7 @@ digraph helmetica {
 ....
 
 A reagent is a Helm chart.
-Besides the service itself it renders small, platform-agnostic resources such as `NetworkConfig` or `BackupPolicy`, and the framework turns each of them into the real thing.
+Besides the service itself it renders small, platform-agnostic resources such as `NetworkConfig` or `BackupPolicy`, and the framework turns each of them platform and/or service specific resources such as `NetworkPolicy`.
 Backup, network, maintenance and billing are switched on in the reagent's `values.yaml` and rendered by the azoth library.
 Credentials are defined in the reagent's own `templates/credentials.yaml`.
 
@@ -162,7 +162,7 @@ They don't write charts or order services.
   The installation applies the service's `ClaimDefinition`, one per major version, together with the FluxCD `OCIRepository` and `ImageRepository` it points at.
   These manifests ship with the reagent, so nobody writes them by hand.
   The framework then generates the CRD users order from.
-* *Provides the platform.* The framework's resources need something to land on, see the diagram.
+* *Provides the platform.* The framework's resources need something to be installed on, see the diagram.
 * *Describes the platform.* Config maps annotated with `chrysopoeia.io/platform-values` end up under `__platform__` in every instance's values, so charts can adapt to the distribution or load balancer capabilities.
   `MaintenanceWindow` objects define when maintenance may start for all instances.
 
