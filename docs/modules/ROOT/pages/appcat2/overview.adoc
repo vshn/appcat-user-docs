@@ -1,0 +1,561 @@
+= Helmetica Overview
+
+Helmetica turns one Helm chart into a service that users can order many instances of.
+Three roles work with it, and each one touches different resources.
+
+The names come from alchemy, see the xref:appcat2/servicemaintainer/glossary.adoc[glossary] for every term.
+
+[#framework]
+== The framework at a glance
+
+The map shows where each piece lives, what it holds, and who it belongs to.
+The <<maintainer,service maintainer>> works outside the cluster, the <<operator,framework operator>> runs the platform and decides which services are installed, and the <<user,user>> works in their own namespace.
+The dashed regions are managed by the framework, nobody edits them by hand.
+The bold arrows are the hand-overs between the roles.
+
+[graphviz,format=svg,role=text-center]
+....
+digraph helmetica {
+  rankdir=TB; newrank=true; nodesep=0.5; ranksep=0.6; compound=true;
+  fontname="Helvetica"; fontsize=13; labeljust=l;
+  node [shape=plain, fontname="Helvetica", fontsize=11, fontcolor="#ffffff"];
+  edge [fontname="Helvetica", fontsize=10, color="#222222", arrowsize=0.7, penwidth=1.2];
+
+  subgraph cluster_dev {
+    label=<<b>Service maintainer</b>&#160;&#160;outside the cluster>; style="rounded"; color="#222222"; penwidth=1.5;
+    transmuter [label=<<table border="0" cellpadding="8" bgcolor="#222222" style="rounded"><tr><td>transmuter</td></tr></table>>];
+    reagent [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+      <tr><td bgcolor="#555555"><b>Reagent chart</b></td></tr>
+      <tr><td bgcolor="#222222">values.yaml</td></tr>
+      <tr><td bgcolor="#222222">upstream chart (dependency)</td></tr>
+      <tr><td bgcolor="#222222">azoth (dependency)</td></tr>
+      <tr><td bgcolor="#222222">templates/credentials.yaml</td></tr>
+      <tr><td bgcolor="#222222">templates/rituals/</td></tr></table>>];
+    registry [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+      <tr><td bgcolor="#555555"><b>OCI registry</b></td></tr>
+      <tr><td bgcolor="#222222">1.0.0</td></tr>
+      <tr><td bgcolor="#222222">1.1.0</td></tr>
+      <tr><td bgcolor="#222222">2.0.0</td></tr></table>>];
+    transmuter -> reagent [label=" bootstraps"];
+    reagent -> registry [label=" publish"];
+    {rank=same; transmuter; reagent; registry;}
+  }
+
+  subgraph cluster_k8s {
+    label=<<b>Cluster</b>>; style="rounded"; color="#bbbbbb";
+
+    subgraph cluster_plat {
+      label=<<b>Platform</b>&#160;&#160;framework operator>; style="rounded"; color="#222222"; penwidth=1.5;
+      install [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#555555"><b>Installed services</b></td></tr>
+        <tr><td bgcolor="#222222">redis</td></tr>
+        <tr><td bgcolor="#222222">mariadb</td></tr>
+        <tr><td bgcolor="#222222">...</td></tr></table>>];
+      plat [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#555555"><b>Platform services</b></td></tr>
+        <tr><td bgcolor="#222222">FluxCD</td></tr>
+        <tr><td bgcolor="#222222">COSI driver</td></tr>
+        <tr><td bgcolor="#222222">K8up</td></tr>
+        <tr><td bgcolor="#222222">Gateways</td></tr></table>>];
+      cfg [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#555555"><b>Platform settings</b></td></tr>
+        <tr><td bgcolor="#222222">platform values</td></tr>
+        <tr><td bgcolor="#222222">MaintenanceWindow</td></tr></table>>];
+      cdef [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#555555"><b>ClaimDefinition</b>, per major version</td></tr>
+        <tr><td bgcolor="#222222">chart: OCIRepository</td></tr>
+        <tr><td bgcolor="#222222">new versions: ImageRepository</td></tr></table>>];
+      {rank=same; install; plat; cfg;}
+    }
+
+    subgraph cluster_catalog {
+      label=<<b>Service catalog</b>&#160;&#160;managed by the framework>; style="rounded,dashed,filled"; fillcolor="#f2f2f2"; color="#999999";
+
+      crds [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#555555"><b>Generated CRDs</b>, one per major version</td></tr>
+        <tr><td bgcolor="#222222">v1.&lt;chart&gt;.helmetica-bundles.io</td></tr>
+        <tr><td bgcolor="#222222">v2.&lt;chart&gt;.helmetica-bundles.io</td></tr></table>>];
+    }
+
+    subgraph cluster_user {
+      label=<<b>Your namespace</b>&#160;&#160;user>; style="rounded"; color="#222222"; penwidth=1.5;
+      claim [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#555555"><b>Claim</b></td></tr>
+        <tr><td bgcolor="#222222">spec.version</td></tr>
+        <tr><td bgcolor="#222222">spec.values</td></tr>
+        <tr><td bgcolor="#222222">spec.approval: Automatic / Manual</td></tr>
+        <tr><td bgcolor="#3a3a3a">status.instanceNamespace</td></tr>
+        <tr><td bgcolor="#3a3a3a">status.appliedRevision</td></tr></table>>];
+      revs [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#555555"><b>ClaimRevision</b>, one per change</td></tr>
+        <tr><td bgcolor="#222222">version@sha</td></tr>
+        <tr><td bgcolor="#222222">values + platform values</td></tr>
+        <tr><td bgcolor="#222222">approvedAt</td></tr></table>>];
+      secret [label=<<table border="0" cellpadding="8" bgcolor="#222222"><tr><td>Secret: credentials</td></tr></table>>];
+      action [label=<<table border="0" cellpadding="8" bgcolor="#222222"><tr><td>Action: restart, ...</td></tr></table>>];
+      claim -> revs [label=" every change"];
+    }
+
+    subgraph cluster_inst {
+      label=<<b>Instance namespace</b>&#160;&#160;managed by the framework>; style="rounded,dashed,filled"; fillcolor="#f2f2f2"; color="#999999";
+      rel [label=<<table border="0" cellpadding="8" bgcolor="#222222"><tr><td>HelmRelease</td></tr></table>>];
+      inst [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#555555"><b>helx-&lt;kind&gt;-&lt;hash&gt;</b></td></tr>
+        <tr><td bgcolor="#222222">the service</td></tr>
+        <tr><td bgcolor="#222222">NetworkConfig</td></tr>
+        <tr><td bgcolor="#222222">BackupPolicy</td></tr>
+        <tr><td bgcolor="#222222">Arcanum</td></tr>
+        <tr><td bgcolor="#222222">Maintenance</td></tr>
+        <tr><td bgcolor="#222222">BillingData</td></tr>
+        <tr><td bgcolor="#222222">Definition (rituals)</td></tr></table>>];
+      rel -> inst [label=" installs"];
+    }
+  }
+
+  // contracts between domains: bold
+  registry -> install [penwidth=2.5, label=<&#160;<b>published reagent</b>>];
+  crds -> claim [penwidth=2.5, label=<&#160;<b>services you can order</b>>];
+  plat -> rel [dir=back, lhead=cluster_inst, penwidth=2.5, style=dashed, label=<&#160;<b>runs on the platform</b>>];
+
+  install -> cdef [label=" applies"];
+  cdef -> crds [label=" schema from\n values.yaml"];
+  revs -> rel [label=" latest approved"];
+  inst -> secret [label=" Arcanum writes"];
+  action -> inst [label=" runs a Definition"];
+
+  {rank=same; revs; rel;}
+  {rank=same; action; inst;}
+}
+....
+
+A reagent is a Helm chart.
+Besides the service itself it renders small, platform-agnostic resources such as `NetworkConfig` or `BackupPolicy`, and the framework turns each of them platform and/or service specific resources such as `NetworkPolicy`.
+Backup, network, maintenance and billing are switched on in the reagent's `values.yaml` and rendered by the azoth library.
+Credentials are defined in the reagent's own `templates/credentials.yaml`.
+
+[cols="1,2,3", options="header"]
+|===
+| Role | Job | You work with
+
+| <<operator,Framework operator>>
+| Runs the framework on a cluster and provides the platform it relies on.
+| Installed services, platform values, `MaintenanceWindow`, FluxCD, COSI driver, K8up, Gateways
+
+| <<maintainer,Service maintainer>>
+| Wraps an upstream chart and publishes it as a service.
+| Reagent chart, `values.yaml`, rituals, credentials
+
+| <<user,User>>
+| Orders and operates instances of a service.
+| Claim, `Action`, `ClaimRevision`
+|===
+
+[#operator]
+== Framework operator
+
+The operator keeps the framework and the platform it needs running.
+They don't write charts or order services.
+
+* *Installs the framework.* Its controllers and CRDs have to be installed on the cluster.
+  Which controllers exist and what they own is documented in each project's repository.
+* *Installs services.* Installing a published reagent, for example Redis, on a cluster is what makes it orderable.
+  The installation applies the service's `ClaimDefinition`, one per major version, together with the FluxCD `OCIRepository` and `ImageRepository` it points at.
+  These manifests ship with the reagent, so nobody writes them by hand.
+  The framework then generates the CRD users order from.
+* *Provides the platform.* The framework's resources need something to be installed on, see the diagram.
+* *Describes the platform.* Config maps annotated with `chrysopoeia.io/platform-values` end up under `__platform__` in every instance's values, so charts can adapt to the distribution or load balancer capabilities.
+  `MaintenanceWindow` objects define when maintenance may start for all instances.
+
+.Show the map for the framework operator
+[%collapsible]
+====
+[graphviz,format=svg,role=text-center]
+....
+digraph operator {
+  rankdir=TB; newrank=true; nodesep=0.5; ranksep=0.6; compound=true;
+  fontname="Helvetica"; fontsize=13; labeljust=l;
+  node [shape=plain, fontname="Helvetica", fontsize=11, fontcolor="#ffffff"];
+  edge [fontname="Helvetica", fontsize=10, color="#222222", arrowsize=0.7, penwidth=1.2];
+
+  subgraph cluster_dev {
+    label=<<b>Service maintainer</b>&#160;&#160;outside the cluster>; style="rounded"; color="#222222"; penwidth=1.5;
+    transmuter [fontcolor="#a0a0a0", label=<<table border="0" cellpadding="8" bgcolor="#e8e8e8" style="rounded"><tr><td>transmuter</td></tr></table>>];
+    reagent [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+      <tr><td bgcolor="#d6d6d6"><b>Reagent chart</b></td></tr>
+      <tr><td bgcolor="#e8e8e8">values.yaml</td></tr>
+      <tr><td bgcolor="#e8e8e8">upstream chart (dependency)</td></tr>
+      <tr><td bgcolor="#e8e8e8">azoth (dependency)</td></tr>
+      <tr><td bgcolor="#e8e8e8">templates/credentials.yaml</td></tr>
+      <tr><td bgcolor="#e8e8e8">templates/rituals/</td></tr></table>>];
+    registry [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+      <tr><td bgcolor="#d6d6d6"><b>OCI registry</b></td></tr>
+      <tr><td bgcolor="#e8e8e8">1.0.0</td></tr>
+      <tr><td bgcolor="#e8e8e8">1.1.0</td></tr>
+      <tr><td bgcolor="#e8e8e8">2.0.0</td></tr></table>>];
+    transmuter -> reagent [color="#cccccc", fontcolor="#b0b0b0", label=" bootstraps"];
+    reagent -> registry [color="#cccccc", fontcolor="#b0b0b0", label=" publish"];
+    {rank=same; transmuter; reagent; registry;}
+  }
+
+  subgraph cluster_k8s {
+    label=<<b>Cluster</b>>; style="rounded"; color="#bbbbbb";
+
+    subgraph cluster_plat {
+      label=<<b>Platform</b>&#160;&#160;framework operator>; style="rounded"; color="#222222"; penwidth=1.5;
+      install [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#555555"><b>Installed services</b></td></tr>
+        <tr><td bgcolor="#222222">redis</td></tr>
+        <tr><td bgcolor="#222222">mariadb</td></tr>
+        <tr><td bgcolor="#222222">...</td></tr></table>>];
+      plat [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#555555"><b>Platform services</b></td></tr>
+        <tr><td bgcolor="#222222">FluxCD</td></tr>
+        <tr><td bgcolor="#222222">COSI driver</td></tr>
+        <tr><td bgcolor="#222222">K8up</td></tr>
+        <tr><td bgcolor="#222222">Gateways</td></tr></table>>];
+      cfg [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#555555"><b>Platform settings</b></td></tr>
+        <tr><td bgcolor="#222222">platform values</td></tr>
+        <tr><td bgcolor="#222222">MaintenanceWindow</td></tr></table>>];
+      cdef [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#555555"><b>ClaimDefinition</b>, per major version</td></tr>
+        <tr><td bgcolor="#222222">chart: OCIRepository</td></tr>
+        <tr><td bgcolor="#222222">new versions: ImageRepository</td></tr></table>>];
+      {rank=same; install; plat; cfg;}
+    }
+
+    subgraph cluster_catalog {
+      label=<<b>Service catalog</b>&#160;&#160;managed by the framework>; style="rounded,dashed,filled"; fillcolor="#f2f2f2"; color="#999999";
+
+      crds [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>Generated CRDs</b>, one per major version</td></tr>
+        <tr><td bgcolor="#e8e8e8">v1.&lt;chart&gt;.helmetica-bundles.io</td></tr>
+        <tr><td bgcolor="#e8e8e8">v2.&lt;chart&gt;.helmetica-bundles.io</td></tr></table>>];
+    }
+
+    subgraph cluster_user {
+      label=<<b>Your namespace</b>&#160;&#160;user>; style="rounded"; color="#222222"; penwidth=1.5;
+      claim [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>Claim</b></td></tr>
+        <tr><td bgcolor="#e8e8e8">spec.version</td></tr>
+        <tr><td bgcolor="#e8e8e8">spec.values</td></tr>
+        <tr><td bgcolor="#e8e8e8">spec.approval: Automatic / Manual</td></tr>
+        <tr><td bgcolor="#e8e8e8">status.instanceNamespace</td></tr>
+        <tr><td bgcolor="#e8e8e8">status.appliedRevision</td></tr></table>>];
+      revs [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>ClaimRevision</b>, one per change</td></tr>
+        <tr><td bgcolor="#e8e8e8">version@sha</td></tr>
+        <tr><td bgcolor="#e8e8e8">values + platform values</td></tr>
+        <tr><td bgcolor="#e8e8e8">approvedAt</td></tr></table>>];
+      secret [fontcolor="#a0a0a0", label=<<table border="0" cellpadding="8" bgcolor="#e8e8e8"><tr><td>Secret: credentials</td></tr></table>>];
+      action [fontcolor="#a0a0a0", label=<<table border="0" cellpadding="8" bgcolor="#e8e8e8"><tr><td>Action: restart, ...</td></tr></table>>];
+      claim -> revs [color="#cccccc", fontcolor="#b0b0b0", label=" every change"];
+    }
+
+    subgraph cluster_inst {
+      label=<<b>Instance namespace</b>&#160;&#160;managed by the framework>; style="rounded,dashed,filled"; fillcolor="#f2f2f2"; color="#999999";
+      rel [fontcolor="#a0a0a0", label=<<table border="0" cellpadding="8" bgcolor="#e8e8e8"><tr><td>HelmRelease</td></tr></table>>];
+      inst [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>helx-&lt;kind&gt;-&lt;hash&gt;</b></td></tr>
+        <tr><td bgcolor="#e8e8e8">the service</td></tr>
+        <tr><td bgcolor="#e8e8e8">NetworkConfig</td></tr>
+        <tr><td bgcolor="#e8e8e8">BackupPolicy</td></tr>
+        <tr><td bgcolor="#e8e8e8">Arcanum</td></tr>
+        <tr><td bgcolor="#e8e8e8">Maintenance</td></tr>
+        <tr><td bgcolor="#e8e8e8">BillingData</td></tr>
+        <tr><td bgcolor="#e8e8e8">Definition (rituals)</td></tr></table>>];
+      rel -> inst [color="#cccccc", fontcolor="#b0b0b0", label=" installs"];
+    }
+  }
+
+  // contracts between domains: bold
+  registry -> install [penwidth=2.5, label=<&#160;<b>published reagent</b>>];
+  crds -> claim [penwidth=2.5, label=<&#160;<b>services you can order</b>>];
+  plat -> rel [dir=back, lhead=cluster_inst, penwidth=2.5, style=dashed, label=<&#160;<b>runs on the platform</b>>];
+
+  install -> cdef [label=" applies"];
+  cdef -> crds [color="#cccccc", fontcolor="#b0b0b0", label=" schema from\n values.yaml"];
+  revs -> rel [color="#cccccc", fontcolor="#b0b0b0", label=" latest approved"];
+  inst -> secret [color="#cccccc", fontcolor="#b0b0b0", label=" Arcanum writes"];
+  action -> inst [color="#cccccc", fontcolor="#b0b0b0", label=" runs a Definition"];
+
+  {rank=same; revs; rel;}
+  {rank=same; action; inst;}
+}
+....
+====
+
+[#maintainer]
+== Service maintainer
+
+The maintainer turns an upstream chart into a service and ships it.
+
+. `transmuter transmute` scaffolds a reagent from the template (ferment) and adds the upstream chart (prima materia) as a dependency.
+. Ferment brings the azoth library chart along, which renders the backup, network, maintenance, alerting, monitoring and billing resources from the reagent's `values.yaml`.
+  Ferment also ships a `templates/credentials.yaml` to fill in with the service's connection details.
+. You adjust the values, rituals and credentials, and try the reagent in athanor, a local development cluster.
+. `transmuter assay` checks the chart and detects breaking CRD changes against the latest published version. Touchstone tests it end to end.
+. You publish the chart to an OCI registry.
+  That is the hand-over: from there, the operator installs the service on a cluster and the framework does the rest.
+
+.Show the map for the service maintainer
+[%collapsible]
+====
+[graphviz,format=svg,role=text-center]
+....
+digraph maintainer {
+  rankdir=TB; newrank=true; nodesep=0.5; ranksep=0.6; compound=true;
+  fontname="Helvetica"; fontsize=13; labeljust=l;
+  node [shape=plain, fontname="Helvetica", fontsize=11, fontcolor="#ffffff"];
+  edge [fontname="Helvetica", fontsize=10, color="#222222", arrowsize=0.7, penwidth=1.2];
+
+  subgraph cluster_dev {
+    label=<<b>Service maintainer</b>&#160;&#160;outside the cluster>; style="rounded"; color="#222222"; penwidth=1.5;
+    transmuter [label=<<table border="0" cellpadding="8" bgcolor="#222222" style="rounded"><tr><td>transmuter</td></tr></table>>];
+    reagent [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+      <tr><td bgcolor="#555555"><b>Reagent chart</b></td></tr>
+      <tr><td bgcolor="#222222">values.yaml</td></tr>
+      <tr><td bgcolor="#222222">upstream chart (dependency)</td></tr>
+      <tr><td bgcolor="#222222">azoth (dependency)</td></tr>
+      <tr><td bgcolor="#222222">templates/credentials.yaml</td></tr>
+      <tr><td bgcolor="#222222">templates/rituals/</td></tr></table>>];
+    registry [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+      <tr><td bgcolor="#555555"><b>OCI registry</b></td></tr>
+      <tr><td bgcolor="#222222">1.0.0</td></tr>
+      <tr><td bgcolor="#222222">1.1.0</td></tr>
+      <tr><td bgcolor="#222222">2.0.0</td></tr></table>>];
+    transmuter -> reagent [label=" bootstraps"];
+    reagent -> registry [label=" publish"];
+    {rank=same; transmuter; reagent; registry;}
+  }
+
+  subgraph cluster_k8s {
+    label=<<b>Cluster</b>>; style="rounded"; color="#bbbbbb";
+
+    subgraph cluster_plat {
+      label=<<b>Platform</b>&#160;&#160;framework operator>; style="rounded"; color="#222222"; penwidth=1.5;
+      install [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>Installed services</b></td></tr>
+        <tr><td bgcolor="#e8e8e8">redis</td></tr>
+        <tr><td bgcolor="#e8e8e8">mariadb</td></tr>
+        <tr><td bgcolor="#e8e8e8">...</td></tr></table>>];
+      plat [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>Platform services</b></td></tr>
+        <tr><td bgcolor="#e8e8e8">FluxCD</td></tr>
+        <tr><td bgcolor="#e8e8e8">COSI driver</td></tr>
+        <tr><td bgcolor="#e8e8e8">K8up</td></tr>
+        <tr><td bgcolor="#e8e8e8">Gateways</td></tr></table>>];
+      cfg [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>Platform settings</b></td></tr>
+        <tr><td bgcolor="#e8e8e8">platform values</td></tr>
+        <tr><td bgcolor="#e8e8e8">MaintenanceWindow</td></tr></table>>];
+      cdef [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>ClaimDefinition</b>, per major version</td></tr>
+        <tr><td bgcolor="#e8e8e8">chart: OCIRepository</td></tr>
+        <tr><td bgcolor="#e8e8e8">new versions: ImageRepository</td></tr></table>>];
+      {rank=same; install; plat; cfg;}
+    }
+
+    subgraph cluster_catalog {
+      label=<<b>Service catalog</b>&#160;&#160;managed by the framework>; style="rounded,dashed,filled"; fillcolor="#f2f2f2"; color="#999999";
+
+      crds [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>Generated CRDs</b>, one per major version</td></tr>
+        <tr><td bgcolor="#e8e8e8">v1.&lt;chart&gt;.helmetica-bundles.io</td></tr>
+        <tr><td bgcolor="#e8e8e8">v2.&lt;chart&gt;.helmetica-bundles.io</td></tr></table>>];
+    }
+
+    subgraph cluster_user {
+      label=<<b>Your namespace</b>&#160;&#160;user>; style="rounded"; color="#222222"; penwidth=1.5;
+      claim [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>Claim</b></td></tr>
+        <tr><td bgcolor="#e8e8e8">spec.version</td></tr>
+        <tr><td bgcolor="#e8e8e8">spec.values</td></tr>
+        <tr><td bgcolor="#e8e8e8">spec.approval: Automatic / Manual</td></tr>
+        <tr><td bgcolor="#e8e8e8">status.instanceNamespace</td></tr>
+        <tr><td bgcolor="#e8e8e8">status.appliedRevision</td></tr></table>>];
+      revs [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>ClaimRevision</b>, one per change</td></tr>
+        <tr><td bgcolor="#e8e8e8">version@sha</td></tr>
+        <tr><td bgcolor="#e8e8e8">values + platform values</td></tr>
+        <tr><td bgcolor="#e8e8e8">approvedAt</td></tr></table>>];
+      secret [fontcolor="#a0a0a0", label=<<table border="0" cellpadding="8" bgcolor="#e8e8e8"><tr><td>Secret: credentials</td></tr></table>>];
+      action [fontcolor="#a0a0a0", label=<<table border="0" cellpadding="8" bgcolor="#e8e8e8"><tr><td>Action: restart, ...</td></tr></table>>];
+      claim -> revs [color="#cccccc", fontcolor="#b0b0b0", label=" every change"];
+    }
+
+    subgraph cluster_inst {
+      label=<<b>Instance namespace</b>&#160;&#160;managed by the framework>; style="rounded,dashed,filled"; fillcolor="#f2f2f2"; color="#999999";
+      rel [fontcolor="#a0a0a0", label=<<table border="0" cellpadding="8" bgcolor="#e8e8e8"><tr><td>HelmRelease</td></tr></table>>];
+      inst [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>helx-&lt;kind&gt;-&lt;hash&gt;</b></td></tr>
+        <tr><td bgcolor="#e8e8e8">the service</td></tr>
+        <tr><td bgcolor="#e8e8e8">NetworkConfig</td></tr>
+        <tr><td bgcolor="#e8e8e8">BackupPolicy</td></tr>
+        <tr><td bgcolor="#e8e8e8">Arcanum</td></tr>
+        <tr><td bgcolor="#e8e8e8">Maintenance</td></tr>
+        <tr><td bgcolor="#e8e8e8">BillingData</td></tr>
+        <tr><td bgcolor="#e8e8e8">Definition (rituals)</td></tr></table>>];
+      rel -> inst [color="#cccccc", fontcolor="#b0b0b0", label=" installs"];
+    }
+  }
+
+  // contracts between domains: bold
+  registry -> install [penwidth=2.5, label=<&#160;<b>published reagent</b>>];
+  crds -> claim [color="#cccccc", fontcolor="#b0b0b0", penwidth=2.5, label=<&#160;<b>services you can order</b>>];
+  plat -> rel [color="#cccccc", fontcolor="#b0b0b0", dir=back, lhead=cluster_inst, penwidth=2.5, style=dashed, label=<&#160;<b>runs on the platform</b>>];
+
+  install -> cdef [color="#cccccc", fontcolor="#b0b0b0", label=" applies"];
+  cdef -> crds [color="#cccccc", fontcolor="#b0b0b0", label=" schema from\n values.yaml"];
+  revs -> rel [color="#cccccc", fontcolor="#b0b0b0", label=" latest approved"];
+  inst -> secret [color="#cccccc", fontcolor="#b0b0b0", label=" Arcanum writes"];
+  action -> inst [color="#cccccc", fontcolor="#b0b0b0", label=" runs a Definition"];
+
+  {rank=same; revs; rel;}
+  {rank=same; action; inst;}
+}
+....
+====
+
+See xref:appcat2/servicemaintainer/anatomy.adoc[Anatomy of a service] for what goes into the reagent's `values.yaml`.
+
+[#user]
+== User
+
+As a user you order an instance of a service and work with it, all from your own namespace.
+The service itself runs in a separate namespace the framework creates for you, but you never have to go there.
+
+.Show the map for the user
+[%collapsible]
+====
+[graphviz,format=svg,role=text-center]
+....
+digraph user {
+  rankdir=TB; newrank=true; nodesep=0.5; ranksep=0.6; compound=true;
+  fontname="Helvetica"; fontsize=13; labeljust=l;
+  node [shape=plain, fontname="Helvetica", fontsize=11, fontcolor="#ffffff"];
+  edge [fontname="Helvetica", fontsize=10, color="#222222", arrowsize=0.7, penwidth=1.2];
+
+  subgraph cluster_dev {
+    label=<<b>Service maintainer</b>&#160;&#160;outside the cluster>; style="rounded"; color="#222222"; penwidth=1.5;
+    transmuter [fontcolor="#a0a0a0", label=<<table border="0" cellpadding="8" bgcolor="#e8e8e8" style="rounded"><tr><td>transmuter</td></tr></table>>];
+    reagent [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+      <tr><td bgcolor="#d6d6d6"><b>Reagent chart</b></td></tr>
+      <tr><td bgcolor="#e8e8e8">values.yaml</td></tr>
+      <tr><td bgcolor="#e8e8e8">upstream chart (dependency)</td></tr>
+      <tr><td bgcolor="#e8e8e8">azoth (dependency)</td></tr>
+      <tr><td bgcolor="#e8e8e8">templates/credentials.yaml</td></tr>
+      <tr><td bgcolor="#e8e8e8">templates/rituals/</td></tr></table>>];
+    registry [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+      <tr><td bgcolor="#d6d6d6"><b>OCI registry</b></td></tr>
+      <tr><td bgcolor="#e8e8e8">1.0.0</td></tr>
+      <tr><td bgcolor="#e8e8e8">1.1.0</td></tr>
+      <tr><td bgcolor="#e8e8e8">2.0.0</td></tr></table>>];
+    transmuter -> reagent [color="#cccccc", fontcolor="#b0b0b0", label=" bootstraps"];
+    reagent -> registry [color="#cccccc", fontcolor="#b0b0b0", label=" publish"];
+    {rank=same; transmuter; reagent; registry;}
+  }
+
+  subgraph cluster_k8s {
+    label=<<b>Cluster</b>>; style="rounded"; color="#bbbbbb";
+
+    subgraph cluster_plat {
+      label=<<b>Platform</b>&#160;&#160;framework operator>; style="rounded"; color="#222222"; penwidth=1.5;
+      install [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>Installed services</b></td></tr>
+        <tr><td bgcolor="#e8e8e8">redis</td></tr>
+        <tr><td bgcolor="#e8e8e8">mariadb</td></tr>
+        <tr><td bgcolor="#e8e8e8">...</td></tr></table>>];
+      plat [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>Platform services</b></td></tr>
+        <tr><td bgcolor="#e8e8e8">FluxCD</td></tr>
+        <tr><td bgcolor="#e8e8e8">COSI driver</td></tr>
+        <tr><td bgcolor="#e8e8e8">K8up</td></tr>
+        <tr><td bgcolor="#e8e8e8">Gateways</td></tr></table>>];
+      cfg [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>Platform settings</b></td></tr>
+        <tr><td bgcolor="#e8e8e8">platform values</td></tr>
+        <tr><td bgcolor="#e8e8e8">MaintenanceWindow</td></tr></table>>];
+      cdef [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>ClaimDefinition</b>, per major version</td></tr>
+        <tr><td bgcolor="#e8e8e8">chart: OCIRepository</td></tr>
+        <tr><td bgcolor="#e8e8e8">new versions: ImageRepository</td></tr></table>>];
+      {rank=same; install; plat; cfg;}
+    }
+
+    subgraph cluster_catalog {
+      label=<<b>Service catalog</b>&#160;&#160;managed by the framework>; style="rounded,dashed,filled"; fillcolor="#f2f2f2"; color="#999999";
+
+      crds [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>Generated CRDs</b>, one per major version</td></tr>
+        <tr><td bgcolor="#e8e8e8">v1.&lt;chart&gt;.helmetica-bundles.io</td></tr>
+        <tr><td bgcolor="#e8e8e8">v2.&lt;chart&gt;.helmetica-bundles.io</td></tr></table>>];
+    }
+
+    subgraph cluster_user {
+      label=<<b>Your namespace</b>&#160;&#160;user>; style="rounded"; color="#222222"; penwidth=1.5;
+      claim [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#555555"><b>Claim</b></td></tr>
+        <tr><td bgcolor="#222222">spec.version</td></tr>
+        <tr><td bgcolor="#222222">spec.values</td></tr>
+        <tr><td bgcolor="#222222">spec.approval: Automatic / Manual</td></tr>
+        <tr><td bgcolor="#3a3a3a">status.instanceNamespace</td></tr>
+        <tr><td bgcolor="#3a3a3a">status.appliedRevision</td></tr></table>>];
+      revs [label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#555555"><b>ClaimRevision</b>, one per change</td></tr>
+        <tr><td bgcolor="#222222">version@sha</td></tr>
+        <tr><td bgcolor="#222222">values + platform values</td></tr>
+        <tr><td bgcolor="#222222">approvedAt</td></tr></table>>];
+      secret [label=<<table border="0" cellpadding="8" bgcolor="#222222"><tr><td>Secret: credentials</td></tr></table>>];
+      action [label=<<table border="0" cellpadding="8" bgcolor="#222222"><tr><td>Action: restart, ...</td></tr></table>>];
+      claim -> revs [label=" every change"];
+    }
+
+    subgraph cluster_inst {
+      label=<<b>Instance namespace</b>&#160;&#160;managed by the framework>; style="rounded,dashed,filled"; fillcolor="#f2f2f2"; color="#999999";
+      rel [fontcolor="#a0a0a0", label=<<table border="0" cellpadding="8" bgcolor="#e8e8e8"><tr><td>HelmRelease</td></tr></table>>];
+      inst [fontcolor="#a0a0a0", label=<<table border="0" cellspacing="1" cellpadding="6" bgcolor="#ffffff">
+        <tr><td bgcolor="#d6d6d6"><b>helx-&lt;kind&gt;-&lt;hash&gt;</b></td></tr>
+        <tr><td bgcolor="#e8e8e8">the service</td></tr>
+        <tr><td bgcolor="#e8e8e8">NetworkConfig</td></tr>
+        <tr><td bgcolor="#e8e8e8">BackupPolicy</td></tr>
+        <tr><td bgcolor="#e8e8e8">Arcanum</td></tr>
+        <tr><td bgcolor="#e8e8e8">Maintenance</td></tr>
+        <tr><td bgcolor="#e8e8e8">BillingData</td></tr>
+        <tr><td bgcolor="#e8e8e8">Definition (rituals)</td></tr></table>>];
+      rel -> inst [color="#cccccc", fontcolor="#b0b0b0", label=" installs"];
+    }
+  }
+
+  // contracts between domains: bold
+  registry -> install [color="#cccccc", fontcolor="#b0b0b0", penwidth=2.5, label=<&#160;<b>published reagent</b>>];
+  crds -> claim [penwidth=2.5, label=<&#160;<b>services you can order</b>>];
+  plat -> rel [color="#cccccc", fontcolor="#b0b0b0", dir=back, lhead=cluster_inst, penwidth=2.5, style=dashed, label=<&#160;<b>runs on the platform</b>>];
+
+  install -> cdef [color="#cccccc", fontcolor="#b0b0b0", label=" applies"];
+  cdef -> crds [color="#cccccc", fontcolor="#b0b0b0", label=" schema from\n values.yaml"];
+  revs -> rel [color="#cccccc", fontcolor="#b0b0b0", label=" latest approved"];
+  inst -> secret [label=" Arcanum writes"];
+  action -> inst [label=" runs a Definition"];
+
+  {rank=same; revs; rel;}
+  {rank=same; action; inst;}
+}
+....
+====
+
+
+Order:: You create a claim with the configuration and the approval strategy.
+Setting `spec.version` pins a version.
+Without it, a new instance starts on the newest version the CRD allows and only moves on through auto-updates.
+The framework records it as a `ClaimRevision` next to the claim.
+Once the revision is approved, it creates the instance namespace and installs the service there.
+The claim's `status.instanceNamespace` tells you where.
+Credentials:: The connection details are written to a secret beside your claim.
+The service accepts connections from your namespace.
+Change:: Every change to the claim creates a new revision.
+So does a change to the platform values, without you touching the claim.
+Unless the approval strategy is `Automatic`, nothing is deployed until someone approves it.
+`cupel weigh` shows what a change would do, `cupel ledger` browses the history and approves.
+Operate:: To run an operation such as a restart, create an `Action` that names your claim and the ritual.
+Its status shows whether it succeeded.
