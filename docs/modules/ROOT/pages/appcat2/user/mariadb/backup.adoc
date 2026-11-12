@@ -1,0 +1,123 @@
+= MariaDB Backups
+
+Backups are enabled by default.
+Every MariaDB instance is backed up once a day, and each backup is kept for 30 days.
+
+The backups are physical backups: a consistent copy of the database files, taken while the database keeps running.
+They are written to an object storage bucket that is created for the instance.
+You don't need to provide a bucket or credentials yourself.
+
+All backup settings live under `spec.values.backup` of your instance.
+
+[NOTE]
+====
+The `apiVersion` and `kind` in the examples on this page depend on how the service is offered on your cluster.
+Use the ones of your existing instance.
+====
+
+== Settings
+
+[cols="2,1,4", options="header"]
+|===
+| Field | Default | Description
+
+| `backup.enabled`
+| `true`
+| Whether the instance is backed up at all.
+
+| `backup.schedule.backup`
+| empty
+| When the backup runs, as a cron expression.
+If left empty, a nightly time is chosen for you, see <<schedule>>.
+
+| `backup.maxRetention`
+| `720h`
+| How long a backup is kept, as a duration.
+
+| `backup.bucketClassName`
+| empty
+| The class of object storage the bucket is created from.
+Leave it empty to use the default of the cluster.
+
+| `backup.bucketAccessClassName`
+| empty
+| The class the credentials for the bucket are created from.
+Leave it empty to use the default of the cluster.
+|===
+
+[#schedule]
+== Schedule
+
+Without a schedule of its own, an instance is backed up every night at a time between 22:00 and 06:00.
+The time is derived from the name and namespace of the instance.
+It stays the same for as long as the instance exists, and different instances get different times, so that they don't all start their backup in the same minute.
+
+To pick the time yourself, set `backup.schedule.backup` to a cron expression:
+
+[source,yaml]
+----
+apiVersion: v0.mariadb.helmetica-bundles.io/MariaDB
+kind: Instance
+metadata:
+  name: mariadb-app1-prod
+  namespace: <your-namespace>
+spec:
+  values:
+    backup:
+      schedule:
+        backup: "0 2 * * *" <1>
+----
+<1> Runs the backup every day at 02:00.
+
+== Retention
+
+By default, a backup is kept for 30 days (`720h`).
+Backups older than that are removed automatically.
+
+To change this, set `backup.maxRetention` to a duration in hours:
+
+[source,yaml]
+----
+apiVersion: v0.mariadb.helmetica-bundles.io/bundle
+kind: Instance
+metadata:
+  name: mariadb-app1-prod
+  namespace: <your-namespace>
+spec:
+  values:
+    backup:
+      maxRetention: 168h <1>
+----
+<1> Keeps each backup for 7 days.
+
+In contrast to services backed up with k8up, the retention here is a period of time and not a number of backups to keep.
+
+== Disable Backups
+
+To disable backups, set `backup.enabled` to `false`:
+
+[source,yaml]
+----
+apiVersion: v0.mariadb.helmetica-bundles.io/MariaDB
+kind: Instance
+metadata:
+  name: mariadb-app1-prod
+  namespace: <your-namespace>
+spec:
+  values:
+    backup:
+      enabled: false
+----
+
+[WARNING]
+====
+Disabling backups is meant for test instances only.
+It is not recommended to disable backups for production instances.
+
+Disabling backups also deletes the bucket where the backups were written to.
+Don't rely on backups that were taken before you disabled them.
+====
+
+== Restore
+
+Restoring an instance from a backup is not available as a self-service operation yet.

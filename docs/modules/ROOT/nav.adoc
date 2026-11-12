@@ -139,4 +139,5 @@
 ** xref:appcat2/servicemaintainer/glossary.adoc[]
 ** xref:appcat2/servicemaintainer/charts.adoc[]
 * xref:appcat2/user/index.adoc[]
+** xref:appcat2/user/mariadb/backup.adoc[]
 * xref:appcat2/frameworkengineer/guidelines.adoc[]
