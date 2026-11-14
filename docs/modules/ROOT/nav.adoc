@@ -77,6 +77,7 @@
 .xref:vshn-managed/postgresql/index.adoc[PostgreSQL]
 * xref:vshn-managed/postgresql/alerting.adoc[]
 * xref:vshn-managed/postgresql/backup.adoc[Backup]
+* xref:vshn-managed/postgresql/configuration.adoc[]
 * xref:vshn-managed/postgresql/connect.adoc[Connect]
 * xref:vshn-managed/postgresql/create.adoc[Creation]
 * xref:vshn-managed/postgresql/delete.adoc[Deletion]

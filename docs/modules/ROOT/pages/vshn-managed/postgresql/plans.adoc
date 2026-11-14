@@ -24,9 +24,9 @@ By default, the following plans are available on every cluster:
 [cols="25a,15,15,15", options="header"]
 |===
 | Plan | CPU | Memory | Disk
-| standard-2 | 400m | 1728Mi | 20Gi
-| standard-4 | 900m | 3776Mi | 40Gi
-| standard-8 | 1900m | 7872Mi | 80Gi
+| standard-2 | 400m | 1936Mi | 20Gi
+| standard-4 | 900m | 3984Mi | 40Gi
+| standard-8 | 1900m | 8080Mi | 80Gi
 |===
 
 NOTE: Every PostgreSQL instance has a sidecar pod causing an overhead in memory consumption. This is the reason why, for example, the `standard-4` plan provides less than `4Gi` of usable memory.
