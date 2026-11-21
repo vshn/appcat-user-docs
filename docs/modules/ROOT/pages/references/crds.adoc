@@ -883,7 +883,7 @@ keycloak instance. The config is a JSON file based on the keycloak export files.
 The referenced configmap, must have the configuration in a field called `keycloak-config.json`
 | *`customEnvVariablesRef`* __string__ | CustomEnvVariablesRef can be used to provide custom environment variables from a Secret
 for the keycloak instance. This field is deprecated, use 'envFrom' instead.
-| *`envFrom`* __link:https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.20/#envfromsource-v1-core[$$EnvFromSource$$]__ | EnvFrom can be used to provide custom environment variables from either
+| *`envFrom`* __link:https://kubernetes.io/docs/reference/kubernetes-api/core/pod-v1/#EnvFromSource[$$EnvFromSource$$]__ | EnvFrom can be used to provide custom environment variables from either
 a ConfigMap or a Secret for the keycloak instance. The environment variables provided
 can for example be used in the custom JSON configuration provided in the `Configuration`
 field with `$(env:<ENV_VAR_NAME>:-<some_default_value>)`
